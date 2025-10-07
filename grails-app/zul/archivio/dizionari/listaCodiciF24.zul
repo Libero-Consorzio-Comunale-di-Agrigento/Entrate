@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <window closable="false" apply="grailsBindComposer"
+            onOK="@command('onCerca')"
+            viewModel="@id('vm') @init('listaCodiciF24ViewModel')" width="100%"
+            height="100%">
+
+        <vlayout vflex="1">
+            <groupbox vflex="1">
+
+                <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+                    <hlayout sclass="afc-control-bar">
+                        <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                       tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                       visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                       onClick="@command('onRefresh')"/>
+                        <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                       tooltiptext='Esporta in XLS'
+                                       onClick="@command('onExportXlsCodiciF24')"
+                                       disabled="@load(empty vm.listaCodiciF24)"/>
+                    </hlayout>
+                    <hlayout valign="middle" style="text-align: right;" hflex="1">
+                        <toolbarbutton width="26px"
+                                       image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                       onClick="@command('openCloseFiltri')"/>
+                    </hlayout>
+                </hlayout>
+                <listbox selectedItem="@bind(vm.codiceF24Selezionato)"
+                         model="@load(vm.listaCodiciF24)"
+                         emptyMessage="Nessun codice F24" sizedByContent="true" span="true" vflex="true"
+                         onSelect="@command('onSelectCodiceF24')">
+                    <listhead sizable="true">
+                        <listheader label="Codice"/>
+                        <listheader label="Descrizione" width="50%"/>
+                        <listheader label="Rateazione"/>
+                        <listheader label="Tipo codice"/>
+                        <listheader label="Stampa Rateazione"/>
+                    </listhead>
+
+                    <template name="model" var="cod">
+                        <listitem onDoubleClick="@command('onModificaCodiceF24')">
+                            <listcell
+                                    label="@load(cod.tributo)"/>
+                            <listcell>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <label value="@load(cod.descrizione)"
+                                           style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block; width:inherit; white-space: nowrap;"/>
+                                    <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note"
+                                           height="16px"
+                                           width="16px"
+                                           style="float: right; cursor: pointer;"
+                                           onClick="@command('onApriNote', arg=cod.descrizione)"/>
+                                </div>
+                            </listcell>
+                            <listcell style="white-space: nowrap;"
+                                    label="@load(cod.rateazioneDescrizione)"/>
+                            <listcell
+                                    label="@load(cod.tipoCodiceDescrizione)"/>
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(cod.flagStampaRateazione eq 'S')"
+                                          onClick="@command('onCheckboxCheck', flagCheckbox='flagStampaRateazione', checkedCodiceF24=cod)"
+                                          disabled="@load(cod.rateazione ne 'FFFF')"/>
+                            </listcell>
+                        </listitem>
+
+                    </template>
+                </listbox>
+
+            </groupbox>
+            <groupbox vflex="1">
+                <caption label="Beneficiari"/>
+
+                <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+                    <hlayout sclass="afc-control-bar">
+                        <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                       tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                       visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                       onClick="@command('onRefreshBeneficiari')"/>
+                        <toolbarbutton image="/images/afc/22x22/edit.png"
+                                       tooltiptext="@load((vm.lettura ne false) ? 'Dettagli' : 'Modifica')"
+                                       visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                       onClick="@command('onModificaBeneficiario')"
+                                       disabled="@load(empty vm.beneficiarioSelezionato)"/>
+                        <toolbarbutton image="/images/afc/22x22/add.png"
+                                       tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                       visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                       onClick="@command('onNuovoBeneficiario')"
+                                       disabled="@load((vm.lettura ne false) or (empty vm.codiceF24Selezionato) or (not empty vm.listaBeneficiari))"/>
+                        <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                       tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                       visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                       onClick="@command('onEliminaBeneficiario')"
+                                       disabled="@load((vm.lettura ne false) or (empty vm.beneficiarioSelezionato))"/>
+                        <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                       tooltiptext='Esporta in XLS'
+                                       onClick="@command('onExportXlsBeneficiari')"
+                                       disabled="@load(empty vm.listaBeneficiari)"/>
+                    </hlayout>
+                    <hlayout valign="middle" hflex="3">
+                    </hlayout>
+                </hlayout>
+
+                <listbox selectedItem="@bind(vm.beneficiarioSelezionato)"
+                         model="@load(vm.listaBeneficiari)"
+                         emptyMessage="Nessun Beneficiario" sizedByContent="true" span="true" vflex="true" rows="1"
+                         onSelect="@command('onSelectBeneficiario')">
+                    <listhead sizable="true">
+                        <listheader label="Cod. Fiscale"/>
+                        <listheader label="Intestatario"/>
+                        <listheader label="IBAN"/>
+                        <listheader label="Tassonomia"/>
+                        <listheader label="Tassonomia anni prec."/>
+                        <listheader label="Causale Quota"/>
+                        <listheader label="Descrizione Metadata"/>
+                    </listhead>
+                    <template name="model" var="ben">
+                        <listitem onDoubleClick="@command('onModificaBeneficiario')">
+                            <listcell label="@load(ben.codFiscale)"/>
+                            <listcell label="@load(ben.intestatario)"/>
+                            <listcell label="@load(ben.iban)"/>
+                            <listcell label="@load(ben.tassonomia)"/>
+                            <listcell label="@load(ben.tassonomiaAnniPrec)"/>
+                            <listcell label="@load(ben.causaleQuota)"/>
+                            <listcell label="@load(ben.desMetadata)"/>
+                        </listitem>
+                    </template>
+                </listbox>
+
+            </groupbox>
+        </vlayout>
+    </window>
+</zk>

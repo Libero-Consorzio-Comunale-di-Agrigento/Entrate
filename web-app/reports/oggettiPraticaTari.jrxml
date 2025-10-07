@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2022-07-21T14:41:02 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oggettiPraticaTari" language="groovy" pageWidth="760" pageHeight="555" orientation="Landscape" columnWidth="760" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="545a6ef9-0758-478e-816e-61690133b271">
+	<property name="ireport.zoom" value="1.331000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1" uuid="f12fe40f-1bb1-45dc-9151-eb0dacdb06df"/>
+	<subDataset name="Table Dataset 1" uuid="3dae9432-5936-4c16-a26f-cc3307024de7"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TIPO_TRIBUTO" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="oggettoPratica" class="it.finmatica.tr4.dto.pratiche.OggettoPraticaDTO">
+		<fieldDescription><![CDATA[oggettoPratica]]></fieldDescription>
+	</field>
+	<field name="flagAbPrincipale" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[flagAbPrincipale]]></fieldDescription>
+	</field>
+	<field name="dataDecorrenza" class="java.util.Date">
+		<fieldDescription><![CDATA[dataDecorrenza]]></fieldDescription>
+	</field>
+	<field name="dataCessazione" class="java.util.Date">
+		<fieldDescription><![CDATA[dataCessazione]]></fieldDescription>
+	</field>
+	<field name="percPossesso" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[percPossesso]]></fieldDescription>
+	</field>
+	<field name="ruoliOggetto" class="java.util.SortedSet">
+		<fieldDescription><![CDATA[ruoliOggetto]]></fieldDescription>
+	</field>
+	<field name="anno" class="java.lang.Short">
+		<fieldDescription><![CDATA[anno]]></fieldDescription>
+	</field>
+	<field name="tipoRapporto" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoRapporto]]></fieldDescription>
+	</field>
+	<sortField name="anno" order="Descending"/>
+	<sortField name="tipoRapporto"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="14" splitType="Prevent">
+			<staticText>
+				<reportElement positionType="Float" x="41" y="0" width="255" height="13" forecolor="#000000" uuid="a8a6bc2b-d79d-4710-960d-424acbed7b93"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indirizzo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="385" y="0" width="32" height="13" forecolor="#000000" uuid="35c264d0-f50c-486e-b8aa-3bc23f851502"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="337" y="0" width="47" height="13" forecolor="#000000" uuid="23bf4431-a6a5-4ec1-9738-8dc8df4dcf1f"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cod. Trib]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="297" y="0" width="40" height="13" forecolor="#000000" uuid="994899e2-1ec4-497d-add0-9f0a8ef039e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% Poss.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="418" y="0" width="25" height="13" forecolor="#000000" uuid="b7ff561c-7b04-4d9e-9c2c-00d5b429841a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tar.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="627" y="0" width="28" height="13" forecolor="#000000" uuid="6b0e661a-3a42-4e98-b828-59d5cc86704c"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prov.]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="Float" x="0" y="13" width="760" height="1" forecolor="#808080" uuid="26ad1915-8291-4cb9-9858-faed835c22a6"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="656" y="0" width="45" height="13" forecolor="#000000" uuid="fcf2ea12-e73e-4da0-8a89-e1787e1f3dcf"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Oggetto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="702" y="0" width="28" height="13" forecolor="#000000" uuid="4de45a53-adbd-41b4-a55b-90c34df9493d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="445" y="0" width="60" height="13" forecolor="#000000" uuid="39ecd943-c17a-4e4d-b008-e0a7b3641e9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Consistenza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="506" y="0" width="60" height="13" forecolor="#000000" uuid="c91b45c9-bfdd-41d4-b931-c6c128c04bf0"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Decorrenza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="567" y="1" width="60" height="13" forecolor="#000000" uuid="e9823f10-fdbd-48c3-9b2c-8e88ddd88966"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cessazione]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="39" height="13" forecolor="#000000" uuid="b4631bb0-2422-4666-a982-9f36861e66bb"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Oggetti]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="731" y="0" width="28" height="13" forecolor="#000000" uuid="e04e121a-a6a6-4bc5-8bc7-24da447339f9">
+					<printWhenExpression><![CDATA[$P{TIPO_TRIBUTO} == "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cat.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="37" splitType="Prevent">
+			<textField>
+				<reportElement x="41" y="2" width="255" height="13" uuid="c5c0ce4f-d4f8-4690-9c3e-4d7fd661b3fa"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.oggetto.indirizzo]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="297" y="2" width="40" height="13" uuid="4fa7330c-6ca1-46a9-aeff-e51960cf660b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{percPossesso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="337" y="2" width="47" height="13" uuid="e0ff2803-b0ef-4e3f-b971-75e1ea08955a"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.codiceTributo.id]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="385" y="2" width="32" height="13" uuid="f3e5a749-b61c-4a3c-a235-64cf40dd8b48"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.tipoCategoria]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="418" y="2" width="25" height="13" uuid="81fcd197-2350-4a79-81ea-37e50282f982"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.tipoTariffa]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="635" y="2" width="13" height="12" uuid="5006ae60-d455-48ae-891e-532f350d400f">
+					<printWhenExpression><![CDATA[$F{oggettoPratica}.isFlagProvvisorio()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="2" width="13" height="12" uuid="a2952816-4e2d-4322-bc71-382c6fa0f2b1">
+					<printWhenExpression><![CDATA[!$F{oggettoPratica}.isFlagProvvisorio()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="656" y="2" width="45" height="13" uuid="c57fadf0-ed45-4bbf-96db-35ace726dfe7"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.oggetto.id]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="702" y="2" width="28" height="13" uuid="f809c91b-8cd5-40d2-b18f-04fde2454570"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.tipoOggetto == null ? $F{oggettoPratica}.oggetto.tipoOggetto.tipoOggetto : $F{oggettoPratica}.tipoOggetto.tipoOggetto]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="225" y="15" width="535" height="22" isRemoveLineWhenBlank="true" uuid="ebd02336-190e-40f1-8275-39bd78970837">
+					<printWhenExpression><![CDATA[$P{TIPO_TRIBUTO} == "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{ruoliOggetto})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ruoliOggetto.jasper"]]></subreportExpression>
+			</subreport>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="445" y="2" width="60" height="13" uuid="9a6b060a-9677-4e31-b8c8-c315fe988d5f"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.consistenza]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="506" y="2" width="60" height="13" uuid="da9af585-15f1-47db-926b-4abf14ace11e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dataDecorrenza}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="567" y="2" width="60" height="13" uuid="4806960e-87fb-4ff2-9000-485d410167f7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dataCessazione}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="731" y="2" width="28" height="13" uuid="a539e713-f4ea-4383-8863-cc14207402cf">
+					<printWhenExpression><![CDATA[$P{TIPO_TRIBUTO} == "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.categoriaCatasto?$F{oggettoPratica}.categoriaCatasto.categoriaCatasto:$F{oggettoPratica}.oggetto.categoriaCatasto.categoriaCatasto]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

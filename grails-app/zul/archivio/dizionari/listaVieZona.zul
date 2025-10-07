@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaVieZonaViewModel')" width="100%"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+
+        <vlayout vflex="1">
+            <groupbox vflex="1">
+                <caption label="Zone"/>
+                <hlayout style="padding: 5px;">
+                    <hlayout hflex="2">
+                        <hlayout sclass="afc-control-bar" valign="middle">
+                            <paging sclass="afc-paging" onPaging="@command('onCambioPaginaZone')"
+                                    activePage="@bind(vm.pagingListZone.activePage)"
+                                    pageSize="@bind(vm.pagingListZone.pageSize)"
+                                    totalSize="@load(vm.pagingListZone.totalSize)"
+                                    visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                           onClick="@command('onRefresh')"/>
+                            <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                           tooltiptext="@load(vm.lettura ? 'Visualizza' : 'Modifica')"
+                                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                           onClick="@command('onModificaZona')"
+                                           disabled="@load(empty vm.zonaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                           tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                           onClick="@command('onNuovaZona')"
+                                           disabled="@load(vm.lettura ne false)"/>
+                            <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                           tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                           onClick="@command('onDuplicaZona')"
+                                           disabled="@load(vm.lettura ne false or empty vm.zonaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                           tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                           visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                           onClick="@command('onEliminaZona')"
+                                           disabled="@load(vm.lettura ne false or empty vm.zonaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                           tooltiptext='Esporta in XLS'
+                                           onClick="@command('onExportXlsZone')"
+                                           disabled="@load(empty vm.elencoZone)"/>
+
+                        </hlayout>
+                        <hlayout valign="middle" style="text-align: right;" hflex="1">
+                            <toolbarbutton width="26px"
+                                           image="@load(vm.filtroZoneAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                           onClick="@command('openCloseFiltriZone')"/>
+                        </hlayout>
+                    </hlayout>
+                </hlayout>
+                <listbox id="listBoxZone" nonselectableTags="" model="@bind(vm.listaZone)"
+                         sizedByContent="true"
+                         span="true" vflex="true"
+                         selectedItem="@bind(vm.zonaSelezionata)"
+                         emptyMessage="Nessuna Zona presente."
+                         onSelect="@command('onClickZona', zona=vm.zonaSelezionata)"
+                         onDoubleClick="@command('onModificaZona')">
+                    <auxhead>
+                        <auxheader label="Zona" colspan="3"/>
+                        <auxheader label="Storico" colspan="2"/>
+                    </auxhead>
+                    <listhead sizable="true">
+                        <listheader sclass="centro" label="Codice"/>
+                        <listheader sclass="centro" label="Sequenza"/>
+                        <listheader sclass="centro" label="Denominazione"/>
+                        <listheader sclass="centro" label="Da Anno"/>
+                        <listheader sclass="centro" label="A Anno"/>
+                    </listhead>
+                    <template name="model" var="zo">
+                        <listitem>
+                            <listcell sclass="destra" label="@load(zo.codZona)"/>
+                            <listcell sclass="destra" label="@load(zo.sequenza)"/>
+                            <listcell sclass="sinistra" label="@load(zo.denominazione)"/>
+                            <listcell sclass="destra" label="@load((zo.daAnno eq null) ? '' : zo.daAnno)"/>
+                            <listcell sclass="destra" label="@load((zo.aAnno eq null) ? '' : zo.aAnno)"/>
+                        </listitem>
+                    </template>
+                </listbox>
+            </groupbox>
+            <groupbox vflex="1">
+                <caption label="Vie"/>
+                <hlayout style="padding: 5px;">
+                    <hlayout hflex="2">
+                        <hlayout sclass="afc-control-bar" valign="middle">
+                            <paging sclass="afc-paging" onPaging="@command('onCambioPaginaVieZona')"
+                                    activePage="@bind(vm.pagingListVieZona.activePage)"
+                                    pageSize="@bind(vm.pagingListVieZona.pageSize)"
+                                    totalSize="@load(vm.pagingListVieZona.totalSize)"
+                                    visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                           disabled="@load(empty vm.listaVieZona)"
+                                           onClick="@command('onRefreshVieZona')"/>
+                            <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                           tooltiptext="@load(vm.lettura ? 'Visualizza' : 'Modifica')"
+                                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                           onClick="@command('onModificaViaZona')"
+                                           disabled="@load(empty vm.viaZonaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                           tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                           onClick="@command('onNuovaViaZona')"
+                                           disabled="@load(vm.lettura ne false or empty vm.zonaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                           tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                           onClick="@command('onDuplicaViaZona')"
+                                           disabled="@load(vm.lettura ne false or empty vm.viaZonaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                           tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                           visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                           onClick="@command('onEliminaViaZona')"
+                                           disabled="@load(vm.lettura ne false or empty vm.viaZonaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                           tooltiptext='Esporta in XLS'
+                                           onClick="@command('onExportXlsVieZone')"
+                                           disabled="@load(empty vm.elencoVieZona)"/>
+                        </hlayout>
+                        <hlayout valign="middle" style="text-align: right;" hflex="1">
+                            <toolbarbutton width="26px"
+                                           image="@load(vm.filtroVieZonaAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                           onClick="@command('openCloseFiltriVieZona')"/>
+                        </hlayout>
+                    </hlayout>
+                </hlayout>
+                <listbox id="listBoxVieZona" nonselectableTags="" model="@bind(vm.listaVieZona)"
+                         sizedByContent="true" span="true" vflex="1"
+                         selectedItem="@bind(vm.viaZonaSelezionata)" emptyMessage="Nessun dato presente.">
+                    <auxhead>
+                        <auxheader label="Via" colspan="3"/>
+                        <auxheader label="Filtri" colspan="7"/>
+                        <auxheader label="Storico" colspan="2"/>
+                    </auxhead>
+                    <listhead sizable="true">
+                        <listheader sclass="centro" label="Codice"/>
+                        <listheader sclass="centro" label="Sequenza"/>
+                        <listheader sclass="centro" label="Denominazione Ufficiale"/>
+                        <listheader sclass="centro" label="Da Civico"/>
+                        <listheader sclass="centro" label="A Civico"/>
+                        <listheader sclass="centro" label="Pari"/>
+                        <listheader sclass="centro" label="Dispari"/>
+                        <listheader sclass="centro" label="Da KM"/>
+                        <listheader sclass="centro" label="A KM"/>
+                        <listheader sclass="centro" label="Lato"/>
+                        <listheader sclass="centro" label="Da Anno"/>
+                        <listheader sclass="centro" label="A Anno"/>
+                    </listhead>
+                    <template name="model" var="vz">
+                        <listitem value="@load(v)"
+                                  onSelect="@command('onViaZonaSelected')"
+                                  onDoubleClick="@command('onModificaViaZona')">
+                            <listcell sclass="destra" label="@load(vz.codVia)"/>
+                            <listcell sclass="destra" label="@load(vz.sequenza)"/>
+                            <listcell sclass="sinistra" label="@load(vz.denomUff)"/>
+                            <listcell sclass="destra"
+                                      label="@load((vz.daNumCiv lt -99999) ? '' : vz.daNumCiv)"/>
+                            <listcell sclass="destra"
+                                      label="@load((vz.aNumCiv gt 99999) ? '' : vz.aNumCiv)"/>
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(vz.flagPari ne false)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(vz.flagDispari ne false)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                            <listcell sclass="destra"
+                                      label="@load((vz.daKM lt -99999) ? '' : c:formatNumber(vz.daKM, '#,##0.000'))"/>
+                            <listcell sclass="destra"
+                                      label="@load((vz.aKM gt 99999) ? '' : c:formatNumber(vz.aKM, '#,##0.000'))"/>
+                            <listcell sclass="sinistra" label="@load(vz.latoDescr)"/>
+                            <listcell sclass="destra" label="@load((vz.daAnno eq null) ? '' : vz.daAnno)"/>
+                            <listcell sclass="destra" label="@load((vz.aAnno eq null) ? '' : vz.aAnno)"/>
+                        </listitem>
+                    </template>
+                </listbox>
+            </groupbox>
+        </vlayout>
+    </window>
+</zk>

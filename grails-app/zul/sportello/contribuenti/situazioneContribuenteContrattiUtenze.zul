@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <label value="Tipologia"/>
+                <space width="2px"/>
+                <radiogroup selectedItem="@bind(vm.tipoUtenza)"
+                            onCheck="@command('onSelezionaTipoUtenze', grid=gridUte)">
+                    <radio label="Elettriche" value="E"/>
+                    <radio label="Gas" value="G"/>
+                    <radio label="Tutte" value="*"/>
+                </radiogroup>
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               tooltiptext='Esporta in XLS' onClick="@command('utenzeToXls')"  disabled="@load(empty vm.listaContrattiUtenze)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <groupbox hflex="min" vflex="1" class="z-groupbox-hr-top">
+        <caption label="@bind(c:cat3('Utenze (', vm.listaContrattiUtenze.size(), ')'))"/>
+
+        <grid id="gridUte" model="@load(vm.listaContrattiUtenze)" sclass="anomalie-grid"
+              span="true"
+              sizedByContent="true"
+              hflex="auto"
+              vflex="1"
+              emptyMessage="Non sono presenti utenze">
+            <columns>
+                <column label="Anno" align="right" sort="auto(ute.anno)"
+                        onSort="@command('onCambiaOrdinamentoUtenze', valore='uted.annoRiferimento')"/>
+                <column label="Fornitura" sort="auto(ute.fornitura)"
+                        onSort="@command('onCambiaOrdinamentoUtenze', valore='uted.tipoUtenza.tipoFornitura')"/>
+                <column label="C.F. Erogante"/>
+                <column label="Titolare"/>
+                <column label="Utenza"/>
+                <column label="Indirizzo"/>
+                <column label="Fatturato" align="right"/>
+                <column label="Consumo" align="right"/>
+                <column label="Mesi Fatt." align="right"/>
+                <column label="Doc.Id" align="right"/>
+                <column label="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+            </columns>
+            <template name="model" var="ute">
+                <row>
+                    <cell>
+                        <label value="@load(ute.anno)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.fornitura)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.cfErogante)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.titolare)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.utenza.descrizioneBreve)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.indirizzo)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.fatturato)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.consumo)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.mesiFatturazione)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.documentoId)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(ute.cfTitolare)" style="@load((ute.cfTitolare ne vm.codFiscale)? 'font-weight:bold' : 'font-weight:normal')"/>
+                    </cell>
+                </row>
+            </template>
+        </grid>
+    </groupbox>
+</zk>

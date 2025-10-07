@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox vflex="1" class="z-groupbox-hr-bottom">
+        <caption label="@bind(vm.captionlistaOggettiImposta)"/>
+        <listbox selectedItem="@bind(vm.oggettoSelezionato)" span="true"
+                 model="@load(vm.listaOggettiImposta)" emptyMessage="Nessun Oggetto"
+                 vflex="1" sizedByContent="true">
+            <listhead sizable="true">
+                <listheader label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+                <listheader label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader label="@load(c:l('sportello.label.zona'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.zona'))"/>
+                <listheader label="@load(c:l('sportello.label.categoriaCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoPratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoPratica'))"/>
+                <listheader label="@load(c:l('sportello.label.imposta'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.imposta'))"/>
+            </listhead>
+            <template name="model" var="ogg">
+                <listitem>
+                    <listcell label="@load(ogg.oggetto)"/>
+                    <listcell label="@load(ogg.tipoOggetto)"/>
+                    <listcell label="@load(ogg.indirizzoOggetto)"/>
+                    <listcell label="@load(ogg.sezione)"/>
+                    <listcell label="@load(ogg.foglio)"/>
+                    <listcell label="@load(ogg.numero)"/>
+                    <listcell label="@load(ogg.subalterno)"/>
+                    <listcell label="@load(ogg.zona)"/>
+                    <listcell label="@load(ogg.categoriaCatasto)"/>
+                    <listcell label="@load(ogg.tipoPratica)"/>
+                    <listcell label="@load(c:formatNumber(ogg.imposta, '€ #,##0.00'))"/>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+</zk>

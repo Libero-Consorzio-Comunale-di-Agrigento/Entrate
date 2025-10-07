@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaRelazioniCalcoloViewModel')" width="100%"
+            height="100%">
+
+        <hlayout valign="middle" style="padding: 5px;">
+            <hlayout sclass="afc-control-bar">
+                <toolbarbutton image="/images/afc/22x22/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/22x22/edit.png"
+                               tooltiptext="@load(vm.lettura ? 'Visualizza' : 'Modifica')"
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaRelazioneCalcolo')"
+                               disabled="@load(empty vm.relazioneSelezionata)"/>
+                <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                               tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                               onClick="@command('onAggiungiRelazioneCalcolo')"
+                               disabled="@load(vm.lettura ne false)"/>
+                <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                               tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                               onClick="@command('onDuplicaRelazioneCalcolo')"
+                               disabled="@load(vm.lettura ne false or empty vm.relazioneSelezionata)"/>
+                <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                               tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                               visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                               onClick="@command('onEliminaRelazioneCalcolo')"
+                               disabled="@load(vm.lettura ne false or empty vm.relazioneSelezionata)"/>
+                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                               tooltiptext='Esporta in XLS'
+                               popup="exportXls"/>
+                <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioni"/>
+            </hlayout>
+            <hlayout valign="middle" style="text-align: right;" hflex="1">
+                <div>
+                    <space width="3px"/>
+                    <label value="Anno"/>
+                    <space width="3px"/>
+                    <intbox value="@bind(vm.selectedAnno)"
+                            onChange="@command('onSelectAnno')"
+                            maxlength="4"
+                            constraint="no negative, no zero, no empty, /[0-9]{4}/: Anno non valido"
+                            style="text-align: right;" mold="rounded" width="60px"
+                            disabled="false"/>
+                </div>
+                <toolbarbutton width="26px"
+                               image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                               onClick="@command('openCloseFiltri')"/>
+            </hlayout>
+        </hlayout>
+        <listbox selectedItem="@bind(vm.relazioneSelezionata)"
+                 model="@load(vm.listaRelazioni)"
+                 emptyMessage="Nessuna relazione" sizedByContent="true" span="true"
+                 onDoubleClick="@command('onModificaRelazioneCalcolo')"
+                 vflex="true">
+            <listhead sizable="true">
+                <listheader label="Tipo Oggetto"/>
+                <listheader label="Categoria Catasto"/>
+                <listheader label="Tipo Aliquota"/>
+            </listhead>
+            <template name="model" var="rel">
+                <listitem>
+                    <listcell sclass="sinistra"
+                              label="@load(!empty rel.tipoOggetto ? c:cat3(rel.tipoOggetto.tipoOggetto, ' - ', rel.tipoOggetto.descrizione) : '')"/>
+                    <listcell sclass="sinistra"
+                              label="@load(!empty rel.categoriaCatasto ? c:cat3(rel.categoriaCatasto.categoriaCatasto, ' - ', rel.categoriaCatasto.descrizione) : '')"/>
+                    <listcell sclass="sinistra"
+                              label="@load(!empty rel.tipoAliquota ? c:cat3(rel.tipoAliquota.tipoAliquota, ' - ', rel.tipoAliquota.descrizione) : '')"/>
+                </listitem>
+            </template>
+        </listbox>
+        <menupopup id="funzioni">
+            <menuitem disabled="@load(!vm.copiaAnnoEnabled)"
+                      label="Duplica da Anno"
+                      onClick="@command('onDuplicaDaAnno')"/>
+        </menupopup>
+        <menupopup id="exportXls">
+            <menuitem label="Completo"
+                      onClick="@command('onExportXls', modalita='TUTTI')"/>
+            <menuitem label="Corrente"
+                      disabled="@load(empty vm.listaRelazioni)"
+                      onClick="@command('onExportXls', modalita='PARAMETRI')"/>
+        </menupopup>
+    </window>
+</zk>

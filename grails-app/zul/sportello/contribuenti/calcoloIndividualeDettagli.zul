@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <borderlayout hflex="max" vflex="1" id="bdLayoutDettagli">
+        <center autoscroll="true">
+            <listbox hflex="max" model="@load(vm.listaDettagliImposta)" emptyMessage="Nessun Dettaglio" sizedByContent="true" span="true">
+                <listhead sizable="true">
+                    <listheader label="Oggetto"/>
+                    <listheader label="T" width="5%"/>
+                    <listheader label="Indirizzo"/>
+                    <listheader label="Sez."/>
+                    <listheader label="Fgl."/>
+                    <listheader label="Num."/>
+                    <listheader label="Sub."/>
+                    <listheader label="Zona"/>
+                    <listheader label="Prot."/>
+                    <listheader label="Anno" />
+                    <listheader label="Partita"/>
+                    <listheader label="Ctg."/>
+                    <listheader label="Classe"/>
+                    <listheader label="Imposta"/>
+                    <listheader label="Erariale"/>
+                </listhead>
+                <template name="model" var="ogg">
+                    <listitem onClick="@command('setSelectedImmobile',ogg=ogg)">
+                        <listcell sclass="destra" label="@load(ogg.oggetto)"/>
+                        <listcell sclass="centro" label="@load(ogg.tipoOggetto.tipoOggetto)"/>
+                        <listcell sclass="sinistra" label="@load(ogg.indirizzo)"/>
+                        <listcell sclass="destra" label="@load(ogg.sezione)"/>
+                        <listcell sclass="destra" label="@load(ogg.foglio)"/>
+                        <listcell sclass="destra" label="@load(ogg.numero)"/>
+                        <listcell sclass="destra" label="@load(ogg.sub)"/>
+                        <listcell sclass="destra" label="@load(ogg.zona)"/>
+
+                        <listcell sclass="destra" label="@load(ogg.protocolloCatasto)"/>
+                        <listcell sclass="destra" label="@load(ogg.annoCatasto)"/>
+                        <listcell sclass="destra" label="@load(ogg.partita)"/>
+
+                        <listcell sclass="centro" label="@load(ogg.categoriaCatasto.categoriaCatasto)"/>
+                        <listcell sclass="destra" label="@load(ogg.classeCatasto)"/>
+                        <listcell sclass="destra"
+                                  label="@load(ogg.imposta) @converter('formattedNumber', format='€ #,##0.00')"/>
+                        <listcell sclass="destra"
+                                  label="@load(ogg.impostaErar) @converter('formattedNumber', format='€ #,##0.00')"/>
+                    </listitem>
+                </template>
+            </listbox>
+        </center>
+        <south autoscroll="true"
+               height="@load(c:cat(vm.visualizzaTabellaDettagli ? (c:length(vm.listaDettagliImmobile) lt 6 ? (c:length(vm.listaDettagliImmobile) gt 0 ? (((c:length(vm.listaDettagliImmobile)) + 2) * 26) : '68') : '182') : '25', 'px'))">
+            <groupbox closable="true" open="@load(vm.visualizzaTabellaDettagli)"
+                      onOpen="@command('onOpenCloseRendite', target=bdLayoutDettagli)">
+                <caption>
+                    <checkbox checked="@bind(vm.visualizzaTabellaDettagli)" label="Dettagli"
+                              disabled="@load(empty vm.immobileSelezionato)"/>
+                </caption>
+                <include src="/sportello/contribuenti/calcoloIndividualeImmobile.zul" mode="instant"/>
+            </groupbox>
+        </south>
+    </borderlayout>
+
+</zk>

@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+        .checkbox-info > input {
+        cursor: help;
+        }
+    </style>
+
+    <timer repeats="false"
+           onTimer="@command('invalidaIncludeOggetti')"/>
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <label value="Anno"/>
+                <space width="5px"/>
+                <combobox model="@load(vm.listaAnni)" onSelect="@command('onSelezioneAnnoOggetti')"
+                          mold="rounded"
+                          value="@bind(vm.anno)"
+                          selectedItem="@bind(vm.anno)" readonly="true" width="100px">
+                    <template name="model" var="item">
+                        <comboitem label="@load(item)" value="@load(item)"/>
+                    </template>
+                </combobox>
+                <space width="5px"/>
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaOggetto', contesto='OGGETTO')"
+                               disabled="@load(empty vm.oggettoSelezionato)"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               width="20px"
+                               tooltiptext='Esporta in XLS' popup="funzioniOggettiToXls"
+                               disabled="@load(empty vm.listaOggetti)"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniOggetto"/>
+            </hlayout>
+        </hlayout>
+        <groupbox width="16">
+            <hlayout valign="middle">
+                <radiogroup id="tipoVisualizzazioneOggetti" selectedItem="@bind(vm.scp.tipoVisualizzazioneOggetti)"/>
+                <radio label="Pratiche" radiogroup="tipoVisualizzazioneOggetti" value="P"
+                       onCheck="@command('onSelezionaTipoVisualizzazioneOggetti', tipo='P')"/>
+                <radio label="Catasto" radiogroup="tipoVisualizzazioneOggetti" value="C"
+                       onCheck="@command('onSelezionaTipoVisualizzazioneOggetti', tipo='C')"
+                       disabled="@bind(!vm.cbTributiAbilitati.ICI and !vm.cbTributiAbilitati.TASI)"/>
+                <radio label="Dati metrici" radiogroup="tipoVisualizzazioneOggetti" value="D"
+                       onCheck="@command('onSelezionaTipoVisualizzazioneOggetti', tipo='D')"
+                       disabled="@bind(!vm.cbTributiAbilitati.TARSU)"/>
+                <groupbox visible="@bind(vm.scp.tipoVisualizzazioneOggetti eq 'D')">
+                    <radiogroup id="tipoVisualizzazioneDatiMetrici"
+                                selectedItem="@bind(vm.scp.tipoVisualizzazioneDatiMetrici)"/>
+                    <radio label="Contribuente" radiogroup="tipoVisualizzazioneDatiMetrici" value="DC"
+                           onCheck="@command('onSelezionaTipoVisualizzazioneDatiMetrici', tipo='DC')"/>
+                    <radio label="Oggetto" radiogroup="tipoVisualizzazioneDatiMetrici" value="DO"
+                           onCheck="@command('onSelezionaTipoVisualizzazioneDatiMetrici', tipo='DO')"/>
+                </groupbox>
+                <groupbox visible="@bind(vm.scp.tipoVisualizzazioneOggetti eq 'C')">
+                    <radiogroup id="tipoVisualizzazioneTipoOggetto"
+                                selectedItem="@bind(vm.scp.tipoVisualizzazioneTipoOggetto)"/>
+                    <radio label="Tutti" radiogroup="tipoVisualizzazioneTipoOggetto" value="CTT"
+                           onCheck="@command('onSelezionaTipoVisualizzazioneTipoOggetto', tipo='CTT')"/>
+                    <radio label="Fabbricati" radiogroup="tipoVisualizzazioneTipoOggetto" value="CF"
+                           onCheck="@command('onSelezionaTipoVisualizzazioneTipoOggetto', tipo='CF')"/>
+                    <radio label="Terreni" radiogroup="tipoVisualizzazioneTipoOggetto" value="CT"
+                           onCheck="@command('onSelezionaTipoVisualizzazioneTipoOggetto', tipo='CT')"/>
+                </groupbox>
+            </hlayout>
+        </groupbox>
+        <hlayout hflex="1"/>
+        <grid hflex="1" id="grpImpostaTotale" visible="@bind(vm.visualizzaDovuto)"
+              onDoubleClick="@command('onAggiornaDovuti')">
+            <rows>
+                <row>
+                    <cell align="right">
+                        <label style="white-space:nowrap;" value="@bind(vm.totaleImposta)"/>
+                    </cell>
+                    <cell align="right">
+                        <label style="white-space:nowrap;" value="@bind(vm.totaleVersato)"/>
+                    </cell>
+                    <cell align="right">
+                        <label style="white-space:nowrap;" value="@bind(vm.totaleResiduo)"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </hlayout>
+
+    <groupbox vflex="1" class="z-groupbox-hr-top">
+        <caption label="@bind(c:cat3('Oggetti (', vm.listaOggetti.size(), ')'))"/>
+        <space height="3px"/>
+        <listbox id="gridSitContrOggetti" selectedItem="@bind(vm.oggettoSelezionato)" span="true"
+                 model="@load(vm.listaOggetti)" emptyMessage="Nessun Oggetto" vflex="true"
+                 sizedByContent="true"
+                 onSelect="@command('onSelezionaOggetto', popup=dettaglioOggetto)">
+            <listhead sizable="true">
+
+                <listheader label=""/>
+
+                <!-- DATI OGGETO -->
+                <listheader label="Immobile"/>
+                <listheader label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+                <listheader label="A"
+                            tooltiptext="Presenza anomalie"/>
+                <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+                <listheader label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader label="@load(c:l('sportello.label.categoriaCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+                <listheader label="@load(c:l('sportello.label.classeCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.classeCatasto'))"/>
+
+                <!-- DATI ICI -->
+                <listheader label="@load(c:l('sportello.label.rendita'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.rendita'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="@load(c:l('sportello.label.valore'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.valore'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="@load(c:l('sportello.label.percentualePossesso'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.percentualePossesso'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'] or vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.mesiPossesso'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.mesiPossesso'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="@load(c:l('sportello.label.mesiEsclusione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.mesiEsclusione'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="@load(c:l('sportello.label.mesiRiduzione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.mesiRiduzione'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="@load(c:l('sportello.label.flagPossesso'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.flagPossesso'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="E"
+                            tooltiptext="Flag Esclusione"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="R"
+                            tooltiptext="Flag Riduzione"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="@load(c:l('sportello.label.flagAbPrincipale'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.flagAbPrincipale'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="Pert."
+                            tooltiptext="Pertinenza di"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="Stor."
+                            tooltiptext="Immobile Storico"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="Al.Ogg."
+                            tooltiptext="Aliquote Oggetto"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+                <listheader label="Al.Util."
+                            tooltiptext="Utilizzi Oggetto"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+
+                <!-- DATI TARSU -->
+                <listheader label="@load(c:l('sportello.label.codiceTributo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.codiceTributo'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.categoria'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoria'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.tipoTariffa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTariffa'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.superficie'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.superficie'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.puntoDiRaccolta'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.puntoDiRaccolta'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="RFID"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.breve.abitazionePrincipale'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.abitazionePrincipale'))"/>
+                <listheader label="@load(c:l('sportello.label.componentiFamiglia'))" align="right"
+                            tooltiptext="@load(c:l('sportello.label.estesa.componentiFamiglia'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.decorrenza'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.decorrenza'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.cessazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.cessazione'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+                <listheader label="@load(c:l('sportello.label.flagEsente'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.flagEsente'))"
+                            visible="@bind(vm.cbTributi['TARSU'])"/>
+
+                <listheader label="Altri Contr."
+                            tooltiptext="Altri Contribuenti"/>
+
+                <!-- DATI ORIGINE -->
+                <listheader label="@load(c:l('sportello.label.tipoTributo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTributo'))"/>
+                <listheader label="@load(c:l('sportello.label.anno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.anno'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoPratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoPratica'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoEvento'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoEvento'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoRapporto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoRapporto'))"
+                            visible="@bind(vm.cbTributi['ICI'] or vm.cbTributi['TASI'])"/>
+
+                <!-- GEOLOCALIZZAZIONE -->
+                <listheader sclass="centro" width="30px" label="Map."
+                            tooltiptext="@load(c:l('sportello.label.estesa.geolocalizzazione'))"/>
+
+            </listhead>
+            <template name="model" var="ogg">
+                <listitem onDoubleClick="@command('onModificaOggetto', contesto='OGGETTO')">
+
+                    <custom-attributes foo="#{ogg}"/>
+
+                    <listcell>
+                        <combobox visible="@bind(!empty ogg.righeCatasto and vm.scp.tipoVisualizzazioneOggetti eq 'C')"
+                                  readonly="true"
+                                  model="@load(ogg.righeCatasto)" mold="rounded"
+                                  selectedItem="@bind(ogg.rigaCatastoSelezionata)"
+                                  onChange="@command('onSelezioneRigaCatasto')"
+                                  width="50px">
+                            <template name="model" var="r">
+                                <comboitem
+                                        label="@load(r)"
+                                        value="@load(r)"/>
+                            </template>
+                        </combobox>
+
+                        <label visible="@bind(!empty dm.datiMetriciAssociati and vm.scp.tipoVisualizzazioneOggetti eq 'D')"
+                               value="@bind(vm.datiMetriciAssociati[ogg.idImmobile])"/>
+                    </listcell>
+
+                    <!-- DATI OGGETO -->
+                    <listcell sclass="destra" droppable="true"
+                              onDrop="@command('onCopiaIdImmobile')">
+                        <hlayout>
+                            <label value="@load(ogg.idImmobile)"/>
+                            <image src="/images/afc/13x13/viewcancel.png"
+                                   visible="@load(ogg.idImmobile ne null)"
+                                   style="cursor: pointer;" onClick="@command('onCancellaIdImmobile', arg=ogg)"
+                                   sclass="gray-scale"
+                                   width="12px"/>
+                        </hlayout>
+                    </listcell>
+                    <listcell label="@load(ogg.oggetto)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].oggetto ? 'destra campi-differenti' : 'destra')">
+                    </listcell>
+                    <listcell sclass="centro">
+                        <image width="15px" src="images/pulsanti/show/16x16/warning.png" style="cursor: pointer;"
+                               tooltiptext="Sono presenti anomalie"
+                               visible="@load(ogg.flagAnomalie eq 'S' and vm.anno ne 'Tutti')"
+                               onClick="@command('onOpenBonifiche', ogpr=ogg.oggettoPratica,ogg=ogg.oggetto)"
+                               sclass="gray-scale"/>
+                    </listcell>
+                    <listcell label="@load(ogg.tipoOggetto)"
+                              sclass="destra"/>
+
+                    <listcell label="@load(ogg.indirizzo)"/>
+                    <listcell label="@load(ogg.sezione)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].sez ? 'destra campi-differenti' : 'destra')"
+                              onDoubleClick="@command('onModificaOggettoCorrezione', errore=vm.differenzeOggetti[ogg.uuid].sez)"/>
+                    <listcell label="@load(ogg.foglio)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].fgl ? 'destra campi-differenti' : 'destra')"
+                              onDoubleClick="@command('onModificaOggettoCorrezione', errore=vm.differenzeOggetti[ogg.uuid].fgl)"/>
+                    <listcell label="@load(ogg.numero)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].num ? 'destra campi-differenti' : 'destra')"
+                              onDoubleClick="@command('onModificaOggettoCorrezione', errore=vm.differenzeOggetti[ogg.uuid].num)"/>
+                    <listcell label="@load(ogg.subalterno)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].sub ? 'destra campi-differenti' : 'destra')"
+                              onDoubleClick="@command('onModificaOggettoCorrezione', errore=vm.differenzeOggetti[ogg.uuid].sub)"/>
+                    <listcell label="@load(ogg.categoriaCatasto)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].categoriaCatasto ? 'campi-differenti' : '')"
+                              onDoubleClick="@command('onInserimentoOggettiRenditeCorrezione', errore=vm.differenzeOggetti[ogg.uuid].categoriaCatasto)"/>
+                    <listcell label="@load(ogg.classeCatasto)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].classe ? 'campi-differenti' : '')"
+                              onDoubleClick="@command('onInserimentoOggettiRenditeCorrezione', errore=vm.differenzeOggetti[ogg.uuid].classe)"/>
+
+                    <!-- DATI ICI -->
+                    <listcell
+                            sclass="@bind(vm.differenzeOggetti[ogg.uuid].rendita ? 'destra campi-differenti' : 'destra')"
+                            label="@load((ogg.rendita eq null) ? '' : c:formatNumber(ogg.rendita , '€ #,##0.00'))"
+                            onDoubleClick="@command('onInserimentoOggettiRenditeCorrezione', errore=vm.differenzeOggetti[ogg.uuid].rendita)"/>
+                    <listcell sclass="destra"
+                              label="@load((ogg.valore eq null) ? '' : c:formatNumber(ogg.valore , '€ #,##0.00'))"/>
+                    <listcell
+                            sclass="@bind(vm.differenzeOggetti[ogg.uuid].percPossesso ? 'destra campi-differenti' : 'destra')"
+                            label="@load((ogg.percPossesso eq null) ? '' : c:formatNumber(ogg.percPossesso , '#,##0.00'))"
+                            onDoubleClick="@command('onApriOgPr', ogg=ogg,errore=vm.differenzeOggetti[ogg.uuid].percPossesso)"/>
+                    <listcell label="@load(ogg.mesiPossesso)"
+                              sclass="@bind(vm.differenzeOggetti[ogg.uuid].mesiPossesso ? 'destra campi-differenti' : 'destra')"
+                              onDoubleClick="@command('onApriOgPr', ogg=ogg,errore=vm.differenzeOggetti[ogg.uuid].mesiPossesso)"/>
+                    <listcell label="@load(ogg.mesiEsclusione)"
+                              sclass="destra"
+                              onDoubleClick="@command('onApriOgPr', ogg=ogg,errore=vm.differenzeOggetti[ogg.uuid].mesiEsclusione)"/>
+                    <listcell label="@load(ogg.mesiRiduzione)"
+                              sclass="destra"
+                              onDoubleClick="@command('onApriOgPr', ogg=ogg,errore=vm.differenzeOggetti[ogg.uuid].mesiRiduzione)"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagPossesso eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagEsclusione eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagRiduzione eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagAbPrincipale eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagPertinenzaDi eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"
+                                  popup="@load(ogg.flagPertinenzaDi eq 'S' ? c:cat('pert-', ogg.uuid) : '')"
+                                  sclass="@load(ogg.flagPertinenzaDi eq 'S' ? 'checkbox-info'  : '')"/>
+                        <popup id="@load(c:cat('pert-', ogg.uuid))" width="300px"
+                               onOpen="@command('onTooltipInfoOggetti', sorgente='pertinenzaDi', uuid=ogg.uuid)">
+                            <label value="@bind(vm.pertinenzeDiTooltipText[ogg.uuid])"/>
+                        </popup>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.immStorico eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagAliquoteOgco eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"
+                                  popup="@load(ogg.flagAliquoteOgco eq 'S' ? c:cat('alog-', ogg.uuid) : '')"
+                                  sclass="@load(ogg.flagAliquoteOgco eq 'S' ? 'checkbox-info'  : '')"/>
+                        <popup id="@load(c:cat('alog-', ogg.uuid))" width="300px"
+                               onOpen="@command('onTooltipInfoOggetti', sorgente='alog', uuid=ogg.uuid)">
+                            <label value="@bind(vm.alogTooltipText[ogg.uuid])"/>
+                        </popup>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagUtilizziOggetto eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"
+                                  popup="@load(ogg.flagUtilizziOggetto eq 'S' ? c:cat('utilizzi-', ogg.uuid) : '')"
+                                  sclass="@load(ogg.flagUtilizziOggetto eq 'S' ? 'checkbox-info'  : '')"/>
+                        <popup id="@load(c:cat('utilizzi-', ogg.uuid))" width="300px"
+                               onOpen="@command('onTooltipInfoOggetti', sorgente='utilizzi', uuid=ogg.uuid)">
+                            <label value="@bind(vm.utilizziTooltipText[ogg.uuid])"/>
+                        </popup>
+                    </listcell>
+
+                    <!-- DATI TARSU -->
+                    <listcell label="@load(ogg.tributo)" sclass="destra"/>
+                    <listcell label="@load(ogg.categoria)" sclass="destra"/>
+                    <listcell label="@load(ogg.tipoTariffa)" sclass="destra"/>
+                    <listcell
+                            sclass="@bind(vm.differenzeOggetti[ogg.uuid].superficie ? 'campi-differenti destra' : 'destra')"
+                            label="@load((ogg.consistenza eq null) ? '' : c:formatNumber(ogg.consistenza , '#,##0.00'))"
+                            onDoubleClick="@command('onCorreggiSuperficieTarsu', ogg=ogg,errore=vm.differenzeOggetti[ogg.uuid].superficie)"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagPuntoRaccolta eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagRfid eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"
+                                  sclass="@load(ogg.flagRfid eq 'S' ? 'checkbox-info'  : '')"
+                                  popup="@load(ogg.flagRfid eq 'S' ? c:cat('svuotamenti-', ogg.uuid) : '')"/>
+                        <popup id="@load(c:cat('svuotamenti-', ogg.uuid))" width="350px"
+                               onOpen="@command('onTooltipInfoOggetti', sorgente='svuotamenti', uuid=ogg.uuid)">
+                            <label value="@bind(vm.svuotamentiTooltipText[ogg.uuid])" multiline="true"/>
+                        </popup>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagAbPrincipale eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="@load(ogg.numeroFamiliari eq 0 ? 'campi-differenti' : '')">
+                        <hbox>
+                            <label value="@load(ogg.numeroFamiliari)" sclass="destra"/>
+                            <image src="/images/afc/16x16/info.png"
+                                   visible="@load(ogg.flagFamiliari gt 1)"
+                                   style="cursor: pointer;"
+                                   popup="@load(ogg.flagFamiliari gt 1 ? c:cat('fam-', ogg.uuid) : '')"
+                                   sclass="@load(ogg.flagAltriContribuenti eq 'S' ? 'checkbox-info'  : '')"/>
+                            <popup id="@load(c:cat('fam-', ogg.uuid))" width="300px"
+                                   onOpen="@command('onTooltipInfoOggetti', sorgente='familiari', uuid=ogg.uuid)">
+                                <label value="@bind(vm.familiariTooltipText[ogg.uuid])"/>
+                            </popup>
+                        </hbox>
+                    </listcell>
+                    <listcell sclass="centro"
+                              label="@load(ogg.dataDecorrenza ne null ? c:formatDate(ogg.dataDecorrenza, 'dd/MM/yyyy') : '')"/>
+                    <listcell sclass="centro"
+                              label="@load(ogg.dataCessazione ne null ? c:formatDate(ogg.dataCessazione, 'dd/MM/yyyy') : '')"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagContenzioso eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((ogg.flagAltriContribuenti eq 'S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"
+                                  popup="@load(ogg.flagAltriContribuenti eq 'S' ? c:cat('altricnt-', ogg.uuid) : '')"
+                                  sclass="@load(ogg.flagAltriContribuenti eq 'S' ? 'checkbox-info'  : '')"/>
+                        <popup id="@load(c:cat('altricnt-', ogg.uuid))" width="300px"
+                               onOpen="@command('onTooltipInfoOggetti', sorgente='altricnt', uuid=ogg.uuid)">
+                            <label value="@bind(vm.altricntTooltipText[ogg.uuid])"/>
+                        </popup>
+                    </listcell>
+
+                    <!-- DATI ORIGINE -->
+                    <listcell label="@load(ogg.tributoDescrizione)"/>
+                    <listcell label="@load(ogg.anno)" sclass="destra"/>
+                    <listcell label="@load(ogg.tipoPratica)" sclass="centro"/>
+                    <listcell label="@load(ogg.tipoEventoViolazione)" sclass="centro"
+                              tooltiptext="@load(ogg.tipoEventoViolazioneTooltip)"/>
+                    <listcell label="@load(ogg.tipoRapporto)"/>
+
+                    <!-- GEOLOCALIZZAZIONE -->
+                    <listcell sclass="centro">
+                        <hlayout>
+                            <image src="/images/afc/16x16/world.png" tooltiptext="Geolocalizza Oggetto"
+                                   height="16px" width="16px" style="float: right; cursor: pointer;"
+                                   visible="@load((not empty ogg.latitudine) and (not empty ogg.longitudine))"
+                                   onClick="@command('onGeolocalizzaOggetto')"/>
+                        </hlayout>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+
+    <window id="dettaglioOggetto" width="400px" position="center"
+            border="normal" mode="popup" visible="false" title="Dettaglio">
+        <script src="/js/decimalbox.js"/>
+        <grid hflex="1">
+            <columns>
+                <column hflex="1"/>
+                <column hflex="2"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.protocollo'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.oggettoSelezionato.protocollo)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.estesa.anno'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.oggettoSelezionato.annoCatasto)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.estesa.partita'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.oggettoSelezionato.partita)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.classeCatasto'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.oggettoSelezionato.classeCatasto)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.cessazioneCatasto'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load(vm.oggettoSelezionato.dataCessazioneCatasto ne null ? c:formatDate(vm.oggettoSelezionato.dataCessazioneCatasto, 'dd/MM/yyyy') : '')"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </window>
+
+    <include id="includeOggettiPraticheCatasto" vflex="1" src="@bind(vm.zulOggetti)"/>
+
+    <window id="locazioni" width="800px" height="450px" position="center" sizable="true"
+            border="normal" mode="popup" visible="@load(vm.showLocazioniOggetto)" title="Locazioni sull'Oggetto">
+        <script src="/js/decimalbox.js"/>
+        <include src="/sportello/contribuenti/situazioneContribuenteContrattiLocazioniNoCaption.zul"
+                 mode="instant"/>
+    </window>
+
+    <window id="datiMetrici" width="800px" position="center" sizable="true"
+            border="normal" mode="popup" visible="@load(vm.showDatiMetriciOggetto)" title="Dati Metrici">
+        <script src="/js/decimalbox.js"/>
+        <include id="includedatiMetrici" src="/sportello/contribuenti/situazioneContribuenteDatiMetrici.zul"
+                 mode="instant"/>
+    </window>
+
+    <window id="datiMetriciDettaglioIntestatari" width="800px" position="center" sizable="true" height="450px"
+            border="normal" mode="popup" visible="@load(vm.showDatiMetriciDettaglioIntestatari)" title="Dati Metrici">
+        <script src="/js/decimalbox.js"/>
+        <include id="includedatiMetriciDettaglioIntestatari"
+                 src="/sportello/contribuenti/situazioneContribuenteDatiMetriciDettaglioIntestatari.zul"
+                 mode="instant"/>
+    </window>
+
+    <include id="includeDatiMetriciDettaglioImmobile"
+             src="/sportello/contribuenti/situazioneContribuenteOggettiDatiMetriciImmobile.zul"
+             mode="instant"/>
+</zk>

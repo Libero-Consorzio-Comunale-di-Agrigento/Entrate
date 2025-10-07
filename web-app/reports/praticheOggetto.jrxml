@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2016-04-07T16:40:45 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="praticheOggetto" language="groovy" pageWidth="800" pageHeight="595" orientation="Landscape" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="5" uuid="216d6370-59a3-44e5-833f-823517651b4e">
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titolo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{titolo}]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="tipoRapporto" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoRapporto]]></fieldDescription>
+	</field>
+	<field name="flagAlRidotta" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[flagAlRidotta]]></fieldDescription>
+	</field>
+	<field name="percPossesso" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[percPossesso]]></fieldDescription>
+	</field>
+	<field name="flagEsclusione" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[flagEsclusione]]></fieldDescription>
+	</field>
+	<field name="flagRiduzione" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[flagRiduzione]]></fieldDescription>
+	</field>
+	<field name="detrazione" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[detrazione]]></fieldDescription>
+	</field>
+	<field name="mesiAliquotaRidotta" class="java.lang.Short">
+		<fieldDescription><![CDATA[mesiAliquotaRidotta]]></fieldDescription>
+	</field>
+	<field name="oggettoPratica" class="it.finmatica.tr4.dto.pratiche.OggettoPraticaDTO">
+		<fieldDescription><![CDATA[oggettoPratica]]></fieldDescription>
+	</field>
+	<field name="flagPossesso" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[flagPossesso]]></fieldDescription>
+	</field>
+	<field name="mesiEsclusione" class="java.lang.Short">
+		<fieldDescription><![CDATA[mesiEsclusione]]></fieldDescription>
+	</field>
+	<field name="mesiRiduzione" class="java.lang.Short">
+		<fieldDescription><![CDATA[mesiRiduzione]]></fieldDescription>
+	</field>
+	<field name="flagAbPrincipale" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[flagAbPrincipale]]></fieldDescription>
+	</field>
+	<field name="mesiPossesso" class="java.lang.Short">
+		<fieldDescription><![CDATA[mesiPossesso]]></fieldDescription>
+	</field>
+	<field name="tipoPratica" class="java.lang.String">
+		<fieldDescription><![CDATA[oggettoPratica.pratica.tipoPratica]]></fieldDescription>
+	</field>
+	<field name="anno" class="java.lang.Short">
+		<fieldDescription><![CDATA[oggettoPratica.pratica.anno]]></fieldDescription>
+	</field>
+	<field name="data" class="java.util.Date">
+		<fieldDescription><![CDATA[oggettoPratica.pratica.data]]></fieldDescription>
+	</field>
+	<sortField name="tipoPratica"/>
+	<sortField name="anno" order="Descending"/>
+	<sortField name="data" order="Descending"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="0" width="32" height="13" uuid="69b66874-35c4-4575-a785-84fc40701eed">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Anno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="0" width="52" height="13" uuid="a9608598-3897-4680-a1b2-0813a4b3d7fd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Prat.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="0" width="45" height="13" uuid="cb7fb507-f19c-4474-ad61-c249b8c7379a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Ev.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="0" width="63" height="13" uuid="6885473c-f792-47b5-9d04-e4c49b23ad65">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="0" width="44" height="13" uuid="92b376cd-b708-47da-bb19-9acec94fc544">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Numero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="0" width="72" height="13" uuid="74deffd5-a03e-4472-ad56-9879ff40b44c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data notifica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="0" width="45" height="13" uuid="1299786d-39f0-4573-9b3c-1f3ce42d9c86">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Pratica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="618" y="0" width="44" height="13" uuid="c0703f24-ce5f-4641-9793-b65085a8a86c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Rapp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="59" height="13" forecolor="#000000" uuid="9ba75709-0730-42f7-a72a-500fcf02b24d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Pratiche]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="367" y="0" width="47" height="13" uuid="1aa5c0c5-ad19-4211-9f27-7ac9b3183a67">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[% Poss.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="0" width="68" height="13" uuid="193ad52d-6d90-417e-a4ed-0daeb0418d16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Valore]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="482" y="0" width="19" height="13" forecolor="#000000" uuid="391fe23e-fd49-473c-a2c9-012924fee6ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="501" y="0" width="19" height="13" forecolor="#000000" uuid="60d131f8-0f68-4b80-a1f4-1bb0a9b28c84"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="520" y="0" width="19" height="13" forecolor="#000000" uuid="955df691-a4f2-4d18-936c-cc904f383a41"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="539" y="0" width="19" height="13" forecolor="#000000" uuid="405af96f-39ea-4bc3-b78c-f21108382d9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="558" y="0" width="13" height="13" forecolor="#000000" uuid="343f74c6-d9cd-479b-ab23-6b6c390b455c"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="573" y="0" width="13" height="13" forecolor="#000000" uuid="1648149b-2328-4fb7-a70a-03d0be86dfb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="588" y="0" width="13" height="13" forecolor="#000000" uuid="37eae9fa-a038-4741-9059-79faac4c1d29"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[R]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="603" y="0" width="13" height="13" forecolor="#000000" uuid="36ba052d-01e8-42e9-bb7d-c158f4ddf882"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="662" y="0" width="13" height="13" forecolor="#000000" uuid="0b29702a-4783-4bac-b3cf-d86518895b5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="675" y="0" width="68" height="13" uuid="e6030c47-132b-46b9-a960-3cf714286bf6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Detrazione]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="Float" x="0" y="14" width="820" height="1" forecolor="#808080" uuid="82d5c175-fcad-4c0d-870c-e83961b20c25"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Prevent">
+			<textField>
+				<reportElement positionType="Float" x="59" y="2" width="32" height="13" uuid="1c377459-096a-4787-8ca6-d0f1b7ba3ea5"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.pratica.anno]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="91" y="2" width="52" height="13" uuid="2541603c-a3b9-4b85-9536-6c8fdac0d543"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.pratica.tipoPratica]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="143" y="2" width="45" height="13" uuid="a6d2b325-e876-4277-a7c3-5d74381a86b4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.pratica.tipoEvento]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="188" y="2" width="63" height="13" isRemoveLineWhenBlank="true" uuid="50c42b1d-c6d5-4d2e-b793-ad99a3e15c3b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.pratica.data]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="251" y="2" width="44" height="13" uuid="c2fb89d6-e0bd-4b87-84f5-6ffa2c4becf2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.pratica.numero]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="295" y="2" width="72" height="13" uuid="05de7779-b135-41ac-b3e5-cb4d73cf2bf6"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.pratica.dataNotifica]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="750" y="2" width="45" height="13" uuid="d8282718-43fe-48b9-aa0b-6260c98ce473"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.pratica.id]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="619" y="3" width="44" height="13" uuid="fbd677db-0054-42dd-9752-e72af861bb8a"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{tipoRapporto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="367" y="2" width="47" height="13" uuid="ccb3e723-f7c4-4db7-9a35-9f34977b624d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{percPossesso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.##;¤-#,##0.##" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="415" y="2" width="68" height="13" uuid="53420172-fba2-471b-ab8e-eeff08717289"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{oggettoPratica}.valore]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="558" y="3" width="13" height="12" uuid="68ecdc26-699e-49dd-be89-27ddc8062ad3">
+					<printWhenExpression><![CDATA[$F{flagPossesso}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="558" y="3" width="13" height="12" uuid="1b1da33b-fe66-456a-872d-60d357c83294">
+					<printWhenExpression><![CDATA[!$F{flagPossesso}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="483" y="2" width="18" height="13" uuid="fd62f4d6-4738-4de4-baf2-c68b42d5a8d9"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{mesiPossesso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="501" y="2" width="18" height="13" uuid="2df9d453-8a58-4d58-9bbc-2ff9b081cefa"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{mesiEsclusione}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="520" y="2" width="18" height="13" uuid="b4bee728-a651-4314-b1f5-a21f71b13abd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{mesiRiduzione}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="539" y="2" width="18" height="13" uuid="760381cf-1661-4e5b-9b97-d0b6b8e6ac14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{mesiAliquotaRidotta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="573" y="3" width="13" height="12" uuid="642e65e2-c455-465c-b4d0-e28aac2ef2f7">
+					<printWhenExpression><![CDATA[$F{flagEsclusione}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="573" y="3" width="13" height="12" uuid="7b09edcb-2ffd-47e3-bb49-c01bdeb4efe9">
+					<printWhenExpression><![CDATA[!$F{flagEsclusione}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="588" y="3" width="13" height="12" uuid="e0f6d7a9-41d6-4821-a821-975563b46e85">
+					<printWhenExpression><![CDATA[$F{flagRiduzione}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="588" y="3" width="13" height="12" uuid="941fae3a-26ba-46c6-81a8-34c9cb27f380">
+					<printWhenExpression><![CDATA[!$F{flagRiduzione}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="603" y="3" width="13" height="12" uuid="40a38fee-1e77-4e11-b285-940ed4a60f06">
+					<printWhenExpression><![CDATA[$F{flagAbPrincipale}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="603" y="3" width="13" height="12" uuid="7bd38813-556a-4f59-8096-8f5b6ca72b50">
+					<printWhenExpression><![CDATA[!$F{flagAbPrincipale}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="662" y="3" width="13" height="12" uuid="167820ce-cc16-49dd-abd7-973cb7581a7b">
+					<printWhenExpression><![CDATA[$F{oggettoPratica}.flagProvvisorio.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="662" y="3" width="13" height="12" uuid="2944ab20-5a37-4f64-a64a-e2b59374a672">
+					<printWhenExpression><![CDATA[!$F{oggettoPratica}.flagProvvisorio.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.##;¤-#,##0.##" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="675" y="3" width="68" height="13" uuid="376f779b-ef88-4b4e-8923-175e402a8e37"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{detrazione}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

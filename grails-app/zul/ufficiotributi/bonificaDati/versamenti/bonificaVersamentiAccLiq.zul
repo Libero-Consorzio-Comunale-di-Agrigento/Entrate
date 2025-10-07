@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle">
+        <!-- PAGINAZIONE -->
+        <hlayout hflex="2">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <paging sclass="afc-paging"
+                        onPaging="@command('onCaricaAccLiq')"
+                        activePage="@bind(vm.activePageAccLiq)"
+                        pageSize="@bind(vm.pageSizeAccLiq)"
+                        totalSize="@load(vm.totalSizeAccLiq)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <!-- LISTA PRATICHE -->
+    <listbox id="accLiqListBox" model="@load(vm.listaAccLiq)"
+             emptyMessage="Non sono presenti accertamenti/liquidazioni"
+             selectedItem="@bind(vm.accLiqSelezionato)" sizedByContent="true"
+             vflex="1"
+             height="250px"
+             span="true">
+        <listhead>
+            <!-- NECESSARIO PER LA VISUALIZZAZIONE NEL DRAG&DROP -->
+            <listheader label="PraticaDragDrop" visible="false"/>
+            <!---->
+            <listheader label="Tributo"/>
+            <listheader label="Anno"/>
+            <listheader label="T.Prat."/>
+            <listheader label="T.Ev."/>
+            <listheader label="Data"/>
+            <listheader label="Numero"/>
+            <listheader label="Stato"/>
+            <listheader label="Tipo Atto"/>
+            <listheader label="Data Notifica"/>
+            <listheader label="Pratica"/>
+            <listheader label=""/>
+        </listhead>
+        <template name="model" var="accLiq">
+            <listitem draggable="identificativoOperazione">
+                <!-- NECESSARIO PER LA VISUALIZZAZIONE NEL DRAG&DROP -->
+                <listcell sclass="destra" label="@load(accLiq.pratica)"/>
+                <!---->
+                <listcell sclass="centro" label="@load(accLiq.tipoTributo.tipoTributoAttuale)"/>
+                <listcell sclass="centro" label="@load(accLiq.anno)"/>
+                <listcell sclass="centro" label="@load(accLiq.tipoPratica)"/>
+                <listcell sclass="centro" label="@load(accLiq.tipoEvento)"/>
+                <listcell label="@load(empty accLiq.data ? '' : c:formatDate(accLiq.data, 'dd/MM/yyyy'))"
+                          sclass="centro"/>
+                <listcell sclass="destra" label="@load(accLiq.numero)"/>
+                <listcell label="@load(accLiq.tipoStato.descrizione)"/>
+                <listcell label="@load(accLiq.tipoAtto.descrizione)"/>
+                <listcell sclass="centro">
+                    <datebox
+                            visible="@bind(vm.modificaDataNotificaPratica and accLiq.rowNum eq vm.accLiqSelezionato.rowNum)"
+                            value="@bind(accLiq.dataNotifica)"
+                            format="dd/MM/yyyy"/>
+                    <label visible="@bind(!vm.modificaDataNotificaPratica or accLiq.rowNum ne vm.accLiqSelezionato.rowNum)"
+                           value="@load(empty accLiq.dataNotifica ? '' : c:formatDate(accLiq.dataNotifica, 'dd/MM/yyyy'))"/>
+                </listcell>
+                <listcell sclass="destra" label="@load(accLiq.pratica)"/>
+                <listcell sclass="centro">
+                    <image src="/images/afc/16x16/pen.png" style="cursor: pointer;" width="16px" height="16px"
+                           visible="@bind(!vm.modificaDataNotificaPratica)"
+                           tooltiptext="Modifica la data di notifica"
+                           onClick="@command('onModificaDataNotificaPratica', pratica=accLiq)"/>
+                    <image visible="@bind(vm.modificaDataNotificaPratica and accLiq.rowNum eq vm.accLiqSelezionato.rowNum)"
+                           src="/images/afc/16x16/cross.png" style="cursor: pointer;" width="16px" height="16px"
+                           tooltiptext="Annulla"
+                           onClick="@command('onAnnullaModificaDataNotificaPratica', pratica=accLiq)"/>
+                    <image visible="@bind(vm.modificaDataNotificaPratica and accLiq.rowNum eq vm.accLiqSelezionato.rowNum)"
+                           src="/images/afc/16x16/ok_light.png" style="cursor: pointer;" width="16px" height="16px"
+                           tooltiptext="Salva"
+                           onClick="@command('onAccettaModificaDataNotificaPratica', pratica=accLiq)"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

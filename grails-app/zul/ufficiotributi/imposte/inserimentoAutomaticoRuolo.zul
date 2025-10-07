@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('inserimentoAutomaticoRuoloViewModel')"
+            border="normal" sizable="false" width="500px" title=" ">
+		<script src="/js/decimalbox.js"/>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell align="left" valign="center">
+                        <label value="Inserimento Automatico" class="documentoTitolo"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <groupbox closable="false">
+            <caption>
+                <label value="Ruolo"/>
+            </caption>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell sclass="destra" width="25%">
+                            <label value="Tipo Tributo"/>
+                        </cell>
+                        <cell width="15%">
+                            <label value="@load(vm.tipoTributoDescr))"/>
+                        </cell>
+                        <cell sclass="destra" width="15%">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell align="right" width="15%">
+                            <label value="@load(vm.ruolo.annoRuolo)"/>
+                        </cell>
+                        <cell sclass="destra" width="15%">
+                            <label value="Progr."/>
+                        </cell>
+                        <cell align="right" width="15%">
+                            <label value="@load(vm.ruolo.progrEmissione))"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra" width="20%">
+                            <label value="Ruolo"/>
+                        </cell>
+                        <cell align="right" width="20%">
+                            <label value="@load(vm.ruolo.id)"/>
+                        </cell>
+                        <cell width="20%">
+                        </cell>
+                        <cell width="20%">
+                        </cell>
+                        <cell width="20%">
+                        </cell>
+                        <cell width="20%">
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <groupbox closable="false">
+            <caption>
+                <label value="Impostazioni"/>
+            </caption>
+            <grid>
+                <rows>
+                    <row>
+                        <cell align="right" width="30%">
+                            <label value="Tipo Pratica"/>
+                        </cell>
+                        <cell colspan="4">
+                            <radiogroup selectedItem="@bind(vm.mapParametri.tipoPratica)"
+                                        onCheck="@command('onCheckTipoPratica')">
+                                <radio value="T" label=" Tutti "/>
+                                <radio value="A" label=" Accertamenti "/>
+                                <radio value="L" label=" Liquidazioni "/>
+                            </radiogroup>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Tipo Evento"/>
+                        </cell>
+                        <cell colspan="4">
+                            <radiogroup selectedItem="@bind(vm.mapParametri.tipoEvento)"
+                                        onCheck="@command('onCheckTipoEvento')">
+                                <radio value="T" label=" Tutti "/>
+                                <radio value="A" label=" Automatico "/>
+                                <radio value="M" label=" Manuale "/>
+                            </radiogroup>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Data Notifica"/>
+                        </cell>
+                        <cell colspan="2">
+                            <label value="Dal "/>
+                            <datebox value="@bind(vm.mapParametri.notificaDal)" format="dd/MM/yyyy" hflex="1"
+                                     mold="rounded" width="100px"/>
+                        </cell>
+                        <cell colspan="2">
+                            <label value=" Al "/>
+                            <datebox value="@bind(vm.mapParametri.notificaAl)" format="dd/MM/yyyy" hflex="1"
+                                     mold="rounded" width="100px"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <hlayout>
+                                <label value="Differenza di importo"/>
+                                <space width="1px"/>
+                                <image src="/images/afc/16x16/question.png"
+                                       style="cursor: pointer;"
+                                       tooltiptext="Differenza di importo tra dovuto e versato maggiore di"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="2">
+                            <decimalbox mold="rounded" maxlength="15" hflex="1"
+                                        style="text-align: right" constraint="no negative;"
+                                        value="@bind(vm.mapParametri.diffDovutoVersato)" format="€ #,##0.00"/>
+                        </cell>
+                        <cell colspan="2"/>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="5px"/>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="OK" onClick="@command('onApplica')"
+                        mold="trendy" image="/images/afc/16x16/save.png"/>
+                <button label="Chiudi" onClick="@command('onChiudi')"
+                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

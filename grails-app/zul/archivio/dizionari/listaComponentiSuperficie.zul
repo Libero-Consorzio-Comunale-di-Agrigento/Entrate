@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul https://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaComponentiSuperficieViewModel')" width="100%"
+            height="100%">
+        <hlayout valign="middle" style="padding: 5px;">
+            <hlayout sclass="afc-control-bar">
+				<toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+							   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+							   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+							   onClick="@command('onRefresh')"/>
+				<toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+							   tooltiptext="@load(vm.lettura ? 'Visualizza' : 'Modifica')"
+							   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+							   onClick="@command('onModifica')"
+							   disabled="@load(empty vm.componenteSuperficieSelezionato)"/>
+				<toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+							   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+							   onClick="@command('onAggiungi')"
+							   disabled="@load(vm.lettura ne false)"/>
+				<toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+							   tooltiptext='#{empty arg.duplicate?"Duplica":arg.duplicate}'
+							   onClick="@command('onDuplica')"
+							   disabled="@load((vm.lettura ne false) or (empty vm.componenteSuperficieSelezionato))"/>
+				<toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+							   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+							   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+							   onClick="@command('onElimina')"
+							   disabled="@load((vm.lettura ne false) or (empty vm.componenteSuperficieSelezionato))"/>
+				<toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+							   tooltiptext='Esporta in XLS'
+							   onClick="@command('onExportXls')"
+                               disabled="@load(empty vm.listaComponentiSuperficie)"/>
+			</hlayout>
+			<hlayout valign="middle" style="text-align: right;" hflex="1">
+				<toolbarbutton width="26px"
+							   image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+							   onClick="@command('openCloseFiltri')"/>
+			</hlayout>
+		</hlayout>
+        <listbox selectedItem="@bind(vm.componenteSuperficieSelezionato)"
+                 model="@load(vm.listaComponentiSuperficie)"
+                 emptyMessage="Nessun componente superficie" sizedByContent="true" span="true"
+				 onDoubleClick="@command('onModifica')"
+                 vflex="true">
+            <listhead sizable="true">
+                <listheader label="Anno"/>
+                <listheader label="Numero Familiari"/>
+                <listheader label="Da Consistenza"/>
+                <listheader label="A Consistenza"/>
+            </listhead>
+            <template name="model" var="elem">
+                <listitem>
+					<listcell sclass="destra"
+							  label="@load(elem.anno)"/>
+					<listcell sclass="destra"
+							  label="@load(elem.numeroFamiliari)"/>
+					<listcell sclass="destra"
+							  label="#{(null eq elem.daConsistenza) ? '' : c:formatNumber(elem.daConsistenza , '###,###,##0.00')}"/>
+					<listcell sclass="destra"
+							  label="#{(null eq elem.aConsistenza) ? '' : c:formatNumber(elem.aConsistenza , '###,###,##0.00')}"/>
+                </listitem>
+			</template>
+        </listbox>
+	</window>
+</zk>

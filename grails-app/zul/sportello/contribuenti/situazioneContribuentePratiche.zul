@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="ordinamentoMultiColonna" class="it.finmatica.zkutils.ordinamentomulticolonna.OrdinamentoMultiColonnaComponent"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+        .z-datebox-rounded-inplace {
+        text-align: center;
+        }
+    </style>
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout hflex="1" valign="middle">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/16x16/add.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.addTooltip?"Nuova Pratica":arg.addTooltip}'
+                               onClick="@command('onNuovaDenunciaTribAtt')"
+                               visible="@bind(vm.contaTributiSelezionati eq 1 and !vm.cbTributi['ICI'] and !vm.cbTributi['TARSU'])"
+                               disabled="@load(vm.contaTributiSelezionati eq 1 ? !vm.cbTributiInScrittura[vm.singleTributoSelezionato] : true)"/>
+                <toolbarbutton image="/images/afc/16x16/multi_plus.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.addTooltip?"Nuova pratica":arg.addTooltip}'
+                               visible="@bind(vm.contaTributiSelezionati gt 1 or vm.cbTributi['ICI'] or vm.cbTributi['TARSU'])"
+                               popup="funzioniDenunce"/>
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaPratica')"
+                               disabled="@load(empty vm.praticaSelezionata or !vm.praticaOpenableFromFolderPratiche)"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               width="20px"
+                               tooltiptext='Esporta in XLS' popup="funzioniPraticheToXls"
+                               disabled="@load(empty vm.listaPratiche)"/>
+                <toolbarbutton image="/images/afc/16x16/print.png"
+                               tooltiptext='#{empty arg.addTooltip?"Stampa":arg.addTooltip}'
+                               popup="funzioniPraticheStampa"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniOggettoPratiche"/>
+            </hlayout>
+            <hlayout valign="middle" style="text-align: right;" hflex="1">
+                <ordinamentoMultiColonna id="ordinamentoMultiColonnaPratiche"
+                                         campiOrdinamento="@bind(vm.campiOrdinamentoPratiche)"
+                                         ordinePredefinito="@load(vm.ordineInizialePratiche)"
+                                         onChange="@command('onCambiaOrdinamentoPratiche')"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+    <groupbox vflex="1" class="z-groupbox-hr-top">
+        <caption label="@bind(c:cat3('Pratiche (', vm.listaPratiche.size(), ')'))"/>
+        <listbox id="praticheListbox" span="true" sizedByContent="true"
+                 model="@load(vm.listaPratiche)" selectedItem="@bind(vm.praticaSelezionata)"
+                 emptyMessage="Nessun documento presente." onSelect="@command('onSelezionaPratica')"
+                 vflex="true">
+            <listhead sizable="true">
+                <listheader label="DePag" align="center" visible="@load(vm.dePagAbilitato)"/>
+                <listheader label="@load(c:l('sportello.label.tipoTributo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTributo'))"
+                            sort="auto(x)"
+                            onSort="@command('onSortPratiche', valore='tipoTributo')"
+                            sclass="@load(vm.campiOrdinamentoPratiche.tipoTributo.cssOrdinamento)"/>
+                <listheader label="@load(c:l('sportello.label.anno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.anno'))"
+                            sort="auto(x)"
+                            onSort="@command('onSortPratiche', valore='anno')"
+                            sclass="@load(vm.campiOrdinamentoPratiche.anno.cssOrdinamento)"/>
+                <listheader label="@load(c:l('sportello.label.tipoPratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoPratica'))"
+                            sort="auto(x)"
+                            onSort="@command('onSortPratiche', valore='tipoPratica')"
+                            sclass="@load(vm.campiOrdinamentoPratiche.tipoPratica.cssOrdinamento)"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.tipoEvento'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoEvento'))"/>
+                <listheader label="@load(c:l('sportello.label.data'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.data'))"
+                            sort="auto(x)"
+                            onSort="@command('onSortPratiche', valore='data')"
+                            sclass="@load(vm.campiOrdinamentoPratiche.data.cssOrdinamento)"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.estesa.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.stato'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.stato'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.dataNotifica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.dataNotifica'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.tipoNotifica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoNotifica'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.dataRifRavv'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.dataRifRavv'))"/>
+                <listheader sclass="centro"
+                            label="Imp.Calc."
+                            tooltiptext="Importo Calcolato"/>
+                <listheader sclass="centro"
+                            label="Imp.Rid."
+                            tooltiptext="Importo Ridotto"/>
+                <listheader sclass="centro"
+                            label="Imp.Vers."
+                            tooltiptext="Importo Versato"/>
+                <listheader sclass="centro"
+                            label="Data Pag."
+                            tooltiptext="Data Pagamento"/>
+                <listheader sclass="centro"
+                            label="Tipo Atto"
+                            tooltiptext="Tipo Atto"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.tipoRapporto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoRapporto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.pratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.pratica'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.praticaSuccessiva'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.praticaSuccessiva'))"/>
+                <listheader label="Utente Modifica"/>
+                <listheader sclass="centro" width="60px"/>
+            </listhead>
+            <template name="model" var="pr">
+                <listitem onDoubleClick="@command(vm.praticaOpenableFromFolderPratiche ? 'onModificaPratica' : '')">
+                    <listcell>
+                        <image src="/images/tr4web/22x22/pagopa.png"
+                               visible="@load(pr.flagDePag eq 'S')"/>
+                    </listcell>
+                    <listcell label="@load(pr.descrizioneTributo)" sclass="centro"/>
+                    <listcell label="@load(pr.anno)" sclass="centro"/>
+                    <listcell label="@load(pr.tipoPratica)"
+                              style="@load(pr.importoTotale lt 0 ? 'color: red ! important' : '')"
+                              sclass="centro"/>
+                    <listcell label="@load(c:cat3(pr.tipoEventoViolazione, ' ', pr.flagAnnullamento))"
+                              sclass="centro" tooltiptext="@load(pr.tipoEventoViolazioneTooltip)"/>
+                    <listcell label="@load(pr.data)" sclass="centro"/>
+                    <listcell label="@load(pr.numero)" sclass="centro"/>
+                    <listcell label="@load(pr.stato)" sclass="centro"/>
+                    <listcell sclass="centro">
+                        <datebox value="@bind(pr.dataNotificaDate)" format="dd/MM/yyyy"
+                                 hflex="1"
+                                 mold="rounded"
+                                 inplace="true"
+                                 disabled="@bind(!vm.modificaPraticaInline or pr.id ne vm.praticaSelezionata.id or empty pr.numero or pr.presenzaVersamenti or vm.disabilitaDataNotificaSuRateazione[pr.id])"/>
+                    </listcell>
+                    <listcell sclass="sinistra"
+                              label="@load(!empty pr.tipoNotifica ? c:cat3(pr.tipoNotifica.tipoNotifica, ' - ', pr.tipoNotifica.descrizione) : '')"/>
+                    <listcell sclass="centro"
+                              label="@load(pr.dataRiferimentoRavvedimento eq null? '' :c:formatDate(pr.dataRiferimentoRavvedimento, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="destra"
+                              label="@load((empty pr.importoTotale)?'':c:formatNumber(pr.importoTotale, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((empty pr.importoRidottoAccertato)?'':c:formatNumber(pr.importoRidottoAccertato, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((empty pr.importoVersato)?'':c:formatNumber(pr.importoVersato, '€ #,##0.00'))"/>
+                    <listcell sclass="centro"
+                              label="@load(pr.dataPagamento)"/>
+                    <listcell>
+                        <combobox model="@load(vm.listaTipiAtto)"
+                                  disabled="@bind(!vm.modificaPraticaInline or pr.id ne vm.praticaSelezionata.id or vm.isRateazione)"
+                                  inplace="true"
+                                  readonly="true"
+                                  mold="rounded"
+                                  onChange="@command('onCambiaTipoAtto')"
+                                  selectedItem="@bind(pr.tipoAtto) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoAtto')"
+                                  hflex="1">
+                            <template name="model" var="ta">
+                                <comboitem
+                                        label="@load(c:cat3(ta.tipoAtto eq -1 ? '' : ta.tipoAtto, ' - ', ta.descrizione))"
+                                        value="@load(ta)"/>
+                            </template>
+                        </combobox>
+                    </listcell>
+                    <listcell label="@load(pr.tipoRapporto)" sclass="centro"/>
+                    <listcell label="@load(pr.id)" sclass="centro"/>
+                    <listcell label="@load(pr.praticaSuccessiva)" sclass="centro"/>
+                    <listcell label="@load(pr.utenteModifica)"/>
+                    <listcell sclass="centro">
+                        <hlayout>
+                            <image visible="@bind(!vm.modificaPraticaInline and (pr.tipoPratica eq 'A' or pr.tipoPratica eq 'L'))"
+                                   src="/images/afc/16x16/pen.png"
+                                   style="cursor: pointer;" width="16px" height="16px"
+                                   onClick="@command('onModificaPraticaInline')"/>
+                            <image visible="@bind(vm.modificaPraticaInline and pr.id eq vm.praticaSelezionata.id and (pr.tipoPratica eq 'A' or pr.tipoPratica eq 'L'))"
+                                   src="/images/afc/16x16/cross.png" style="cursor: pointer;" width="16px" height="16px"
+                                   onClick="@command('onAnnullaModificaPraticaInline', pratica=accLiq)"/>
+                            <image visible="@bind(vm.modificaPraticaInline and pr.id eq vm.praticaSelezionata.id and (pr.tipoPratica eq 'A' or pr.tipoPratica eq 'L'))"
+                                   src="/images/afc/16x16/ok_light.png" style="cursor: pointer;" width="16px"
+                                   height="16px"
+                                   onClick="@command('onAccettaModificaPraticaInline', pratica=accLiq)"/>
+                        </hlayout>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+
+    <include id="includePraticheOggetti"
+             vflex="1"
+             src="@load(!empty vm.praticaOggettiTable ? vm.praticaOggettiTable:'/sportello/contribuenti/situazioneContribuentiPraticheOggetti.zul')"/>
+
+</zk>

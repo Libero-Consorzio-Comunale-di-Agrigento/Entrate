@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <window maximizable="true" maximized="true" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('situazioneContribuenteViewModel')" border="normal"
+            sizable="true">
+        <script src="/js/decimalbox.js"/>
+
+        <style>
+            .tab-sc.z-tabbox-ver {
+            position: relative;
+            }
+            .tab-sc.z-tabbox-ver .z-tabs-ver {
+            float: none;
+            position: absolute;
+            }
+            .tab-sc.z-tabbox-ver .z-tabpanels-ver {
+            position: absolute;
+            right: 0px;
+            }
+        </style>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell class="documentoTitolo" align="right" valign="center">
+                        <hbox>
+                            <image src="/images/tr4web/16x16/user_browser.png" tooltiptext="Portale"
+                                   visible="@load(!empty vm.urlPortale)"
+                                   style="cursor: pointer;" onClick="@command('onPortale')"/>
+                            <image src="/images/afc/16x16/user.png" tooltiptext="Visualizza Soggetto"
+                                   style="cursor: pointer;" onClick="@command('onVisualizzaSoggetto')"/>
+                            <space width="5px"/>
+                            <label value="@load((vm.soggetto.id eq null)? '' : c:cat3(vm.soggetto.cognome,' ',vm.soggetto.nome))"/>
+                            <label value=" - " visible="@load(vm.isContribuente ? not empty vm.soggetto.contribuente.codFiscale : not empty vm.soggetto.codFiscale)"/>
+
+                            <label value="@load(vm.isContribuente ? vm.soggetto.contribuente.codFiscale : vm.soggetto.codFiscale)"/>
+                        </hbox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <space width="3px"/>
+
+        <hbox style="width: 100%">
+            <vlayout hflex="2" vflex="1">
+                <groupbox vflex="1">
+                    <caption label="Tributi"/>
+                    <vbox vflex="1" pack="center">
+                        <hbox children="@load(vm.tipiTributoActive)">
+                            <template name="children" var="tipoTributoActive">
+                                <checkbox
+                                        label="@load(empty vm.latestStatiDescriptions[tipoTributoActive] ? vm.cbTributiLabels[tipoTributoActive] : c:cat4(vm.cbTributiLabels[tipoTributoActive],' (', vm.latestStatiDescriptions[tipoTributoActive],')'))"
+                                        checked="@bind(vm.cbTributi[tipoTributoActive])"
+                                        disabled="@load(!vm.cbTributiAbilitati[tipoTributoActive] or !vm.isContribuente)"
+                                        onClick="@command('onChangeTipoTributo')"/>
+                            </template>
+                        </hbox>
+                    </vbox>
+                </groupbox>
+                <groupbox vflex="1">
+                    <caption label="Tipi Pratica"/>
+                    <vbox vflex="1" pack="center">
+                        <hbox>
+                            <checkbox label="Dichiarazione" checked="@bind(vm.cbTipiPratica.D)"
+                                      onClick="@command('onChangeTipoPratica')"
+                                      disabled="@load(!vm.isContribuente)"/>
+                            <checkbox label="Solleciti" checked="@bind(vm.cbTipiPratica.S)"
+                                      onClick="@command('onChangeTipoPratica')"
+                                      disabled="@load(!vm.isContribuente)"/>
+                            <checkbox label="Liquidazione/Infrazione" checked="@bind(vm.cbTipiPratica.L)"
+                                      onClick="@command('onChangeTipoPratica')"
+                                      disabled="@load(!vm.isContribuente)"/>
+                            <checkbox label="Accertamento" checked="@bind(vm.cbTipiPratica.A)"
+                                      onClick="@command('onChangeTipoPratica')"
+                                      disabled="@load(!vm.isContribuente)"/>
+                            <checkbox label="Ravvedimento" checked="@bind(vm.cbTipiPratica.V)"
+                                      onClick="@command('onChangeTipoPratica')"
+                                      disabled="@load(!vm.isContribuente)"/>
+                        </hbox>
+                    </vbox>
+                </groupbox>
+            </vlayout>
+
+            <groupbox hflex="3">
+                <caption label="Dati contribuente"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="100px">
+                                <label value="Indirizzo"/>
+                            </cell>
+                            <cell colspan="2">
+                                <textbox value="@load(vm.soggetto.indirizzo)" hflex="1"
+                                         class="noresizable" readonly="true" mold="rounded"/>
+                            </cell>
+                            <cell align="left" width="50px">
+                                <image tooltiptext="@load(c:l('label.anagrafeTributaria'))"
+                                       width="16px"
+                                       src="/images/afc/16x16/agenzia_entrate.png"
+                                       style="cursor: pointer;"
+                                       onClick="@command('onAnagrafeTributaria')"
+                                       visible="@load(vm.inAnagrafeTributaria)"/>
+                            </cell>
+                            <cell align="right" width="100px">
+                                <label value="N.Ind." hflex="1"/>
+                            </cell>
+                            <cell>
+                                <textbox style="text-align: right"
+                                         value="@load(vm.soggetto.id)"
+                                         hflex="1"
+                                         class="noresizable" readonly="true" mold="rounded"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="150px">
+                                <label value="Comune"/>
+                            </cell>
+                            <cell colspan="2">
+                                <textbox hflex="1"
+                                         value="@load(vm.soggetto.comuneResidenza.ad4Comune.denominazione)"
+                                         class="noresizable" readonly="true" mold="rounded"/>
+                            </cell>
+                            <cell colspan="3">
+                                <textbox value="@load(vm.ultimoStato)" readonly="true"
+                                         hflex="2" class="noresizable" mold="rounded"/>
+                            </cell>
+
+                        </row>
+                        <row>
+                            <cell align="right" width="150px">
+                                <label value="Note"/>
+                            </cell>
+                            <cell colspan="5">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <label value="@load(vm.soggetto.note)"
+                                           style="text-transform: uppercase; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block; width:inherit; white-space: nowrap;"/>
+                                    <image src="/images/afc/16x16/info.png"
+                                           tooltiptext="Visualizza note"
+                                           popup="@load('popupNoteSoggetto')"
+                                           height="16px"
+                                           width="16px"
+                                           style="float: right; cursor: pointer; padding-left: 5px"/>
+                                </div>
+                                <popup id="popupNoteSoggetto"
+                                       onOpen="@command('onApriNoteSoggetto')"
+                                       width="600px">
+                                    <h:div sclass="barraTitoloPagina">
+                                        <label class="titoloPagina" value="Note"/>
+                                    </h:div>
+                                    <hlayout>
+                                        <textbox mold="rounded" rows="10" hflex="1"
+                                                 value="@bind(vm.tempStringNoteSoggetto)"
+                                                 readonly="true"
+                                                 style="text-transform: uppercase;"
+                                        />
+                                    </hlayout>
+                                    <h:div sclass="barraPulsanti">
+                                        <h:div>
+                                            <button label="Chiudi" onClick="@command('onChiudiNoteSoggetto')"
+                                                    mold="trendy"
+                                                    image="/images/pulsanti/16x16/window_close.png"/>
+                                        </h:div>
+                                    </h:div>
+                                </popup>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell colspan="6" align="right">
+                                <button label="Funzioni" sclass="button-menu-up"
+                                        popup="funzioni, position=before_end"
+                                        mold="trendy" image="/images/afc/16x16/arrows.png"
+                                        disabled="@load(!vm.isContribuente)"/>
+                                <space width="3px"/>
+                                <button label="Stampe" sclass="button-menu-up"
+                                        popup="elencoStampe, position=before_end"
+                                        mold="trendy" image="/images/afc/16x16/print.png"
+                                        disabled="@load(!vm.isContribuente)"/>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+
+            </groupbox>
+        </hbox>
+
+        <space height="5px"/>
+        <tabbox vflex="1" orient="vertical" sclass="tab-sc">
+            <tabs id="tabsSC" class="docMenuSx" width="100px" style="text-align: left">
+                <tab id="oggetti"
+                     label="Oggetti"
+                     sclass="@bind(vm.numOggetti eq 0 ? '' : 'not-empty')"
+                     disabled="@bind(vm.modificaPraticaInline or !vm.isContribuente)"
+                     onSelect="@command('caricaTab', folder=self.id)">
+                </tab>
+                <tab id="imposte" label="Imposte"
+                     sclass="@bind(vm.numImposte eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     disabled="@bind(vm.modificaPraticaInline or !vm.isContribuente)"/>
+                <tab id="versamenti"
+                     label="Versamenti"
+                     sclass="@bind((vm.numVersamenti eq 0) and (vm.numBonifiche eq 0) ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     disabled="@bind(vm.modificaPraticaInline)"/>
+                <tab id="ruoli" label="Ruoli"
+                     sclass="@bind(vm.numRuoli eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     disabled="@bind(vm.modificaPraticaInline or !vm.isContribuente)"/>
+                <tab id="pratiche" label="Pratiche"
+                     sclass="@bind(vm.numPratiche eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"/>
+                <tab id="contatti" label="Contatti"
+                     sclass="@bind(vm.numContatti eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     disabled="@bind(vm.modificaPraticaInline or !vm.isContribuente)"/>
+                <tab id="familiari"
+                     label="Familiari"
+                     sclass="@bind(vm.numFamiliari eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     disabled="@bind(vm.modificaPraticaInline or !vm.isContribuente)"/>
+                <tab id="documenti"
+                     label="Documenti"
+                     sclass="@bind(vm.numDocumenti eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     disabled="@bind(vm.modificaPraticaInline or !vm.isContribuente)"/>
+                <tab id="contratti"
+                     label="Contratti"
+                     sclass="@bind((vm.numContrattiUtenze + vm.numContrattiLocazioni) eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     disabled="@bind(vm.modificaPraticaInline or !vm.isContribuente)"/>
+                <tab id="concessioni" label="Canoni"
+                     disabled="@load(!vm.cbTributiAbilitati.CUNI or !vm.isContribuente)"
+                     sclass="@bind(vm.numConcessioni eq 0 ? '' : 'not-empty')"
+                     onSelect="@command('caricaTab', folder=self.id)"/>
+                <tab id="comTarsu" label="Comp.TARI"
+                     disabled="@bind(!vm.cbTributi.TARSU or !vm.isContribuente)"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     sclass="@bind(vm.numCompensazioni eq 0 ? '' : 'not-empty')"/>
+                <tab id="svuotamentiTarsu" label="Svuot.TARI"
+                     disabled="@bind(!vm.cbTributi.TARSU or !vm.isContribuente)"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     sclass="@bind(vm.numSvuotamenti eq 0 ? '' : 'not-empty')"/>
+                <tab id="statiContribuente" label="Stati"
+                     disabled="@bind(!vm.isContribuente)"
+                     onSelect="@command('caricaTab', folder=self.id)"
+                     sclass="@bind(vm.numStatiContribuente eq 0 ? '' : 'not-empty')"/>
+            </tabs>
+            <tabpanels id="tabsPanelSC">
+                <tabpanel>
+                    <include id="includeOggetti"
+                             src="/sportello/contribuenti/situazioneContribuenteOggetti.zul"
+                             mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:auto;" fulfill="imposte.onSelect">
+                    <include
+                            src="/sportello/contribuenti/situazioneContribuenteImposte.zul"
+                            mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:auto;" fulfill="versamenti.onSelect">
+                    <include
+                            src="/sportello/contribuenti/situazioneContribuenteVersamenti.zul"
+                            mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:hidden;" fulfill="ruoli.onSelect">
+                    <include src="/sportello/contribuenti/situazioneContribuenteRuoli.zul"
+                             mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:auto;" fulfill="pratiche.onSelect">
+                    <include id="includePratiche"
+                             src="/sportello/contribuenti/situazioneContribuentePratiche.zul"
+                             mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:auto;" fulfill="contatti.onSelect">
+                    <include
+                            src="/sportello/contribuenti/situazioneContribuenteContatti.zul"
+                            mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:auto;" fulfill="familiari.onSelect">
+                    <include
+                            src="/sportello/contribuenti/situazioneContribuenteFamiliari.zul"
+                            mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:auto;" fulfill="documenti.onSelect">
+                    <include
+                            src="/sportello/contribuenti/situazioneContribuenteDocumenti.zul"
+                            mode="instant"/>
+                </tabpanel>
+
+                <!-- Contratti -->
+                <tabpanel style="overflow:auto;" fulfill="contratti.onSelect">
+                    <include id="includeContratti"
+                             src="/sportello/contribuenti/situazioneContribuenteContratti.zul"
+                             mode="instant"/>
+                </tabpanel>
+                <tabpanel style="overflow:auto;" fulfill="concessioni.onSelect">
+                    <include id="includeConcessioni"
+                             src="/sportello/contribuenti/situazioneContribuenteConcessioni.zul"
+                             mode="instant"/>
+                </tabpanel>
+
+                <!-- Compensazioni TARSU -->
+                <tabpanel style="overflow:auto;" fulfill="comTarsu.onSelect">
+                    <include src="/sportello/contribuenti/situazioneContribuenteCompensazioniTARSU.zul"
+                             mode="instant"/>
+                </tabpanel>
+
+                <!-- Svuotamenti TARSU -->
+                <tabpanel style="overflow:auto;" fulfill="svuotamentiTarsu.onSelect">
+                    <include src="/sportello/contribuenti/situazioneContribuenteSvuotamenti.zul"
+                             mode="instant"/>
+                </tabpanel>
+
+                <!-- Stati Contribuente -->
+                <tabpanel style="overflow:auto;" fulfill="statiContribuente.onSelect">
+                    <include id="includeStatiContribuente"
+                             mode="instant"
+                             contribuente="#{vm.soggetto.contribuente}"
+                             tipiTributo="#{vm.tipiTributoSelezionati}"
+                             src="/sportello/contribuenti/situazioneContribuenteStati.zul"/>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Calcolo" sclass="button-menu-up" popup="calcolo, position=before_end"
+                        mold="trendy" image="/images/pulsanti/16x16/calculator.png"
+                        disabled="@load(!vm.isContribuente)"/>
+
+                <button label="Chiudi" onClick="@command('onChiudiPopup')"
+                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+
+        </h:div>
+
+        <menupopup id="calcolo">
+            <menuitem label="Calcolo Individuale"
+                      disabled="@load(!vm.abilitaCalcIndividuale)"
+                      onClick="@command('onCalcoloIndividuale')"/>
+            <menuitem label="Calcolo Imposta" onClick="@command('onCalcolaImposta')"/>
+            <menuitem label="Calcolo Solleciti"
+                      onClick="@command('onCalcolaSolleciti')"
+                      disabled="@load(!vm.cbTributiInScrittura.TARSU and !vm.cbTributiInScrittura.CUNI)"/>
+            <menuitem label="Calcolo Liquidazioni IMU"
+                      disabled="@load(!vm.cbTributiInScrittura.ICI)"
+                      onClick="@command('onCalcolaLiquidazione', tributo = 'ICI')"/>
+            <menuitem label="Calcolo Liquidazioni TASI"
+                      disabled="@load(!vm.cbTributiInScrittura.TASI)"
+                      onClick="@command('onCalcolaLiquidazione', tributo = 'TASI')"/>
+            <menuitem label="Calcolo Accertamenti Automatici"
+                      onClick="@command('onCalcolaAccertamento')"
+                      disabled="@load(!vm.cbTributiInScrittura.TARSU and !vm.cbTributiInScrittura.CUNI and !vm.cbTributiInScrittura.TOSAP and !vm.cbTributiInScrittura.ICP)"/>
+            <menuitem label="Ravvedimento Operoso"
+                      disabled="@load(!vm.abilitaRavvOperoso)"
+                      onClick="@command('onRavvedimentoOperoso')"/>
+        </menupopup>
+
+        <menupopup id="funzioni">
+            <menuitem label="@load(c:l('label.sostituzioneContribuente'))"
+                      onClick="@command('onSostituzioneContribuente')"/>
+            <menuitem label="@load(c:l('label.aggiornamentoContribuente'))"
+                      onClick="@command('onAggiornaContribuente')"/>
+            <menuitem label="Soggetti a Catasto"
+                      onClick="@command('onSoggettiCatasto')"/>
+            <menuitem label="@load(c:l('label.componenti'))" onClick="@command('onComponentiDellaFamiglia')"
+                      disabled="@load(vm.soggetto.gsd eq false or vm.soggetto.codFam eq null)"/>
+            <menuitem label="@load(c:l('label.eventiResidenze'))" onClick="@command('onEventiResidenzeStoriche')"
+                      disabled="@load(vm.soggetto.gsd eq false or vm.soggetto.matricola eq null)"/>
+            <menuitem label="@load(c:l('label.calcoloFamiliariPerSoggetto'))"
+                      onClick="@command('onCalcoloFamiliariSoggetto')"
+                      disabled="@load(vm.soggetto.gsd ? false : true)"/>
+        </menupopup>
+
+        <menupopup id="elencoStampe">
+            <menuitem label="Scheda per pratiche" onClick="@command('onSchedaPratiche')"
+                      disabled="@load(!vm.cbTributiAbilitati.ICI and !vm.cbTributiAbilitati.TASI)"/>
+            <menuitem label="Scheda per oggetti" onClick="@command('onSchedaOggetti')"
+                      disabled="@load(!vm.cbTributiAbilitati.ICI and !vm.cbTributiAbilitati.TASI)"/>
+            <menuitem label="Lettera generica" onClick="@command('onLetteraGenerica')"/>
+            <menuitem label="Lettera generica AppIO" onClick="@command('onInviaAppIOGeneirca')"/>
+            <menuitem label="F24 in bianco" onClick="@command('onF24Bianco')"/>
+            <menuitem label="Visura per soggetto" onClick="@command('onVisuraPerSoggetto')"
+                      disabled="@load(!vm.cbTributiAbilitati.ICI and !vm.cbTributiAbilitati.TASI)"/>
+        </menupopup>
+
+        <menupopup id="funzioniOggetto">
+            <menuitem label="Chiudi Oggetti IMU/TASI"
+                      disabled="@bind(vm.anno eq 'Tutti' or (!vm.cbTributiInScrittura.ICI and !vm.cbTributiInScrittura.TASI))"
+                      onClick="@command('onChiudiOggetti')"/>
+            <menuitem label="Chiudi Oggetti TARI"
+                      disabled="@bind(vm.anno eq 'Tutti' or !vm.cbTributiInScrittura.TARSU)"
+                      onClick="@command('onChiudiOggettiTarsu')"/>
+            <menuitem label="Inserisci Oggetti IMU"
+                      disabled="@bind(vm.anno eq 'Tutti' or (!vm.cbTributiInScrittura.ICI and !vm.cbTributiInScrittura.TASI))"
+                      onClick="@command('onInserisciOggetti')"/>
+            <menuitem label="Inserisci Oggetti TARI"
+                      disabled="@bind(vm.anno eq 'Tutti' or !vm.cbTributiInScrittura.TARSU)"
+                      onClick="@command('onInserisciOggettiTarsu')"/>
+            <menuitem disabled="@load(!vm.abilitaMappe)" label="Visualizza mappa"
+                      onClick="@command('onVisualizzaMappa')"/>
+            <menuseparator/>
+            <menuitem label="Ruoli e sgravi"
+                      disabled="@load(vm.oggettoSelezionato eq null or vm.oggettoSelezionato.tipoTributo ne 'TARSU')"
+                      onClick="@command('onRuoliOggetto')"/>
+            <menuitem label="Informazioni catasto"
+                      disabled="@load((!vm.cbTributiAbilitati.ICI and !vm.cbTributiAbilitati.TASI) or vm.oggettoSelezionato eq null or (empty vm.oggettoSelezionato.sezione and empty vm.oggettoSelezionato.foglio and empty vm.oggettoSelezionato.numero and empty vm.oggettoSelezionato.subalterno))"
+                      onClick="@command('onVisualizzaInformazioniCatasto')"/>
+            <menuitem label="Proprietari" onClick="@command('onVisualizzaStoricoProprietari')"
+                      disabled="@load(vm.oggettoSelezionato eq null)"/>
+            <menuitem label="Sostituzione oggetto" onClick="@command('onSostituisciOggetto')"
+                      disabled="@load(vm.oggettoSelezionato eq null or !vm.cbTributiInScrittura[vm.oggettoSelezionato.tipoTributo])"/>
+            <menuitem label="Sostituzione RFID" onClick="@command('onSostituisciRFID')"
+                      disabled="@load((vm.oggettoSelezionato eq null) or (vm.oggettoSelezionato.flagRfid ne 'S') or 
+                                      (!vm.cbTributiInScrittura[vm.oggettoSelezionato.tipoTributo]))"/>
+            <menuitem label="Rendite dell'Oggetto" onClick="@command('onVisualizzaRendite')"
+                      disabled="@load(vm.oggettoSelezionato eq null or (vm.oggettoSelezionato.tipoTributo ne 'ICI' and vm.oggettoSelezionato.tipoTributo ne 'TASI'))"/>
+            <menuitem label="Contribuenti sull'oggetto"
+                      disabled="@load(vm.oggettoSelezionato eq null)"
+                      onClick="@command('onVisualizzaContribuentiOggetto')"/>
+            <menuitem label="Locazioni sull'oggetto"
+                      disabled="@load(vm.oggettoSelezionato eq null or vm.oggettoSelezionato.estremiCatasto eq null or vm.oggettoSelezionato.estremiCatasto.trim() eq '')"
+                      onClick="@command('onVisualizzaLocazioniOggetto')"/>
+            <menuitem label="Dati metrici"
+                      disabled="@load(!vm.cbTributiAbilitati.TARSU or vm.oggettoSelezionato eq null)"
+                      onClick="@command('onVisualizzaDatiMetriciOggetto')"/>
+            <menuitem label="Inserimento Oggetto/Rendite" onClick="@command('onInserimentoOggettiRendite')"
+                      disabled="@load(empty vm.oggettoSelezionato or empty vm.oggettoSelezionato.idImmobile)"/>
+            <menuitem label="Geolocalizza Oggetto"
+                      disabled="@bind((empty vm.oggettoSelezionato.latitudine) or (empty vm.oggettoSelezionato.longitudine))" 
+                      onClick="@command('onGeolocalizzaOggetto')"/>
+        </menupopup>
+
+        <!-- Context Menu Oggetto-->
+        <menupopup id="funzioniContextOggetto">
+            <menuitem label="Ruoli e sgravi"
+                      disabled="@load(vm.oggettoSelezionato eq null or vm.oggettoSelezionato.tipoTributo ne 'TARSU')"
+                      onClick="@command('onRuoliOggetto')"/>
+            <menuitem label="Informazioni catasto"
+                      disabled="@load(vm.oggettoSelezionato eq null or (empty vm.oggettoSelezionato.sezione and empty vm.oggettoSelezionato.foglio and empty vm.oggettoSelezionato.numero and empty vm.oggettoSelezionato.subalterno))"
+                      onClick="@command('onVisualizzaInformazioniCatasto')"/>
+            <menuitem label="Proprietari" onClick="@command('onVisualizzaStoricoProprietari')"
+                      disabled="@load(vm.oggettoSelezionato eq null)"/>
+            <menuitem label="Sostituzione oggetto" onClick="@command('onSostituisciOggetto')"
+                      disabled="@load(vm.oggettoSelezionato eq null)"/>
+            <menuitem label="Rendite dell'Oggetto" onClick="@command('onVisualizzaRendite')"
+                      disabled="@load(vm.oggettoSelezionato eq null or (vm.oggettoSelezionato.tipoTributo ne 'ICI' and vm.oggettoSelezionato.tipoTributo ne 'TASI'))"/>
+            <menuitem label="Contribuenti sull'oggetto" disabled="@load(vm.oggettoSelezionato eq null)"
+                      onClick="@command('onVisualizzaContribuentiOggetto')"/>
+            <menuitem label="Locazioni sull'oggetto"
+                      disabled="@load(vm.oggettoSelezionato eq null or vm.oggettoSelezionato.estremiCatasto eq null or vm.oggettoSelezionato.estremiCatasto.trim() eq '')"
+                      onClick="@command('onVisualizzaLocazioniOggetto')"/>
+            <menuitem label="Dati metrici" disabled="@load(vm.oggettoSelezionato eq null)"
+                      onClick="@command('onVisualizzaDatiMetriciOggetto')"/>
+            <menuitem label="Inserimento Oggetto/Rendite" onClick="@command('onInserimentoOggettiRendite')"
+                      disabled="@load(empty vm.oggettoSelezionato or empty vm.oggettoSelezionato.idImmobile)"/>
+        </menupopup>
+
+        <menupopup id="funzioniOggettoPratiche">
+            <menuitem label="Passaggio a PagoPa" onClick="@command('onPassaggioAPagoPa')"
+                      visible="@load(vm.dePagAbilitato)"
+                      disabled="@bind(empty vm.praticaSelezionata or vm.praticaSelezionata.tipoPratica eq 'D' or (vm.praticaSelezionata.tipoPratica eq 'V' and vm.praticaSelezionata.tipoTributo.tipoTributo ne 'CUNI') or empty vm.praticaSelezionata.numero or vm.praticaSelezionata.importoTotale eq 0)"/>
+            <menuitem label="Annulla dovuto PagoPA"
+                      onClick="@command('onAnnullaDepagDenuncia')"
+                      disabled="@bind(empty vm.praticaSelezionata or (vm.praticaSelezionata.tipoPratica eq 'D' and vm.praticaSelezionata.tipoTributo.tipoTributo ne 'CUNI') or vm.praticaSelezionata.tipoEvento eq 'C' or (vm.praticaSelezionata.tipoPratica eq 'V' and vm.praticaSelezionata.tipoTributo.tipoTributo ne 'CUNI') or vm.praticaSelezionata.flagDePag ne 'S')"
+                      visible="@load(vm.dePagAbilitato)"/>
+            <menuitem label="Contribuenti sull'Oggetto"
+                      disabled="@load(vm.oggettoPraticaSelezionato eq null)"
+                      onClick="@command('onVisualizzaContribuentiOggetto')"/>
+            <menuitem label="Contribuenti sull'Oggetto Pratica"
+                      disabled="@load(vm.oggettoPraticaSelezionato eq null)"
+                      onClick="@command('onVisualizzaContribuentiOggettoPratica')"/>
+            <menuitem label="Calcolo Imposta per Pratica"
+                      onClick="@command('onCalcolaDenunciaSingola')"
+                      disabled="@bind((empty vm.praticaSelezionata) or (vm.praticaSelezionata.tipoTributo.tipoTributo ne 'CUNI') or (vm.praticaSelezionata.tipoEvento == 'C'))"/>
+            <menuitem label="Inserimento a Ruolo"
+                      onClick="@command('onInserimentoARuolo')"
+                      disabled="@bind(empty vm.praticaSelezionata or vm.praticaSelezionata.tipoTributo.tipoTributo ne 'TARSU' or !vm.cbTributiInScrittura.TARSU or vm.praticaSelezionata.tipoPratica eq 'S')"/>
+            <menuitem label="Invia AppIO"
+                      onClick="@command('onInviaAppIO')"
+                      disabled="@bind(empty vm.praticaSelezionata)"/>
+            <menuitem label="Replica per anni successivi" onClick="@command('onReplicaPerAnniSuccessivi')"
+                      disabled="@load(empty vm.praticaSelezionata or vm.praticaSelezionata.tipoPratica ne 'A' or 
+                                      !((vm.praticaSelezionata.tipoTributo.tipoTributo eq 'ICI' and vm.cbTributiInScrittura.ICI) or 
+                                        (vm.praticaSelezionata.tipoTributo.tipoTributo eq 'TARSU' and vm.cbTributiInScrittura.TARSU)))"/>
+        </menupopup>
+
+        <menupopup id="funzioniImposte">
+            <menuitem label="Dovuto/Versato" onClick="@command('onDovutoVersato')"/>
+        </menupopup>
+
+        <menupopup id="funzioniImposteToXls">
+            <menuitem label="Imposte" onClick="@command('imposteToXls')"
+                      disabled="@load(empty vm.listaImposte)"
+            />
+            <menuseparator/>
+            <menuitem label="Oggetti dell'imposta" onClick="@command('oggettiImpostaToXls')"
+                      disabled="@load(empty vm.listaOggettiImposta)"/>
+        </menupopup>
+
+        <menupopup id="funzioniVersamentiToXls">
+            <menuitem label="Versamenti" onClick="@command('versamentiToXls')"
+                      disabled="@bind(empty vm.listaVersamenti)"/>
+            <menuseparator/>
+            <menuitem label="Bonifiche" onClick="@command('onDettaglioVersamentiToXls')"
+                      disabled="@load(empty vm.listaDettaglioAnomalie)"/>
+        </menupopup>
+
+        <menupopup id="funzioniRuoli">
+            <menuitem label="Emissione Ruolo"
+                      disabled="@load(vm.ruoloSelezionato eq null or vm.ruoloSelezionato.invioConsorzio ne null or vm.ruoloSelezionato.specie eq 'Coattivo')"
+                      onClick="@command('onEmissioneRuolo')"/>
+            <menuitem label="Aggiorna Dovuto PagoPa"
+                      disabled="@load(empty vm.ruoloSelezionato or !vm.dePagAbilitato or vm.ruoloSelezionato.flagDePag ne 'S')"
+                      visible="@load(vm.dePagAbilitato)"
+                      onClick="@command('onAggiornaDovutoDePag')"/>
+            <menuitem label="Annulla Dovuto PagoPa"
+                      disabled="@load(empty vm.ruoloSelezionato or !vm.dePagAbilitato or vm.ruoloSelezionato.flagDePag ne 'S' or !vm.ruoloSelezionato.anyDovutiRuolo)"
+                      visible="@load(vm.dePagAbilitato)"
+                      onClick="@command('onAnnullaDovutoDePag')"/>
+            <menuseparator/>
+            <menuitem label="Oggetti a ruolo: Sgravi"
+                      disabled="@load(empty vm.ruoloSelezionato or empty vm.ruoloSelezionato.invioConsorzio or empty vm.oggettoRuoloSelezionato)"
+                      onClick="@command('onOggettoARuoloSgravi')"/>
+            <menuitem label="Pratiche a ruolo: Sgravi"
+                      disabled="@load(empty vm.ruoloSelezionato or empty vm.ruoloSelezionato.invioConsorzio or vm.ruoloSelezionato.specie ne 'Coattivo' or empty vm.praticaSelezionata)"
+                      onClick="@command('onPraticheARuoloSgravi')"/>
+            <menuitem label="Eccedenze Ruolo"
+                      onClick="@command('onEccedenzeRUolo')"
+                      disabled="@bind(empty vm.ruoloSelezionato or vm.ruoloSelezionato.flagTariffaPuntuale ne 'S')"/>
+            <menuitem label="Invia AppIO"
+                      onClick="@command('onInviaAppIO')"
+                      disabled="@bind(empty vm.ruoloSelezionato)"/>
+        </menupopup>
+
+        <menupopup id="funzioniRuoliOggetto">
+            <menuitem label="Sgravi"
+                      disabled="@bind(empty vm.ruoloSelezionato or empty vm.ruoloSelezionato.invioConsorzio)"
+                      onClick="@command('onOggettoARuoloSgravi')"/>
+        </menupopup>
+
+        <menupopup id="funzioniRuoliPratiche">
+            <menuitem label="Sgravi"
+                      disabled="@load(empty vm.ruoloSelezionato or empty vm.ruoloSelezionato.invioConsorzio or vm.ruoloSelezionato.specie ne 'Coattivo')"
+                      onClick="@command('onPraticheARuoloSgravi')"/>
+        </menupopup>
+
+        <menupopup id="funzioniDenunce">
+            <menuitem label="@load(c:cat('Denuncia ', c:l('label.tributoImu')))"
+                      onClick="@command('onNuovaDenuncia', tributo='ICI')"
+                      disabled="@bind(!vm.cbTributiInScrittura['ICI'])"
+                      visible="@bind(vm.cbTributi['ICI'])"/>
+            <menuitem label="@load(c:cat('Denuncia ', c:l('label.tributoTasi')))"
+                      onClick="@command('onNuovaDenuncia', tributo='TASI')"
+                      disabled="@bind(!vm.cbTributiInScrittura['TASI'])"
+                      visible="@bind(vm.cbTributi['TASI'])"/>
+            <menuitem label="@load(c:cat('Denuncia ', c:l('label.tributoTari')))"
+                      onClick="@command('onNuovaDenuncia', tributo='TARSU')"
+                      disabled="@bind(!vm.cbTributiInScrittura['TARSU'])"
+                      visible="@bind(vm.cbTributi['TARSU'])"/>
+            <menuitem label="@load(c:cat('Denuncia ', c:l('label.tributoCUnico')))"
+                      onClick="@command('onNuovaDenuncia', tributo='CUNI')"
+                      disabled="@bind(!vm.cbTributiInScrittura['CUNI'])"
+                      visible="@bind(vm.cbTributi['CUNI'])"/>
+            <menuitem label="@load(c:cat('Accertamento ', c:l('label.tributoImu')))"
+                      onClick="@command('onNuovoAccertamento', tributo='ICI')"
+                      disabled="@bind(!vm.cbTributiInScrittura['ICI'])"
+                      visible="@bind(vm.cbTributi['ICI'])"/>
+            <menuitem label="@load(c:cat('Accertamento ', c:l('label.tributoTari')))"
+                      onClick="@command('onNuovoAccertamento', tributo='TARSU')"
+                      visible="@bind(vm.cbTributi['TARSU'])"
+                      disabled="@bind(!vm.cbTributiInScrittura['TARSU'])"/>
+        </menupopup>
+
+        <menupopup id="funzioniDocumenti">
+            <menuitem label="Invia email"
+                      onClick="@command('onInviaEmail')"/>
+        </menupopup>
+
+        <menupopup id="funzioniConcessioniConverti">
+            <menuitem label="Converti i Canoni"
+                      onClick="@command('onConvertiConcessioni')"
+                      disabled="@load(vm.cbTributiInScrittura.CUNI ne true)"/>
+        </menupopup>
+
+        <menupopup id="funzioniConcessioniCalcola">
+            <menuitem label="Annulla dovuto PagoPA per Canone"
+                      onClick="@command('onAnnullaDepagConcessioneSingola')"
+                      disabled="@load(empty vm.concessioneSelezionata or !empty conc.statoDepag)"/>
+        </menupopup>
+
+        <menupopup id="funzioniConcessioniStampa">
+            <menuitem label="Stampa Totale Canoni anni prec."
+                      onClick="@command('onStampaConcessioniAP')"/>
+        </menupopup>
+
+        <menupopup id="funzioniConcessioni">
+            <menuitem label="Chiudi Canoni"
+                      onClick="@command('onChiudiConcessioni')"
+                      disabled="@load(vm.cbTributiInScrittura.CUNI ne true)"/>
+            <menuitem label="Aggiorna Dovuto PagoPa" onClick="@command('onAggiornaDovutoDePagCuni')"
+                      visible="@load(vm.dePagAbilitato)"
+                      disabled="@load(empty vm.anno or vm.anno eq 'Tutti' or !vm.aggiornaDovutiDepAgCU)"/>
+            <menuitem label="Annulla Dovuto PagoPa" onClick="@command('onAnnullaDovuto')"
+                      visible="@load(vm.dePagAbilitato)"
+                      disabled="@load(empty vm.anno or vm.anno eq 'Tutti' or !vm.annullaDovutiDepAgCU)"/>
+            <menuitem label="Invia AppIO"
+                      onClick="@command('onInviaAppIO')"/>
+            <menuseparator/>
+            <menuitem label="Contribuenti sull'oggetto" onClick="@command('onContribuentiSuOggettoConcessioni')"
+                      disabled="@load(empty vm.concessioneSelezionata)"/>
+            <menuitem label="Geolocalizza"
+                      disabled="@bind((empty vm.concessioneSelezionata.oggetto.latitudine) or (empty vm.concessioneSelezionata.oggetto.longitudine))" 
+                      onClick="@command('onGeolocalizzaConcessione')"/>
+        </menupopup>
+
+        <menupopup id="funzioniPraticheStampa">
+            <menuitem label="Denuncia" onClick="@command('onStampaDenuncia')"
+                      disabled="@bind((empty vm.praticaSelezionata) or (vm.praticaSelezionata.tipoPratica ne 'D') or ((vm.praticaSelezionata.tipoTributo.tipoTributo ne 'TARSU') and
+                      															(vm.praticaSelezionata.tipoTributo.tipoTributo ne 'ICI')))"/>
+            <menuitem label="F24 Violazione" onClick="@command('onF24Violazione')"
+                      disabled="@bind(vm.disabilitaStampaF24 or empty vm.praticaSelezionata or vm.praticaSelezionata.importoTotale lt 0 or (vm.praticaSelezionata.tipoPratica != 'A' and vm.praticaSelezionata.tipoPratica != 'L' and vm.praticaSelezionata.tipoPratica != 'V' and vm.praticaSelezionata.tipoPratica != 'S'))"/>
+            <menuitem label="Avviso AgID" onClick="@command('onGeneraAvvisoAgidPratiche')"
+                      disabled="@bind(empty vm.praticaSelezionata or vm.praticaSelezionata.flagDePag eq 'N')"/>
+            <menuitem label="Canone"
+                      onClick="@command('onStampaDenunciaCUNI')"
+                      disabled="@bind(empty vm.praticaSelezionata or vm.praticaSelezionata.tipoTributo.tipoTributo ne 'CUNI')"/>
+
+        </menupopup>
+
+        <menupopup id="funzioniImposteStampa">
+            <menuitem label="Comunicazione e F24" onClick="@command('onStampaComunicazioneF24')"
+                      disabled="@load(vm.impostaSelezionata eq null or (vm.impostaSelezionata.tipoTributo ne 'ICI' and vm.impostaSelezionata.tipoTributo ne 'TASI'))"
+            />
+            <menuitem label="Avviso AgID" onClick="@command('onGeneraAvvisoAgid')"
+                      disabled="@bind(empty vm.impostaSelezionata or (vm.impostaSelezionata.tipoTributo ne 'ICP' and vm.impostaSelezionata.tipoTributo ne 'TOSAP'))"/>
+            <menu label="F24 Imposte">
+                <menupopup>
+                    <menuitem label="Acconto" onClick="@command('onF24Imposte', tipo='ACCONTO')"
+                              disabled="@load(vm.impostaSelezionata eq null or (vm.impostaSelezionata.tipoTributo ne 'ICI' and vm.impostaSelezionata.tipoTributo ne 'TASI'))"/>
+                    <menuitem label="Saldo - Dovuto" onClick="@command('onF24Imposte', tipo='SALDO_DOVUTO')"
+                              disabled="@load(vm.impostaSelezionata eq null or (vm.impostaSelezionata.tipoTributo ne 'ICI' and vm.impostaSelezionata.tipoTributo ne 'TASI'))"/>
+                    <menuitem label="Saldo - Versato" onClick="@command('onF24Imposte', tipo='SALDO_VERSATO')"
+                              disabled="@load(vm.impostaSelezionata eq null or (vm.impostaSelezionata.tipoTributo ne 'ICI' and vm.impostaSelezionata.tipoTributo ne 'TASI'))"/>
+                    <menuitem label="Unico" onClick="@command('onF24Imposte', tipo='UNICO')"
+                              disabled="@load(vm.impostaSelezionata eq null or (vm.impostaSelezionata.tipoTributo ne 'ICI' and vm.impostaSelezionata.tipoTributo ne 'TASI'))"/>
+                </menupopup>
+            </menu>
+        </menupopup>
+
+        <menupopup id="funzioniRuoliStampa">
+            <menuitem label="Avviso di pagamento TARI" onClick="@command('onAvvisoDiPagamentoTari')"
+                      disabled="@bind(empty vm.ruoloSelezionato or vm.ruoloSelezionato.tipoTributo ne 'TARSU' or vm.ruoloSelezionato.specie eq 'Coattivo')"/>
+            <menu label="F24 Ruolo">
+                <menupopup>
+                    <menuitem label="Stampa" onClick="@command('onF24Ruolo', tipo='COMPLETO')"
+                              disabled="@load(vm.ruoloSelezionato eq null or vm.ruoloSelezionato.specie eq 'Coattivo')"/>
+                    <menuitem label="Stampa Tributo" onClick="@command('onF24Ruolo', tipo='TRIBUTO')"
+                              disabled="@load(vm.ruoloSelezionato eq null or vm.ruoloSelezionato.specie eq 'Coattivo')"/>
+                    <menuitem label="Stampa Maggiorazione" onClick="@command('onF24Ruolo', tipo='MAGGIORAZIONE')"
+                              disabled="@load(vm.ruoloSelezionato eq null or vm.ruoloSelezionato.specie eq 'Coattivo')"/>
+                </menupopup>
+            </menu>
+        </menupopup>
+
+        <menupopup id="funzioniPraticheToXls">
+            <menuitem label="Pratiche" onClick="@command('praticheToXls')"/>
+            <menuseparator/>
+            <menuitem label="Oggetti della pratica" onClick="@command('oggettiPraticaToXls')"
+                      disabled="@load(empty vm.listaOggettiPratica)"/>
+        </menupopup>
+
+        <menupopup id="funzioniOggettiToXls">
+            <menuitem label="Oggetti" onClick="@command('oggettiToXls')"/>
+            <menuseparator/>
+            <menuitem label="Pratiche" onClick="@command('praticheOggettoToXls')"
+                      visible="@bind(vm.scp.tipoVisualizzazioneOggetti eq 'P')"
+                      disabled="@load(empty vm.listaPraticheOggetto)"/>
+            <menuitem label="Catasto" onClick="@command('catastoOggettoToXls')"
+                      visible="@bind(vm.scp.tipoVisualizzazioneOggetti eq 'C')"
+                      disabled="@load(empty vm.oggettiDaCatasto)"/>
+            <menuitem label="Dati Metrici" onClick="@command('datiMetriciOggettoToXls')"
+                      visible="@bind(vm.scp.tipoVisualizzazioneOggetti eq 'D')"
+                      disabled="@load(empty vm.listaDatiMetrici)"/>
+        </menupopup>
+
+        <menupopup id="funzioniRuoliToXls">
+            <menuitem label="Ruoli" onClick="@command('ruoliToXls')"/>
+            <menuseparator/>
+            <menuitem visible="@load(vm.ruoloSelezionato.specie.toUpperCase() ne 'COATTIVO')"
+                      label="Oggetti a ruolo" onClick="@command('oggettiRuoloToXls')"
+                      disabled="@load(empty vm.listaOggettiRuolo)"/>
+            <menuitem visible="@load(vm.ruoloSelezionato.specie.toUpperCase() eq 'COATTIVO')"
+                      label="Pratiche a ruolo" onClick="@command('praticheRuoloToXls')"
+                      disabled="@load(empty vm.listaPraticheRuolo)"/>
+        </menupopup>
+
+
+    </window>
+</zk>

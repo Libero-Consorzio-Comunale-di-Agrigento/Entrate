@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer" viewModel="@id('vm') @init('supportoServiziViewModel')"
+            width="100%" height="100%">
+		<script src="/js/decimalbox.js"/>
+
+        <label value="Bonifiche per contribuente"
+               style="font-family: sans-serif; font-size: 18px; color: #006384;"/>
+
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2" valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onCambioPagina')"
+                            activePage="@bind(vm.pagingList.activePage)" pageSize="@bind(vm.pagingList.pageSize)"
+                            totalSize="@load(vm.pagingList.totalSize)"
+                            visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   disabled="@load(empty vm.listaElementi)" onClick="@command('onRicaricaLista')"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onExportToXls')"
+                                   disabled="@load(empty vm.listaElementi)"/>
+                    <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                   popup="funzioniSupporto"/>
+                </hlayout>
+            </hlayout>
+            <hlayout style="text-align: right;" valign="middle">
+                <toolbarbutton
+                        image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                        width="26px"
+                        onClick="@command('onOpenFiltri')"/>
+            </hlayout>
+        </hlayout>
+
+        <listbox id="listBoxSupporto" nonselectableTags="" model="@bind(vm.listaElementi)" sizedByContent="true"
+                 span="true" vflex="1"
+                 selectedItem="@bind(vm.elementoSelezionato)" emptyMessage="Nessuna elemento presente.">
+            <auxhead>
+                <auxheader label="" colspan="1"/>
+                <auxheader label="" colspan="1"/>
+                <auxheader label="Utenti" colspan="2"/>
+                <auxheader label="Segnalazione" colspan="2"/>
+                <auxheader label="" colspan="2"/>
+                <auxheader label="1° Liquidazione" colspan="5"/>
+                <auxheader label="Soggetto" colspan="3"/>
+                <auxheader label="Riepilogo oggetti" colspan="6"/>
+                <auxheader label="Possesso" colspan="2"/>
+                <auxheader label="Differenze Catasto" colspan="6"/>
+                <auxheader label="2° Liquidazione" colspan="6"/>
+            </auxhead>
+            <listhead sizable="true" onColSize="@command('onColSize')">
+	            <listheader label="">
+	                <checkbox onCheck="@command('onCheckAllElementi')"
+	                          checked="@load(vm.selectedAnyElemento)"
+	                          disabled="@bind(empty vm.listaElementi)"/>
+	            </listheader>
+                <listheader label="Tributo"/>
+
+                <listheader label="Assegnato"/>
+                <listheader label="Operativo"/>
+
+                <listheader label="Iniziale"/>
+                <listheader label="Ultima"/>
+
+                <listheader label="Liq.Acc." tooltiptext="Liquidazione su Accertamento"/>
+                <listheader label="Ravv." tooltiptext="Ravvedimento"/>
+
+                <listheader label="Numero"/>
+                <listheader label="Data"/>
+                <listheader label="Stato"/>
+                <listheader label="Tipo Atto"/>
+                <listheader label="Notifica"/>
+
+                <listheader label="Cognome Nome"/>
+                <listheader label="Cod.Fiscale" sort="auto(codFiscale)"
+                            onSort="@command('onCambiaOrdinamento', valore='codFiscale')"
+                            sclass="@load(vm.campiCssOrdinamento['codFiscale'])"/>
+                <listheader label="Tipo" tooltiptext="Tipo Persona"/>
+
+                <listheader label="Anno"/>
+                <listheader label="N.Oggetti"/>
+                <listheader label="N.Fabbr"/>
+                <listheader label="N.Terreni"/>
+                <listheader label="N.Aree"/>
+                <listheader label="Diff.Imposta" sort="auto(differenzaImposta)"
+                            tooltiptext="Differenza di Imposta"
+                            onSort="@command('onCambiaOrdinamento', valore='differenzaImposta')"
+                            sclass="@load(vm.campiCssOrdinamento['differenzaImposta'])"/>
+
+                <listheader label="% Min" width="64px" />
+                <listheader label="% Max" width="64px"/>
+
+                <listheader label="Fabbricati"/>
+                <listheader label="Terreni"/>
+                <listheader label="Fabbricati non Cat."/>
+                <listheader label="Terreni non Cat."/>
+                <listheader label="Cat. non Fabbricati"/>
+                <listheader label="Cat. non Terreni"/>
+
+                <listheader label="Utente"/>
+                <listheader label="Numero"/>
+                <listheader label="Data"/>
+                <listheader label="Stato"/>
+                <listheader label="Tipo Atto"/>
+                <listheader label="Notifica"/>
+            </listhead>
+            <template name="model" var="ss">
+                <listitem value="@load(v)"
+                          onSelect="@command('onSelectedElement')" onDoubleClick="@command('onEditElement')">
+
+	                <listcell sclass="centro">
+	                    <checkbox checked="@bind(vm.elementiSelezionati[ss.id])"
+	                              onCheck="@command('onCheckElemento', detail=ss)"/>
+	                </listcell>
+                
+                    <listcell label="@load(ss.descrTributo)"/>
+
+                    <listcell label="@load(ss.dto.utenteAssegnato)"/>
+                    <listcell label="@load(ss.dto.utenteOperativo)"/>
+
+                    <listcell label="@load(ss.dto.segnalazioneIniziale)"/>
+                    <listcell label="@load(ss.dto.segnalazioneUltima)"/>
+
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ss.dto.flagLiqAcc ne false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ss.dto.flagRavvedimento ne false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+
+                    <listcell label="@load(ss.dto.numero)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.data ne null ? c:formatDate(ss.dto.data, 'dd/MM/yyyy') : '')"/>
+                    <listcell label="@load(ss.descrStato)"/>
+                    <listcell label="@load(ss.descrTipoAtto)"/>
+					<listcell label="@load(ss.dto.dataNotifica ne null ? c:formatDate(ss.dto.dataNotifica, 'dd/MM/yyyy') : '')"/>
+
+                    <listcell label="@load(ss.dto.cognomeNome)"/>
+                    <listcell>
+                        <label value="@load(ss.dto.codFiscale)"/>
+                        <space width="5px"/>
+                        <image visible="@load(ss.dto.codFiscale ne null)" src="/images/afc/16x16/user.png"
+                               tooltiptext="Situazione Contribuente" style="cursor: pointer;"
+                               onClick="@command('onSituazioneContribuente')" width="16px"/>
+                    </listcell>
+                    <listcell sclass="centro"
+                              label="@load(ss.tipoPersona)" tooltiptext="@load(ss.tipoPersonaDescr)"/>
+
+                    <listcell label="@load(ss.dto.anno)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.numOggetti)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.numFabbricati)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.numTerreni)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.numAree)" sclass="destra"/>
+                    <listcell sclass="destra"
+                              label="@load(((ss.dto.differenzaImposta eq null) || (ss.dto.differenzaImposta eq 0)) ? '' : c:formatNumber(ss.dto.differenzaImposta, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((ss.dto.minPercPossesso eq null) ? '' : c:cat(c:formatNumber(ss.dto.minPercPossesso, '#,##0.00'),' %'))"/>
+                    <listcell sclass="destra"
+                              label="@load((ss.dto.maxPercPossesso eq null) ? '' : c:cat(c:formatNumber(ss.dto.maxPercPossesso, '#,##0.00'),' %'))"/>
+
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ss.dto.flagDiffFabbricatiCatasto ne false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ss.dto.flagDiffTerreniCatasto ne false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell label="@load(ss.dto.fabbricatiNonCatasto)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.terreniNonCatasto)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.catastoNonTr4Fabbricati)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.catastoNonTr4Terreni)" sclass="destra"/>
+
+                    <listcell label="@load(ss.dto.liq2Utente)"/>
+                    <listcell label="@load(ss.dto.liq2Numero)" sclass="destra"/>
+                    <listcell label="@load(ss.dto.liq2Data ne null ? c:formatDate(ss.dto.liq2Data, 'dd/MM/yyyy') : '')"/>
+                    <listcell label="@load(ss.descrLiq2Stato)"/>
+                    <listcell label="@load(ss.descrLiq2TipoAtto)"/>
+					<listcell label="@load(ss.dto.liq2DataNotifica ne null ? c:formatDate(ss.dto.liq2DataNotifica, 'dd/MM/yyyy') : '')"/>
+                </listitem>
+            </template>
+        </listbox>
+
+        <menupopup id="funzioniSupporto">
+            <menuitem label="Popolamento bonifiche contribuenti"
+                      onClick="@command('onPopolamentoSupporto')"
+                      disabled="@load(!vm.cbTributiAbilitatiScrittura.ICI and !vm.cbTributiAbilitatiScrittura.TASI)"/>
+            <menuitem label="Assegnazione contribuenti"
+                      onClick="@command('onAssegnazioneContribuenti')"
+                      disabled="@load(!vm.cbTributiAbilitatiScrittura.ICI and !vm.cbTributiAbilitatiScrittura.TASI)"/>
+            <menuitem label="Aggiorna posizioni"
+                      onClick="@command('onAggiornaAssegnazione')"
+                      disabled="@load(!vm.cbTributiAbilitatiScrittura.ICI and !vm.cbTributiAbilitatiScrittura.TASI)"/>
+            <menuitem label="Modifica assegnazioni"
+                      onClick="@command('onModificaAssegnazione')"
+                      disabled="@load((vm.selectedAnyElemento eq false) or (!vm.cbTributiAbilitatiScrittura.ICI and !vm.cbTributiAbilitatiScrittura.TASI))"/>
+        </menupopup>
+    </window>
+</zk>

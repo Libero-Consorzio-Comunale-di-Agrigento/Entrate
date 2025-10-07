@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid sclass="form">
+        <rows>
+            <row>
+                <cell width="30%" valign="top">
+
+                    <grid sclass="form" hflex="1">
+                        <rows>
+                            <row>
+                                <cell align="right">
+                                    <label value="Tipo Tributo"/>
+                                </cell>
+                                <cell>
+                                    <label value="@load(vm.tipoTributoDescr)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Anno"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.annoVersamento)" hflex="1" mold="rounded"
+                                            style="text-align: right"
+                                            readonly="@load((vm.modificaAnno eq false) or (vm.numeroPratica ne ''))"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Tipo Versamento"/>
+                                </cell>
+                                <cell>
+                                    <combobox readonly="true" model="@load(vm.tipiVersamento)" hflex="1" mold="rounded"
+                                              selectedItem="@bind(vm.versamento.tipoVersamento) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                              disabled="@load(vm.modifica eq false)">
+                                        <template name="model" var="item">
+                                            <comboitem label="@load(item.value)" value="@load(item.key)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Rata"/>
+                                </cell>
+                                <cell>
+                                    <combobox readonly="true" model="@load(vm.listRataICI)" hflex="1" mold="rounded"
+                                              selectedItem="@bind(vm.rataSelezionata)"
+                                              disabled="@load(vm.modifica eq false)">
+                                        <template name="model" var="opz">
+			                				<comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Importo Versato"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.importoVersato)" hflex="1" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Data Pagamento"/>
+                                </cell>
+                                <cell>
+                                    <datebox hflex="1" value="@bind(vm.versamento.dataPagamento)" mold="rounded"
+                                             format="dd/MM/yyyy" style="text-align: right"
+                                             disabled="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Detrazione"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.detrazione)" hflex="1" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+
+                </cell>
+                <cell valign="top">
+
+                    <grid sclass="form" hflex="1">
+                        <rows>
+                            <row>
+                                <cell align="left">
+                                </cell>
+                                <cell align="left">
+                                    <label value="Totale" visible="@load(vm.tipoTributo ne 'ICI')"/>
+                                </cell>
+                                <cell align="left" visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <label value="Comune"/>
+                                </cell>
+                                <cell align="left" visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <label value="Stato"/>
+                                </cell>
+                                <cell align="left">
+                                    <label value="Fabbr."/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.tipoTributo eq 'ICI')">
+                                <cell align="right">
+                                    <label value="Terreni Agricoli"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.terreniAgricoli)" mold="rounded"
+                                                onChange="@command('onChangeTotale')"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.terreniComune)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.terreniErariale)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.numFabbricatiTerreni)" mold="rounded"
+                                            onChange="@command('onChangeFabbricati')"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Aree Fabbricabili"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.areeFabbricabili)" mold="rounded"
+                                                onChange="@command('onChangeTotale')"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.areeComune)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.areeErariale)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.numFabbricatiAree)" mold="rounded"
+                                            onChange="@command('onChangeFabbricati')"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Abitazione Principale"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.abPrincipale)" mold="rounded"
+                                                onChange="@command('onChangeTotale')"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.numFabbricatiAb)" mold="rounded"
+                                            onChange="@command('onChangeFabbricati')"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Fabbricati Rurali"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.rurali)" mold="rounded"
+                                                onChange="@command('onChangeTotale')"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.ruraliComune)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.ruraliErariale)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.numFabbricatiRurali)" mold="rounded"
+                                            onChange="@command('onChangeFabbricati')"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Altri Fabbricati"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.altriFabbricati)" mold="rounded"
+                                                onChange="@command('onChangeTotale')"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.altriComune)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.altriErariale)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.numFabbricatiAltri)" mold="rounded"
+                                            onChange="@command('onChangeFabbricati')"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.tipoTributo eq 'ICI')">
+                                <cell align="right">
+                                    <label value="Fabbricati D"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.fabbricatiD)" mold="rounded"
+                                                onChange="@command('onChangeTotale')"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.fabbricatiDComune)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <decimalbox value="@bind(vm.versamento.fabbricatiDErariale)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.numFabbricatiD)" mold="rounded"
+                                            onChange="@command('onChangeFabbricati')"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.tipoTributo eq 'ICI')">
+                                <cell align="right">
+                                    <label value="Fabbriati merce"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.versamento.fabbricatiMerce)" mold="rounded"
+                                                onChange="@command('onChangeTotale')"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.numFabbricatiMerce)" mold="rounded"
+                                            onChange="@command('onChangeFabbricati')"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Totale"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox value="@bind(vm.importoTotale)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                style="text-align: right"
+                                                disabled="true"/>
+                                </cell>
+                                <cell visible="@load(vm.tipoTributo eq 'ICI')">
+                                </cell>
+                                <cell align="right" visible="@load(vm.tipoTributo eq 'ICI')">
+                                    <label value="Fabbricati"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.versamento.fabbricati)" mold="rounded"
+                                            style="text-align: right"
+                                            readonly="@load(vm.modifica eq false)"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+
+                </cell>
+            </row>
+        </rows>
+    </grid>
+
+    <grid sclass="form">
+        <rows>
+            <row>
+                <cell align="right">
+                    <label value="Fonte"/>
+                </cell>
+                <cell width="35%">
+                    <combobox model="@load(vm.listaFonti)" mold="rounded"
+                              selectedItem="@bind(vm.versamento.fonte) @converter('it.finmatica.zkutils.PropertyConverter', property='fonte')"
+                              hflex="1" width="90%"
+                              disabled="@load(vm.modifica eq false)">
+                        <template name="model" var="fo">
+                            <comboitem label="@load(c:cat3(fo.fonte, ' - ', fo.descrizione))" value="@load(fo)"/>
+                        </template>
+                    </combobox>
+                </cell>
+                <cell align="right">
+                    <label value="Numero Pratica"/>
+                </cell>
+                <cell>
+                    <textbox value="@bind(vm.numeroPratica)" tooltiptext="@load(vm.numeroPraticaToolTip)"
+                    		 mold="rounded" hflex="1" readonly="true"/>
+                </cell>
+                <cell align="right">
+                    <label value="Tipo Pratica"/>
+                </cell>
+                <cell>
+                    <textbox value="@bind(vm.tipoPratica)" mold="rounded" hflex="1" readonly="true"/>
+                </cell>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="Note"/>
+                </cell>
+                <cell>
+                    <textbox value="@bind(vm.versamento.note)" mold="rounded" hflex="1" rows="2"
+                    		 readonly="@load(vm.modifica eq false)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Prog.Doc."/>
+                </cell>
+                <cell>
+                    <intbox value="@bind(vm.versamento.documentoId)" mold="rounded" hflex="1"
+                            style="text-align: right"
+                            readonly="true"/>
+                </cell>
+                <cell align="right">
+                    <label value="Data Registrazione"/>
+                </cell>
+                <cell>
+                    <datebox value="@bind(vm.versamento.dataReg)" mold="rounded" hflex="1"
+                             format="dd/MM/yyyy"
+                             disabled="@load(vm.modifica eq false)"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</zk>

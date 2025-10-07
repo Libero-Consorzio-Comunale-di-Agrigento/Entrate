@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <!-- Integrati -->
+    <include file="GSDTr4_g.sql" relativeToChangelogFile="true"/>
+    <include file="Tr4GSD_s.sql" relativeToChangelogFile="true"/>
+    <include file="Tr4GSDps.sql" relativeToChangelogFile="true"/>
+
+    <!-- Non Integrati -->
+    <include file="Tr4GSD_o.sql" relativeToChangelogFile="true"/>
+    <include file="f_MOV_fascia_al_TR4.sql" relativeToChangelogFile="true"/>
+    <include file="f_unita_territoriale_TR4.sql" relativeToChangelogFile="true"/>
+    <include file="f_matricola_md_TR4.sql" relativeToChangelogFile="true"/>
+    <include file="f_matricola_pd_TR4.sql" relativeToChangelogFile="true"/>
+    <include file="Tr4Tr4ps.sql" relativeToChangelogFile="true"/>
+    <include file="anadev_ins.sql" relativeToChangelogFile="true"/>
+    <include file="anadrp_ins.sql" relativeToChangelogFile="true"/>
+    <include file="anadce_ins.sql" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

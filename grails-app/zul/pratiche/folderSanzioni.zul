@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!--
+    ATTENZIONE: la griglia è stata sdoppiata per risolvere rapidamente il problema dei totali su footer: issue 42361 nota 60.
+    Visualizzando nascondendo colonne dinamicamente i footer non vengono gestiti correttamente, le griglie andrebbero
+    scomposte per tipo tributo.
+    -->
+
+    <grid id="gridSanzioniICITARSU" model="@load(vm.sanzioni)"
+          visible="@load(vm.tipoTributoAttuale ne 'TASI')"
+          emptyMessage="Nessuna sanzione presente" sizedByContent="true" span="true"
+          hflex="1" vflex="1">
+        <!--<frozen columns="5"/>-->
+        <columns sizable="true">
+            <column label="Sanzione" sclass="centro"/>
+            <column label="GG" sclass="centro" align="right" tooltiptext="Giorni" width="60px"/>
+            <column label="Sem." sclass="centro" align="right" tooltiptext="Semestri" width="60px"/>
+            <column label="Perc." sclass="centro" align="right" tooltiptext="Percentuale" width="60px"/>
+            <column label="Importo" sclass="centro" align="right" width="80px"/>
+            <column label="Rid." sclass="centro" align="right" tooltiptext="Riduzione" width="60px"/>
+            <column label="Rid. 2" sclass="centro" align="right" tooltiptext="Riduzione 2"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU')" width="60px"/>
+
+            <column label="Ab.Principale" sclass="centro" align="right" tooltiptext="Abitazione Principale"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU' and (vm.accManImu eq false) and vm.tipoTributoAttuale ne 'CUNI')"/>
+            <column label="Fabbr.Rurali" sclass="centro" align="right" tooltiptext="Fabbricati Rurali"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU' and (vm.accManImu eq false) and vm.tipoTributoAttuale ne 'CUNI')"/>
+            <column label="Terreni Com." sclass="centro" align="right" tooltiptext="Terreni Comune"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI' and (vm.accManImu eq false))"/>
+            <column label="Terreni Erar." sclass="centro" align="right" tooltiptext="Terreni Erario"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI' and (vm.accManImu eq false))"/>
+            <column label="Aree Com." sclass="centro" align="right" tooltiptext="Aree Commerciali"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU' and (vm.accManImu eq false) and vm.tipoTributoAttuale ne 'CUNI')"/>
+            <column label="Aree Erar." sclass="centro" align="right" tooltiptext="Aree Erario"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI' and (vm.accManImu eq false))"/>
+            <column label="Altri Com." sclass="centro" align="right" tooltiptext="Altri Comune"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU' and (vm.accManImu eq false) and vm.tipoTributoAttuale ne 'CUNI')"/>
+            <column label="Altri Erar." sclass="centro" align="right" tooltiptext="Altri Erario"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI' and (vm.accManImu eq false))"/>
+            <column label="Fabbr.Uso Prod.Com." sclass="centro" align="right"
+                    tooltiptext="Fabbricati Uso Produttivo Comune"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI' and (vm.accManImu eq false))"/>
+            <column label="Fabbr.Uso Prod.Erar." sclass="centro" align="right"
+                    tooltiptext="Fabbicati Uso Produttivo Erario"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI' and (vm.accManImu eq false))"/>
+            <column label="Fabbr.Merce" sclass="centro" align="right" tooltiptext="Fabbicati Merce"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI' and (vm.accManImu eq false))"/>
+
+            <column sclass="centro" align="right" label="Imp.Lordo" tooltiptext="Importo Lordo"
+                    visible="@load(vm.tipoTributoAttuale eq 'TARSU')"/>
+
+            <column width="80px" label="" align="center">
+                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                       onClick="@command('onAggiungiSanzione', grid=gridSanzioni)"
+                       tooltiptext="Aggiungi sanzione"
+                       visible="@load(!vm.sanzioniLettura and empty vm.pratica.dataNotifica)"/>
+                <image width="15px" src="/images/afc/16x16/minus.png" style="cursor: pointer;"
+                       onClick="@command('onCancellaTutteSanzioni')"
+                       tooltiptext="Elimina tutte le sanzioni"
+                       visible="@load(!vm.sanzioniLettura and empty vm.pratica.dataNotifica)"/>
+                <image src="/images/afc/16x16/refresh.png" tooltiptext="Ricalcola Sanzioni"
+                       onClick="@command('onRicalcolaSanzioni', vers=vers)"
+                       style="cursor: pointer"
+                       visible="@load(!vm.sanzioniLettura and vm.pratica.tipoPratica eq 'V' and empty vm.pratica.dataNotifica)"/>
+            </column>
+        </columns>
+        <template name="model" var="sanz">
+            <row visible="@load(!sanz.eliminato)">
+                <hlayout>
+                    <hlayout hflex="1">
+                        <label value="@load(sanz.sanzione.descrizioneEstesa)" multiline="true"
+                               style="white-space: nowrap; text-overflow: ellipsis; display: block;" hflex="1"
+                               tooltiptext="@load(sanz.sanzione.tooltipDate)"/>
+                        <space hflex="1"/>
+                        <image src="/images/afc/16x16/edit.png"
+                               width="16px"
+                               onClick="@command('onModificaSanzione', sanz=sanz)"
+                               style="cursor: pointer"
+                               visible="@bind(((sanz.sanzione eq null) or (sanz.sanzione.codSanzione eq null) or (sanz.sanzione.codSanzione ge 100)) and vm.sanzioniModifica[sanz.toString()].modificaCausale)"/>
+                    </hlayout>
+
+                    <textbox inplace="true" hflex="2" mold="rounded" readonly="true"
+                             value="@load(c:cat3(sanz.sanzione.codSanzione, ' - ', sanz.sanzione.descrizione))"
+                             visible="@bind((sanz.sanzione ne null) and (sanz.sanzione.codSanzione ne null) and (sanz.sanzione.codSanzione lt 100))">
+                    </textbox>
+                </hlayout>
+                <intbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                        inplace="true" style="text-align: right"
+                        value="@bind(sanz.giorni)"/>
+                <intbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                        inplace="true" style="text-align: right"
+                        value="@bind(sanz.semestri)"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="#,##0.00" value="@bind(sanz.percentuale)"
+                            onChange="@command('onCambiaPercentualeSanzione', sanz=sanz)"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.importo)" format="€ #,##0.00"
+                            onChange="@command('onCambiaImportoSanzione', sanz=sanz)"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.riduzione)" format="#,##0.00"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.riduzione2)" format="#,##0.00"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.abPrincipale)" format="€ #,##0.00"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.rurali)" format="€ #,##0.00"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.terreniComune)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.terreniErariale)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.areeComune)"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.areeErariale)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.altriComune)"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.altriErariale)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.fabbricatiDComune)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.fabbricatiDErariale)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.fabbricatiMerce)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <label
+                        value="@load(!empty sanz.importoLordoCalcolato ? c:formatNumber(sanz.importoLordoCalcolato, '€ #,##0.00'): '')"
+                        visible="@load(vm.tipoTributoAttuale eq 'TARSU')"/>
+
+                <!-- COMANDI -->
+                <hlayout width="80px">
+                    <hlayout>
+                        <image src="/images/afc/16x16/editcopy.png" tooltiptext="Duplica Sanzione"
+                               onClick="@command('onDuplicaSanzione', sanz=sanz)"
+                               style="cursor: pointer"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].duplica)"/>
+                        <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina Sanzione"
+                               style="cursor: pointer" onClick="@command('onCancellaSanzione', sanz=sanz)"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].elimina)"/>
+                        <image src="/images/tr4web/16x16/unlock.png" tooltiptext="Sblocca Modifica"
+                               style="cursor: pointer" onClick="@command('onLockUnlockModificaSanzione', sanz=sanz)"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].modificheSbloccate)"/>
+                        <image src="/images/tr4web/16x16/lock.png" tooltiptext="Blocca Modifica"
+                               style="cursor: pointer" onClick="@command('onLockUnlockModificaSanzione', sanz=sanz)"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].modificheBloccate)"/>
+                        <image src="/images/afc/16x16/document.png" tooltiptext="Visualizza note sanzione"
+                               style="cursor: pointer;"
+                               onClick="@command('onVisualizzaNote', popup=popupNoteSanzione, note=sanz.note)"
+                               visible="@bind(!empty sanz.note)"/>
+                        <!-- onClick="@command('onApriNote', arg=sanz.note)" -->
+                    </hlayout>
+                </hlayout>
+            </row>
+        </template>
+
+        <foot>
+            <footer align="right">
+                <label value="Importo Ridotto:"
+                       visible="@load((vm.tipoTributoAttuale ne 'TARSU') and (vm.totImportoTotaleRid ne vm.pratica.importoTotale))"/>
+            </footer>
+            <footer span="2" align="center">
+                <label visible="@load((vm.tipoTributoAttuale ne 'TARSU') and (vm.totImportoTotaleRid ne vm.pratica.importoTotale))"
+                       value="@load(vm.totImportoTotaleRid ne null ? c:formatNumber(vm.totImportoTotaleRid, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer>
+                <label value="Totale:"
+                       visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <vbox visible="@load(vm.tipoTributoAttuale eq 'TARSU')">
+                    <label value="Totale:"/>
+                    <label value="Importo Ridotto:"
+                           visible="@load((vm.accManTari or vm.accAutoTari) and ((vm.totaliSanzioni[0].importoTotale - vm.totImportoTotaleRid) gt 0.1))"/>
+                </vbox>
+            </footer>
+            <footer>
+                <label value="@load(vm.totaliSanzioni[0].importoTotale ne null ? c:formatNumber(vm.totaliSanzioni[0].importoTotale, '€ #,##0.00'): '')"
+                       visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <vbox visible="@load(vm.tipoTributoAttuale eq 'TARSU')">
+                    <label value="@load(vm.totaliSanzioni[0].importoTotale ne null ? c:formatNumber(vm.totaliSanzioni[0].importoTotale, '€ #,##0.00'): '')"/>
+                    <label value="@load(vm.totImportoTotaleRid ne null ? c:formatNumber(vm.totImportoTotaleRid, '€ #,##0.00'): '')"
+                           visible="@load((vm.accManTari or vm.accAutoTari) and ((vm.totaliSanzioni[0].importoTotale - vm.totImportoTotaleRid) gt 0.1))"/>
+                </vbox>
+            </footer>
+            <footer/>
+            <footer>
+                <vbox visible="@load(vm.tipoTributoAttuale eq 'TARSU')">
+                    <label value="@load(vm.totImportoLordo ne null ? c:formatNumber(vm.totImportoLordo, '€ #,##0.00'): '')"/>
+                    <label value="@load(vm.totImportoLordoRid ne null ? c:formatNumber(vm.totImportoLordoRid, '€ #,##0.00'): '')"
+                           visible="@load((vm.accManTari or vm.accAutoTari) and ((vm.totImportoLordo - vm.totImportoLordoRid) gt 0.1))"/>
+                </vbox>
+            </footer>
+            <footer align="right" visible="@load(vm.accManImu eq false)">
+                <label value="@load(vm.totaliSanzioni[0].totAbPrincipale ne null ? c:formatNumber(vm.totaliSanzioni[0].totAbPrincipale, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.accManImu eq false)">
+                <label value="@load(vm.totaliSanzioni[0].totRurali ne null ? c:formatNumber(vm.totaliSanzioni[0].totRurali, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totTerreniCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totTerreniCom, '€ #,##0.00'): '')"/>
+                <label visible="@load(vm.tipoTributoAttuale eq 'TASI')"
+                       value="@load(vm.totaliSanzioni[0].totAreeCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAreeCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totTerreniErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totTerreniErar, '€ #,##0.00'): '')"/>
+                <label visible="@load(vm.tipoTributoAttuale eq 'TASI')"
+                       value="@load(vm.totaliSanzioni[0].totAltriCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAltriCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totAreeCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAreeCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totAreeErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totAreeErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totAltriCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAltriCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totAltriErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totAltriErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totFabbCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totFabbCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totFabbErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totFabbErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totFabbMerce ne null ? c:formatNumber(vm.totaliSanzioni[0].totFabbMerce, '€ #,##0.00'): '')"/>
+            </footer>
+        </foot>
+
+    </grid>
+
+    <grid id="gridSanzioniTASI" model="@load(vm.sanzioni)" visible="@load(vm.tipoTributoAttuale eq 'TASI')"
+          emptyMessage="Nessuna sanzione presente" sizedByContent="true" span="true"
+          hflex="1" vflex="1">
+        <frozen columns="5"/>
+        <columns sizable="true">
+            <column label="Sanzione" sclass="centro"/>
+            <column label="GG" sclass="centro" align="right" tooltiptext="Giorni"/>
+            <column label="Sem." sclass="centro" align="right" tooltiptext="Semestri"/>
+            <column label="Perc." sclass="centro" align="right" tooltiptext="Percentuale"/>
+            <column label="Importo" sclass="centro" align="right"/>
+            <column label="Rid." sclass="centro" align="right" tooltiptext="Riduzione"/>
+            <column label="Rid. 2" sclass="centro" align="right" tooltiptext="Riduzione 2"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+            <column label="Ab.Principale" sclass="centro" align="right" tooltiptext="Abitazione Principale"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+            <column label="Fabbr.Rurali" sclass="centro" align="right" tooltiptext="Fabbricati Rurali"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+            <column label="Aree Com." sclass="centro" align="right" tooltiptext="Aree Commerciali"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+            <column label="Aree Erar." sclass="centro" align="right" tooltiptext="Aree Erario"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+            <column label="Altri Com." sclass="centro" align="right" tooltiptext="Altri Comune"
+                    visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+            <column label="Altri Erar." sclass="centro" align="right" tooltiptext="Altri Erario"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+            <column label="Fabbr.Uso Prod.Com." sclass="centro" align="right"
+                    tooltiptext="Fabbricati Uso Produttivo Comune"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+            <column label="Fabbr.Uso Prod.Erar." sclass="centro" align="right"
+                    tooltiptext="Fabbicati Uso Produttivo Erario"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+            <column label="Fabbr.Merce" sclass="centro" align="right"
+                    tooltiptext="Fabbicati Merce"
+                    visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+            <column sclass="centro" align="right" label="Importo Lordo"
+                    visible="@load(vm.tipoTributoAttuale eq 'TARSU')"/>
+
+            <column width="80px" label="" align="center"
+                    visible="@load(!vm.sanzioniLettura and empty vm.pratica.dataNotifica)">
+                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                       onClick="@command('onAggiungiSanzione', grid=gridSanzioni)"
+                       tooltiptext="Aggiungi sanzione"/>
+                <image width="15px" src="/images/afc/16x16/minus.png" style="cursor: pointer;"
+                       onClick="@command('onCancellaTutteSanzioni')"
+                       tooltiptext="Elimina tutte le sanzioni"/>
+                <image src="/images/afc/16x16/refresh.png" tooltiptext="Ricalcola Sanzioni"
+                       onClick="@command('onRicalcolaSanzioni', vers=vers)"
+                       style="cursor: pointer"
+                       visible="@load(!vm.lettura and vm.pratica.tipoPratica eq 'V')"/>
+            </column>
+        </columns>
+        <template name="model" var="sanz">
+            <row visible="@load(!sanz.eliminato)">
+                <hlayout hflex="1">
+                    <label value="@load(sanz.sanzione.descrizioneEstesa)" multiline="true"
+                           style="white-space: nowrap; text-overflow: ellipsis; display: block;" hflex="1"
+                           tooltiptext="@load(sanz.sanzione.tooltipDate)"/>
+                    <space hflex="1"/>
+                    <image src="/images/afc/16x16/edit.png"
+                           width="16px"
+                           onClick="@command('onModificaSanzione', sanz=sanz)"
+                           style="cursor: pointer"
+                           visible="@bind(((sanz.sanzione eq null) or (sanz.sanzione.codSanzione eq null) or (sanz.sanzione.codSanzione ge 100)) and vm.sanzioniModifica[sanz.toString()].modificaCausale)"/>
+                </hlayout>
+
+                <intbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                        inplace="true"
+                        value="@bind(sanz.giorni)"/>
+                <intbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                        inplace="true"
+                        value="@bind(sanz.semestri)"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="#,##0.00" value="@bind(sanz.percentuale)"
+                            onChange="@command('onCambiaPercentualeSanzione', sanz=sanz)"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.importo)" format="€ #,##0.00"
+                            onChange="@command('onCambiaImportoSanzione', sanz=sanz)"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.riduzione)" format="#,##0.00"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.riduzione2)" format="#,##0.00"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.abPrincipale)" format="€ #,##0.00"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            value="@bind(sanz.rurali)" format="€ #,##0.00"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.areeComune)"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.areeErariale)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.altriComune)"
+                            visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.altriErariale)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.fabbricatiDComune)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.fabbricatiDErariale)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <decimalbox disabled="@bind(!vm.sanzioniModifica[sanz.toString()].modifica)" mold="rounded" hflex="1"
+                            inplace="true"
+                            style="text-align: right"
+                            format="€ #,##0.00"
+                            value="@bind(sanz.fabbricatiMerce)"
+                            visible="@load(vm.tipoTributoAttuale eq 'ICI')"/>
+                <label
+                        value="@load(sanz.importoLordo ne null ? c:formatNumber(sanz.importoLordo, '€ #,##0.00'): '')"
+                        visible="@load(vm.tipoTributoAttuale eq 'TARSU')"/>
+
+                <!-- COMANDI -->
+                <hlayout width="80px">
+                    <hlayout>
+                        <image src="/images/afc/16x16/editcopy.png" tooltiptext="Duplica Sanzione"
+                               onClick="@command('onDuplicaSanzione', sanz=sanz)"
+                               style="cursor: pointer"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].duplica)"/>
+                        <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina Sanzione"
+                               style="cursor: pointer" onClick="@command('onCancellaSanzione', sanz=sanz)"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].elimina)"/>
+                        <image src="/images/tr4web/16x16/unlock.png" tooltiptext="Blocca Modifica"
+                               style="cursor: pointer" onClick="@command('onLockUnlockModificaSanzione', sanz=sanz)"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].modificheSbloccate)"/>
+                        <image src="/images/tr4web/16x16/lock.png" tooltiptext="Sblocca Modifica"
+                               style="cursor: pointer" onClick="@command('onLockUnlockModificaSanzione', sanz=sanz)"
+                               visible="@load(vm.sanzioniModifica[sanz.toString()].modificheBloccate)"/>
+                    </hlayout>
+                </hlayout>
+            </row>
+        </template>
+
+        <foot>
+            <footer align="right">
+                <label value="Importo Ridotto:"
+                       visible="@load((vm.tipoTributoAttuale ne 'TARSU') and (vm.totImportoTotaleRid ne vm.pratica.importoTotale))"/>
+            </footer>
+            <footer span="2" align="center">
+                <label visible="@load((vm.tipoTributoAttuale ne 'TARSU') and (vm.totImportoTotaleRid ne vm.pratica.importoTotale))"
+                       value="@load(vm.totImportoTotaleRid ne null ? c:formatNumber(vm.totImportoTotaleRid, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer>
+                <label value="Totale:" visible="@load(vm.tipoTributoAttuale ne 'TARSU')"/>
+                <vbox visible="@load(vm.tipoTributoAttuale eq 'TARSU')">
+                    <label value="Totale:"/>
+                    <label value="Importo Ridotto:" visible="@load(vm.accManTari or vm.accAutoTari)"/>
+                </vbox>
+            </footer>
+            <footer>
+                <vbox>
+                    <label value="@load(vm.totaliSanzioni[0].importoTotale ne null ? c:formatNumber(vm.totaliSanzioni[0].importoTotale, '€ #,##0.00'): '')"/>
+                    <label value="@load(vm.totImportoTotaleRid ne null ? c:formatNumber(vm.totImportoTotaleRid, '€ #,##0.00'): '')"
+                           visible="@load(vm.tipoTributoAttuale eq 'TARSU' and (vm.accManTari or vm.accAutoTari))"/>
+                </vbox>
+            </footer>
+            <footer/>
+            <footer>
+                <vbox visible="@load(vm.tipoTributoAttuale eq 'TARSU')">
+                    <label value="@load(vm.totImportoLordo ne null ? c:formatNumber(vm.totImportoLordo, '€ #,##0.00'): '')"/>
+                    <label value="@load(vm.totImportoLordoRid ne null ? c:formatNumber(vm.totImportoLordoRid, '€ #,##0.00'): '')"
+                           visible="@load(vm.accManTari or vm.accAutoTari)"/>
+                </vbox>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totaliSanzioni[0].totAbPrincipale ne null ? c:formatNumber(vm.totaliSanzioni[0].totAbPrincipale, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totaliSanzioni[0].totRurali ne null ? c:formatNumber(vm.totaliSanzioni[0].totRurali, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totTerreniCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totTerreniCom, '€ #,##0.00'): '')"/>
+                <label visible="@load(vm.tipoTributoAttuale eq 'TASI')"
+                       value="@load(vm.totaliSanzioni[0].totAreeCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAreeCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totTerreniErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totTerreniErar, '€ #,##0.00'): '')"/>
+                <label visible="@load(vm.tipoTributoAttuale eq 'TASI')"
+                       value="@load(vm.totaliSanzioni[0].totAltriCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAltriCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totAreeCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAreeCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label visible="@load(vm.tipoTributoAttuale eq 'ICI')"
+                       value="@load(vm.totaliSanzioni[0].totAreeErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totAreeErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totAltriCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totAltriCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totAltriErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totAltriErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totFabbCom ne null ? c:formatNumber(vm.totaliSanzioni[0].totFabbCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totFabbErar ne null ? c:formatNumber(vm.totaliSanzioni[0].totFabbErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right" visible="@load(vm.tipoTributoAttuale eq 'ICI')">
+                <label value="@load(vm.totaliSanzioni[0].totFabbMerce ne null ? c:formatNumber(vm.totaliSanzioni[0].totFabbMerce, '€ #,##0.00'): '')"/>
+            </footer>
+        </foot>
+
+    </grid>
+
+    <popup id="popupNoteSanzione" width="500px" height="200px">
+        <h:div sclass="barraTitoloPagina">
+            <label class="titoloPagina" value="Note Sanzione"/>
+        </h:div>
+        <label pre="true" multiline="true" value="@load(vm.notePerPopup)"/>
+    </popup>
+</zk>

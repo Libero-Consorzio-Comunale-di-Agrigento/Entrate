@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <hlayout valign="middle">
+        <grid sclass="form" hflex="1">
+            <rows>
+                <row>
+                    <cell align="left" visible="@load(vm.miniImu)">
+                        <label value="Mini IMU"/>
+                    </cell>
+                    <cell align="right" visible="@load(not(vm.valoreTerreniRidotti eq 0))">
+                        <label value="Totale terreni ridotti:"/>
+                    </cell>
+                    <cell align="left">
+                        <label value="@load(vm.valoreTerreniRidotti) @converter('formattedNumber', format='#,##0.00')"
+                               visible="@load(not(vm.valoreTerreniRidotti eq 0))"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Saldo detrazione standard:"
+                               visible="@load(not(vm.detrazioneStd eq 0) and vm.rbTributi eq 'ICI')"/>
+                    </cell>
+                    <cell align="left" visible="@load(not(vm.detrazioneStd eq 0) and vm.rbTributi eq 'ICI')">
+                        <label value="@load(vm.detrazioneStd) @converter('formattedNumber', format='#,##0.00')"
+                               style="color:red"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </hlayout>
+    <grid hflex="max" vflex="1" model="@load(vm.listaImposte)" emptyMessage="">
+        <auxhead visible="@load(vm.rbTributi eq 'ICI')">
+            <auxheader label="" align="center"/>
+			<auxheader colspan="2" align="center">
+			    <hbox>
+			        <label value="Versato" />
+			        <label value="(" />
+			        <checkbox checked="@bind(vm.versamentiPerAnno)" 
+			        		onCheck="@command('onChangePerAnno')"/>
+			        <label value="Recupera vers.)" />
+			    </hbox>
+			</auxheader>
+            <auxheader label="Fabbr." align="center"/>
+            <auxheader label="Acconto" colspan="2" align="center"/>
+            <auxheader label="Saldo" colspan="2" align="center"/>
+            <auxheader label="Totale" colspan="2" align="center"/>
+        </auxhead>
+        <columns sizable="true">
+            <column label="" width="15%"/>
+            <column label="@load((vm.rbTributi eq 'ICI')?'Generale':'Versato')" align="center" width="10%"/>
+            <column label="Erariale" align="center" width="10%" visible="@load(vm.rbTributi eq 'ICI')"/>
+            <column label="@load((vm.rbTributi eq 'ICI')?'':'Fabbricati')" align="center" width="5%"/>
+            <column label="@load((vm.rbTributi eq 'ICI')?'Generale':'Acconto')" align="center" width="10%"/>
+            <column label="Erariale" align="center" width="10%" visible="@load(vm.rbTributi eq 'ICI')"/>
+            <column label="@load((vm.rbTributi eq 'ICI')?'Generale':'Saldo')" align="center" width="10%"/>
+            <column label="Erariale" align="center" width="10%" visible="@load(vm.rbTributi eq 'ICI')"/>
+            <column label="@load((vm.rbTributi eq 'ICI')?'Generale':'Totale')" align="center" width="10%"/>
+            <column label="Erariale" align="center" width="10%" visible="@load(vm.rbTributi eq 'ICI')"/>
+        </columns>
+        <template name="model" var="imp">
+            <row style="text-align: right">
+                <label value="@load(vm.getTipoOggettoCalcoloDescrizione(imp.tipo))"/>
+                <decimalbox value="@bind(imp.versatoAcconto)" width="90%"
+                            mold="rounded"
+                            format="€ #,##0.00"
+                            onChange="@command('onChangeVersato',ogimId=imp.idDettaglio)"
+                            disabled="@load(imp.acconto+imp.saldo eq 0)"
+                            visible="@load(((imp.acconto+imp.saldo > 0) or (imp.versatoAcconto > 0)) and not(imp.tipo eq vm.getTipoOggettoCalcolo('TOTALE')) and not(imp.tipo eq vm.getTipoOggettoCalcolo('DETRAZIONE')))"/>
+                <decimalbox value="@bind(imp.versatoAccontoErario)" width="90%" format="€ #,##0.00"
+                            mold="rounded"
+                            onChange="@command('onChangeVersatoErario',ogimId=imp.idDettaglio)"
+                            disabled="@load(imp.accontoErario+imp.saldoErario eq 0)"
+                            visible="@load(vm.rbTributi eq 'ICI' and ((imp.accontoErario+imp.saldoErario > 0) or (imp.versatoAccontoErario > 0)) and not(imp.tipo eq vm.getTipoOggettoCalcolo('TOTALE')) and not(imp.tipo eq vm.getTipoOggettoCalcolo('DETRAZIONE')))"/>
+                <label value="@bind(imp.numFabbricati eq 0 or imp.numFabbricati eq null ? null : imp.numFabbricati)"/>
+                <label value="@bind(imp.acconto eq 0 or imp.acconto eq null ? null : c:formatNumber(imp.acconto, '€ #,##0.00'))"
+                       sclass="@load(imp.acconto lt 0 ? 'importo-negativo' : '')"/>
+                <label value="@bind(imp.accontoErario eq 0 or imp.accontoErario eq null ? null : c:formatNumber(imp.accontoErario, '€ #,##0.00'))"
+                       sclass="@load(imp.accontoErario lt 0 ? 'importo-negativo' : '')"
+                       visible="@load(vm.rbTributi eq 'ICI')"/>
+                <label value="@bind(imp.saldo eq 0 or imp.saldo eq null ? null : c:formatNumber(imp.saldo, '€ #,##0.00'))"
+                       sclass="@load(imp.saldo lt 0 ? 'importo-negativo' : '')"/>
+                <label value="@bind(imp.saldoErario eq 0 or imp.saldoErario eq null ? null : c:formatNumber(imp.saldoErario, '€ #,##0.00'))"
+                       sclass="@load(imp.saldoErario lt 0 ? 'importo-negativo' : '')"
+                       visible="@load(vm.rbTributi eq 'ICI')"/>
+                <label value="@bind((imp.acconto + imp.saldo) eq 0 or (imp.acconto + imp.saldo) eq null ? null : c:formatNumber((imp.acconto + imp.saldo), '€ #,##0.00'))"
+                        sclass="@load((imp.acconto + imp.saldo) lt 0 ? 'importo-negativo' : '')"/>
+                <label value="@bind((imp.accontoErario + imp.saldoErario) eq 0 or (imp.accontoErario + imp.saldoErario) eq null ? null : c:formatNumber((imp.accontoErario + imp.saldoErario), '€ #,##0.00'))"
+                        sclass="@load((imp.accontoErario + imp.saldoErario) lt 0 ? 'importo-negativo' : '')"
+                        visible="@load(vm.rbTributi eq 'ICI')"/>
+            </row>
+        </template>
+    </grid>
+</zk>

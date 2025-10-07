@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window sizable="true" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('oggettiInvalidiViewModel')" border="normal" width="600px" height="400px">
+
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina"
+                       value="Oggetti Invalidi"/>
+            </hlayout>
+        </h:div>
+        <listbox vflex="1" span="true"
+                 model="@bind(vm.listaOggettiInvalidi)"
+                 emptyMessage="Nessun oggetto invalido" sizedByContent="true">
+            <listhead sizable="true">
+                <listheader label="Nome"/>
+                <listheader label="Tipo"/>
+            </listhead>
+            <template name="model">
+                <listitem>
+                    <listcell label="@load(each.objectName)"/>
+                    <listcell label="@load(each.objectType)"/>
+                </listitem>
+            </template>
+        </listbox>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Ricompila" onClick="@command('onRicompila')" mold="trendy"
+                        image="/images/afc/16x16/refresh.png"/>
+                <button label="Chiudi" onClick="@command('onChiudi')" mold="trendy"
+                        image="/images/afc/16x16/close.png"/>
+            </h:div>
+        </h:div>
+    </window>
+
+</zk>

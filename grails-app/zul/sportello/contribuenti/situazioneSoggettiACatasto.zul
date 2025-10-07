@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+		<hlayout>
+			<hlayout sclass="afc-control-bar" valign="middle">
+				<paging sclass="afc-paging" onPaging="@command('onPaging')"
+						activePage="@bind(vm.pagingDetails.activePage)"
+						pageSize="@bind(vm.pagingDetails.pageSize)"
+						totalSize="@load(vm.pagingDetails.totalSize)"/>
+				<toolbarbutton image="/images/afc/22x22/refresh.png"
+							   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+							   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+							   onClick="@command('onRefresh')"
+							   disabled="@load(vm.modificaInline ne false)"/>
+				<toolbarbutton image="/images/afc/22x22/add.png"
+					tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+					onClick="@command('onAggiungiProprietario')" 
+					disabled="@load(vm.modificaInline ne false)" />
+			</hlayout>
+		</hlayout>
+	</hlayout>
+	
+	<listbox id="gridSitContrSoggetti" span="true" nonselectableTags="" sizedByContent="true"
+		model="@load(vm.listaProprietari)" emptyMessage="Nessun soggetto presente."
+		vflex="true" selectedItem="@bind(vm.proprietarioSelezionato)"
+		onSelect="@command('onSelezionaProprietario')">
+		<listhead sizable="true">
+			<listheader label="ID Sogg" />
+			<listheader label="Cognome e Nome" />
+			<listheader label="Cod.Fiscale / P. IVA" tooltiptext="Codice Fiscale e Partita IVA"/>
+			<listheader label="Comune" tooltiptext="Comune" />
+			<listheader label="Prov." tooltiptext="Provincia" />
+			<listheader label="Nato a" tooltiptext="Luogo di nascita" />
+			<listheader label="Prov." tooltiptext="Provincia di nascita" />
+			<listheader label="Il" tooltiptext="Data di nascita" />
+			<listheader label="Note" tooltiptext="Annotazioni" />
+            <listheader sclass="centro" width="40px"/>
+		</listhead>
+		<template name="model" var="prop">
+			<listitem>
+				<listcell label="@load(prop.IDSOGGETTO)" sclass="destra" />
+				<listcell label="@load(prop.COGNOMENOME)" />
+				<listcell label="@load(prop.CODFISCALE)" sclass="centro" />
+				<listcell label="@load(prop.SEDE)" />
+				<listcell label="@load(prop.PROVINCIASEDE)" sclass="centro" />
+				<listcell label="@load(prop.LUOGONASCITA)" />
+				<listcell label="@load(prop.PROVINCIANASCITA)" sclass="centro" />
+                <listcell sclass="centro"
+                          label="@load(prop.DATANASCITA eq null? '' :c:formatDate(prop.DATANASCITA, 'dd/MM/yyyy'))"/>
+				<listcell sclass="centro" >
+					<textbox value="@bind(prop.NOTE_SEQUENZA)" width="100%" maxlength="1999" inplace="true"
+                             disabled="@bind(!vm.modificaInline or prop.IDSEQUENZA ne vm.proprietarioSelezionato.IDSEQUENZA)" />
+				</listcell>
+                <listcell sclass="centro">
+                    <hlayout>
+						<image visible="@bind(!vm.modificaInline)"
+							   src="/images/afc/16x16/pen.png"
+							   style="cursor: pointer;" width="16px" height="16px"
+							   onClick="@command('onModificaInline')"
+							   tooltiptext="Modifica campo Note"/>
+						<image visible="@bind(vm.modificaInline and prop.IDSEQUENZA eq vm.proprietarioSelezionato.IDSEQUENZA)"
+							   src="/images/afc/16x16/cross.png" style="cursor: pointer;" width="16px" height="16px"
+							   onClick="@command('onAnnullaModificaInline')"
+							   tooltiptext="Annula le modifiche"/>
+						<image visible="@bind(vm.modificaInline and prop.IDSEQUENZA eq vm.proprietarioSelezionato.IDSEQUENZA)"
+							   src="/images/afc/16x16/ok_light.png" style="cursor: pointer;" width="16px"
+							   height="16px"
+							   onClick="@command('onAccettaModificaInline')"
+							   tooltiptext="Applica le modifiche"/>
+						<image visible="@bind(!vm.modificaInline)"
+							   src="/images/afc/16x16/delete.png"
+							   style="cursor: pointer;" width="16px" height="16px"
+							   onClick="@command('onEliminaProprietario')"
+							   tooltiptext="Elimina Soggetto"/>
+                    </hlayout>
+                </listcell>
+			</listitem>
+		</template>
+	</listbox>
+</zk>

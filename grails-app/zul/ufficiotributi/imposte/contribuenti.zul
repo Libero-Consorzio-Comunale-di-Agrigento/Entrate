@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+        td.vuoto {
+        border-color: #22AAE2;
+        border-width: 2px;
+        }
+    </style>
+
+    <vlayout vflex="1" spacing="2">
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <paging sclass="afc-paging" onPaging="@command('onCambioPaginaDettagli')"
+                        activePage="@bind(vm.pagingDetails.activePage)"
+                        pageSize="@bind(vm.pagingDetails.pageSize)"
+                        totalSize="@load(vm.pagingDetails.totalSize)"
+                        visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                <toolbarbutton image="/images/afc/22x22/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               disabled="@load(empty vm.listaDetailsRuolo)"
+                               onClick="@command('onRicaricaListaDettagli')"/>
+                <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                               tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                               visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                               onClick="@command('onCancellaContribuente')"
+                               disabled="@bind(empty vm.selectedDetail or vm.selected.inviatoAConsorzio or vm.selectedAnyDetails)"/>
+                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                               tooltiptext='Esporta in XLS'
+                               disabled="@load(empty vm.listaDetailsRuolo)"
+                               onClick="@command('detailsToXls', totale=1)"/>
+                <toolbarbutton image="/images/afc/22x22/print.png" width="26px"
+                               disabled="@load(!vm.selectedAnyDetails)"
+                               onClick="@command('onElaboraDettagli')"
+                               tooltiptext="Elaborazione Massiva"/>
+                <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniContribuenti"
+                               visible="@load(vm.tipoTributo.tipoTributo eq 'ICI' or vm.tipoTributo.tipoTributo eq 'TASI' or vm.tipoTributo.tipoTributo eq 'TARSU' or vm.tipoTributo.tipoTributo eq 'CUNI')"/>
+            </hlayout>
+            <hlayout hflex="1">
+                <groupbox style="text-align: left;">
+                    <caption label="Carichi" style="text-align: left;"/>
+                    <radiogroup id="versatoVersusDovuto"
+                                selectedItem="@bind(vm.parRicercaDetails.versatoVersusDovuto)"
+                                onCheck="@command('onChangeVersatoVersusDovuto')">
+                        <radio label="Tutti" radiogroup="versatoVersusDovuto" value="-1" selected="true"/>
+                        <radio label="A Rimborso" radiogroup="versatoVersusDovuto" value="1"/>
+                        <radio label="Da Pagare" radiogroup="versatoVersusDovuto" value="2"/>
+                        <radio label="Saldati" radiogroup="versatoVersusDovuto" value="3"/>
+                    </radiogroup>
+                    <space bar="true" spacing="20px"/>
+                    <label value="Soglia "/>
+                    <decimalbox format="€ #,##0.00" mold="rounded" value="@bind(vm.parRicercaDetails.soglia) "
+                                style="text-align: right" onChange="@command('onChangeSoglia')"/>
+                </groupbox>
+                <groupbox style="text-align: left;">
+                    <caption label="Deceduti" style="text-align: left;"/>
+                    <radiogroup id="statoDetails"
+                                selectedItem="@bind(vm.parRicercaDetails.listDeceduti)"
+                                onCheck="@command('onChangeStatoDetails', lbRuoli=listBoxDetails)">
+                        <radio label="Deceduti" radiogroup="statoDetails" value="2"/>
+                        <radio label="Non deceduti" radiogroup="statoDetails" value="1"/>
+                        <radio label="Entrambi" radiogroup="statoDetails" value="-1" selected="true"/>
+                    </radiogroup>
+                </groupbox>
+            </hlayout>
+            <toolbarbutton
+                    image="@load(vm.filtroAttivoDetails ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                    onClick="@command('openFiltriDetails')"/>
+        </hlayout>
+        <listbox id="listBoxDetails" selectedItem="@bind(vm.selectedDetail)" span="true"
+                 nonselectableTags="" sizedByContent="true" model="@load(vm.listaDetailsRuolo)"
+                 emptyMessage="Nessun contribuente presente." vflex="true"
+                 onSelect="@command('onSelezionaDetail')">
+            <auxhead>
+                <auxheader label="" colspan="8"/>
+                <auxheader label="di cui" colspan="@load(vm.ruoliTarPuntuale ? '8' : '7')"/>
+                <auxheader label="" colspan="3"/>
+                <auxheader label="Residenza" colspan="4"/>
+                <auxheader label="" colspan="2"/>
+            </auxhead>
+            <listhead sizable="true">
+                <listheader label="">
+                    <checkbox onCheck="@command('onCheckAllDetails')"
+                              checked="@load(vm.selectedAnyDetails)"
+                              disabled="@bind(empty vm.listaDetailsRuolo)"/>
+                </listheader>
+                <listheader label="@load(c:l('ufficiotributi.label.cognomeNome'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.cognomeNome'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.codFiscale'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.codFiscale'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.importoLordo'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.importoLordo'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.sgravio'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.sgravio'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.compensazione'))"
+                            tooltiptext="@load(c:l('ufficiotributi.labelestesa.compensazione'))"/>
+                <listheader align="center" label="Versato"/>
+                <listheader align="center" label="Dovuto"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.imposta'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.imposta'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.eccedenze'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.eccedenze'))"
+                            visible="@load(vm.ruoliTarPuntuale)"/>
+                <listheader align="center"
+                            label="@load(c:l('ufficiotributi.label.addizionaleMaggiorazioneECA'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.addizionaleMaggiorazioneECA'))"/>
+                <listheader align="center"
+                            label="@load(c:l('ufficiotributi.label.addizionaleProvinciale'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.addizionaleProvinciale'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.iva'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.iva'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.quotaF'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.quotaF'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.quotaV'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.quotaV'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.componentiPereq'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.componentiPereq'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.residente'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.residente'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.stato'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.stato'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.dataEvento'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.dataEvento'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.residenzaIndirizzo'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.residenzaIndirizzo'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.residenzaCivico'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.residenzaCivico'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.residenzaComune'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.residenzaComune'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.residenzaCAP'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.residenzaCAP'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.presso'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.presso'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.indirizzoPEC'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.indirizzoPEC'))"/>
+                <listheader align="center" label="Ruolo"/>
+            </listhead>
+            <template name="model" var="ruco">
+                <listitem value="@load(v)">
+                    <listcell sclass="centro">
+                        <checkbox checked="@bind(vm.selectedDetails[ruco.codUnivoco])"
+                                  onCheck="@command('onCheckDetail', detail=ruco)"/>
+                    </listcell>
+                    <listcell label="@load(ruco.cognomeNome)"/>
+                    <listcell sclass="sinistra" label="@load(ruco.codFiscale)"/>
+                    <listcell sclass="destra"
+                              label="@load((ruco.importo ne null) ? c:formatNumber(ruco.importo, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.sgravio eq null) || (ruco.sgravio eq 0))? '' : c:formatNumber(ruco.sgravio, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.compensazione eq null) || (ruco.compensazione eq 0))? '' : c:formatNumber(ruco.compensazione, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load( (ruco.versato ne null || ruco.versato eq 0 ) ? c:formatNumber(ruco.versato, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load((ruco.dovuto ne null) ? c:formatNumber(ruco.dovuto, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load((ruco.imposta ne null) ? c:formatNumber(ruco.imposta, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.eccedenze eq null) || (ruco.eccedenze eq 0)) ? '' : c:formatNumber(ruco.eccedenze, '€ #,##0.00'))" />
+                    <listcell sclass="destra"
+                              label="@load(((ruco.addMaggEca eq null) || (ruco.addMaggEca eq 0))? '' : c:formatNumber(ruco.addMaggEca, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.addProv eq null) || (ruco.addProv eq 0)) ? '' : c:formatNumber(ruco.addProv, '€ #,##0.00'))"
+                              tooltiptext="@load(ruco.addProvTooltip)"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.iva eq null) || (ruco.iva eq 0)) ? '' : c:formatNumber(ruco.iva, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.importoPF eq null) || (ruco.importoPF eq 0)) ? '' : c:formatNumber(ruco.importoPF, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.importoPV eq null) || (ruco.importoPV eq 0)) ? '' : c:formatNumber(ruco.importoPV, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((ruco.maggiorazioneTares eq null) || (ruco.maggiorazioneTares eq 0)) ? '' : c:formatNumber(ruco.maggiorazioneTares, '€ #,##0.00'))"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ruco.residenteFlag)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="sinistra" label="@load(ruco.statoDescrizione)"/>
+                    <listcell sclass="centro" label="@load(ruco.dataUltEvento)"/>
+                    <listcell sclass="@load(!empty ruco.indirizzoRes ? 'sinistra' : 'sinistra vuoto')"
+                              label="@load(ruco.indirizzoRes)"/>
+                    <listcell sclass="sinistra" label="@load(ruco.civicoRes)"/>
+                    <listcell label="@load(ruco.comuneRes)"
+                              sclass="@bind(ruco.comuneResErr eq 'ERR' ? 'sinistra campi-differenti' : 'sinistra')"/>
+                    <listcell label="@load(ruco.capRes)"
+                              sclass="@bind(ruco.capResErr eq 'ERR' ? 'sinistra campi-differenti' : 'sinistra')"/>
+                    <listcell sclass="sinistra" label="@load(ruco.cognomeNomeP)"/>
+                    <listcell sclass="sinistra" label="@load(ruco.mailPEC)"/>
+                    <listcell sclass="destra" label="@load(ruco.ruolo)"/>
+                </listitem>
+            </template>
+            <listfoot>
+                <listfooter sclass="centro" label="Totali:"/>
+                <listfooter sclass="destra" label="Contribuenti/Utenze:" style="white-space:nowrap;"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:cat3(c:formatNumber(vm.totaliDettagli.contribuenti, '#,##0'),'/',c:formatNumber(vm.totaliDettagli.utenze, '#,##0')))"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliDettagli.importo, '€ #,##0.00'))"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliDettagli.sgravio, '€ #,##0.00'))"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliDettagli.compensazione, '€ #,##0.00'))"/>
+                <listfooter label="@load(c:formatNumber(vm.totaliDettagli.versato, '€ #,##0.00'))"
+                            style="white-space:nowrap;"/>
+                <listfooter label="@load(c:formatNumber(vm.totaliDettagli.dovuto, '€ #,##0.00'))"
+                            style="white-space:nowrap;"/>
+                <listfooter sclass="destra"
+                            label="@load(c:formatNumber(vm.totaliDettagli.imposta, '€ #,##0.00'))"
+                            style="white-space:nowrap;"/>
+                <listfooter sclass="destra"
+                            label="@load(c:formatNumber(vm.totaliDettagli.eccedenze, '€ #,##0.00'))"
+                            style="white-space:nowrap;"/>
+                <listfooter label="@load(c:formatNumber(vm.totaliDettagli.addMaggEca, '€ #,##0.00'))"
+                            style="white-space:nowrap;"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliDettagli.addProv, '€ #,##0.00'))"
+                            tooltiptext="@load(vm.totaliDettagli.addProvTooltip)"/>
+                <listfooter label="@load(c:formatNumber(vm.totaliDettagli.iva, '€ #,##0.00'))"
+                            style="white-space:nowrap;"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliDettagli.importoPF, '€ #,##0.00'))"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliDettagli.importoPV, '€ #,##0.00'))"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliDettagli.maggiorazioneTares, '€ #,##0.00'))"/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+            </listfoot>
+        </listbox>
+    </vlayout>
+
+    <menupopup id="funzioniContribuenti">
+        <menuitem label="Invia AppIO"
+                  onClick="@command('onInviaAppIO')"
+                  disabled="@load((vm.modifica eq false) or empty vm.selectedDetail or vm.selectedAnyDetails)"
+                  visible="@load(vm.tipoTributo.tipoTributo eq 'ICI' or vm.tipoTributo.tipoTributo eq 'TASI' or vm.tipoTributo.tipoTributo eq 'TARSU' or vm.tipoTributo.tipoTributo eq 'CUNI')"/>
+    </menupopup>
+
+</zk>

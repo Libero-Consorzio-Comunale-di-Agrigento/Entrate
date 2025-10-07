@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<!--<?page automaticTimeout="false"?>-->
+
+<!-- Quando serviranno dei CSS personalizzati per varie versioni di IE, bisognerà passare da qui: -->
+<!-- < ? link rel="stylesheet" type="text/css" href="/css/tr4web.ie7.css" if="${zk.ie == 7.0}" ? > -->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <script src="/js/home.js"/>
+    <vlayout id="boxContainer" spacing="20px" sclass="afc-panel-box">
+        <hbox spacing="25px" width="100%" pack="center" align="center" sclass="menuBox"
+              children="@load(vm.pulsantiAlto)">
+            <template name="children">
+                <hbox sclass="@load(each.enabled ? 'menuItem' : 'disabled')" width="199px" height="204px" align="center"
+                      pack="center">
+                    <panel title="@load(each.titolo)" border="rounded" width="210px" height="200px"
+                           onClick="@command('apriSezione', sezione=each.sezione, titolo=each.titolo)">
+                        <panelchildren sclass="centro">
+                            <label value="@load(each.descrizione)"/>
+                        </panelchildren>
+                        <caption image="@load(each.immagine)" height="36px"/>
+                    </panel>
+                </hbox>
+            </template>
+        </hbox>
+        <hbox spacing="25px" width="100%" pack="center" align="center" sclass="menuBox"
+              children="@load(vm.pulsantiBasso)">
+            <template name="children">
+                <hbox sclass="@load(each.enabled ? 'menuItem' : 'disabled')" width="199px" height="204px" align="center"
+                      pack="center"
+                      visible="@load(!empty each.titolo)">
+                    <panel title="@load(each.titolo)" border="rounded" width="210px" height="200px"
+                           onClick="@command('apriSezione', sezione=each.sezione, titolo=each.titolo)">
+                        <panelchildren sclass="centro">
+                            <label value="@load(each.descrizione)"/>
+                        </panelchildren>
+                        <caption image="@load(each.immagine)" height="36px"/>
+                    </panel>
+                </hbox>
+            </template>
+        </hbox>
+    </vlayout>
+</zk>

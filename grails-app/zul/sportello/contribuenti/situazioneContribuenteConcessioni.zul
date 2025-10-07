@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <label value="Anno"/>
+                <space width="5px"/>
+                <combobox model="@load(vm.listaAnni)" onSelect="@command('onSelezioneAnnoConcessioni')"
+                          value="@bind(vm.anno)"
+                          mold="rounded"
+                          selectedItem="@bind(vm.anno)" readonly="true" width="100px">
+                    <template name="model" var="item">
+                        <comboitem label="@load(item)" value="@load(item)"/>
+                    </template>
+                </combobox>
+                <space width="5px"/>
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaConcessione', contesto='CONCESSIONE')"
+                               disabled="@load(empty vm.concessioneSelezionata)"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               tooltiptext='Esporta in XLS' onClick="@command('onConcessioniToXls')"
+                               disabled="@load(empty vm.listaConcessioni)"/>
+                <toolbarbutton image="/images/afc/16x16/masks.png"
+                               tooltiptext='#{empty arg.addTooltip?"Converti Canoni":arg.addTooltip}'
+                               visible="@load(vm.convertiConcessioni ne false)"
+                               popup="funzioniConcessioniConverti"/>
+                <toolbarbutton image="/images/afc/16x16/print.png"
+                               tooltiptext='#{empty arg.addTooltip?"Stampa":arg.addTooltip}'
+                               popup="funzioniConcessioniStampa"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniConcessioni"/>
+            </hlayout>
+        </hlayout>
+        <hlayout hflex="1" style="text-align: right;" valign="middle">
+            <toolbarbutton
+                    image="@load(vm.filtriConcessioniAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                    onClick="@command('onOpenFiltriConcessioni')"/>
+        </hlayout>
+    </hlayout>
+
+    <label value="@bind(c:cat3('Canoni (', vm.listaConcessioni.size(), ')'))"/>
+    <listbox id="gridSitContrConcessioni" selectedItem="@bind(vm.concessioneSelezionata)" span="true"
+             model="@load(vm.listaConcessioni)" emptyMessage="Nessun Canone in Elenco" vflex="true"
+             sizedByContent="true"
+             onSelect="@command('onSelezionaConcessione')">
+        <auxhead>
+            <auxheader label="" colspan="1" visible="@load(vm.dePagAbilitato)"/>
+            <auxheader label="Oggetto" colspan="15"/>
+            <auxheader label="Concessione" colspan="3"/>
+            <auxheader label="" colspan="2"/>
+            <auxheader label="Tariffa" colspan="5"/>
+            <auxheader label="Occupazione" colspan="5"/>
+            <auxheader label="Pubblicita'" colspan="5"/>
+            <auxheader label="Origine" colspan="1"/>
+        </auxhead>
+        <listhead sizable="true">
+            <listheader label="DePag" align="center" visible="@load(vm.dePagAbilitato)"/>
+
+            <listheader label="@load(c:l('sportello.label.oggetto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+
+            <!-- DATI CONCESSIONE -->
+
+            <!-- DATI OGGETTO -->
+            <listheader label="@load(c:l('sportello.label.descrizione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.descrizione'))"/>
+            <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+            <listheader label="@load(c:l('sportello.label.daKM'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.daKM'))"/>
+            <listheader label="@load(c:l('sportello.label.aKM'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.aKM'))"/>
+            <listheader label="@load(c:l('sportello.label.lato'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.lato'))"/>
+          
+            <listheader label="@load(c:l('sportello.label.latitudine'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.latitudine'))"/>
+            <listheader label="@load(c:l('sportello.label.longitudine'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.longitudine'))"/>
+            <listheader sclass="centro" width="30px">
+                <image src="/images/afc/16x16/world.png" tooltiptext="@load(c:l('sportello.label.estesa.geolocalizzazione'))"
+                                height="16px" width="16px"/>
+            </listheader>
+          
+            <listheader label="@load(c:l('sportello.label.comune'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.comune'))"/>
+            <listheader label="@load(c:l('sportello.label.localita'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.localita'))"/>
+            <listheader label="@load(c:l('sportello.label.sezione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+            <listheader sclass="centro" label="@load(c:l('sportello.label.foglio'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+            <listheader sclass="centro" label="@load(c:l('sportello.label.numero'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+            <listheader label="@load(c:l('sportello.label.subalterno'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+
+            <!-- DATI CONCESSIONE-->
+            <listheader label="Numero"/>
+            <listheader label="Data"/>
+            <listheader label="N.O." tooltiptext="Nulla Osta"/>
+
+            <listheader label="Decorrenza"/>
+            <listheader label="Cessazione"/>
+
+            <!-- DATI TARIFFA -->
+            <listheader label="Cod. Tributo" tooltiptext="Codice Tributo"/>
+            <listheader label="@load((vm.anno eq 'Tutti' or vm.anno lt '2021') ? 'Categoria' : 'Zona')"/>
+            <listheader label="Tipologia"/>
+            <listheader label="Occ." tooltiptext="Tipo occupazione"/>
+            <listheader label="Es." tooltiptext="Esenzione"/>
+
+            <!-- DATI OCCUPAZIONE -->
+            <listheader label="Quantita'"/>
+            <listheader label="Larghezza"/>
+            <listheader label="Profondita'"/>
+            <listheader label="Sup. Reale"/>
+            <listheader label="Superficie"/>
+
+            <!-- DATI PUBBLICITA -->
+            <listheader label="Quantita'"/>
+            <listheader label="L (m)"/>
+            <listheader label="H (m)"/>
+            <listheader label="Sup. Reale"/>
+            <listheader label="Superficie"/>
+
+            <!-- DATI ORIGINE -->
+            <listheader sclass="centro"
+                        label="@load(c:l('sportello.label.pratica'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.pratica'))"/>
+        </listhead>
+        <template name="model" var="conc">
+            <listitem onDoubleClick="@command('onModificaConcessione', contesto='CONCESSIONE')">
+                <listcell>
+                    <hbox align="center">
+                        <image src="/images/tr4web/22x22/pagopa.png" visible="@load(!empty conc.statoDepag)"/>
+                        <image forEach="#{conc.statoDepag}"
+                               visible="@load(!empty conc.statoDepag)"
+                               src="#{each.value.immagine}"
+                               tooltiptext="#{each.value.descrizione}"/>
+                    </hbox>
+                </listcell>
+                <listcell
+                        sclass="detra"
+                        label="@load(conc.oggettoRef)"/>
+
+                <!-- DATI CONCESSIONE -->
+
+                <!-- DATI OGGETTO -->
+                <listcell
+                        label="@load(conc.oggetto.descrizione)"/>
+                <listcell
+                        label="@load(conc.indirizzoOgg)"/>
+
+                <listcell sclass="destra"
+                          label="@load((conc.oggetto.daKM eq null)?'':c:formatNumber(conc.oggetto.daKM, '#,##0.000'))"/>
+                <listcell sclass="destra"
+                          label="@load((conc.oggetto.aKM eq null)?'':c:formatNumber(conc.oggetto.aKM, '#,##0.000'))"/>
+                <listcell label="@load(conc.oggetto.lato)"/>
+
+                <listcell label="@load(conc.oggetto.latSessages)"/>
+                <listcell label="@load(conc.oggetto.lonSessages)"/>
+                <listcell sclass="centro">
+                    <hlayout>
+                      <image src="/images/afc/16x16/world.png" tooltiptext="Geolocalizza Oggetto"
+                            height="16px" width="16px" style="float: right; cursor: pointer;"
+                            visible="@load((not empty conc.oggetto.latitudine) and (not empty conc.oggetto.longitudine))"
+                            onClick="@command('onGeolocalizzaConcessione')"/>
+                    </hlayout>
+                </listcell>
+
+                <listcell label="@load(c:cat(conc.oggetto.denCom, ((conc.oggetto.denPro ne null) and (conc.oggetto.denPro ne '')) ?
+																							c:cat3(' (', conc.oggetto.sigPro, ')') : ''))"/>
+                <listcell label="@load(conc.oggetto.localita)"/>
+
+                <listcell
+                        sclass="detra"
+                        label="@load(conc.oggetto.sezione)"/>
+                <listcell
+                        sclass="detra"
+                        label="@load(conc.oggetto.foglio)"/>
+                <listcell
+                        sclass="detra"
+                        label="@load(conc.oggetto.numero)"/>
+                <listcell
+                        sclass="detra"
+                        label="@load(conc.oggetto.subalterno)"/>
+
+              <!-- DATI CONCESSIONE-->
+                <listcell label="@load(conc.dettagli.numeroConcessione)" sclass="centro"/>
+                <listcell
+                        sclass="centro"
+                        label="@load(conc.dettagli.dataConcessione ne null ? c:formatDate(conc.dettagli.dataConcessione,'dd/MM/yyyy') : '')"/>
+                <listcell>
+                    <checkbox disabled="true" checked="@load(conc.dettagli.flagNullaOsta)"/>
+                </listcell>
+
+                <listcell
+                        sclass="centro"
+                        label="@load(conc.dettagli.dataDecorrenza ne null ? c:formatDate(conc.dettagli.dataDecorrenza,'dd/MM/yyyy') : '')"/>
+                <listcell
+                        sclass="centro"
+                        label="@load(conc.dettagli.dataCessazione ne null ? c:formatDate(conc.dettagli.dataCessazione,'dd/MM/yyyy') : '')"/>
+
+                <!-- DATI TARIFFA -->
+                <listcell label="@load(conc.codiceTributo)" sclass="destra"/>
+                <listcell label="@load(conc.categoriaDescr)" sclass="sinistra"/>
+                <listcell label="@load(conc.tariffaDescr)" sclass="sinistra"/>
+                <listcell label="@load(conc.dettagli.tipoOccupazione)" sclass="centro"/>
+                <listcell label="@load(conc.esenzione eq true ? 'E' : '')" sclass="centro"/>
+
+                <!-- DATI OCCUPAZIONE -->
+                <listcell label="@load(conc.occupazione.quantita)" sclass="destra"/>
+                <listcell label="@load(conc.occupazione.larghezza)" sclass="destra"/>
+                <listcell label="@load(conc.occupazione.profondita)" sclass="destra"/>
+                <listcell label="@load(conc.occupazione.consistenzaReale)" sclass="destra"/>
+                <listcell label="@load(conc.occupazione.consistenza)" sclass="destra"/>
+
+                <!-- DATI PUBBLICITA -->
+                <listcell label="@load(conc.pubblicita.quantita)" sclass="destra"/>
+                <listcell label="@load(conc.pubblicita.larghezza)" sclass="destra"/>
+                <listcell label="@load(conc.pubblicita.profondita)" sclass="destra"/>
+                <listcell label="@load(conc.pubblicita.consistenzaReale)" sclass="destra"/>
+                <listcell label="@load(conc.pubblicita.consistenza)" sclass="destra"/>
+
+                <!-- DATI ORIGINE -->
+                <listcell label="@load(conc.praticaBase)" sclass="centro"/>
+            </listitem>
+        </template>
+    </listbox>
+</zk>
+

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2016-04-07T16:41:38 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ruoliOggetto" language="groovy" pageWidth="535" pageHeight="555" orientation="Landscape" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="77566f38-b50d-4e3b-a858-d89c23403b1f">
+	<property name="ireport.zoom" value="2.5937424601000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="consistenza" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[consistenza]]></fieldDescription>
+	</field>
+	<field name="codiceTributo" class="it.finmatica.tr4.dto.CodiceTributoDTO">
+		<fieldDescription><![CDATA[codiceTributo]]></fieldDescription>
+	</field>
+	<field name="importo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[importo]]></fieldDescription>
+	</field>
+	<field name="ruolo" class="it.finmatica.tr4.dto.RuoloDTO">
+		<fieldDescription><![CDATA[ruolo]]></fieldDescription>
+	</field>
+	<field name="oggettoImposta" class="it.finmatica.tr4.dto.OggettoImpostaDTO">
+		<fieldDescription><![CDATA[oggettoImposta]]></fieldDescription>
+	</field>
+	<field name="sequenza" class="java.lang.Short">
+		<fieldDescription><![CDATA[sequenza]]></fieldDescription>
+	</field>
+	<field name="totaleSgravi" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totaleSgravi]]></fieldDescription>
+	</field>
+	<field name="tipoRuolo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ruolo.tipoRuolo]]></fieldDescription>
+	</field>
+	<field name="annoRuolo" class="java.lang.Short">
+		<fieldDescription><![CDATA[ruolo.annoRuolo]]></fieldDescription>
+	</field>
+	<field name="annoEmissione" class="java.lang.Short">
+		<fieldDescription><![CDATA[ruolo.annoEmissione]]></fieldDescription>
+	</field>
+	<field name="progrEmissione" class="java.lang.Integer">
+		<fieldDescription><![CDATA[ruolo.progrEmissione]]></fieldDescription>
+	</field>
+	<field name="dataEmissione" class="java.util.Date">
+		<fieldDescription><![CDATA[ruolo.dataEmissione]]></fieldDescription>
+	</field>
+	<field name="invioConsorzio" class="java.util.Date">
+		<fieldDescription><![CDATA[ruolo.invioConsorzio]]></fieldDescription>
+	</field>
+	<sortField name="tipoRuolo"/>
+	<sortField name="annoRuolo" order="Descending"/>
+	<sortField name="annoEmissione" order="Descending"/>
+	<sortField name="progrEmissione"/>
+	<sortField name="dataEmissione"/>
+	<sortField name="invioConsorzio"/>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="85" y="0" width="29" height="13" forecolor="#000000" uuid="a189912b-456c-4fc2-bb1f-337125d87cdb"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Anno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="59" y="0" width="25" height="13" forecolor="#000000" uuid="75df361c-2fe4-45e6-b866-f7cec420b7cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="165" y="0" width="31" height="13" forecolor="#000000" uuid="629d9ca8-eeef-472f-899d-88b71aa7a186"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Progr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="115" y="0" width="49" height="13" forecolor="#000000" uuid="4c7785cc-c7bb-4b71-99ce-18438d532fd1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Anno Em.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="252" y="0" width="55" height="13" forecolor="#000000" uuid="87f84964-ab1e-44af-b39d-64853d32f3c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Data Invio]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="Float" x="0" y="14" width="535" height="1" forecolor="#808080" uuid="549eed4b-76da-498a-86e7-07e11c5d6ac8"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="59" height="13" forecolor="#000000" uuid="32a25c83-b9e1-422a-98a2-e0fe0bcf46c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ruoli]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="307" y="0" width="43" height="13" forecolor="#000000" uuid="5731f176-a038-40a4-8599-c9cfe305128c"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Cod. Tr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="350" y="0" width="55" height="13" forecolor="#000000" uuid="6cb64933-9df2-4d7e-9e47-8e39585b3064"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Importo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="405" y="0" width="48" height="13" forecolor="#000000" uuid="9825c6d0-0c2e-430c-9db5-aff6e9866dee"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Sgravio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="454" y="0" width="30" height="13" forecolor="#000000" uuid="cef7a81b-7bd8-4cd7-8c5e-3a5aafe7c8a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Ruolo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="485" y="0" width="48" height="13" forecolor="#000000" uuid="88cec080-73ce-4e7a-89b4-33d71b441a04"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Coattivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="197" y="0" width="55" height="13" forecolor="#000000" uuid="6214692a-639f-4767-9e9b-56aeff67d616"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Data Emis.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Prevent">
+			<textField>
+				<reportElement x="59" y="0" width="25" height="13" forecolor="#000000" uuid="80926f74-97a7-4954-89bb-49f03617fd0b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruolo}.tipoRuolo]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="85" y="0" width="29" height="13" forecolor="#000000" uuid="741d8909-ae2c-4bb8-a284-bbe616027cff"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruolo}.annoRuolo]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="115" y="0" width="49" height="13" forecolor="#000000" uuid="58752fef-e213-4afb-b7de-68828ad395d1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruolo}.annoEmissione]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="165" y="0" width="31" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="e86a7922-d0a6-4569-9c3c-e1e77d60c421"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruolo}.progrEmissione]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="252" y="0" width="55" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="6773ebee-53aa-455d-9cf0-b8f0da342cdb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruolo}.invioConsorzio]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="307" y="0" width="43" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="0114732d-51e6-482b-9807-9464c1dd0402"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributo}.id]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="350" y="0" width="55" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="38008128-eb6b-4ad0-ab17-ed20794d5224"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="405" y="0" width="48" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="98e34bea-dc9b-42df-89be-ae78b8c03de4"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totaleSgravi}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="455" y="0" width="30" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="da69ad92-259f-4e2c-b53f-c973ee93d9ff"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruolo}.id]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="503" y="1" width="13" height="12" forecolor="#000000" uuid="d943bc82-40dc-4b67-9775-b1e95dd542e9">
+					<printWhenExpression><![CDATA[!$F{ruolo}.isSpecieRuolo()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="1" width="13" height="12" forecolor="#000000" uuid="6e3f79fe-120d-4471-8722-74b7366793c9">
+					<printWhenExpression><![CDATA[$F{ruolo}.isSpecieRuolo()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="197" y="0" width="55" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="50b647c4-eb16-48e4-9f5b-95a0caef933b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ruolo}.dataEmissione]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

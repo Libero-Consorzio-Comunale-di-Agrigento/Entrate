@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+                   <changeSet id="dmarotta:20250326_152438_compileInvalidObjects" author="mturra" runAlways="true">
+                     <sql>call dbms_utility.compile_schema(sys_context( 'userenv', 'current_schema' ))</sql>
+                   </changeSet>
+</databaseChangeLog>

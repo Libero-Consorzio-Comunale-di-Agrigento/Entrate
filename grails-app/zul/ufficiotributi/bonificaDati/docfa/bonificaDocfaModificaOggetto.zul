@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid width="100%">
+        <rows>
+            <!-- RIGA 01 -->
+            <row>
+                <cell align="right">
+                    <label value="Id riga"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.oggettoSelezionato.documentoId)"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.oggettoSelezionato.documentoMultiId)"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.oggettoSelezionato.progrOggetto)"/>
+                </cell>
+
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+            </row>
+
+            <!-- RIGA 02 -->
+            <row>
+                <cell align="right">
+                    <label value="Oggetto"/>
+                </cell>
+                <cell>
+                    <textbox width="98%" sclass="destra" readonly="true"
+                             droppable="true" onDrop="@command('onDropOggetto')"
+                             value="@load(vm.oggettoSelezionato.tr4Oggetto)"/>
+                </cell>
+
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+            </row>
+
+            <!-- RIGA 03 -->
+            <row>
+                <cell align="right">
+                    <label value="Operazione"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.tipiOperazione[vm.oggettoSelezionato.tipoOperazione])"/>
+                </cell>
+
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+            </row>
+
+            <!-- RIGA 04 -->
+            <row>
+                <cell align="right">
+                    <label value="Sez."/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.sezione)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Fgl."/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.foglio)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Num."/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.numero)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Sub."/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.subalterno)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 05 -->
+            <row>
+                <cell align="right">
+                    <label value="Indirizzo"/>
+                </cell>
+                <cell colspan="5">
+                    <label value="@load(vm.oggettoSelezionato.indirizzo)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 06 -->
+            <row>
+                <cell align="right">
+                    <label value="Num.Civico"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.numCivico)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Piano"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.piano)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Scala"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.scala)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Interno"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.interno)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 07 -->
+            <row>
+                <cell align="right">
+                    <label value="Zona"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.zona)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Ctg."/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.categoria)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Classe"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.classe)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Cons."/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.oggettoSelezionato.consistenza)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 08 -->
+            <row>
+                <cell align="right">
+                    <label value="Sup.Catastale"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(!empty vm.oggettoSelezionato.superficieCatastale ? c:formatNumber(vm.oggettoSelezionato.superficieCatastale, '#,##0.00') : null)"/>
+                </cell>
+                <cell align="right">
+                    <label value="Rendita"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(!empty vm.oggettoSelezionato.rendita ? c:formatNumber(vm.oggettoSelezionato.rendita, '€ #,##0.00') : null)"/>
+                </cell>
+
+                <cell/>
+                <cell/>
+                <cell/>
+                <cell/>
+            </row>
+        </rows>
+    </grid>
+
+    <space height="3px"/>
+
+    <groupbox>
+        <caption label="@load(c:cat('Oggetti in archivio: ', vm.oggettiDaArchivio.size()))"/>
+
+        <vlayout>
+            <hlayout>
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onPaging')"
+                            activePage="@bind(vm.oggettiActivePage)" pageSize="@bind(vm.oggettiPageSize)"
+                            totalSize="@load(vm.oggettiTotalSize)"/>
+                </hlayout>
+                <space hflex="1"/>
+                <button mold="trendy" tooltiptext="Ricerca oggetti in archivio"
+                        image="/images/afc/16x16/search.png" onClick="@command('onCercaOggettiArchivio')"/>
+            </hlayout>
+
+            <space height="3px"/>
+
+            <listbox id="ricercaOggettiListBox" span="true" nonselectableTags=""
+                     sizedByContent="true" model="@load(vm.oggettiDaArchivio)"
+                     emptyMessage="Non sono presenti oggetti in archivio" hflex="1"
+                     selectedItem="@bind(vm.immobileArchivioSelezionato)"
+                     rows="5">
+                <listhead sizable="true">
+                    <listheader label="Oggetto" sort="auto(idOggetto)"/>
+                    <listheader label="T"/>
+                    <listheader label="Indirizzo" sort="auto(indirizzoCompletoSort)"/>
+                    <listheader label="Sez." sort="auto(estremiCatastoSort)"/>
+                    <listheader label="Fgl."/>
+                    <listheader label="Num."/>
+                    <listheader label="Sub."/>
+                    <listheader label="Zona"/>
+                    <listheader label="Prot."/>
+                    <listheader label="Anno"/>
+                    <listheader label="Partita"/>
+                    <listheader label="Ctg."/>
+                    <listheader label="Cl."/>
+                </listhead>
+                <template name="model" var="oggArch">
+                    <listitem draggable="true">
+                        <custom-attributes foo="#{oggArch}"/>
+                        <listcell sclass="centro" label="@load(oggArch.idOggetto)"/>
+                        <listcell sclass="centro" label="@load(oggArch.tipoOggetto)"/>
+                        <listcell sclass="sinistra" label="@load(oggArch.indirizzoCompleto)"/>
+                        <listcell sclass="centro" label="@load(oggArch.sezione)"/>
+                        <listcell sclass="centro" label="@load(oggArch.foglio)"/>
+                        <listcell sclass="centro" label="@load(oggArch.numero)"/>
+                        <listcell sclass="centro" label="@load(oggArch.subalterno)"/>
+                        <listcell sclass="centro" label="@load(oggArch.zona)"/>
+                        <listcell sclass="centro" label="@load(oggArch.protocolloCatasto)"/>
+                        <listcell sclass="centro" label="@load(oggArch.annoCatasto)"/>
+                        <listcell sclass="centro" label="@load(oggArch.partita)"/>
+                        <listcell sclass="centro" label="@load(oggArch.categoriaCatasto)"/>
+                        <listcell sclass="centro" label="@load(oggArch.classeCatasto)"/>
+                    </listitem>
+                </template>
+            </listbox>
+        </vlayout>
+    </groupbox>
+
+</zk>

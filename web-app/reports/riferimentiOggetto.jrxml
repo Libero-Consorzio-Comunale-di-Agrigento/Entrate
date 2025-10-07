@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2016-04-07T16:40:19 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="riferimentiOggetto" language="groovy" pageWidth="330" pageHeight="555" orientation="Landscape" columnWidth="330" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="77566f38-b50d-4e3b-a858-d89c23403b1f">
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="inizioValidita" class="java.util.Date">
+		<fieldDescription><![CDATA[inizioValidita]]></fieldDescription>
+	</field>
+	<field name="fineValidita" class="java.util.Date">
+		<fieldDescription><![CDATA[fineValidita]]></fieldDescription>
+	</field>
+	<field name="rendita" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rendita]]></fieldDescription>
+	</field>
+	<field name="classeCatasto" class="java.lang.String">
+		<fieldDescription><![CDATA[classeCatasto]]></fieldDescription>
+	</field>
+	<field name="categoriaCatasto" class="it.finmatica.tr4.dto.CategoriaCatastoDTO">
+		<fieldDescription><![CDATA[categoriaCatasto]]></fieldDescription>
+	</field>
+	<field name="annoRendita" class="java.lang.Short">
+		<fieldDescription><![CDATA[annoRendita]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="115" y="0" width="55" height="13" forecolor="#000000" uuid="a189912b-456c-4fc2-bb1f-337125d87cdb"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Al]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="59" y="0" width="55" height="13" forecolor="#000000" uuid="75df361c-2fe4-45e6-b866-f7cec420b7cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Dal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="238" y="0" width="31" height="13" forecolor="#000000" uuid="629d9ca8-eeef-472f-899d-88b71aa7a186"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Anno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="171" y="0" width="65" height="13" forecolor="#000000" uuid="4c7785cc-c7bb-4b71-99ce-18438d532fd1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Rendita]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="270" y="0" width="50" height="13" forecolor="#000000" uuid="87f84964-ab1e-44af-b39d-64853d32f3c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="Float" x="0" y="14" width="320" height="1" forecolor="#808080" uuid="549eed4b-76da-498a-86e7-07e11c5d6ac8"/>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="59" height="13" forecolor="#000000" uuid="32a25c83-b9e1-422a-98a2-e0fe0bcf46c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Riferimenti]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Prevent">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="59" y="0" width="55" height="13" forecolor="#000000" uuid="80926f74-97a7-4954-89bb-49f03617fd0b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inizioValidita}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="115" y="0" width="55" height="13" forecolor="#000000" uuid="741d8909-ae2c-4bb8-a284-bbe616027cff"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fineValidita}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="171" y="0" width="65" height="13" forecolor="#000000" uuid="58752fef-e213-4afb-b7de-68828ad395d1"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rendita}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="238" y="0" width="31" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="e86a7922-d0a6-4569-9c3c-e1e77d60c421"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{annoRendita}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="270" y="0" width="50" height="13" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="6773ebee-53aa-455d-9cf0-b8f0da342cdb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{categoriaCatasto}.getCategoriaCatasto()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

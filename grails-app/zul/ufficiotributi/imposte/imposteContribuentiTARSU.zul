@@ -1,0 +1,236 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <style>
+        td.vuoto {
+        border-color: #22AAE2;
+        border-width: 2px;
+        }
+    </style>
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+        <hlayout sclass="afc-control-bar" valign="middle">
+            <paging sclass="afc-paging" onPaging="@command('onPagingContribuenti')"
+                    activePage="@bind(vm.pagingContribuenti.activePage)"
+                    pageSize="@bind(vm.pagingContribuenti.pageSize)"
+                    totalSize="@load(vm.pagingContribuenti.totalSize)"
+                    visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                           disabled="@load(empty vm.selectedImposta)"
+                           onClick="@command('onRefreshContribuenti')"/>
+            <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                           tooltiptext='Esporta in XLS' onClick="@command('onContribuentiToXls')"
+                           disabled="@load(empty vm.listaImposteContribuenti)"/>
+            <toolbarbutton image="/images/afc/22x22/print.png" width="26px"
+                           tooltiptext='Stampa'
+                           disabled="@load(!vm.selectedAnyContribuente or !vm.abilitaStampa)"
+                           onClick="@command('onStampaContribuenti')"/>
+            <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                           tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                           popup="funzioniImposteContribuenti"/>
+        </hlayout>
+        <hlayout hflex="3" valign="middle">
+            <label value="@bind(c:cat3(c:cat4('Tributo: ',vm.tipoTributo.tipoTributoAttuale,' - Anno: ',vm.selectedImposta.anno),' - ',vm.descrListaContribuenti))"
+                   visible="@bind(not empty vm.selectedImposta)"
+            />
+        </hlayout>
+        <hlayout hflex="1" style="text-align: right;" valign="middle">
+            <label value="Soglia"/>
+            <decimalbox value="@bind(vm.dovSoglia)" mold="rounded"
+                        disabled="@bind(empty vm.selectedImposta)"
+                        style="text-align: right;" format="€ #,###.00"
+                        onChange="@command('onChangeDovSoglia')"/>
+            <toolbarbutton
+                    image="@load(vm.filtroAttivoContribuenti ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                    width="26px"
+                    onClick="@command('openFiltriContribuenti')"
+                    disabled="@load(empty vm.selectedImposta)"/>
+        </hlayout>
+    </hlayout>
+
+    <listbox nonselectableTags="" sizedByContent="true" span="true"
+             model="@load(vm.listaImposteContribuenti)" selectedItem="@bind(vm.selectedContribuente)"
+             emptyMessage="Nessun dato presente." vflex="1">
+        <auxhead>
+            <auxheader label="" colspan="8"/>
+            <auxheader label="di cui" colspan="7"/>
+            <auxheader label="" colspan="3"/>
+            <auxheader label="Residenza" colspan="4"/>
+            <auxheader label="" colspan="3"/>
+        </auxhead>
+        <listhead sizable="true">
+            <listheader label="">
+                <checkbox onCheck="@command('onCheckAllContribuenti')"
+                          checked="@load(vm.selectedAnyContribuente)"
+                          disabled="@bind(empty vm.listaImposteContribuenti)"/>
+            </listheader>
+            <listheader label="N.Ind"/>
+            <listheader label="Contribuente"
+                        onSort="@command('onChangeOrdinamentoContribuenti', valore='CONTRIBUENTE')"
+                        sort="auto(csoggnome)"/>
+            <listheader label="Codice Fiscale"
+                        onSort="@command('onChangeOrdinamentoContribuenti', valore='CF')"
+                        sort="auto(cf)"/>
+            <listheader label="Importo"/>
+            <listheader label="Sgravio"/>
+            <listheader label="Versato"/>
+            <listheader label="Dovuto"/>
+            <listheader label="Imposta"/>
+            <listheader label="ECA"/>
+            <listheader label="Add.Prov."/>
+            <listheader label="IVA"/>
+            <listheader label="Quota Fissa"/>
+            <listheader label="Quota Variabile"/>
+            <listheader label="C.Pereq."/>
+            <listheader label="Residente"/>
+            <listheader label="Stato"/>
+            <listheader label="Data Evento"/>
+            <listheader label="Indirizzo Res."/>
+            <listheader label="Civico Res."/>
+            <listheader label="Comune Res."/>
+            <listheader label="CAP Res."/>
+            <listheader label="Presso"/>
+            <listheader label="Indirizzo PEC"/>
+            <listheader label="Ruolo"/>
+        </listhead>
+        <template name="model" var="pr">
+            <listitem onDoubleClick="@command('onModificaContribuente')">
+                <listcell sclass="centro">
+                    <checkbox checked="@bind(vm.selectedContribuenti[pr.ni])"
+                              onCheck="@command('onCheckContribuente', detail=pr)"/>
+                </listcell>
+                <listcell label="@load(pr.ni)" sclass="destra"/>
+                <listcell label="@load(pr.csoggnome)"/>
+                <listcell>
+                    <hlayout valign="middle">
+                        <label value="@load(pr.codFiscale)"/>
+                        <space width="5px"/>
+                        <image visible="@load(pr.ni ne null)" src="/images/afc/16x16/user.png"
+                               tooltiptext="Situazione Contribuente" style="cursor: pointer;"
+                               onClick="@command('onModificaContribuente')" width="16px"/>
+                    </hlayout>
+                </listcell>
+                <listcell sclass="destra"
+                          label="@load(pr.impostaRuolo ne null ? c:formatNumber(pr.impostaRuolo, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.sgravioTot ne null ? c:formatNumber(pr.sgravioTot, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.versato ne null ? c:formatNumber(pr.versato, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.dovuto ne null ? c:formatNumber(pr.dovuto, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.imposta ne null ? c:formatNumber(pr.imposta, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.addMaggEca ne null ? c:formatNumber(pr.addMaggEca, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.addizionalePro ne null ? c:formatNumber(pr.addizionalePro, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.iva ne null ? c:formatNumber(pr.iva, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.importoPf ne null ? c:formatNumber(pr.importoPf, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.importoPv ne null ? c:formatNumber(pr.importoPv, '€ #,##0.00') : '')"/>
+                <listcell sclass="destra"
+                          label="@load(pr.maggiorazioneTares ne null ? c:formatNumber(pr.maggiorazioneTares, '€ #,##0.00') : '')"/>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(pr.residente)"
+                              w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="sinistra"
+                          label="@load(pr.statoDescrizione)"/>
+                <listcell sclass="centro"
+                          label="@load(pr.dataUltEvento ne null ?  c:formatDate(pr.dataUltEvento, 'dd/MM/yyyy') : '')"/>
+                <listcell sclass="@load(!empty pr.indirizzoRes ? 'sinistra' : 'sinistra vuoto')"
+                          label="@load(pr.indirizzoRes)"/>
+                <listcell sclass="sinistra"
+                          label="@load(pr.civicoRes)"/>
+                <listcell sclass="@load(pr.comuneResErr eq 'ERR' ? 'sinistra campi-differenti' : 'sinistra')"
+                          label="@load(pr.comuneRes)"/>
+                <listcell sclass="@load(pr.capResErr eq 'ERR' ? 'sinistra campi-differenti' : 'sinistra')"
+                          label="@load(pr.capRes)"/>
+                <listcell sclass="sinistra"
+                          label="@load(pr.cognomeNomeP)"/>
+                <listcell sclass="sinistra"
+                          label="@load(pr.mailPec)"/>
+                <listcell sclass="destra"
+                          label="@load(pr.ruolo ne null ? pr.ruolo : '')"/>
+            </listitem>
+        </template>
+        <listfoot>
+            <listfooter label="Totali:"/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalImpostaRuolo ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalImpostaRuolo, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalSgravioTot ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalSgravioTot, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalVersato ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalVersato, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalDovuto ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalDovuto, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalImposta ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalImposta, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalAddMaggEca ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalAddMaggEca, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalAddizionalePro ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalAddizionalePro, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalIva ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalIva, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalImportoPf ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalImportoPf, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalImportoPv ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalImportoPv, '€ #,##0.00') : '')"/>
+            <listfooter sclass="destra"
+                        label="@load(vm.totaliImposteContribuentiTARSU.totalMaggiorazioneTares ne null ? c:formatNumber(vm.totaliImposteContribuentiTARSU.totalMaggiorazioneTares, '€ #,##0.00') : '')"/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+            <listfooter/>
+        </listfoot>
+    </listbox>
+
+    <menupopup id="funzioniImposteContribuenti">
+        <menuitem label="Calcolo Compensazioni"
+                  onClick="@command('onCalcolaCompensazioni')"
+                  disabled="@load(!vm.selectedAnyContribuente)"
+                  visible="@load(vm.selectedTab eq 1)"/>
+        <menuitem label="Genera Versamenti in Compensazione"
+                  onClick="@command('onGeneraVersamentiInCompensazione')"
+                  disabled="@load(!vm.selectedAnyContribuente)"
+                  visible="@load(vm.selectedTab eq 1)"/>
+        <menuitem label="Calcolo Rimborsi TARI"
+                  onClick="@command('onCalcolaRimborsi')"
+                  disabled="@load(!vm.selectedAnyContribuente)"
+                  visible="@load(vm.selectedTab eq 1)"/>
+        <menuitem label="Calcolo Accertamenti"
+                  onClick="@command('onCalcolaAccertamenti')"
+                  disabled="@load(!vm.selectedAnyContribuente)"
+                  visible="@load(vm.selectedTab eq 2)"/>
+        <menuitem label="Calcolo Solleciti"
+                  tooltiptext="@bind((vm.selectedContribuente eq null)?'':(c:cat3(c:cat4('Calcolo Solleciti: ',vm.tipoTributo.tipoTributoAttuale, ' - ', vm.selectedImposta.anno), ' - ', vm.selectedContribuente.codFiscale)))"
+                  onClick="@command('onCalcolaSolleciti')"
+                  disabled="@load(!vm.selectedAnyContribuente)"
+                  visible="@load(vm.selectedTab eq 2 and (vm.tipoTributo.tipoTributo eq 'TARSU' or vm.tipoTributo.tipoTributo eq 'CUNI'))"/>
+        <menuseparator visible="@load(vm.selectedTab eq 2 or vm.selectedTab eq 1)"/>
+        <menuitem label="Calcolo Imposta per Contribuente"
+                  tooltiptext="@bind((vm.selectedContribuente eq null)?'':(c:cat3(c:cat4('Calcolo Imposta per contribuente: ',vm.tipoTributo.tipoTributoAttuale, ' - ', vm.selectedImposta.anno), ' - ', vm.selectedContribuente.codFiscale)))"
+                  onClick="@command('onCalcolaImpostaContribuente')"
+                  disabled="@load((vm.modifica eq false) or empty vm.selectedContribuente or vm.selectedAnyContribuente)"/>
+        <menuitem label="Invia AppIO"
+                  onClick="@command('onInviaAppIO')"
+                  disabled="@load((vm.modifica eq false) or empty vm.selectedContribuente or vm.selectedAnyContribuente)"
+                  visible="@load(vm.tipoTributo.tipoTributo eq 'ICI' or vm.tipoTributo.tipoTributo eq 'TASI' or vm.tipoTributo.tipoTributo eq 'TARSU' or vm.tipoTributo.tipoTributo eq 'CUNI')"/>
+    </menupopup>
+</zk>

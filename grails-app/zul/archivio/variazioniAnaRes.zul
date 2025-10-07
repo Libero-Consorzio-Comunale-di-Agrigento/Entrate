@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxComuni" extends="bandbox" class="it.finmatica.zkutils.BandboxComuni"?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+<zk xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('variazioniAnaResViewModel')" border="normal"
+            width="1000px" height="500px" sizable="true">
+		<script src="/js/decimalbox.js"/>
+
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="Variazioni Anagrafiche e Residenze"/>
+            </hlayout>
+        </h:div>
+        <tabbox vflex="1" selectedIndex="@load(vm.variazioneTabSelezionato)">
+            <tabs>
+                <tab label="Variazioni Anagrafiche" onSelect="@command('caricaTab', id=0)"/>
+                <tab label="Variazioni Residenze" onSelect="@command('caricaTab', id=1)"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+
+                    <grid sclass="form">
+                        <rows>
+                            <row>
+                                <cell align="right">
+                                    <label value="Evento"/>
+                                </cell>
+                                <cell width="80%">
+                                    <combobox hflex="1" readonly="true" mold="rounded"
+                                              model="@load(vm.listaAnadev)"
+                                              selectedItem="@bind(vm.tipoEventoSelezionato) @converter('it.finmatica.zkutils.PropertyConverter', property='id')"
+                                              onChange="@command('onChangeEvento')">
+                                        <template name="model">
+                                            <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Comune Evento"/>
+                                </cell>
+                                <cell width="80%">
+                                    <hlayout>
+                                        <bandboxComuni hflex="1" style="text-transform:uppercase"
+                                                       mold="rounded" autodrop="true"
+                                                       oggetto="@bind(vm.filtri.comuneEvento)"
+                                                       onSelect="@command('onSelectComune')"
+                                                       onChange="@command('onChangeComune')">
+                                            <custom-attributes proprieta="denominazione"/>
+                                        </bandboxComuni>
+                                        <textbox mold="rounded" value="@bind(vm.filtri.comuneEvento.sigla)"
+                                                 readonly="true"/>
+                                    </hlayout>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Data Evento"/>
+                                </cell>
+                                <cell width="80%">
+                                    <hbox>
+                                        <label value=" dal "/>
+                                        <datebox hflex="1" mold="rounded"
+                                                 value="@bind(vm.dataAnaEventoDal)"
+                                                 format="dd/MM/yyyy"
+                                                 onChange="@command('onCheckData')"/>
+                                        <label value=" al "/>
+                                        <datebox hflex="1" mold="rounded"
+                                                 value="@bind(vm.dataAnaEventoAl)"
+                                                 format="dd/MM/yyyy"
+                                                 onChange="@command('onCheckData')"/>
+                                    </hbox>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                    <space height="3px"/>
+                    <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+                        <hlayout>
+                            <hlayout sclass="afc-control-bar" valign="middle">
+                                <paging id="pagingAnagrafiche" sclass="afc-paging"
+                                        onPaging="@command('onPaging')"
+                                        activePage="@bind(vm.activePageAnagrafiche)"
+                                        pageSize="@bind(vm.pageSizeAnagrafiche)"
+                                        totalSize="@load(vm.totalSizeAnagrafiche)"
+                                        visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                                <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                               onClick="@command('onRefreshAnagrafiche')"/>
+                                <toolbarbutton image="/images/afc/22x22/edit.png"
+                                               tooltiptext='Visualizza Soggetto'
+                                               onClick="@command('onVisualizzaSoggetto')"
+                                               disabled="@load(empty vm.selectedVariazioniAnagrafiche || empty vm.listaVariazioniAnagrafiche)"/>
+                                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                               tooltiptext='Esporta in XLS'
+                                               disabled="@load(empty vm.listaVariazioniAnagrafiche)"
+                                               onClick="@command('onExportXlsAnagrafiche')"/>
+                                <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                               popup="funzioniVariazioniAnagrafiche"/>
+                            </hlayout>
+                        </hlayout>
+                        <hlayout hflex="1" style="text-align: right;" valign="middle">
+                            <groupbox>
+                                <caption label="Soggetti" style="text-align: left;"/>
+                                <hlayout>
+                                    <radiogroup id="tipoSoggetti"/>
+                                    <radio label="Contribuenti" radiogroup="tipoSoggetti" value="1"
+                                           onCheck="@command('onSelezionaTipoSoggetto', tipo=1)"/>
+                                    <radio label="Non Contribuenti" radiogroup="tipoSoggetti" value="2"
+                                           onCheck="@command('onSelezionaTipoSoggetto', tipo=2)"/>
+                                    <radio label="Entrambi" radiogroup="tipoSoggetti" value="0" checked="true"
+                                           onCheck="@command('onSelezionaTipoSoggetto', tipo=0)"/>
+                                </hlayout>
+                            </groupbox>
+                        </hlayout>
+                        <space width="3px"/>
+                    </hlayout>
+                    <listbox model="@load(vm.listaVariazioniAnagrafiche)" span="true" nonselectableTags=""
+                             sizedByContent="true"
+                             selectedItem="@bind(vm.selectedVariazioniAnagrafiche)"
+                             onDoubleClick="@command('onVisualizzaSoggetto')"
+                             onSelect="@command('onSelectVariazione', tipo='anagrafiche')"
+                             emptyMessage="Nessuna variazione." vflex="1">
+                        <listhead sizable="true">
+                            <listheader label="Contr." tooltiptext="Contribuente" align="center" width="5%"/>
+                            <listheader label="N.Ind." tooltiptext="Numero Individuale" align="right" width="5%"/>
+                            <listheader label="Cognome"/>
+                            <listheader label="Nome"/>
+                            <listheader label="Cod.Fiscale" tooltiptext="Codice Fiscale" width="20%"/>
+                            <listheader label="Data Nascita" align="center" width="10%"/>
+                            <listheader label="Cod.Contribuente" tooltiptext="Codice contribuente" align="right"
+                                        width="15%"/>
+                            <listheader label="Indirizzo"/>
+                            <listheader label="Comune"/>
+                            <listheader label="Matricola" align="right" width="10%"/>
+                            <listheader label="Data Evento" align="center" width="10%"/>
+                            <listheader label="Comune Evento"/>
+                        </listhead>
+                        <template name="model" var="var">
+                            <listitem>
+                                <listcell>
+                                    <checkbox checked="@load(var.contribuente eq 'SI')"
+                                              w:onCheck="this.setChecked(!this.isChecked())"/>
+                                </listcell>
+                                <listcell label="@load(var.ni)"/>
+                                <listcell label="@load(var.cognome)"/>
+                                <listcell label="@load(var.nome)"/>
+                                <listcell>
+                                    <hlayout>
+                                        <label value="@load(var.codFiscale)"/>
+                                        <space width="2px"/>
+                                        <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                                               style="cursor: pointer;" width="16px"
+                                               visible="@load((var.contribuente ne null) ? ((var.contribuente eq 'SI') ? true : false) : false)"
+                                               onClick="@command('onOpenSituazioneContribuente',  ni=var.ni)"/>
+                                    </hlayout>
+                                </listcell>
+                                <listcell
+                                        label="@load(var.dataNascita eq null? '' :c:formatDate(var.dataNascita, 'dd/MM/yyyy'))"/>
+                                <listcell label="@load(var.codContribuente)"/>
+                                <listcell label="@load(var.indirizzo)"/>
+                                <listcell label="@load(var.comune)"/>
+                                <listcell label="@load(var.matricola)"/>
+                                <listcell
+                                        label="@load(var.dataEvento eq null? '' :c:formatDate(var.dataEvento, 'dd/MM/yyyy'))"/>
+                                <listcell label="@load(var.comuneEvento)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+                <tabpanel>
+                    <grid sclass="form">
+                        <rows>
+                            <row>
+                                <cell align="right">
+                                    <label value="Tipo evento"/>
+                                </cell>
+                                <cell width="80%">
+                                    <radiogroup id="tipoEvento">
+                                        <radio label="Trasf. di Residenza   " radiogroup="tipoEvento" checked="true"
+                                               value="91" onCheck="@command('onSelezionaTipoEvento', tipo=91)"/>
+                                        <radio label="Scissione" radiogroup="tipoEvento" value="92"
+                                               onCheck="@command('onSelezionaTipoEvento', tipo=92)"/>
+                                    </radiogroup>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="Data Evento"/>
+                                </cell>
+                                <cell width="80%">
+                                    <hbox>
+                                        <label value=" dal "/>
+                                        <datebox hflex="1" mold="rounded"
+                                                 value="@bind(vm.dataResEventoDal)"
+                                                 format="dd/MM/yyyy"
+                                                 onChange="@command('onCheckData')"/>
+                                        <label value=" al "/>
+                                        <datebox hflex="1" mold="rounded"
+                                                 value="@bind(vm.dataResEventoAl)"
+                                                 format="dd/MM/yyyy"
+                                                 onChange="@command('onCheckData')"/>
+                                    </hbox>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                    <space height="3px"/>
+                    <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+                        <hlayout>
+                            <hlayout sclass="afc-control-bar" valign="middle">
+                                <paging id="pagingResidenze" sclass="afc-paging"
+                                        onPaging="@command('onPaging')"
+                                        activePage="@bind(vm.activePageResidenze)"
+                                        pageSize="@bind(vm.pageSizeResidenze)"
+                                        totalSize="@load(vm.totalSizeResidenze)"
+                                        visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                                <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                               onClick="@command('onRefreshResidenze')"/>
+                                <toolbarbutton image="/images/afc/16x16/edit.png"
+                                               tooltiptext='Visualizza Soggetto'
+                                               onClick="@command('onVisualizzaSoggetto')"
+                                               disabled="@load(empty vm.selectedVariazioniResidenze ||empty vm.listaVariazioniResidenze)"/>
+                                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                               tooltiptext='Esporta in XLS'
+                                               disabled="@load(empty vm.listaVariazioniResidenze)"
+                                               onClick="@command('onExportXlsResidenze')"/>
+                                <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                               popup="funzioniVariazioniResidenze"/>
+                            </hlayout>
+                        </hlayout>
+                        <hlayout hflex="1" style="text-align: right;" valign="middle">
+                            <groupbox>
+                                <caption label="Soggetti" style="text-align: left;"/>
+                                <hlayout>
+                                    <radiogroup id="tipoSoggettiRes"/>
+                                    <radio label="Contribuenti" radiogroup="tipoSoggettiRes" value="1"
+                                           onCheck="@command('onSelezionaTipoSoggetto', tipo=1)"/>
+                                    <radio label="Non Contribuenti" radiogroup="tipoSoggettiRes" value="2"
+                                           onCheck="@command('onSelezionaTipoSoggetto', tipo=2)"/>
+                                    <radio label="Entrambi" radiogroup="tipoSoggettiRes" value="0" checked="true"
+                                           onCheck="@command('onSelezionaTipoSoggetto', tipo=0)"/>
+                                </hlayout>
+                            </groupbox>
+                        </hlayout>
+                        <space width="3px"/>
+                    </hlayout>
+                    <listbox model="@load(vm.listaVariazioniResidenze)" span="true" nonselectableTags=""
+                             sizedByContent="true"
+                             selectedItem="@bind(vm.selectedVariazioniResidenze)"
+                             onSelect="@command('onSelectVariazione', tipo='residenze')"
+                             onDoubleClick="@command('onVisualizzaSoggetto')"
+                             emptyMessage="Nessuna variazione." vflex="1">
+                        <listhead sizable="true">
+                            <listheader label="Contr." tooltiptext="Contribuente" align="center" width="5%"/>
+                            <listheader label="N.Ind." tooltiptext="Numero Individuale" align="right" width="5%"/>
+                            <listheader label="Cognome"/>
+                            <listheader label="Nome"/>
+                            <listheader label="Cod.Fiscale" tooltiptext="Codice Fiscale" width="20%"/>
+                            <listheader label="Data Nascita" align="center" width="10%"/>
+                            <listheader label="Cod.Contribuente" tooltiptext="Codice contribuente" align="right"
+                                        width="15%"/>
+                            <listheader label="Indirizzo"/>
+                            <listheader label="Comune"/>
+                            <listheader label="Matricola" align="right" width="10%"/>
+                            <listheader label="Data Evento" align="center" width="10%"/>
+                        </listhead>
+                        <template name="model" var="var">
+                            <listitem>
+                                <listcell>
+                                    <checkbox checked="@load(var.contribuente eq 'SI')"
+                                              w:onCheck="this.setChecked(!this.isChecked())"/>
+                                </listcell>
+                                <listcell label="@load(var.ni)"/>
+                                <listcell label="@load(var.cognome)"/>
+                                <listcell label="@load(var.nome)"/>
+                                <listcell>
+                                    <hlayout>
+                                        <label value="@load(var.codFiscale)"/>
+                                        <space width="2px"/>
+                                        <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                                               style="cursor: pointer;" width="16px"
+                                               visible="@load((var.contribuente ne null) ? ((var.contribuente eq 'SI') ? true : false) : false)"
+                                               onClick="@command('onOpenSituazioneContribuente',  ni=var.ni)"/>
+                                    </hlayout>
+                                </listcell>
+                                <listcell
+                                        label="@load(var.dataNascita eq null? '' :c:formatDate(var.dataNascita, 'dd/MM/yyyy'))"/>
+                                <listcell label="@load(var.codContribuente)"/>
+                                <listcell label="@load(var.indirizzo)"/>
+                                <listcell label="@load(var.comune)"/>
+                                <listcell label="@load(var.matricola)"/>
+                                <listcell
+                                        label="@load(var.dataEvento eq null? '' :c:formatDate(var.dataEvento, 'dd/MM/yyyy'))"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/filter_box.png"
+                        label="Cancella Filtri" onClick="@command('onSvuotaFiltri')"/>
+                <button mold="trendy" image="/images/afc/16x16/search.png"
+                        label="Cerca" onClick="@command('onCerca')"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png"
+                        label="Chiudi" onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+
+        <menupopup id="funzioniVariazioniAnagrafiche">
+            <menuitem label="Componenti della Famiglia"
+                      onClick="@command('onComponentiDellaFamiglia', tipo='anagrafiche')"
+                      disabled="@load(empty vm.selectedVariazioniAnagrafiche or !vm.esisteCodFamiliare)"/>
+        </menupopup>
+        <menupopup id="funzioniVariazioniResidenze">
+            <menuitem label="Componenti della Famiglia"
+                      onClick="@command('onComponentiDellaFamiglia', tipo='residenze')"
+                      disabled="@load(empty vm.selectedVariazioniResidenze or !vm.esisteCodFamiliare)"/>
+        </menupopup>
+
+
+    </window>
+</zk>

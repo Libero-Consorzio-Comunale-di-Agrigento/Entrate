@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox width="100%">
+        <caption label="Estremi catasto"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell colspan="1" align="right">
+                        <label value="Sezione "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.sezione)" tooltiptext="Sezione"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Foglio "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.foglio)" tooltiptext="Foglio"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Numero "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.numero)" tooltiptext="Numero"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Subalterno "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.subalterno)" tooltiptext="Subalterno"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Partita "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.partita)" tooltiptext="Partita"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="1" align="right">
+                        <label value="Zona "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.zona)" tooltiptext="Zona"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Protocollo "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.protocolloCatasto)"
+                                 tooltiptext="Protocollo Catasto"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Anno "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.annoCatasto)" tooltiptext="Anno catasto"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Categoria "/>
+                    </cell>
+                    <cell colspan="1">
+                        <textbox readonly="true"
+                                 value="@bind(vm.oggetto.categoriaCatasto.categoriaCatasto)"></textbox>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Classe "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox readonly="true" style="text-align: right;"
+                                 hflex="1" value="@bind(vm.oggetto.classeCatasto)" tooltiptext="Classe catasto"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

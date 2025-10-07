@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               tooltiptext='#{empty arg.modifyTooltip?((!vm.modifica)?"Lettura":"Modifica"):arg.modifyTooltip}'
+                               onClick="@command('onApriImmobili')"
+                               disabled="@load(empty vm.localeSelezionato or !vm.modifica or vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"/>
+                <toolbarbutton image="/images/afc/16x16/add.png"
+                               onClick="@command('onAggiungiArea')"
+                               disabled="@bind(empty vm.denuncia.pratica.id or !vm.modifica or vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"
+                               tooltiptext="Aggiungi Locale o Area"/>
+                <toolbarbutton image="/images/afc/16x16/delete.png"
+                               tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                               visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                               disabled="@load(empty vm.localeSelezionato or !vm.modifica or vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"
+                               onClick="@command('onEliminaArea')"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png" width="22px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniLocaliAree"
+                               disabled="@load(vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <vbox vflex="1">
+        <listbox vflex="2" span="true" model="@load(vm.listaLocaliAree)" hflex="1"
+                 emptyMessage="Nessun Locale o Area" height="100px" sizedByContent="true"
+                 onSelect="@command('onSelectLocaleArea')"
+                 selectedItem="@bind(vm.localeSelezionato)">
+            <listhead sizable="true">
+                <listheader sclass="centro" label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.tipoOggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.categoriaCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.classeCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.classeCatasto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.codiceTributo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.codiceTributo'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.categoria'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoria'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.tipoTariffa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTariffa'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.descrizioneTipoTariffa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.descrizioneTipoTariffa'))"/>
+                <listheader sclass="centro"
+                            label="Superf."
+                            tooltiptext="Superficie"/>
+                <listheader sclass="centro"
+                            label="P.Racc."
+                            tooltiptext="Punto di raccolta"/>
+                <listheader sclass="centro"
+                            label="Ab.Princ."
+                            tooltiptext="@load(c:l('sportello.label.estesa.flagAbPrincipale'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.decorrenza'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.decorrenza'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.cessazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.cessazione'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.inizioOccupazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.inizioOccupazione'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.fineOccupazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.fineOccupazione'))"/>
+                <listheader label="RFID"
+                            tooltiptext="Presenza di RFID"/>
+            </listhead>
+            <template name="model" var="loc">
+                <listitem onDoubleClick="@command(vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno ? '' : 'onApriImmobili')">
+                    <listcell sclass="destra" label="@load(loc.oggettoPratica.oggetto.id)"/>
+                    <listcell sclass="centro"
+                              label="@load(loc.oggettoPratica.oggetto.tipoOggetto.tipoOggetto)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(loc.oggettoPratica.oggetto.indirizzo)"/>
+                    <listcell sclass="destra"
+                              label="@load(loc.oggettoPratica.oggetto.sezione)"/>
+                    <listcell sclass="destra" label="@load(loc.oggettoPratica.oggetto.foglio)"/>
+                    <listcell sclass="destra" label="@load(loc.oggettoPratica.oggetto.numero)"/>
+                    <listcell sclass="destra"
+                              label="@load(loc.oggettoPratica.oggetto.subalterno)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(!empty loc.oggettoPratica.oggetto.categoriaCatasto ? loc.oggettoPratica.oggetto.categoriaCatasto.categoriaCatasto : loc.oggettoPratica.categoriaCatasto.categoriaCatasto)"
+                              tooltiptext="@load(!empty loc.oggettoPratica.oggetto.categoriaCatasto ? loc.oggettoPratica.oggetto.categoriaCatasto : loc.oggettoPratica.categoriaCatasto)"/>
+                    <listcell sclass="destra"
+                              label="@load(loc.oggettoPratica.oggetto.classeCatasto)"/>
+                    <listcell sclass="destra"
+                              label="@load(loc.oggettoPratica.codiceTributo.id)"/>
+                    <listcell sclass="destra"
+                              label="@load(loc.oggettoPratica.tariffa.categoria.categoria)"/>
+                    <listcell sclass="destra"
+                              label="@load(loc.oggettoPratica.tariffa.tipoTariffa)"/>
+                    <listcell sclass="sinistra"
+                              tooltiptext="@load(c:cat3(loc.oggettoPratica.tariffa.categoria.descrizione, ' - ', loc.oggettoPratica.tariffa.descrizione))"
+                              label="@load(c:cat3(loc.oggettoPratica.tariffa.categoria.descrizione, ' - ', loc.oggettoPratica.tariffa.descrizione))"/>
+                    <listcell sclass="destra"
+                              label="@load((loc.oggettoPratica.consistenza eq null) ? '' : c:formatNumber(loc.oggettoPratica.consistenza, '#,##0.00'))"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(loc.flagPuntoRaccolta)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(loc.flagAbPrincipale)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro"
+                              label="@load(loc.dataDecorrenza) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(loc.dataCessazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(loc.inizioOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(loc.fineOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(loc.oggettoPratica.oggetto.codiciRfid.size() > 0)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+
+        <groupbox closable="false" vflex="1">
+            <caption label="Ruoli"/>
+
+            <listbox hflex="1" vflex="1" span="true" nonselectableTags=""
+                     sizedByContent="true" emptyMessage="Nessun ruolo presente." model="@load(vm.ruoli)"
+                     selectedItem="@bind(vm.ruoloSelezionato)">
+                <listhead sizable="true">
+                    <listheader label="T.Ruolo" tooltiptext="Tipo Ruolo"/>
+                    <listheader label="Anno"/>
+                    <listheader label="Anno Em." tooltiptext="Anno Emissione"/>
+                    <listheader label="Pr." tooltiptext="Progressivo Emissione"/>
+                    <listheader label="Emissione" tooltiptext="Data Emissione"/>
+                    <listheader label="Invio" tooltiptext="Data Invio"/>
+                    <listheader label="Cod." tooltiptext="Codice Tributo"/>
+                    <listheader label="Importo"/>
+                    <listheader label="L." tooltiptext="Importo Lordo"/>
+                    <listheader label="Sgravio"/>
+                    <listheader label="Sp." tooltiptext="Specie Ruolo"/>
+                    <listheader label="T.Emiss." tooltiptext="Tipo Emissione"/>
+                    <listheader label="Ruolo"/>
+                    <listheader label="Mesi"/>
+                    <listheader label="Giorni"/>
+                </listhead>
+                <template name="model" var="ruOgg">
+                    <listitem>
+                        <listcell label="@load(ruOgg.ruolo.tipoRuolo eq 'P' ? 'Principale' : 'Suppletivo')"/>
+                        <listcell sclass="destra" label="@load(ruOgg.ruolo.annoRuolo)"/>
+                        <listcell sclass="destra" label="@load(ruOgg.ruolo.annoEmissione)"/>
+                        <listcell sclass="destra" label="@load(ruOgg.ruolo.progrEmissione)"/>
+                        <listcell sclass="centro"
+                                  label="@load(!empty ruOgg.ruolo.dataEmissione ? c:formatDate(ruOgg.ruolo.dataEmissione, 'dd/MM/yyyy') : '')"/>
+                        <listcell sclass="centro"
+                                  label="@load(ruOgg.ruolo.invioConsorzio ne null ? c:formatDate(ruOgg.ruolo.invioConsorzio, 'dd/MM/yyyy') : '')"/>
+                        <listcell sclass="destra" label="@load(ruOgg.codiceTributo.id)"/>
+                        <listcell sclass="destra"
+                                  label="@load(ruOgg.importo ne null ? c:formatNumber(ruOgg.importo, '€ #,##0.00'): '')"/>
+                        <listcell sclass="centro">
+                            <checkbox checked="@load(not empty ruOgg.importoLordo)"
+                                      w:onCheck="this.setChecked(!this.isChecked())"/>
+                        </listcell>
+                        <listcell sclass="destra"
+                                  label="@load(ruOgg.ruoloContribuente.totaleSgravi ne null ? c:formatNumber(ruOgg.ruoloContribuente.totaleSgravi, '€#,##0.00'): ''))"/>
+                        <listcell
+                                label="@load(ruOgg.ruolo.specieRuolo ? 'Coattivo' : 'Ordinario')"/>
+                        <listcell
+                                label="@load(ruOgg.ruolo.tipoEmissione)"/>
+                        <listcell sclass="destra" label="@load(ruOgg.ruolo.id)"/>
+                        <listcell sclass="destra" label="@load(ruOgg.mesiRuolo)"/>
+                        <listcell sclass="destra" label="@load(ruOgg.giorniRuolo)"/>
+                    </listitem>
+                </template>
+            </listbox>
+
+
+        </groupbox>
+
+    </vbox>
+
+    <menupopup id="funzioniLocaliAree">
+        <menuitem label="Ruoli: Sgravi"
+                  disabled="@bind(empty vm.ruoloSelezionato.ruolo or empty vm.ruoloSelezionato.ruolo.invioConsorzio or !vm.modifica)"
+                  onClick="@command('onGestisciSgravi')"/>
+
+    </menupopup>
+</zk>

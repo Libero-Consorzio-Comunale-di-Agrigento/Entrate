@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="labelWithButton" extends="div" class="it.finmatica.zkutils.LabelWithButton"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+        td.vuoto {
+        border-color: #22AAE2;
+        border-width: 2px;
+        }
+    </style>
+
+    <vlayout vflex="1" spacing="2">
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <paging sclass="afc-paging" onPaging="@command('onCambioPaginaEccedenze')"
+                        activePage="@bind(vm.pagingEccedenze.activePage)"
+                        pageSize="@bind(vm.pagingEccedenze.pageSize)"
+                        totalSize="@load(vm.pagingEccedenze.totalSize)"
+                        visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                <toolbarbutton image="/images/afc/22x22/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               disabled="@load(empty vm.listaEccedenzeRuolo)"
+                               onClick="@command('onRicaricaListaEccedenze')"/>
+                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                               tooltiptext='Esporta in XLS'
+                               disabled="@load(empty vm.listaEccedenzeRuolo)"
+                               onClick="@command('onEccedenzeToXls')"/>
+            </hlayout>
+            <hlayout hflex="1" style="text-align: right;" valign="middle">
+                <toolbarbutton
+                        image="@load(vm.filtroAttivoEccedenze ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                        onClick="@command('onOpenFiltriEccedenze')"/>
+            </hlayout>
+        </hlayout>
+        <listbox id="listBoxEccedenze" selectedItem="@bind(vm.selectedEccedenza)" span="true"
+                 nonselectableTags="" sizedByContent="true" model="@load(vm.listaEccedenzeRuolo)"
+                 emptyMessage="Nessuna eccedenza presente." vflex="true"
+                 onSelect="@command('onSelezionaEccedenza')">
+            <listhead sizable="true">
+                <listheader label="@load(c:l('ufficiotributi.label.cognomeNome'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.cognomeNome'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.codFiscale'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.codFiscale'))"/>
+              
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.codTributo'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.codTributo'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.categoria'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.categoria'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.dal'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.dal'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.al'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.al'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.domestica'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.domestica'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.numeroFamiliari'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.numeroFamiliari'))"/>
+              
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.importoLordo'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.importoLordo'))"/>
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.eccedenze'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.eccedenze'))" />
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.addizionaleProvinciale'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.addizionaleProvinciale'))"/>
+              
+                <listheader align="center" label="Imp.Minimi"
+                            tooltiptext="Importo Minimi"/>
+                <listheader align="center" label="Tot.Svuot."
+                            tooltiptext="Totale Svuotamenti"/>
+                <listheader align="center" label="Sup."
+                            tooltiptext="Superficie"/>
+                <listheader align="center" label="Costo Svuot."
+                            tooltiptext="Costo Svuotamento"/>
+                <listheader align="center" label="Svuot.Sup."
+                            tooltiptext="Svuotamenti Superficie"/>
+                <listheader align="center" label="Costo Sup."
+                            tooltiptext="Costo Superficie"/>
+                <listheader align="center" label="Ecc.Svuot."
+                            tooltiptext="Eccedenza Svuotamenti"/>
+
+                <listheader align="center"  width="100px"
+                            label="@load(c:l('ufficiotributi.label.note'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.note'))"/>
+              
+                <listheader align="center" label="@load(c:l('ufficiotributi.label.ruolo'))"
+                            tooltiptext="@load(c:l('ufficiotributi.label.estesa.ruolo'))"/>
+            </listhead>
+            <template name="model" var="eccz">
+                <listitem value="@load(v)">
+                    <listcell label="@load(eccz.cognomeNome)"/>
+                    <listcell sclass="sinistra" label="@load(eccz.codFiscale)"/>
+                  
+                    <listcell sclass="destra" label="@load(eccz.tributo)"/>
+                    <listcell sclass="destra" label="@load(eccz.categoria)"/>
+                    <listcell sclass="centro"
+                              label="@load(eccz.dataDal eq null? '' :c:formatDate(eccz.dataDal, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="centro"
+                              label="@load(eccz.dataAl eq null? '' :c:formatDate(eccz.dataAl, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(eccz.flagDomestica)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="destra"
+                              label="@load(eccz.numeroFamiliari eq null? '' : eccz.numeroFamiliari)"/>
+                  
+                    <listcell sclass="destra"
+                              label="@load((eccz.importoRuolo ne null) ? c:formatNumber(eccz.importoRuolo, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load((eccz.imposta ne null) ? c:formatNumber(eccz.imposta, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(((eccz.addProv eq null) || (eccz.addProv eq 0)) ? '' : c:formatNumber(eccz.addProv, '€ #,##0.00'))"/>
+
+                    <listcell sclass="destra"
+                              label="@load((eccz.importoMinimi eq null) ? '' : c:formatNumber(eccz.importoMinimi, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((eccz.totaleSvuotamenti eq null) ? '' : eccz.totaleSvuotamenti)"/>
+                    <listcell sclass="destra"
+                              label="@load(((eccz.superficie eq null) || (eccz.superficie eq 0)) ? '' : c:formatNumber(eccz.superficie, '#,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((eccz.costoSvuotamento eq null) ? '' : c:formatNumber(eccz.costoSvuotamento, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((eccz.svuotamentiSuperficie eq null) || (eccz.svuotamentiSuperficie eq 0)) ? '' : c:formatNumber(eccz.svuotamentiSuperficie, '#,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((eccz.costoSuperficie eq null) ? '' : c:formatNumber(eccz.costoSuperficie, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((eccz.eccedenzaSvuotamenti eq null) || (eccz.eccedenzaSvuotamenti eq 0)) ? '' : c:formatNumber(eccz.eccedenzaSvuotamenti, '#,##0.00'))"/>
+
+                    <listcell>
+                        <labelWithButton image="/images/afc/16x16/document.png"
+                                         value="@load(eccz.note)"
+                                         showButtonIfEmpty="false"
+                                         popup="@load(c:cat('popupNote_',eccz.codUnivoco))" />
+                        <popup id="@load(c:cat('popupNote_',eccz.codUnivoco))"
+                                width="720px"
+                                onOpen="@command('onApriPopupNote')">
+                            <h:div sclass="barraTitoloPagina">
+                                <label class="titoloPagina" value="Note"/>
+                            </h:div>
+                            <hlayout>
+                                <textbox id="@load(c:cat('textboxNote_',eccz.codUnivoco))"
+                                          hflex="1" mold="rounded" rows="10"
+                                          value="@load(eccz.note)"
+                                          disabled="true" />
+                            </hlayout>
+                            <h:div sclass="barraPulsanti">
+                                <h:div>
+                                    <button label="Chiudi"
+                                            mold="trendy"
+                                            image="/images/pulsanti/16x16/window_close.png"
+                                            onClick="@command('onChiudiPopupNote')"/>
+                                </h:div>
+                            </h:div>
+                        </popup>
+                    </listcell>
+                    <listcell sclass="destra" label="@load(eccz.ruolo)"/>
+                </listitem>
+            </template>
+            <listfoot>
+                <listfooter sclass="centro" label="Totali:"/>
+                <listfooter sclass="destra" label="Contribuenti:" style="white-space:nowrap;"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliEccedenze.contribuenti, '#,##0'))"/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliEccedenze.importoRuolo, '€ #,##0.00'))"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliEccedenze.imposta, '€ #,##0.00'))"/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliEccedenze.addProv, '€ #,##0.00'))"/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliEccedenze.costoSvuotamento, '€ #,##0.00'))"/>
+                <listfooter label=""/>
+                <listfooter sclass="destra" style="white-space:nowrap;"
+                            label="@load(c:formatNumber(vm.totaliEccedenze.costoSuperficie, '€ #,##0.00'))"/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+                <listfooter label=""/>
+            </listfoot>
+        </listbox>
+    </vlayout>
+</zk>

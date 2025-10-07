@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="labelWithButton" extends="div" class="it.finmatica.zkutils.LabelWithButton"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window id="datiMetriciDettaglioImmobile" width="800px" position="center" sizable="true" vflex="1"
+            border="normal" mode="popup" visible="@load(vm.showDatiMetriciDettaglioImmobile)" title="Dati Metrici">
+
+        <vbox vflex="1" hflex="1">
+            <groupbox vflex="1" hflex="1">
+                <listbox height="250px"
+                         span="true" sizedByContent="true"
+                         model="@load(vm.listaDatiMetriciImmobile)" emptyMessage="Nessun dato presente">
+                    <listhead sizable="true">
+                        <listheader label="Ambiente" align="center"/>
+                        <listheader label="Descrizione" align="center" width="50%"/>
+                        <listheader label="Sup.Ambiente" align="center"/>
+                        <listheader label="Altezza" align="center"/>
+                        <listheader label="Altezza Max." align="center"/>
+                    </listhead>
+                    <template name="model" var="imm">
+                        <listitem>
+                            <listcell label="@load(imm.ambiente)"/>
+                            <listcell>
+                                <div style="display: flex;">
+                                    <label value="@load(imm.ambienteDescr)"
+                                           tooltiptext="@load(imm.ambienteDescr)"
+                                           style="overflow: hidden; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                    />
+                                </div>
+                            </listcell>
+                            <listcell sclass="destra" label="@load(imm.superficie)"/>
+                            <listcell sclass="destra" label="@load(imm.altezza)"/>
+                            <listcell sclass="destra" label="@load(imm.altezzaMax)"/>
+                        </listitem>
+                    </template>
+                </listbox>
+            </groupbox>
+        </vbox>
+    </window>
+</zk>
+

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('ruoliRicercaViewModel')" vflex="1"
+            width="448px" height="396px" onOK="@command('onCerca')">
+		<script src="/js/decimalbox.js"/>
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="Ricerca avanzata"/>
+            </hlayout>
+        </h:div>
+        <div>
+            <groupbox width="100%">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Tipo Ruolo "/>
+                            </cell>
+                            <cell align="right">
+                                <combobox mold="rounded" hflex="1" readonly="true"
+                                          model="@load(vm.tipoRuolo)" selectedItem="@bind(vm.mapParametri.tipoRuolo)">
+                                    <template name="model" var="sr">
+                                        <comboitem label="@load(sr.descrizione)" value="@load(sr)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Specie Ruolo "/>
+                            </cell>
+                            <cell align="right">
+                                <combobox mold="rounded" hflex="1" readonly="true"
+                                          model="@load(vm.specieRuolo)"
+                                          selectedItem="@bind(vm.mapParametri.specieRuolo)">
+                                    <template name="model" var="sr">
+                                        <comboitem label="@load(sr.descrizione)" value="@load(sr)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Tipo Emissione "/>
+                            </cell>
+                            <cell>
+                                <combobox mold="rounded" hflex="1" readonly="true"
+                                          model="@load(vm.tipiEmissione)"
+                                          selectedItem="@bind(vm.mapParametri.tipoEmissione)">
+                                    <template name="model" var="te">
+                                        <comboitem label="@load(te.descrizione)" value="@load(te)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Anno "/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Dal "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.daAnno)"
+                                        mold="rounded" cols="4" width="100px"/>
+                                <label value=" Al "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.aAnno)"
+                                        mold="rounded" cols="4" width="100px"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Anno Emissione "/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Dal "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.daAnnoEmissione)"
+                                        mold="rounded" cols="4" width="100px"/>
+                                <label value=" Al "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.aAnnoEmissione)"
+                                        mold="rounded" cols="4" width="100px"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Progressivo Emissione "/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Dal "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.daProgEmissione)"
+                                        mold="rounded" cols="4" width="100px"/>
+                                <label value=" Al "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.aProgEmissione)"
+                                        mold="rounded" cols="4" width="100px"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Data Emissione "/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Dal "/>
+                                <datebox value="@bind(vm.mapParametri.daDataEmissione)" format="dd/MM/yyyy"
+                                         mold="rounded" cols="4" width="100px"/>
+                                <label value=" Al "/>
+                                <datebox value="@bind(vm.mapParametri.aDataEmissione)" format="dd/MM/yyyy"
+                                         mold="rounded" cols="4" width="100px"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Data Invio "/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Dal "/>
+                                <datebox value="@bind(vm.mapParametri.daDataInvio)" format="dd/MM/yyyy"
+                                         mold="rounded" cols="4" width="100px"/>
+                                <label value=" Al "/>
+                                <datebox value="@bind(vm.mapParametri.aDataInvio)" format="dd/MM/yyyy"
+                                         mold="rounded" cols="4" width="100px"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Numero Ruolo "/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Dal "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.daNumeroRuolo)"
+                                        mold="rounded" cols="4" width="100px"/>
+                                <label value=" Al "/>
+                                <intbox style="text-align: right;" value="@bind(vm.mapParametri.aNumeroRuolo)"
+                                        mold="rounded" cols="4" width="100px"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" width="35%">
+                                <label value="Codice Tributo "/>
+                            </cell>
+                            <cell align="left">
+                                <combobox id="cmbTributo"
+                                          readonly="true"
+                                          hflex="1" model="@load(vm.listaCodiciTributo)" mold="rounded"
+                                          selectedItem="@bind(vm.mapParametri.codiceTributo) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                    <template name="model" var="ct">
+                                        <comboitem
+                                                label="@load(empty ct.id ? ct.descrizione : c:cat3(ct.id, ' - ', ct.descrizione))"
+                                                value="@load(ct.id)" tooltiptext="@load(ct.descrizione)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button mold="trendy" image="/images/afc/16x16/filter_box.png"
+                            label="Cancella Filtri" onClick="@command('onSvuotaFiltri')"/>
+                    <button mold="trendy" image="/images/afc/16x16/search.png"
+                            label="Cerca" onClick="@command('onCerca')"/>
+                    <button mold="trendy" image="/images/afc/16x16/close.png"
+                            label="Chiudi" onClick="@command('onChiudi')"/>
+                </h:div>
+            </h:div>
+        </div>
+    </window>
+</zk>

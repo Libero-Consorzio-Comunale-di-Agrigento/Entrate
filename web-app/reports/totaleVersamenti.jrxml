@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2023-02-21T15:58:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="totaleVersamenti" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2a594c80-4533-4f7b-bf88-6a8657c7c985">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ente" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="testata" class="java.util.Map"/>
+	<field name="datiA" class="java.util.List"/>
+	<field name="datiB" class="java.util.List"/>
+	<field name="datiC" class="java.util.List"/>
+	<field name="datiB1" class="java.util.List"/>
+	<field name="datiC1" class="java.util.List"/>
+	<field name="datiTotali" class="java.util.List"/>
+	<field name="secondaPagina" class="java.util.List"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="1e47a94c-2003-4632-ae17-e6ff308b43f7"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Totale Versamenti " + $F{testata}.get("tipoTributoAttuale")+ " - Anno Fiscale: " + $F{testata}.get("anno")]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="interruzione">
+					<subreportParameterExpression><![CDATA[false]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "totaleVersamentiTestata.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{datiA} != null && $F{datiA}.size() > 0]]></printWhenExpression>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="c10aaccd-5d21-439f-b86b-146663e96ad7"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti di Contribuenti"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{datiA})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + ($F{testata}.get("tipoTributo") == "ICI" ? "totaleVersamentiPrimaPaginaImu.jasper": "totaleVersamentiPrimaPaginaTasi.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{datiB} != null && $F{datiB}.size() > 0]]></printWhenExpression>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="4e190481-fa3b-42d1-9b64-5ade4f3138a2"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti ANCI/CNC da Bonificare"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{datiB})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + ($F{testata}.get("tipoTributo") == "ICI" ? "totaleVersamentiPrimaPaginaImu.jasper": "totaleVersamentiPrimaPaginaTasi.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{datiB1} != null && $F{datiB1}.size() > 0]]></printWhenExpression>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="816e65d9-9456-4136-8db3-8f705becc65b"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti ANCI/CNC da Bonificare non presenti"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{datiB1})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + ($F{testata}.get("tipoTributo") == "ICI" ? "totaleVersamentiPrimaPaginaImu.jasper": "totaleVersamentiPrimaPaginaTasi.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{datiC} != null && $F{datiC}.size() > 0]]></printWhenExpression>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="b5b9de1b-909e-49f8-9c42-57183a57e8cb"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti da F24 da Bonificare"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{datiC})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + ($F{testata}.get("tipoTributo") == "ICI" ? "totaleVersamentiPrimaPaginaImu.jasper": "totaleVersamentiPrimaPaginaTasi.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{datiC1} != null && $F{datiC1}.size() > 0]]></printWhenExpression>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="ae2034c7-aed6-4c8e-89fd-49662c303ef0"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti da F24 da Bonificare non presenti"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{datiC1})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + ($F{testata}.get("tipoTributo") == "ICI" ? "totaleVersamentiPrimaPaginaImu.jasper": "totaleVersamentiPrimaPaginaTasi.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="124b90b7-cf21-471f-87e9-a00d1dc3ddea"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Totali Generali"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{datiTotali})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + ($F{testata}.get("tipoTributo") == "ICI" ? "totaleVersamentiPrimaPaginaImu.jasper": "totaleVersamentiPrimaPaginaTasi.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{testata}.get("anno") >= 2012]]></printWhenExpression>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="89f32545-40d3-4cca-b668-c710defaf7ca"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti " + $F{testata}.get("tipoTributoAttuale")+ " per destinazione - Anno Fiscale: " + $F{testata}.get("anno")]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="interruzione">
+					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "totaleVersamentiTestata.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{testata}.get("anno") >= 2012]]></printWhenExpression>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="0" width="799" height="20" uuid="aa56a346-874d-4819-9a98-50fef0e54c6e">
+					<printWhenExpression><![CDATA[$F{secondaPagina} != null && $F{secondaPagina}.size() > 0]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ente">
+					<subreportParameterExpression><![CDATA[$P{ente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{secondaPagina})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + ($F{testata}.get("tipoTributo") == "ICI" ? "totaleVersamentiSecondaPaginaImu.jasper" : "totaleVersamentiSecondaPaginaTasi.jasper")]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<textField>
+				<reportElement x="371" y="0" width="80" height="20" uuid="2826b2f9-ed68-4e50-87eb-08b68288e2f5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="451" y="0" width="40" height="20" uuid="5ab0b5cc-6935-4844-936b-25e495079ece"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy HH:mm">
+				<reportElement x="580" y="0" width="220" height="20" uuid="7753c473-4e19-4a98-8b43-207b947e84ee"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

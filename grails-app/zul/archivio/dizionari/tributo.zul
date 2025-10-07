@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" width="100%"
+            height="100%">
+
+        <vbox height="100%">
+            <grid>
+                <rows>
+                    <row>
+                        <cell>
+                            <label value="@load(c:cat('Dizionari: ', vm.tipoTributoAttuale eq 'TRASV' ? 'Trasversale' : vm.tipoTributoAttuale))"
+                                   class="documentoTitolo"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+            <tabbox id="tabboxDizionariTributi" vflex="1" tabscroll="false" hflex="1"
+                    selectedIndex="@bind(vm.selectedTabTributo)">
+                <tabs id="tabs">
+                    <!-- Generale -->
+                    <tab id="oggettiTributo" label="Oggetti"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="utilizzi" label="Utilizzi"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="sanzioni" label="Sanzioni"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="interessi" label="Interessi"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="scadenze" label="Scadenze"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="motivi" label="Motivi"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="speseIstruttoria" label="Spese Istruttoria"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="aggi" label="Aggi"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="codiciTributo" label="Codici Tributo"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="speseNotifica" label="Spese Notifica"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <!-- Non standardizzato con la 62341 -->
+                    <tab id="codiciF24" label="Codici F24"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI' or vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <!-- IMU e TASI -->
+                    <tab id="categorieCatasto" label="Categorie Catasto"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="moltiplicatori" label="Moltiplicatori"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="rivalutazioniRendita" label="Rivalutazioni Rendita"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="tipiAliquote" label="Tipi Aliquote"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="aliquote" label="Aliquote"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="detrazioni" label="Detrazioni"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="motiviDetrazioni" label="Motivi Detrazioni"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="coefficientiContabili" label="Coefficienti Contabili"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI')"/>
+                    <tab id="codiciDiritto" label="Codici Diritto"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <tab id="relazioniCalcolo" label="Relazioni Calcolo"
+                         visible="@load(vm.tipoTributoAttivo eq 'ICI' or vm.tipoTributoAttivo eq 'TASI')"/>
+                    <!-- TARI e CUNI -->
+                    <tab id="motiviCompensazione" label="Motivi Compensazione"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="carichi" label="Carichi"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="motiviSgravio" label="Motivi Sgravio"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="coefficientiDomestici" label="Coefficienti Domestici"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="coefficientiNonDomestici" label="Coefficienti Non Domestici"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="tariffeDomestiche" label="Tariffe Domestiche"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="tariffeNonDomestiche" label="Tariffe Non Domestiche"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="ruoliAutomatici" label="Ruoli Automatici"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="limitiCalcolo" label="Limiti Calcolo"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="categorieTariffe" label="Categorie/Tariffe"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU' or vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="vieZona" label="Vie/Zona"
+                         visible="@load(vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="gruppiTributo" label="Gruppi Tributo"
+                         visible="@load(vm.tipoTributoAttivo eq 'CUNI')"/>
+                    <tab id="gruppiSanzione" label="Gruppi Sanzione"
+                         visible="false"/>
+                    <tab id="componentiSuperficie" label="Componenti Superficie"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="dateInteressiViolazioni" label="Date Interessi Violazioni"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                    <tab id="comunicazioniTesti" label="Comunicazioni"/>
+                    <tab id="contenitori" label="Contenitori"
+                         visible="@load(vm.tipoTributoAttivo eq 'TARSU')"/>
+                </tabs>
+                <tabpanels>
+                    <!-- Generale -->
+                    <tabpanel>
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{oggettiTributo.index}"
+                                 src="/archivio/dizionari/listaOggettoTributo.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="utilizzi.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{utilizzi.index}"
+                                 src="/archivio/dizionari/listaUtilizzo.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="sanzioni.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{sanzioni.index}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 src="/archivio/dizionari/listaSanzioni.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="interessi.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{interessi.index}"
+                                 src="/archivio/dizionari/listaInteressi.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="scadenze.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{scadenze.index}"
+                                 src="/archivio/dizionari/listaScadenze.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="motivi.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{motivi.index}"
+                                 src="/archivio/dizionari/listaMotiviPratica.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="speseIstruttoria.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{speseIstruttoria.index}"
+                                 src="/archivio/dizionari/listaSpeseIstruttoria.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="aggi.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{aggi.index}"
+                                 src="/archivio/dizionari/listaAggi.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="codiciTributo.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{codiciTributo.index}"
+                                 src="/archivio/dizionari/listaCodiciTributo.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="speseNotifica.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{speseNotifica.index}"
+                                 src="/archivio/dizionari/listaSpeseNotifica.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="codiciF24.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{codiciF24.index}"
+                                 src="/archivio/dizionari/listaCodiciF24.zul"/>
+                    </tabpanel>
+                    <!-- Per Singoli Tributi -->
+                    <tabpanel fulfill="categorieCatasto.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{categorieCatasto.index}"
+                                 src="/archivio/dizionari/listaCategorieCatasto.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="moltiplicatori.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{moltiplicatori.index}"
+                                 src="/archivio/dizionari/moltiplicatori.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="rivalutazioniRendita.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{rivalutazioniRendita.index}"
+                                 src="/archivio/dizionari/listaRivalutazioniRendita.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="tipiAliquote.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{tipiAliquote.index}"
+                                 src="/archivio/dizionari/listaTipiAliquote.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="aliquote.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{aliquote.index}"
+                                 src="/archivio/dizionari/listaAliquote.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="detrazioni.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{detrazioni.index}"
+                                 src="/archivio/dizionari/listaDetrazioni.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="motiviDetrazioni.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{motiviDetrazioni.index}"
+                                 src="/archivio/dizionari/listaMotiviDetrazione.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="coefficientiContabili.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{coefficientiContabili.index}"
+                                 src="/archivio/dizionari/listaCoefficientiContabili.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="codiciDiritto.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{codiciDiritto.index}"
+                                 src="/archivio/dizionari/listaCodiciDiritto.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="relazioniCalcolo.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{relazioniCalcolo.index}"
+                                 src="/archivio/dizionari/listaRelazioniCalcolo.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="motiviCompensazione.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{motiviCompensazione.index}"
+                                 src="/archivio/dizionari/listaMotiviCompensazione.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="carichi.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{carichi.index}"
+                                 src="/archivio/dizionari/listaCarichi.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="motiviSgravio.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{motiviSgravio.index}"
+                                 src="/archivio/dizionari/listaMotivoSgravio.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="coefficientiDomestici.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{coefficientiDomestici.index}"
+                                 src="/archivio/dizionari/listaCoefficientiDomestici.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="coefficientiNonDomestici.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{coefficientiNonDomestici.index}"
+                                 src="/archivio/dizionari/listaCoefficientiNonDomestici.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="tariffeDomestiche.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{tariffeDomestiche.index}"
+                                 src="/archivio/dizionari/listaTariffeDomestiche.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="tariffeNonDomestiche.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{tariffeNonDomestiche.index}"
+                                 src="/archivio/dizionari/listaTariffeNonDomestiche.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="ruoliAutomatici.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{ruoliAutomatici.index}"
+                                 src="/archivio/dizionari/ruoliAutomatici.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="limitiCalcolo.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{limitiCalcolo.index}"
+                                 src="/archivio/dizionari/listaLimitiCalcolo.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="categorieTariffe.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 annoTributo="#{vm.annoTributoAttivo}"
+                                 tabIndex="#{categorieTariffe.index}"
+                                 src="/archivio/dizionari/categorieTariffe.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="vieZona.onSelect">
+                        <include src="/archivio/dizionari/listaVieZona.zul"
+                                 tabIndex="#{vieZona.index}"/>
+                    </tabpanel>
+                    <tabpanel fulfill="gruppiTributo.onSelect">
+                        <include src="/archivio/dizionari/listaGruppiTributo.zul"
+                                 tabIndex="#{gruppiTributo.index}"/>
+                    </tabpanel>
+                    <tabpanel fulfill="gruppiSanzione.onSelect">
+                        <include src="/archivio/dizionari/listaGruppiSanzione.zul"
+                                 tabIndex="#{gruppiSanzione.index}"/>
+                    </tabpanel>
+                    <tabpanel fulfill="componentiSuperficie.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{componentiSuperficie.index}"
+                                 src="/archivio/dizionari/listaComponentiSuperficie.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="dateInteressiViolazioni.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{dateInteressiViolazioni.index}"
+                                 src="/archivio/dizionari/listaDateInteressiViolazioni.zul"/>
+                    </tabpanel>
+                    <tabpanel>
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{comunicazioniTesti.index}"
+                                 src="/archivio/dizionari/listaComunicazioniTesti.zul"/>
+                    </tabpanel>
+                    <tabpanel fulfill="contenitori.onSelect">
+                        <include tipoTributo="#{vm.tipoTributoAttivo}"
+                                 tabIndex="#{contenitori.index}"
+                                 src="/archivio/dizionari/listaContenitori.zul"/>
+                    </tabpanel>
+                </tabpanels>
+            </tabbox>
+        </vbox>
+    </window>
+</zk>

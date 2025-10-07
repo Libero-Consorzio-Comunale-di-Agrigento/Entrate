@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer"
+            viewModel="@id('vm') @init('dettagliAnomaliaPraticaViewModel')">
+        <script src="/js/decimalbox.js"/>
+        <style>
+            .z-column-sort-none .z-column-sort-img,
+            .z-column-sort-dsc .z-column-sort-img {
+            background-image: url("");
+            }
+
+            .z-column-sort-asc_ .z-column-sort-img,
+            .z-column-sort-dsc_ .z-column-sort-img {
+            background-image: url("/TributiWeb/images/css/arrows.png") !important;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+            }
+
+            .z-column-sort-asc_ .z-column-sort-img {
+            background-position: 0 0;
+            }
+            .z-column-sort-dsc_ .z-column-sort-img {
+            background-position: 0 -5px;
+            }
+
+            .anomalie-grid {}
+
+            .anomalie-grid .z-detail-outer {
+            border-left: 0.5px solid !important;
+            }
+
+            .anomalie-grid .z-row td.z-cell:last-child,
+            .anomalie-grid .z-grid-body tr.z-columns th.z-column:last-child{
+            border-right: 1px solid !important;
+            }
+
+        </style>
+        <groupbox>
+            <caption label="Dettaglio anomalia"/>
+            <hlayout sclass="navigazione" valign="middle">
+                <hlayout hflex="2">
+                    <hlayout sclass="afc-control-bar" valign="middle">
+                        <paging sclass="afc-paging" onPaging="@command('onRefresh')"
+                                activePage="@bind(vm.activePage)" pageSize="@bind(vm.pageSize)"
+                                totalSize="@load(vm.totalSize)"
+                                visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                        <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                       tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                       visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                       onClick="@command('onRefresh')"/>
+                        <toolbarbutton image="/images/tr4web/22x22/doc_info.png"
+                                       tooltiptext='Info pratica' disabled="@load(empty vm.praticaSelezionata)"
+                                       onClick="@command('onInfoPratica')"/>
+                    </hlayout>
+                </hlayout>
+                <hlayout style="text-align: right" valign="middle" hflex="1">
+                    <toolbarbutton
+                            image="@load(vm.filtriAttivi? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                            popup="popupFiltri"/>
+                </hlayout>
+            </hlayout>
+            <space height="5px"/>
+
+            <grid id="praticheAnomalieGrid" model="@load(vm.praticheAnomalie)" sclass="anomalie-grid"
+                  emptyMessage="Non sono presenti dettagli" height="550px" sizedByContent="true">
+
+                <!-- Specificare height serve a far uscire la scrollbar verticale sulla
+                    grid invece che sull'intera pagina, in modo da avere sempre visibile la barra
+                    dei bottoni anche quando si arriva a guardare le anomalie piu' in basso -->
+                <columns hflex="1">
+                    <column label=""/>
+                    <column label="Stato" align="center" sort="auto(anic.stato)"
+                            onSort="@command('onCambiaOrdinamento', valore='anic.flagOk')"
+                            sclass="@load(vm.campiCssOrdinamento['anic.flagOk'])"/>
+                    <column label="T" align="center"
+                            sort="auto(anic.tipoOggetto)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.tipoOggetto.tipoOggetto')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.tipoOggetto.tipoOggetto'])"/>
+                    <column label="Oggetto" align="center"
+                            sort="auto(anic.idOggetto)" onSort="@command('onCambiaOrdinamento', valore='anicOgge.id')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.id'])"/>
+                    <column width="40%" label="Indirizzo" sort="auto(anic.indirizzo)"
+                            onSort="@command('onCambiaOrdinamento', valore='indirizzo')"
+                            sclass="@load(vm.campiCssOrdinamento['indirizzo'])"/>
+
+                    <column label="Rendita media" sort="auto(anic.renditaMedia)"
+                            onSort="@command('onCambiaOrdinamento', valore='anic.renditaMedia')"
+                            sclass="@load(vm.campiCssOrdinamento['anic.renditaMedia'])" align="right"/>
+                    <column label="Rendita massima" sort="auto(anic.renditaMassima)"
+                            onSort="@command('onCambiaOrdinamento', valore='anic.renditaMassima')"
+                            sclass="@load(vm.campiCssOrdinamento['anic.renditaMassima'])" align="right"/>
+                    <column label="Valore medio" sort="auto(ogpr.valoreMedio)"
+                            onSort="@command('onCambiaOrdinamento', valore='anic.valoreMedio')"
+                            sclass="@load(vm.campiCssOrdinamento['anic.valoreMedio'])" align="right"/>
+                    <column label="Valore massimo" sort="auto(anic.valoreMassimo)"
+                            onSort="@command('onCambiaOrdinamento', valore='anic.valoreMassimo')"
+                            sclass="@load(vm.campiCssOrdinamento['anic.valoreMassimo'])" align="right"/>
+
+                    <column label="Ctg." align="center" sort="auto(anic.categoria)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.categoriaCatasto.categoriaCatasto')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.categoriaCatasto.categoriaCatasto'])"/>
+                    <column label="Cl." align="center" sort="auto(anic.classe)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.classeCatasto')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.classeCatasto'])"/>
+                    <column label="Sez." align="center" sort="auto(anic.sezione)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.sezione')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.sezione'])"/>
+                    <column label="Fgl." align="center" sort="auto(anic.foglio)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.foglio')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.foglio'])"/>
+                    <column label="Num." align="center" sort="auto(anic.numero)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.numero')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.numero'])"/>
+                    <column label="Sub." align="center"
+                            sort="auto(anic.subalterno)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.subalterno')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.subalterno'])"/>
+                    <column label="Zona" align="center"
+                            sort="auto(anic.zona)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.zona')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.zona'])"/>
+                    <column label="Prot.Cat" align="center"
+                            sort="auto(anic.protocolloCatasto)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.protocolloCatasto')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.protocolloCatasto'])"/>
+                    <column label="Anno Cat." align="center"
+                            sort="auto(anic.annoCatasto)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.annoCatasto')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.annoCatasto'])"/>
+                    <column label="Partita" align="center"
+                            sort="auto(anic.partita)"
+                            onSort="@command('onCambiaOrdinamento', valore='anicOgge.partita')"
+                            sclass="@load(vm.campiCssOrdinamento['anicOgge.partita'])"/>
+                    <column width="7%" align="center"/>
+                    <column width="7%" align="center"/>
+                </columns>
+                <template name="model" var="anic">
+
+                    <row sclass="@load((anicStatus.index % 2 == 0)?'mdodd':'mdeven')"
+                         style="padding: 4px 4px 4px 6px !important; border-top: 0.5px solid;">
+                        <detail open="@load(not vm.espandiDettagli)" fulfill="onOpen"
+                                onClick="@command('onDetailClick', anomaliaId=anic.idAnomalia)">
+
+                            <grid span="true" sizedByContent="true" model="@load(anic.dettagli)"
+                                  emptyMessage="Non sono presenti pratiche" onDoubleClick="@command('onInfoPratica')">
+                                <columns>
+                                    <column label="Stato" align="center"/>
+                                    <column label="T" align="center" tooltiptext="Tipo oggetto"/>
+                                    <column label="Pratica" align="center"/>
+                                    <column label="N.O." align="center" tooltiptext="Numero ordine"/>
+                                    <column label="Trib." align="center"/>
+                                    <column label="Anno" align="center"/>
+                                    <column label="Rapp." align="center"/>
+                                    <column label="Contribuente" align="center"/>
+                                    <column label="Cod.Fiscale" align="center"/>
+                                    <column label="Ctg." align="center"/>
+                                    <column label="Cl." align="center"/>
+                                    <column label="MP" align="center" tooltiptext="Mesi possesso"/>
+                                    <column label="%Poss." align="center" tooltiptext="% Possesso"/>
+                                    <column label="P" align="center"/>
+                                    <column label="E" align="center"/>
+                                    <column label="Rendita" align="center"/>
+                                    <column label="Valore" align="center"/>
+                                    <column/>
+                                    <column/>
+                                </columns>
+                                <template name="model" var="anpr">
+                                    <row sclass="@load((vm.praticaSelezionata.idPratica eq anpr.idPratica) ?'rigaSelezionata':(anicStatus.index % 2 == 0)?'mdodd':'mdeven')"
+                                         onDoubleClick="@command('onInfoPratica',ogg=anpr)"
+                                         onClick="@command('setSelectedAnomaliaPratica',ogg=anpr)">
+                                        <cell>
+                                            <image visible="@load(vm.statoAnomaliaIconPosition eq 'PRATICA')"
+                                                   onClick="@command('cambiaStatoAnomaliaPratica',ogg=anpr)"
+                                                   src="@load((anpr.flagOk eq 'S')? '/images/afc/16x16/ok.png': '/images/afc/16x16/vuoto.png')"
+                                                   style="cursor: pointer;"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.tipoOggetto)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.idPratica)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.numOrdine)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.tipoTributo)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.anno)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.tipoRapporto)"/>
+                                        </cell>
+                                        <cell sclass="sinistra">
+                                            <label value="@load(anpr.cognomeNome)"/>
+                                        </cell>
+                                        <cell sclass="sinistra">
+                                            <label value="@load(anpr.codFiscale)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.categoriaCatasto)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.classeCatasto)"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(anpr.mesiPossesso)"/>
+                                        </cell>
+                                        <cell>
+                                            <label
+                                                    value="@load((anpr.percPossesso eq null) ? '' : c:formatNumber(anpr.percPossesso , '#,##0.00'))"/>
+                                        </cell>
+                                        <cell>
+                                            <checkbox checked="@load(anpr.flagPossesso)"
+                                                      w:onCheck="this.setChecked(!this.isChecked())"/>
+                                        </cell>
+                                        <cell>
+                                            <checkbox checked="@load(anpr.flagEsclusione)"
+                                                      w:onCheck="this.setChecked(!this.isChecked())"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <label
+                                                    value="@load((anpr.rendita eq null or anpr.tipoOggetto eq 2 or anpr.tipoOggetto eq 4) ? '' : c:formatNumber(anpr.rendita , '€ #,##0.00'))"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <label
+                                                    value="@load((anpr.valore eq null) ? '' : c:formatNumber(anpr.valore , '€ #,##0.00'))"/>
+                                        </cell>
+                                        <cell sclass="centro">
+                                            <image
+                                                    visible="@load((anpr.flagOk eq 'N' or empty anpr.flagOk) and anpr.tipoRapporto ne 'E')"
+                                                    src="/images/afc/16x16/arrows.png" style="cursor: pointer;"
+                                                    tooltiptext="Azioni"
+                                                    width="16px"
+                                                    onClick="@command('setSelectedAnomaliaPratica',ogg=anpr)"
+                                                    popup="praticaActionMenu"/>
+                                        </cell>
+                                        <cell sclass="centro">
+                                            <image
+                                                    visible="@load((not empty vm.tipoAnomaliaSelezionata.zul) and anpr.flagOk eq 'N' and anpr.tipoRapporto ne 'E')"
+                                                    tooltiptext="Aiuto nel trattamento dell'anomalia"
+                                                    src="/images/afc/16x16/question.png"
+                                                    width="16px"
+                                                    style="cursor: pointer;"
+                                                    onClick="@command('onHelpAnomalia', ogg=anpr)"/>
+                                        </cell>
+                                    </row>
+                                </template>
+                            </grid>
+                        </detail>
+                        <cell>
+                            <image visible="@load(vm.statoAnomaliaIconPosition eq 'PRATICA' and anic.flagOk eq 'S')"
+                                   src="/images/tr4web/16x16/greenled.png"
+                                   style="cursor: pointer;"/>
+                            <image visible="@load(vm.statoAnomaliaIconPosition eq 'PRATICA' and anic.flagOk eq 'N' and anic.praticheCorrette gt 0)"
+                                   src="/images/tr4web/16x16/yellowled.png"
+                                   style="cursor: pointer;"/>
+                            <image visible="@load(vm.statoAnomaliaIconPosition eq 'PRATICA' and anic.flagOk eq 'N' and anic.praticheCorrette eq 0)"
+                                   src="/images/tr4web/16x16/redled.png"
+                                   style="cursor: pointer;"/>
+
+                            <image visible="@load(vm.statoAnomaliaIconPosition eq 'OGGETTO')"
+                                   onClick="@command('cambiaStatoAnomaliaOggetto',ogg=anic)"
+                                   src="@load((anic.flagOk eq 'S')? '/images/afc/16x16/ok.png': '/images/afc/16x16/vuoto.png')"
+                                   style="cursor: pointer;"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.tipoOggetto)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.idOggetto)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.indirizzo)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load((empty anic.renditaMedia or anic.tipoOggetto eq 2) ? null : c:formatNumber(anic.renditaMedia, '€ #,##0.00'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load((empty anic.renditaMassima or anic.tipoOggetto eq 2) ? null : c:formatNumber(anic.renditaMassima, '€ #,##0.00'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(empty anic.valoreMedio ? null : c:formatNumber(anic.valoreMedio, '€ #,##0.00'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(empty anic.valoreMassimo ? null : c:formatNumber(anic.valoreMassimo, '€ #,##0.00'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.categoriaCatasto)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.classeCatasto)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.sezione)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.foglio)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.numero)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.subalterno)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.zona)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.protocolloCatasto)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.annoCatasto)"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(anic.partita)"/>
+                        </cell>
+                        <cell>
+                            <image src="/images/afc/16x16/arrows.png" style="cursor: pointer;"
+                                   tooltiptext="Azioni"
+                                   width="16px"
+                                   onClick="@command('setSelectedDettaglio',dettaglio=anic)"
+                                   popup="dettaglioActionMenu"/>
+                        </cell>
+                        <cell sclass="centro">
+                            <image src="/images/pulsanti/16x16/refresh.png" style="cursor: pointer;"
+                                   tooltiptext="Ricalcola rendita"
+                                   onClick="@command('onRicalcolaRendita', anomaliaSelezionata=anic)"
+                                   visible="@load(!vm.lettura and vm.tipoAnomaliaSelezionata.tipoAnomalia ne 22 and vm.tipoAnomaliaSelezionata.tipoAnomalia ne 23)"/>
+                        </cell>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+
+        <!-- Context Menu -->
+
+        <menupopup id="dettaglioActionMenu">
+            <menuitem label="Apri oggetto"
+                      onClick="@command('onCorreggiAnomaliaOggetto')"/>
+            <menuitem
+                    disabled="@load((vm.dettaglioSelezionato.foglio eq null) or (vm.dettaglioSelezionato.foglio eq '') or (vm.dettaglioSelezionato.numero eq null) or (vm.dettaglioSelezionato.numero eq ''))"
+                    label="Visualizza in Catasto"
+                    onClick="@command('onVisualizzaCatasto')"/>
+            <menuitem label="Inserimento rendite"
+                      onClick="@command('onInserimentoRendite')"
+                      disabled="@load(vm.lettura ne false)"/>
+            <!--		<menuitem 	disabled="@load((vm.dettaglioSelezionato.foglio eq null) or (vm.dettaglioSelezionato.foglio eq '') or (vm.dettaglioSelezionato.numero eq null) or (vm.dettaglioSelezionato.numero eq ''))"
+                                    label="Visualizza in Mappa"
+                                    onClick="@command('onVisualizzaMappa')"/> -->
+        </menupopup>
+
+        <menupopup id="praticaActionMenu">
+            <menuitem label="@load((vm.lettura ne false) ? 'Dettagli oggetto pratica' : 'Modifica oggetto pratica')"
+                      onClick="@command('onCorreggiAnomalia')"/>
+            <menuitem label="@load((vm.lettura ne false) ? 'Dettagli pratica' : 'Modifica pratica')"
+                      onClick="@command('onCorreggiAnomaliaSuPratica')"/>
+            <menuitem label="Situazione Contribuente" onClick="@command('onSituazioneContribuenteAnomalia')"/>
+        </menupopup>
+
+        <popup id="infoFlag" width="400px" use="it.finmatica.zkutils.InfoPopup">
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell>
+                            <checkbox checked="@load(anpr.oggettoContribuente.flagPossesso)"
+                                      label="Possesso"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <checkbox checked="@load(anpr.oggettoContribuente.flagEsclusione)"
+                                      label="Esclusione"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <checkbox checked="@load(anpr.oggettoContribuente.flagRiduzione)"
+                                      label="Riduzione"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <checkbox checked="@load(anpr.oggettoContribuente.flagAbPrincipale)"
+                                      label="Abitazione Principale"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <checkbox checked="@load(anpr.oggettoContribuente.flagAlRidotta)"
+                                      label="Aliquota Ridotta"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </popup>
+        <popup id="popupFiltri" width="400px">
+            <radiogroup id="filtri" selectedItem="@bind(vm.filtriPratiche.stato)"/>
+            <grid>
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="Pratiche"/>
+                        </cell>
+                        <cell colspan="1">
+                            <radio label="Tutte" radiogroup="filtri" value="0"/>
+                        </cell>
+                        <cell colspan="1">
+                            <radio label="Anomale" radiogroup="filtri" value="1"/>
+                        </cell>
+                        <cell colspan="1">
+                            <radio label="Sistemate" radiogroup="filtri" value="2"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Oggetto"/>
+                        </cell>
+                        <cell>
+                            <longbox width="95%" value="@bind(vm.filtriPratiche.idOggetto)" mold="rounded" hflex="1"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Tipo oggetto"/>
+                        </cell>
+                        <cell>
+                            <combobox hflex="1" mold="rounded" model="@load(vm.listaTipiOggetto)"
+                                      selectedItem="@bind(vm.filtriPratiche.tipoOggettoSelezionato) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoOggetto')">
+                                <template name="model" var="to">
+                                    <comboitem description="@load(to.descrizione)" label="@load(to.tipoOggetto)"
+                                               value="@load(to)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell align="right" colspan="1">
+                            <label value="Categoria"/>
+                        </cell>
+                        <cell colspan="1">
+                            <combobox hflex="1" mold="rounded" model="@load(vm.listaCategorieCatasto)"
+                                      selectedItem="@bind(vm.filtriPratiche.categoriaCatasto) @converter('it.finmatica.zkutils.PropertyConverter', property='categoriaCatasto')">
+                                <template name="model" var="to">
+                                    <comboitem description="@load(to.descrizione)" label="@load(to.categoriaCatasto)"
+                                               value="@load(to)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button mold="trendy" label="Cancella"
+                            onClick="@command('onPulisciFiltriPratiche')"/>
+                    <button mold="trendy" label="Annulla"
+                            onClick="@command('onCloseFiltriPratiche', popup=popupFiltri)"/>
+                    <button mold="trendy" label="Cerca"
+                            onClick="@command('onFiltraPratiche', popup=popupFiltri) "/>
+                </h:div>
+            </h:div>
+        </popup>
+        <timer id="praticheAnomalieGridTimer" delay="1" repeats="true"
+               onTimer="@command('ripristinaDettagliAperti')"/>
+    </window>
+</zk>		

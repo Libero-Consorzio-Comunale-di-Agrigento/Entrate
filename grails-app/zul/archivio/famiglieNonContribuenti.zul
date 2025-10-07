@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxSoggetti" extends="bandbox" class="it.finmatica.zkutils.BandboxSoggetti"?>
+<?component name="bandboxComuni" extends="bandbox" class="it.finmatica.zkutils.BandboxComuni"?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+<window apply="grailsBindComposer" viewModel="@id('vm') @init('famiglieNonContribuentiViewModel')" border="normal"
+		width="900px" height="500px" sizable="true" onOK="@command('onCerca')">
+		<script src="/js/decimalbox.js"/>
+
+	<h:div sclass="barraTitoloPagina">
+		<hlayout>
+			<label class="titoloPagina" value="Famiglie Non Contribuenti"/>
+		</hlayout>
+	</h:div>
+	<grid sclass="form">
+		<rows>
+			<row>
+				<cell align="right" width="20%">
+						<label value="Cognome"/>
+					</cell>
+					<cell width="70%">
+						<bandboxSoggetti hflex="1" oggetto="@bind(vm.filtri)"
+										 listaFetch="@bind(vm.listaFetch)" style="text-transform: uppercase"
+										 changeEventEnabled="false">
+							<custom-attributes proprieta="cognome"/>
+						</bandboxSoggetti>
+					</cell>
+					<cell align="right" width="20%">
+						<label value="Nome"/>
+					</cell>
+					<cell width="50%">
+						<bandboxSoggetti hflex="1" oggetto="@bind(vm.filtri)"
+										 listaFetch="@bind(vm.listaFetch)" style="text-transform: uppercase"
+										 changeEventEnabled="false">
+							<custom-attributes proprieta="nome"/>
+						</bandboxSoggetti>
+					</cell>
+				</row>
+				<row>
+					<cell align="right"  width="20%">
+						<label value="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+					</cell>
+					<cell width="70%">
+						<bandboxSoggetti hflex="1"
+										 oggetto="@bind(vm.filtri)" listaFetch="@bind(vm.listaFetch)"
+										 style="text-transform: uppercase" changeEventEnabled="false">
+							<custom-attributes proprieta="codFiscale"/>
+						</bandboxSoggetti>
+					</cell>
+					<cell align="right" width="20%">
+						<label value="N.Ind." tooltiptext="Numero Individuale"/>
+					</cell>
+					<cell width="50%">
+						<intbox hflex="1" value="@bind(vm.filtri.id)" class="noresizable" mold="rounded" style="text-align: right"/>
+					</cell>
+				</row>
+				<row>
+					<cell align="right"  width="20%">
+						<label value="Indirizzo"/>
+					</cell>
+					<cell width="70%">
+						<bandboxVie hflex="1"
+									oggetto="@bind(vm.filtri)"
+									style="text-transform: uppercase"
+									onSelect="@command('onSelectIndirizzo')">
+							<custom-attributes proprieta="indirizzo"/>
+						</bandboxVie>
+					</cell>
+					<cell align="right" width="20%">
+						<label value="Cod. Famiglia"/>
+					</cell>
+					<cell align="right" width="50%">
+						<intbox hflex="1" value="@bind(vm.filtri.codFamiglia)" class="noresizable" mold="rounded" style="text-align: right"/>
+					</cell>
+				</row>
+				<row>
+				    <cell align="right"  width="20%">
+						<label value="Tipo Tributo"/>
+					</cell>
+					<cell>
+						<combobox model="@load(vm.listaTipiTributo)" readonly="true"
+								  selectedItem="@bind(vm.filtri.tipoTributo)"
+								  onChange="@command('onChangeTipoTributo')" mold="rounded" hflex="1">
+							<template name="model" var="item">
+								<comboitem
+										tooltiptext="@bind(item.descrizione)"
+										label="@load(c:cat3(item.nome, ' - ', item.descrizione))"
+										value="@load(item.codice)" />
+							</template>
+						</combobox>
+					</cell>
+					<cell colspan="2">
+						<hlayout hflex="1" style="text-align: right;" valign="middle">
+							<radiogroup selectedItem="@bind(vm.ordinamento)" onCheck="@command('onRefresh')" hflex="1">
+								<radio value="a" label="Alfabetico  "/>
+								<radio value="c" label="Codice Fiscale  "/>
+								<radio value="i" label="Indirizzo  "/>
+							</radiogroup>
+							<space height="10px"/>
+						</hlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+		<space height="3px"/>
+		<hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+				<hlayout>
+				  <hlayout sclass="afc-control-bar" valign="middle">
+					<paging id="paging" sclass="afc-paging"
+							  onPaging="@command('onPaging')"
+							  activePage="@bind(vm.activePage)"
+							  pageSize="@bind(vm.pageSize)"
+							  totalSize="@load(vm.totalSize)"
+							  visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+					<toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+								   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+								   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+								   onClick="@command('onRefresh')"/>
+					<toolbarbutton image="/images/afc/22x22/print.png" width="26px"
+								   tooltiptext='Stampa'
+								   disabled="@load(empty vm.lista)"
+								   onClick="@command('onStampa')"/>
+				  </hlayout>
+				</hlayout>
+				<hlayout hflex="1" style="text-align: right;" valign="middle">
+					<hbox>
+						<button mold="trendy" image="/images/afc/16x16/filter_box.png" label="Cancella Filtri"
+								onClick="@command('onSvuotaFiltri')"/>
+						<button mold="trendy" image="/images/afc/16x16/search.png"
+								disabled="@bind(empty vm.filtri.tipoTributo)"
+								label="Cerca" onClick="@command('onCerca')"/>
+					</hbox>
+				</hlayout>
+				<space width="3px"/>
+		</hlayout>
+		<listbox model="@load(vm.lista)" span="true" nonselectableTags="" sizedByContent="true"
+				 emptyMessage="Nessun dato." vflex="1">
+		<listhead sizable="true">
+			    <listheader label="Cod. Famiglia" tooltiptext="Codice Famiglia" align="right"/>
+				<listheader label="Cognome e Nome" tooltiptext="Cognome e Nome" align="left"/>
+				<listheader label="Cod.Fiscale" tooltiptext="Codice Fiscale" align="left"/>
+				<listheader label="Indirizzo" align="left"/>
+				<listheader label="Presso" align="left"/>
+			</listhead>
+			<template name="model" var="var">
+				<listitem>
+					<listcell label="@load(var.codFamiglia)"/>
+					<listcell label="@load(var.cognomeNome)" style="white-space:nowrap;"/>
+					<listcell label="@load(var.codFiscale)"/>
+					<listcell label="@load(var.indirizzo)" style="white-space:nowrap;"/>
+					<listcell label="@load(var.presso)" style="white-space:nowrap;"/>
+				</listitem>
+			</template>
+		</listbox>
+
+		<h:div sclass="barraPulsanti">
+			<h:div>
+				<button mold="trendy" image="/images/afc/16x16/close.png" label="Chiudi" onClick="@command('onChiudi')"/>
+			</h:div>
+		</h:div>
+	</window>
+</zk>

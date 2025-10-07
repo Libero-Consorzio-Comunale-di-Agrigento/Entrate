@@ -1,0 +1,232 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('listaSoggettiViewModel')" width="100%" vflex="1">
+		<script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging id="paging" sclass="afc-paging"
+                            onPaging="@command('onPaging')"
+                            activePage="@bind(vm.activePage)"
+                            pageSize="@bind(vm.pageSize)"
+                            totalSize="@load(vm.totalSize)"
+                            visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModifica')"
+                                   disabled="@load(empty vm.soggettoSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   onClick="@command('onNuovo')"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png"
+                                   tooltiptext='#{empty arg.addTooltip?"Elimina":arg.addTooltip}'
+                                   onClick="@command('onElimina')"
+                                   disabled="@load(empty vm.soggettoSelezionato or (vm.integrazioneGSD and !vm.soggettoSelezionato.tipoResidente))"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onSoggettiToXls')"
+                                   disabled="false"/>
+                    <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                   tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                   popup="funzioniSoggetti"/>
+                </hlayout>
+            </hlayout>
+
+            <hlayout hflex="3" style="text-align: right;" valign="middle">
+                <toolbarbutton
+                        image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                        onClick="@command('openCloseFiltri')"/>
+            </hlayout>
+        </hlayout>
+        <space height="3px"/>
+        <groupbox closable="false" style="padding: 5px;">
+            <grid sclass="senzaBordo" width="100%">
+                <rows>
+                    <row>
+                        <cell width="100px" align="right">
+                            <label value="Tipo persona"/>
+                        </cell>
+                        <cell width="100px">
+                            <checkbox label="Fisica" checked="@bind(vm.filtri.personaFisica)"
+                                      onCheck="@command('onRefresh')"/>
+                        </cell>
+                        <cell width="100px">
+                            <checkbox label="Giuridica" checked="@bind(vm.filtri.personaGiuridica)"
+                                      onCheck="@command('onRefresh')"/>
+                        </cell>
+                        <cell>
+                            <checkbox label="Intestatario Particolare" checked="@bind(vm.filtri.personaParticolare)"
+                                      onCheck="@command('onRefresh')"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+            <grid sclass="senzaBordo" width="100%">
+                <rows>
+                    <row>
+                        <cell width="100px" align="right">
+                            <label value="Contribuente"/>
+                        </cell>
+                        <cell>
+                            <radiogroup selectedItem="@bind(vm.filtri.contribuente)" onCheck="@command('onRefresh')">
+                                <radio value="s" label="Si"/>
+                                <radio value="n" label="No"/>
+                                <radio value="e" label="Entrambi"/>
+                            </radiogroup>
+                            <!-- <checkbox label="Contribuente" checked="@bind(vm.filtri.contribuente)"/> -->
+                        </cell>
+                        <cell width="100px" align="right">
+                            <label value="Residente"/>
+                        </cell>
+                        <cell>
+                            <radiogroup selectedItem="@bind(vm.filtri.residente)" onCheck="@command('onRefresh')">
+                                <radio value="s" label="Si"/>
+                                <radio value="n" label="No"/>
+                                <radio value="e" label="Entrambi"/>
+                            </radiogroup>
+                            <!-- <checkbox label="Residente" checked="@bind(vm.filtri.residente)"/> -->
+                        </cell>
+                        <cell width="150px" align="right">
+                            <label value="Gest. Servizi Demografici"/>
+                        </cell>
+                        <cell>
+                            <radiogroup selectedItem="@bind(vm.filtri.gsd)" onCheck="@command('onRefresh')">
+                                <radio value="s" label="Si"/>
+                                <radio value="n" label="No"/>
+                                <radio value="e" label="Entrambi"/>
+                            </radiogroup>
+                            <!-- <checkbox label="Gest. Servizi Demografici" checked="@bind(vm.filtri.gsd)"/> -->
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="3px"/>
+
+        <!--  <groupbox closable="false" visible="@load(vm.filtroAttivo)">
+        <caption>
+            <label value="Filtri attivi"/>
+        </caption>
+        </groupbox>
+
+        <space height="3px" />
+        -->
+        <listbox span="true" nonselectableTags="" sizedByContent="true" model="@load(vm.listaSoggetti)"
+                 selectedItem="@bind(vm.soggettoSelezionato)" emptyMessage="Nessun soggetto presente." vflex="1">
+            <listhead sizable="true">
+                <listheader label="GSD" tooltip="Gestito da servizi demografici" align="center"
+                            visible="@load(vm.integrazioneGSD)"/>
+                <listheader label="Res." tooltiptext="Residente" align="center"/>
+                <listheader label="Contr." tooltiptext="Contribuente" align="center"/>
+                <listheader label="N.Ind." tooltiptext="Numero Individuale" align="right"/>
+                <listheader label="Cognome e Nome"/>
+                <listheader label="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+                <listheader label="Data Nascita" align="center"/>
+                <listheader label="Partita IVA"/>
+                <listheader label="Indirizzo"/>
+                <listheader label="Comune"/>
+                <listheader label="Evento"/>
+                <listheader label="Data Evento" align="center"/>
+                <listheader label="Comune Evento"/>
+            </listhead>
+            <template name="model" var="sogg">
+                <listitem onDoubleClick="@command('onModifica')" context="funzioniContext">
+                    <listcell visible="@load(vm.integrazioneGSD)">
+                        <checkbox checked="@load(sogg.gsd)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell>
+                        <checkbox checked="@load(sogg.residente eq 'SI')" w:onCheck="this.setChecked(!this.isChecked())"
+                                  visible="@load(sogg.residente ne 'NI')"/>
+                        <button visible="@load(sogg.residente eq 'NI')" width="13px" height="13px"
+                                style="background-color: #c1c0c0;border: solid 1px #636363;border-radius: 3px;-moz-border-radius: 3px;-webkit-border-radius: 3px;"/>
+                    </listcell>
+                    <listcell>
+                        <checkbox checked="@load(sogg.contribuente ne null)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell label="@load(sogg.id)" tooltip="Numero Individuale"/>
+                    <listcell label="@load(sogg.cognomeNome)"/>
+                    <listcell label="@load(sogg.codFiscale)"/>
+                    <listcell label="@load(sogg.dataNas eq null? '' :c:formatDate(sogg.dataNas, 'dd/MM/yyyy'))"/>
+                    <listcell label="@load(sogg.partitaIva)"/>
+                    <listcell label="@load(sogg.indirizzo)"/>
+                    <listcell label="@load(sogg.comuneResidenza.ad4Comune.denominazione)"/>
+                    <listcell label="@load(sogg.stato.descrizione)"/>
+                    <listcell label="@load(sogg.dataUltEve eq null? '' :c:formatDate(sogg.dataUltEve, 'dd/MM/yyyy'))"/>
+                    <listcell
+                            label="@load((sogg.comuneEvento.ad4Comune eq null) ? '' : c:cat4(sogg.comuneEvento.ad4Comune.denominazione,' (',sogg.comuneEvento.ad4Comune.provincia.sigla,')'))"/>
+                </listitem>
+            </template>
+        </listbox>
+
+        <menupopup id="funzioniSoggetti">
+            <menuitem label="@load(c:l('label.codFiscDoppi'))"
+                      onClick="@command('onCodiciFiscaliDoppi')"/>
+            <menuitem label="@load(c:l('label.codFiscInco'))"
+                      onClick="@command('onCodiciFiscaliIncoerenti')"/>
+            <menuitem label="@load(c:l('label.famiglieNonContr'))"
+                      onClick="@command('onFamiglieNonContribuenti')"/>
+            <menuitem disabled="@load(not vm.integrazioneGSD)"
+                      label="@load(c:l('label.variazioniAnagraficheResidenze'))"
+                      onClick="@command('onVariazioniAnagraficheResidenze')"/>
+            <menuitem label="@load(c:l('label.calcoloFamiliari'))"
+                      onClick="@command('onCalcoloFamiliari')"/>
+            <menuitem label="@load(c:l('label.duplicaFamiliari'))"
+                      onClick="@command('onDuplicaFamiliari')"/>
+            <menuitem label="@load(c:l('label.allineamentoComuni'))"
+                      onClick="@command('onAllineamentoComuni')"/>
+            <menuseparator/>
+            <menuitem disabled="@load(empty vm.soggettoSelezionato || empty vm.soggettoSelezionato.contribuente)"
+                      label="@load(c:l('label.situazioneContribuente'))"
+                      onClick="@command('onSituazioneContribuente')"/>
+            <menuitem disabled="@bind(vm.soggettoSelezionato.gsd eq false or vm.soggettoSelezionato.codFam eq null)"
+                      label="@load(c:l('label.componenti'))"
+                      onClick="@command('onComponentiDellaFamiglia')"/>
+            <menuitem label="@load(c:l('label.eventiResidenze'))"
+                      onClick="@command('onEventiResidenzeStoriche')"
+                      disabled="@bind(vm.soggettoSelezionato.gsd eq false or vm.soggettoSelezionato.matricola eq null)"/>
+            <menuitem disabled="@load(empty vm.soggettoSelezionato || empty vm.soggettoSelezionato.contribuente)"
+                      label="@load(c:l('label.sostituzioneContribuente'))"
+                      onClick="@command('onSostituzioneContribuente')"/>
+            <menuitem disabled="true" label="@load(c:l('label.versamenti'))"
+                      onClick="@command('onVersameni')"/>
+            <menuitem
+                    disabled="@load((empty vm.soggettoSelezionato) ? true : ((vm.soggettoSelezionato.gsd) ? false : true))"
+                    label="@load(c:l('label.calcoloFamiliariPerSoggetto'))"
+                    onClick="@command('onCalcoloFamiliari',soggetto=true)"/>
+        </menupopup>
+        <!-- Context Menu -->
+        <menupopup id="funzioniContext">
+            <menuitem disabled="@load(empty vm.soggettoSelezionato || empty vm.soggettoSelezionato.contribuente)"
+                      label="@load(c:l('label.situazioneContribuente'))"
+                      onClick="@command('onSituazioneContribuente')"/>
+            <menuitem disabled="@bind(vm.soggettoSelezionato.gsd eq false or vm.soggettoSelezionato.codFam eq null)"
+                      label="@load(c:l('label.componenti'))"
+                      onClick="@command('onComponentiDellaFamiglia')"/>
+            <menuitem label="@load(c:l('label.eventiResidenze'))"
+                      onClick="@command('onEventiResidenzeStoriche')"
+                      disabled="@bind(vm.soggettoSelezionato.gsd eq false or vm.soggettoSelezionato.matricola eq null)"/>
+            <menuitem disabled="@load(empty vm.soggettoSelezionato || empty vm.soggettoSelezionato.contribuente)"
+                      label="Sostituzione contribuente"
+                      onClick="@command('onSostituzioneContribuente')"/>
+            <menuitem disabled="true" label="@load(c:l('label.versamenti'))"
+                      onClick="@command('onVersameni')"/>
+            <menuitem
+                    disabled="@load((empty vm.soggettoSelezionato) ? true : ((vm.soggettoSelezionato.gsd) ? false : true))"
+                    label="@load(c:l('label.calcoloFamiliariPerSoggetto'))"
+                    onClick="@command('onCalcoloFamiliari',soggetto=true)"/>
+        </menupopup>
+
+
+    </window>
+</zk>

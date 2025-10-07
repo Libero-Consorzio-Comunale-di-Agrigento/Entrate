@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid sclass="form" visible="@load(!empty vm.oggettiImportoCalcolato)">
+        <rows>
+            <row>
+                <cell>
+                    <label style="font-weight: bold;" value="Oggetti"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.oggettiImportoCalcolato.numOggetti)"/>
+                </cell>
+                <cell>
+                    <label style="font-weight: bold;" value="Totale importo calcolato"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.oggettiImportoCalcolato.imposta) @converter('formattedNumber', format='€ #,##0.00')"/>
+                </cell>
+
+                <cell colspan="4"/>
+            </row>
+        </rows>
+    </grid>
+    <grid vflex="1" span="true" model="@load(vm.listaVersamenti)"
+          emptyMessage="Nessun versamento" sizedByContent="true">
+        <columns sizable="true">
+            <column label="Versato"/>
+            <column label="Data Pag."/>
+            <column label="Ruolo"/>
+            <column label="Fonte"/>
+            <column label="Data Reg."/>
+            <column label="C.Pereq."/>
+            <column label="Note"/>
+            <column visible="@load(vm.modifica)" label="" width="50px"
+                    align="center">
+                <image width="15px" src="/images/afc/16x16/add.png"
+                       tooltiptext="Aggiungi versamento" style="cursor: pointer;"
+                       onClick="@command('onAggiungiVersamento')"/>
+            </column>
+        </columns>
+        <template name="model" var="ver">
+            <row>
+                <decimalbox mold="rounded" inplace="true" hflex="1" style="text-align: right;"
+                            value="@load(ver.importoVersato) @save(ver.importoVersato, before={'onSalvaDenuncia', 'onEliminaVersamento', 'onDuplicaVersamento', 'onAggiungiVersamento'})"
+                            format="€ #,##0.00"/>
+                <datebox mold="rounded" inplace="true" hflex="1" style="text-align: right;"
+                         value="@load(ver.dataPagamento) @save(ver.dataPagamento, before={'onSalvaDenuncia', 'onEliminaVersamento', 'onDuplicaVersamento', 'onAggiungiVersamento'})"
+                         format="dd/MM/yyyy"/>
+                <hbox hflex="1">
+                    <bandbox inplace="true" style="text-align: right;" readonly="true"
+                             onChange="@command('onCambiaRuoloVersamento', bd=self, vers=ver)"
+                             onOpen="@command('onApriRuoloVersamento', bd=self)"
+                             value="@load(! empty ver.ruolo ? ver.ruolo.id : null)"
+                             hflex="1" mold="rounded">
+                        <bandpopup>
+                            <listbox height="250px" width="450px" mold="paging"
+                                     autopaging="true" sizedByContent="true"
+                                     selectedItem="@bind(ver.ruolo)"
+                                     onSelect="@command('onSelezionaRuoloVersamento', lb=self, vers=ver)"
+                                     model="@load(vm.ruoliVersamento)" span="true"
+                                     emptyMessage="Nessun ruolo presente.">
+                                <listhead>
+                                    <listheader label="Ruolo"/>
+                                    <listheader label="Anno"/>
+                                    <listheader label="Anno Em."/>
+                                    <listheader label="Pr."/>
+                                    <listheader label="Emissione"/>
+                                    <listheader label="Invio"/>
+                                    <listheader label="L."/>
+                                    <listheader label="Ruolo"/>
+                                    <listheader label="Sp." tooltiptext="Specie Ruolo"/>
+                                </listhead>
+                                <template name="model" var="ruo">
+                                    <listitem>
+                                        <listcell label="@load((ruo.tipoRuolo eq 1) ? 'P' : ((ruo.tipoRuolo eq 2) ? 'S' : ''))" sclass="centro"/>
+                                        <listcell label="@load(ruo.annoRuolo)" sclass="centro"/>
+                                        <listcell label="@load(ruo.annoEmissione)" sclass="centro"/>
+                                        <listcell label="@load(ruo.progrEmissione)" sclass="centro"/>
+                                        <listcell
+                                                label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+                                                sclass="centro"/>
+                                        <listcell
+                                                label="@load(ruo.invioConsorzio ne null ? c:formatDate(ruo.invioConsorzio, 'dd/MM/yyyy') : null)"
+                                                sclass="centro"/>
+                                        <listcell>
+                                            <checkbox checked="@load(ruo.importoLordo)"
+                                                      w:onCheck="this.setChecked(!this.isChecked())"/>
+                                        </listcell>
+                                        <listcell label="@load(ruo.id)" sclass="centro"/>
+                                        <listcell label="@load(ruo.specieRuolo ? 1 : 0)" sclass="centro"/>
+                                    </listitem>
+                                </template>
+                            </listbox>
+                        </bandpopup>
+                    </bandbox>
+                    <vbox>
+                        <image width="15px" src="/images/afc/16x16/cancel.png"
+                               style="cursor: pointer;"
+                               visible="@bind(empty ver.ruolo)"
+                               sclass="gray-scale"/>
+                        <image width="15px" src="/images/afc/16x16/cancel.png"
+                               style="cursor: pointer;"
+                               onClick="@command('onEliminaRuolo', vers=ver)"
+                               visible="@bind(!empty ver.ruolo)"/>
+                    </vbox>
+                </hbox>
+                <combobox inplace="true" readonly="true" model="@bind(vm.listaFonti)" mold="rounded"
+                          selectedItem="@load(ver.fonte) @ave(vm.fonte,  before={'onSalvaDenuncia', 'onEliminaVersamento', 'onDuplicaVersamento', 'onAggiungiVersamento'}) @converter('it.finmatica.zkutils.PropertyConverter', property='fonte')"
+                          hflex="1">
+                    <template name="model" var="fo">
+                        <comboitem label="@load(c:cat3(fo.fonte, ' - ', fo.descrizione))" value="@load(fo)"/>
+                    </template>
+                </combobox>
+                <datebox mold="rounded" inplace="true" hflex="1" style="text-align: right;"
+                         value="@load(ver.dataReg) @save(ver.dataReg, before={'onSalvaDenuncia', 'onEliminaVersamento', 'onDuplicaVersamento', 'onAggiungiVersamento'})"
+                         format="dd/MM/yyyy"/>
+                <decimalbox mold="rounded" inplace="true" hflex="1" style="text-align: right;"
+                            value="@load(ver.maggiorazioneTares) @save(ver.maggiorazioneTares, before={'onSalvaDenuncia', 'onEliminaVersamento', 'onDuplicaVersamento', 'onAggiungiVersamento'})"
+                            format="€ #,##0.00"/>
+                <textbox mold="rounded" inplace="true" hflex="1"
+                         value="@load(ver.note) @save(ver.note, before={'onSalvaDenuncia', 'onEliminaVersamento', 'onDuplicaVersamento', 'onAggiungiVersamento'})"/>
+
+                <hbox>
+                    <image width="15px" src="/images/afc/16x16/editcopy.png"
+                           style="cursor: pointer;"
+                           onClick="@command('onDuplicaVersamento', vers=ver)"/>
+                    <image width="15px" src="/images/tr4web/16x16/trash.png"
+                           style="cursor: pointer;"
+                           onClick="@command('onEliminaVersamento', vers=ver)"/>
+                </hbox>
+
+            </row>
+        </template>
+    </grid>
+</zk>

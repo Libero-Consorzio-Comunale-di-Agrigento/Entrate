@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid hflex="1" vflex="1" span="true" sizedByContent="true" id="gridVersamenti"
+          emptyMessage="Nessun versamento presente." model="@load(vm.versamenti)">
+        <columns sizable="true">
+            <column label="T.Vers." sclass="centro" align="center" tooltiptext="Tipo Versamento"/>
+            <column label="Versato" sclass="centro" align="right"/>
+            <column label="Data Pag." sclass="centro" align="right" tooltiptext="Data Pagamento"/>
+            <column label="Ruolo" sclass="centro" align="center"/>
+            <column label="Rata" sclass="centro" align="center"/>
+            <column label="Fonte" sclass="centro"/>
+            <column label="Data Reg." sclass="centro" align="right" tooltiptext="Data Registrazione"/>
+            <column label="Provvedimento" sclass="centro"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')"/>
+            <column label="Data Provv." sclass="centro" align="right" tooltiptext="Data Provvedimento"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')"/>
+            <column label="Sentenza" sclass="centro"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')"/>
+            <column label="Data Sentenza" sclass="centro" align="right"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')"/>
+            <column label="Note"/>
+            <column label="Add.Pro." sclass="centro"  align="center" tooltiptext="Addizionale Provinciale"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TARSU')"/>
+            <column label="C.Pereq." sclass="centro" align="right" tooltiptext="Componenti Perequative"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TARSU')"/>
+            <column label="" align="center"
+                    visible="@load(!vm.versamentiLettura)">
+                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                       onClick="@command('onAggiungiVersamento')"/>
+            </column>
+        </columns>
+        <template name="model" var="vers">
+            <row visible="@load(!vers.eliminato)">
+                <label value="@load(vers.tipoVersamento)"/>
+                <decimalbox inplace="true" style="text-align: right"
+                            value="@bind(vers.importoVersato)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <datebox inplace="true" hflex="1" style="text-align: right;"
+                         value="@bind(vers.dataPagamento)" format="dd/MM/yyyy"/>
+                <bandbox inplace="true" style="text-align: right;"
+                         onChange="@command('onCambiaRuoloVersamento', bd=self, vers=vers)"
+                         onOpen="@command('onApriRuoloVersamento', bd=self)"
+                         value="@load(! empty vers.ruolo ? vers.ruolo.id : null)"
+                         hflex="1" mold="rounded">
+                    <bandpopup>
+                        <listbox height="250px" width="450px" mold="paging"
+                                 id="@load(c:cat('lbRuoliVersamento', vers.uuid))"
+                                 autopaging="true" sizedByContent="true"
+                                 selectedItem="@bind(vers.ruolo)"
+                                 onSelect="@command('onSelezionaRuoloVersamento', lb=self, vers=vers)"
+                                 model="@load(vm.ruoliVersamento)" span="true"
+                                 emptyMessage="Nessun ruolo presente.">
+                            <listhead>
+                                <listheader label="Ruolo"/>
+                                <listheader label="Anno"/>
+                                <listheader label="Anno Em."/>
+                                <listheader label="Pr."/>
+                                <listheader label="Emissione"/>
+                                <listheader label="Invio"/>
+                                <listheader label="L."/>
+                                <listheader label="Ruolo"/>
+                                <listheader label="Sp."/>
+                            </listhead>
+                            <template name="model" var="ruo">
+                                <listitem>
+                                    <listcell
+                                            label="@load((ruo.tipoRuolo eq 1) ? 'P' : ((ruo.tipoRuolo eq 2) ? 'S' : ''))"
+                                            sclass="centro"/>
+                                    <listcell label="@load(ruo.annoRuolo)" sclass="centro"/>
+                                    <listcell label="@load(ruo.annoEmissione)" sclass="centro"/>
+                                    <listcell label="@load(ruo.progrEmissione)" sclass="centro"/>
+                                    <listcell
+                                            label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+                                            sclass="centro"/>
+                                    <listcell
+                                            label="@load(ruo.invioConsorzio ne null ? c:formatDate(ruo.invioConsorzio, 'dd/MM/yyyy') : null)"
+                                            sclass="centro"/>
+                                    <listcell>
+                                        <checkbox checked="@load(ruo.importoLordo)"
+                                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                                    </listcell>
+                                    <listcell label="@load(ruo.id)" sclass="centro"/>
+                                    <listcell label="@load(ruo.specieRuolo ? 1 : 0)" sclass="centro"/>
+                                </listitem>
+                            </template>
+                        </listbox>
+                    </bandpopup>
+                </bandbox>
+                <combobox readonly="true" model="@load(vm.numeroRate)" style="text-align: right;" inplace="true"
+                          width="90%"
+                          selectedItem="@bind(vers.rata) @converter('it.finmatica.zkutils.PropertyConverter', property='value')"
+                          mold="rounded">
+                    <template name="model" var="item">
+                        <comboitem label="@load((item eq 0) ? 'Unica' : item)" value="@load(item)"/>
+                    </template>
+                </combobox>
+                <combobox inplace="true" model="@bind(vm.listaFonti)" mold="rounded"
+                          selectedItem="@bind(vers.fonte) @converter('it.finmatica.zkutils.PropertyConverter', property='fonte')"
+                          hflex="1" width="90%">
+                    <template name="model" var="fo">
+                        <comboitem label="@load(c:cat3(fo.fonte, ' - ', fo.descrizione))" value="@load(fo)"/>
+                    </template>
+                </combobox>
+                <datebox inplace="true" hflex="1" style="text-align: right;"
+                         value="@bind(vers.dataReg)" format="dd/MM/yyyy"/>
+                <textbox inplace="true" value="@bind(vers.estremiProvvedimento)"
+                         visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')" hflex="1" mold="rounded"/>
+                <datebox inplace="true" hflex="1" style="text-align: right;"
+                         visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')"
+                         value="@bind(vers.dataProvvedimento)" format="dd/MM/yyyy"/>
+                <textbox inplace="true" value="@bind(vers.estremiSentenza)"
+                         visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')" hflex="1" mold="rounded"/>
+                <datebox inplace="true" hflex="1" style="text-align: right;"
+                         visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')"
+                         value="@bind(vers.dataSentenza)" format="dd/MM/yyyy"/>
+                <hlayout width="200px">
+                    <label value="@bind(vers.note)" sclass="auto-trunc" hflex="2"/>
+                    <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note"
+                           visible="@load(vers.note ne null and vm.lettura)"
+                           style="cursor: pointer" onClick="@command('onApriNote', arg=vers.note)"/>
+                    <image src="/images/afc/16x16/edit.png" tooltiptext="Modifica note"
+                           visible="@load(!vm.lettura)"
+                           style="cursor: pointer"
+                           popup="@load(c:cat('popupNote_', vers.uuid))"/>
+                    <popup id="@load(c:cat('popupNote_', vers.uuid))" width="600px"
+                           onOpen="@command('onApriPopupNote', popup=self)">
+                        <h:div sclass="barraTitoloPagina">
+                            <label class="titoloPagina" value="Note"/>
+                        </h:div>
+                        <hlayout>
+                            <textbox rows="10" width="600px"
+                                     value="@bind(vers.note)"/>
+                        </hlayout>
+                        <h:div sclass="barraPulsanti">
+                            <h:div>
+                                <button label="Chiudi" onClick="@command('onChiudiPopupNote')" mold="trendy"
+                                        image="/images/pulsanti/16x16/window_close.png"/>
+                            </h:div>
+                        </h:div>
+                    </popup>
+                </hlayout>
+                <decimalbox inplace="true" style="text-align: right"
+                            value="@bind(vers.addizionalePro)" format="€ #,##0.00"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" style="text-align: right"
+                            value="@bind(vers.maggiorazioneTares)" format="€ #,##0.00"
+                            mold="rounded" hflex="1"
+                            visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TARSU')"/>
+                <!-- COMANDI -->
+                <hlayout width="50px"
+                         visible="@load(!vm.lettura and !empty vm.pratica.dataNotifica and vm.ruoloInviato)">
+                    <image src="/images/afc/16x16/editcopy.png" tooltiptext="Duplica Versamento"
+                           onClick="@command('onDuplicaVersamento', vers=vers)"
+                           style="cursor: pointer"/>
+                    <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina Versamento"
+                           visible="@load(empty vm.aRuolo or (!empty vm.aRuolo and (!empty vers.ruolo or vers.nuovo)))"
+                           style="cursor: pointer" onClick="@command('onCancellaVersamento', vers=vers)"/>
+                </hlayout>
+            </row>
+        </template>
+        <foot visible="@load(!empty vm.versamenti)">
+            <footer align="right">
+                <label value="Totale:"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamenti ne null ? c:formatNumber(vm.totVersamenti, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+            	<!-- Data Pag -->
+            </footer>
+            <footer align="right">
+            	<!-- Ruolo -->
+            </footer>
+            <footer align="right">
+            	<!-- Rata -->
+            </footer>
+            <footer align="right">
+            	<!-- Fonte -->
+            </footer>
+            <footer align="right">
+            	<!-- Data Reg -->
+            </footer>
+            
+            <!-- ICI -->
+            <footer align="left"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')">
+                    <!-- Provvedimento -->
+            </footer>
+            <footer align="left"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')">
+                    <!-- Data Provv. -->
+            </footer>
+            <footer align="left"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')">
+                    <!-- Sentenza -->
+            </footer>
+            <footer align="left"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')">
+                    <!-- Data Sentenza -->
+            </footer>
+            
+            <footer align="left">
+            	<!-- Note -->
+            </footer>
+            
+            <!-- TARSU -->
+            <footer align="right"
+            		visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TARSU')">
+                <label value="@load(vm.totAddPro ne null ? c:formatNumber(vm.totAddPro, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right"
+                    visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TARSU')">
+                <label value="@load(vm.totMaggTares ne null ? c:formatNumber(vm.totMaggTares, '€ #,##0.00'): '')"/>
+            </footer>
+        </foot>
+    </grid>
+</zk>

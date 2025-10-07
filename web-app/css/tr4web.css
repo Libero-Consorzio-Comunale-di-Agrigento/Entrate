@@ -1,0 +1,889 @@
+/* Layout e Stile della pagina principale */
+
+
+div.z-north {
+    height: 100px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    background-color: #EDEFF5;
+    border: none;
+}
+
+div.z-center {
+    background-color: #EDEFF5;
+    border: none;
+    padding-left: 5px;
+    padding-right: 2px;
+}
+
+div.z-south {
+    height: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: #EDEFF5;
+    border: none;
+}
+
+/* Intestazione con titolo e pulsanti delle sezioni */
+
+.intestazione {
+    /* bordi arrotondati */
+    behavior: url('pie.htc'); /* per ie */
+    border-radius: 10px;
+
+
+    /* ombreggiattura intorno all'intestazione */
+    box-shadow: 5px 5px 5px #8E8F93;
+
+    background-color: #FFFFFF;
+    border-style: solid;
+    border-color: #4D6482;
+    border-width: 2px;
+
+    /* 	margin: auto; */
+    margin: 5px;
+    padding-bottom: 5px;
+}
+
+.intestazioneDx {
+    text-align: right;
+}
+
+.intestazioneDx .z-hlayout {
+    margin-right: 30px;
+    margin-top: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.intestazioneDx .utente {
+    margin-right: 30px;
+    font-size: 10pt;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.logoApplicazione {
+    width: 100%;
+    padding-right: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.titoloApplicazione {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 20px;
+    color: #0099CC;
+}
+
+.descrizioneApplicazione {
+    padding-left: 20px;
+    padding-right: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 21px;
+    font-style: italic;
+    color: #666666;
+}
+
+/** tabbar con immagine a destra **/
+.tabsImgRight img {
+    float: right;
+    padding-left: 5px;
+}
+
+/** barra a sinistra nel documento **/
+#docMenuSx {
+    background-color: #FFFFFF;
+    border: 1px solid #C5C5C5;
+}
+
+.docMenuSx .z-tab-ver .z-tab-ver-text {
+    font-style: normal;
+    font-family: arial, sans-serif;
+    text-align: center;
+    white-space: nowrap;
+    color: #555;
+    cursor: pointer;
+    font-size-adjust: none;
+}
+
+.z-tab-ver-seld .z-tab-ver-hm,
+.z-tab-ver-seld .z-tab-ver-hl,
+.z-tab-ver-seld .z-tab-ver-hl .z-tab-ver-hr,
+.z-tab-ver-seld .z-tab-ver-hl:hover .z-tab-ver-hr,
+.z-tab-ver-seld .z-tab-ver-text,
+.z-tab-seld .z-tab-hm,
+.z-tab-seld .z-tab-hl,
+.z-tab-seld .z-tab-hl .z-tab-hr,
+.z-tab-seld .z-tab-hl:hover .z-ver-hr,
+.z-tab-seld .z-tab-text {
+    background: none;
+    background-color: #EDEFF5;
+}
+
+.z-tab-ver-seld {
+    border-top: 1px solid;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #CFCFCF;
+}
+
+.z-tab-seld {
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-color: #CFCFCF;
+}
+
+
+.z-tabbox-ver .z-tabpanels-ver,
+.z-tabbox .z-tabpanels,
+.z-tabpanel {
+    background-color: #EDEFF5;
+    border-color: #CFCFCF;
+}
+
+.z-tabs-ver .z-tabs-ver-cnt,
+.z-tabs .z-tabs-cnt {
+    border-color: #CFCFCF;
+}
+
+
+.docMenuSx .z-tabs-ver-scroll {
+    width: 125px !important;
+}
+
+
+.docMenuSx .z-tabs-ver-scroll .z-tabs-ver-header {
+    background: none repeat scroll 0 0 #EDEFF5;
+    zoom: 1;
+    position: relative;
+}
+
+/** barra dei pulsanti delle sezioni **/
+
+button.afc-button-header {
+    height: 30px;
+    width: 145px;
+
+    font-size: 11pt;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: right;
+    padding-right: 5px;
+
+    background-color: #cfd3e3;
+    border-style: solid;
+    border-color: #556b88;
+    border-width: 3px;
+    cursor: pointer;
+
+    /* bordi arrotondati */
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    behavior: url('pie.htc');
+}
+
+button.selected {
+    background-color: #fefbfd;
+    border-color: #556b88;
+}
+
+button.afc-button-header img {
+    position: absolute;
+    z-index: 1000000;
+    top: 0px;
+    left: 10px;
+}
+
+/* sezione per oggetto paging */
+.afc-paging .z-paging-btn .z-paging-next {
+    background-position: 0 0;
+    background-image: url('../images/afc/22x22/next.png');
+}
+
+.afc-paging .z-paging-btn .z-paging-last {
+    background-position: 0 0;
+    background-image: url('../images/afc/22x22/last.png');
+}
+
+.afc-paging .z-paging-btn .z-paging-first {
+    background-position: 0 0;
+    background-image: url('../images/afc/22x22/first.png');
+}
+
+.afc-paging .z-paging-btn .z-paging-prev {
+    background-position: 0 0;
+    background-image: url('../images/afc/22x22/prev.png');
+}
+
+.afc-paging {
+    border-color: none;
+    border-style: none;
+    border-width: 0 0 0px;
+    display: block;
+    padding: 3px;
+    position: relative;
+    repeat-x: scroll 0 center;
+    background: repeat-x 0 -1px;
+}
+
+.afc-paging .z-paging-btn {
+    background: none;
+}
+
+
+/* Pulsantiera standard grid*/
+.afc-control-bar {
+    /* bordi arrotondati */
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 0px;
+    border-radius: 10px;
+    behavior: url('pie.htc');
+
+    background-color: #FFFFFF;
+    border-style: solid;
+    border-color: #B7BABC;
+    border-width: 1px;
+
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.layoutRicerca {
+    border: solid;
+    border-color: #86A4BE;
+    border-width: 1px;
+    background-color: #ffffff;
+}
+
+.imgVisValido {
+    cursor: pointer;
+}
+
+
+/* intestazione documenti principali */
+
+.documentoBandaTitolo > tr > td {
+    background: #EDEFF5 !important;
+    border: 0px;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* .documentoBandaTitolo tr.documentoBandaTitolo tr.z-row td.z-row-inner, .documentoBandaTitolo tr.z-row .z-cell { */
+/* 	background: none; */
+/* 	border: 	0px; */
+/* 	overflow:	hidden; */
+/* } */
+
+.documentoBandaTitolo tr.z-row .z-cell {
+    background: #D7E3EC !important;
+    border: 0px !important;
+}
+
+div.z-grid.documentoBandaTitolo {
+    border: 0px;
+}
+
+tr.documentoBandaTitolo.z-row, tr.documentoTitolo.z-row, td.documentoTitolo.z-row {
+    background: #D7E3EC !important;
+    border: 0px;
+    overflow: hidden;
+}
+
+tr.documentoBandaTitolo .documentoTitolo .z-label {
+    font-family: arial, sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    color: #006384;
+    overflow: hidden;
+}
+
+tr.z-row .z-cell {
+    background: none !important;
+}
+
+.documentoTitolo {
+    font-family: sans-serif;
+    font-size: 18px;
+    color: #006384;
+    margin-bottom: 100px;
+}
+
+.documentoSottoTitolo {
+    /* 	background-color: 	#D7E3EC; */
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #006384;
+    margin-top: 3px;
+    display: block;
+}
+
+.documentoSottoTitolo .zcell {
+    background-color: #D7E3EC;
+}
+
+.documentoSottoTitolo .z-label {
+    display: block;
+}
+
+/** maschera di un documento **/
+
+.titoloPagina {
+    font-family: sans-serif;
+    font-size: 18px;
+    color: #006384;
+}
+
+.sottoTitoloPagina {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #006384;
+}
+
+.linkTitoloPagina {
+    display: block;
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #006384;
+    text-decoration: underline;
+}
+
+.barraTitoloPagina {
+    background-color: #D7E3EC;
+    padding-top: 7px;
+    padding-left: 5px;
+    padding-right: 7px;
+    padding-bottom: 5px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+}
+
+.barraTitoloPagina img {
+    float: right;
+}
+
+.datiCreazioneModifica {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+.datiCreazioneModifica span.z-label {
+    font-family: Verdana;
+    font-size: 8pt;
+}
+
+.barraPulsanti, .pulsantiIter {
+    background-color: #D7E3EC;
+    padding: 5px;
+    /*	margin-left: 5px;
+        margin: 	0px;
+        height: 	25px;  */
+    overflow-y: auto;
+    position: relative;
+}
+
+.barraFunzioni {
+    padding: 5px;
+    /*	margin-left: 5px;
+        margin: 	0px;
+        height: 	25px;  */
+    overflow-y: auto;
+    position: relative;
+}
+
+.barraPulsanti > div {
+    float: right;
+}
+
+.barraPulsanti > span {
+    float: left;
+}
+
+.barraPulsanti > button {
+    width: 80px;
+}
+
+.barraFunzioni > div {
+    float: right;
+}
+
+.barraFunzioni > span {
+    float: left;
+}
+
+.pulsantiIter > div, .pulsantiIter > span {
+    display: inline;
+    float: right;
+}
+
+/* .pulsantiIter > span.z-button { */
+/* 	margin: 1px 5px 0px 0px !important; */
+/* } */
+
+.singoloPulsanteIter > span {
+    margin: 1px 5px 0px 0px !important;
+}
+
+/** Grid usata come FORM (elimina l'effetto hover) **/
+
+/* aggiunta per la datiseduta ....da vedere se tenere per tutte */
+div.z-grid-body {
+    background: #EDEFF5 !important;
+}
+
+.form div.z-grid-body {
+    background: #EDEFF5 !important;
+    border: 0;
+    overflow: auto;
+    width: 100%;
+}
+
+tr.form.z-row, tr.form.z-row > td {
+    background: #EDEFF5; /* più scuro se vogliamo aumentare il contrasto #D2D8E6; */
+}
+
+.senzaBordo {
+    border: none !important;
+    background: #EDEFF5 !important;
+}
+
+
+/* sfondo grigio chiaro per le form */
+.z-window-modal-cnt, .z-window-highlighted-cnt, .z-window-modal-cnt-noborder, .z-window-highlighted-cnt-noborder, .z-window-overlapped-cnt-noborder {
+    /* 	margin: 	0; */
+    /* 	padding: 	2px; */
+    background: #F9FAFB;
+    /* 	overflow: 	hidden; */
+    /* 	zoom: 		1; */
+}
+
+
+.mandatoryLabel {
+    color: #ff2323;
+    font-size: 20px;
+    position: relative;
+    top: 0.25em;
+    right: 0.25em;
+}
+
+/* ODG */
+.elencoSedute .seduta {
+    border-bottom: 1px solid #C5C5C5;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 15px;
+}
+
+.elencoSedute .z-groupbox-3d-cnt {
+    border: 1px solid #c5c5c5;
+    padding: 0px;
+    background-color: #FFFFFF;
+}
+
+.titoloPaginaSeduta {
+    font-family: sans-serif;
+    font-size: 15px;
+    color: #006384;
+}
+
+.secondoTitoloPaginaSeduta {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #006384;
+}
+
+.barraTitoloPaginaSeduta {
+    background-color: #D7E3EC;
+    padding-top: 7px;
+    padding-left: 5px;
+    padding-right: 7px;
+    padding-bottom: 30px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 25px;
+    height: 30px;
+}
+
+.barraTitoloPaginaSeduta img {
+    float: right;
+}
+
+/*css per tutte quelle text area che non devono essere resizable*/
+.noresizable {
+    resize: none
+}
+
+.msgErrore {
+    color: #ff2323;
+    font-size: 20px;
+    top: 0.25em;
+    right: 0.25em;
+}
+
+
+/* pulsanti disabilitati nella barra delle icone */
+.z-toolbarbutton-disd {
+    opacity: .3 !important;
+    -moz-opacity: .3 !important;
+    filter: alpha(opacity=30) !important;
+}
+
+.sedutaToolbar .z-button-disd tr td {
+    cursor: default;
+    color: gray;
+}
+
+/*
+Per personalizzare le list si possono usare queste classi
+div.z-listheader-cnt
+div.z-listcell-cnt
+div.z-listfooter-cnt
+*/
+div.z-listheader-cnt, div.z-listbox-header div.z-auxheader-cnt {
+    font-weight: bold;
+    padding: 3px 2px 3px;
+    text-align: center;
+}
+
+div.z-listbox-body .z-listcell {
+    padding: 2px;
+}
+
+/* messaggi di errore */
+.windowErrore {
+    border: 2px solid #FF0000;
+}
+
+.testoErrore {
+    background-color: #FFE2E1;
+    padding: 5px;
+}
+
+.pulsanteErrore {
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 0;
+    height: 25px;
+    width: 80px;
+    background-color: #E46051
+}
+
+.redText {
+    color: #ff2323;
+}
+
+.z-tab-ver-hl {
+    padding-top: 5px !important;
+    /*padding-bottom: 5px !important;*/
+}
+
+.z-tab-ver-hr {
+    padding-bottom: 5px !important;
+}
+
+tr.z-row td.z-cell {
+    padding: 2px 4px 2px 6px !important;
+}
+
+.z-combobox-rounded .z-combobox-rounded-btn {
+    margin-top: 0px !important;
+}
+
+.z-notification .z-notification-cl, .z-notification .z-notification-cnt, .z-notification-ref .z-notification-cl, .z-notification-ref .z-notification-cnt {
+    height: auto;
+    width: auto;
+    font-size: 10pt;
+}
+
+.z-notification .z-notification-cl, .z-notification .z-notification-cnt {
+    white-space: pre;
+    padding-right: 15px;
+    font-size: 10pt;
+}
+
+.z-notification-ref .z-notification-cnt {
+    white-space: pre;
+    padding: 15px;
+    font-size: 10pt;
+}
+
+.sinistra {
+    text-align: left;
+}
+
+.destra {
+    text-align: right;
+}
+
+.centro {
+    text-align: center;
+}
+
+.centro > input {
+    text-align: center;
+}
+
+.z-textbox-disd, .z-decimalbox-disd, .z-intbox-disd, .z-longbox-disd, .z-doublebox-disd, .z-textbox-disd *, .z-decimalbox-disd *, .z-intbox-disd *, .z-longbox-disd *, .z-doublebox-disd * {
+    color: #000 !important;
+    background: #F3F3F3 !important;
+}
+
+.z-textbox-readonly, .z-intbox-readonly, .z-longbox-readonly, .z-doublebox-readonly, .z-decimalbox-readonly {
+    color: #000 !important;
+    background: #F3F3F3 !important;
+}
+
+.z-listitem-over-seld:hover {
+    cursor: default !important;
+}
+
+.afc-panel-box {
+    border-style: solid;
+    border-color: #B7BABC;
+    border-width: 2px;
+    /* margin-top: 10px;*/
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+}
+
+.my-column-civici {
+    position: relative;
+    bottom: 0.4em;
+    font-weight: bold;
+}
+
+.my-column {
+    /*position: relative;
+    bottom: 0.6em;*/
+    font-weight: bold;
+}
+
+.my-column-star {
+    position: relative;
+    bottom: 0.8em;
+    font-weight: bold;
+}
+
+.my-star {
+    color: #ff2323;
+    /*	font-size: 18px;
+        position: relative;
+        bottom: 0.2em;*/
+}
+
+.intestazioneGrid {
+    font-weight: bold;
+}
+
+th.z-column {
+    padding: 0px 0px 0px 0px;
+}
+
+
+tr.rigaSelezionata td.z-row-inner, tr.rigaSelezionata {
+    /*background: -webkit-linear-gradient(#66FFFF, #99FFFF);
+      background: -o-linear-gradient(#66FFFF, #99FFFF);
+      background: -moz-linear-gradient(#66FFFF, #99FFFF); */
+    /*background: linear-gradient(#99FFFF, #CCFFFF);*/
+    background-color: #CFECFB !important;
+    /*background-color: #FFFFCC !important;*/
+}
+
+tr.mdodd td.z-row-inner, tr.mdodd {
+    background-color: #F7F7F7;
+}
+
+tr.mdeven td.z-row-inner, tr.mdeven {
+    background-color: #EDEFF5;
+}
+
+tr.z-detail-faker div.z-grid {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+div.z-south {
+    text-align: left;
+}
+
+.coloreRigaGrid {
+    background-color: #FFFFFF;
+}
+
+input[type="radio"] {
+    -moz-appearance: radio;
+    margin: 0px 2px 2px;
+}
+
+select, button, input[type="button"], input[type="reset"], input[type="submit"], input[type="radio"], input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.z-radio input[type="radio"] {
+    position: relative;
+    top: 2px;
+}
+
+td.z-footer {
+    padding: 5px 5px 5px 5px;
+}
+
+tr.z-listbox-odd {
+    background: none repeat scroll 0% 0% #EDEFF5;
+}
+
+tr.z-listitem-seld {
+    background: none repeat scroll 0% 0% #CFECFB !important;
+}
+
+
+.button-menu-up {
+}
+
+.button-menu-up.z-button table tbody tr td.z-button-cm::after {
+    margin-left: 5px;
+    content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIBAMAAAA2IaO4AAAAHlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC3KG9qAAAACXRSTlMAAgQFEzG1vMWa/7CaAAAAJElEQVQIHWOAAPUABgamzqkMDBozZwYwZM6cOYVB2NjYgAEOAIFcBhrEQorJAAAAAElFTkSuQmCC');
+}
+
+.auto-trunc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: inherit;
+    white-space: nowrap;
+}
+
+td.campi-differenti {
+    border-color: #B60202;
+    border-width: 2px;
+}
+
+td.bordo-nero {
+    border-color: #000000;
+    border-width: 2px;
+}
+
+button.mybutton {
+    background-color: #c1c0c0;
+    border: solid 1px #636363;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+img.gray-scale {
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+    filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+}
+
+.disabled {
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+    filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+    pointer-events: none;
+}
+
+span.z-tab-ver-text {
+    color: #FFFFFF !important;
+    text-align: left !important;
+}
+
+.z-tab-ver-seld span.z-tab-ver-text {
+    color: #4C6682 !important;
+    text-align: left !important;
+}
+
+.not-empty span.z-tab-ver-text::after {
+    content: ' \25CF';
+    text-align: right;
+    float: right;
+    color: #FFFFFF !important;
+}
+
+li.not-empty.z-tab-ver.z-tab-ver-seld span.z-tab-ver-text::after {
+    content: ' \25CF';
+    text-align: right;
+    float: right;
+    color: #4C6682 !important;
+}
+
+.z-tabs-ver .z-tabs-ver-cnt li {
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #E5EBF1;
+}
+
+.z-tab-ver-hl {
+    background-color: #53718e;
+    background-image: none;
+}
+
+.z-tab-ver-hl .z-tab-ver-hr {
+    background-color: #53718e;
+    background-image: none;
+}
+
+.z-tab-ver .z-tab-ver-hm {
+    background-color: #53718e;
+    background-image: none;
+}
+
+.z-tab-ver-seld .z-tab-ver-hm,
+.z-tab-ver-seld .z-tab-ver-hl,
+.z-tab-ver-seld .z-tab-ver-hl .z-tab-ver-hr,
+.z-tab-ver-seld .z-tab-ver-hl:hover .z-tab-ver-hr,
+.z-tab-ver-seld .z-tab-ver-text,
+.z-tab-seld .z-tab-hm,
+.z-tab-seld .z-tab-hl,
+.z-tab-seld .z-tab-hl .z-tab-hr,
+.z-tab-seld .z-tab-hl:hover .z-ver-hr,
+.z-tab-seld .z-tab-text {
+    background-color: #E5EBF1;
+    background-image: none;
+}
+
+.z-tabbox-ver .z-tabpanels-ver,
+.z-tabbox .z-tabpanels,
+.z-tabpanel {
+    background-color: #E5EBF1;
+    border-color: #E5EBF1;
+}
+
+.z-tabs-ver-cnt {
+    background-color: #53718e;
+}
+
+.z-groupbox-hr-top .z-groupbox-hr {
+    border: 3px solid #53718E;
+    border-bottom: 0;
+}
+
+.z-groupbox-hr-top.z-groupbox > div.z-groupbox-cnt {
+    border: 3px solid #53718E !important;
+    border-top: 0 !important;
+}
+
+.z-groupbox-hr-bottom .z-groupbox-hr {
+    border: 3px solid #22AAE2;
+    border-bottom: 0;
+}
+
+.z-groupbox-hr-bottom.z-groupbox > div.z-groupbox-cnt {
+    border: 3px solid #22AAE2 !important;
+    border-top: 0 !important;
+}
+

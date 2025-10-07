@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="labelWithButton" extends="div" class="it.finmatica.zkutils.LabelWithButton"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window sizable="true" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('esitoDePagViewModel')" border="normal" width="600px" height="400px">
+
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina"
+                       value="@load(vm.title)"/>
+            </hlayout>
+        </h:div>
+
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS'
+                                   disabled="@load(empty vm.listaEsiti)"
+                                   onClick="@command('onExportXls')"/>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+
+        <listbox vflex="1" span="true"
+                 model="@bind(vm.listaEsiti)"
+                 emptyMessage="Nessun esito trovato." sizedByContent="true">
+            <listhead sizable="true">
+                <listheader label="Denominazione"/>
+                <listheader label="Pratica"/>
+                <listheader label="Anno"/>
+                <listheader label="Numero"/>
+                <listheader label="Stato"/>
+                <listheader label="Errore" width="100px"/>
+            </listhead>
+            <template name="model" var="esito">
+                <listitem>
+                    <listcell label="@load(esito.denominazione)"/>
+                    <listcell label="@load(esito.pratica.id)"/>
+                    <listcell label="@load(esito.pratica.anno)"/>
+                    <listcell label="@load(esito.pratica.numero)"/>
+                    <listcell sclass="centro">
+                        <image src="@load(esito.response.inviato?'/images/afc/16x16/ok.png':'/images/afc/16x16/cancel.png')"
+                               tooltiptext="@load(esito.response.inviato?'Ok':'Errore')"
+                               height="16px"
+                               width="16px"/>
+                    </listcell>
+                    <listcell>
+                        <labelWithButton visible="@load(!empty esito.response.messaggio)"
+                                         value="@load(esito.response.messaggio)"
+                                         image="/images/afc/16x16/warning.png"
+                                         onClick="@command('onClickErrore', errore=esito.response.messaggio)"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Chiudi" onClick="@command('onChiudi')" mold="trendy"
+                        image="/images/afc/16x16/close.png"/>
+            </h:div>
+        </h:div>
+    </window>
+
+</zk>

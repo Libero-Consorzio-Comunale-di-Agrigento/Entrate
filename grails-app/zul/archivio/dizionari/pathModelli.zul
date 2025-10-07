@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<!--<?page automaticTimeout="false"?>-->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('pathModelliViewModel')" border="normal"
+            width="450px">
+		<script src="/js/decimalbox.js"/>
+        <h:div sclass="barraTitoloPagina">
+            <label class="titoloPagina" value="Cartella campi unione"/>
+        </h:div>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" hflex="min">
+                        <label value="Cartella"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.path)" mold="rounded" hflex="1" />
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" label="Salva"
+                        onClick="@command('onSelezionaPath')"/>
+                <button mold="trendy" label="Annulla"
+                        onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

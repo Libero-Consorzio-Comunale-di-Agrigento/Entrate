@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<vbox vflex="1">
+		<hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+			<hlayout>
+				<hlayout sclass="afc-control-bar" valign="middle">
+					<toolbarbutton image="/images/afc/16x16/edit.png"
+								   disabled="@bind(empty vm.praticaDiPraticaTotaleSelezionata or !vm.praticaDiPraticaTotaleOpenable)"
+								   tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+								   onClick="@command('onModificaPraticaDiPraticaTotale')"/>
+				</hlayout>
+			</hlayout>
+		</hlayout>
+		<listbox hflex="1" vflex="1" span="true" nonselectableTags="" sizedByContent="true"
+				 selectedItem="@bind(vm.praticaDiPraticaTotaleSelezionata)"
+				 emptyMessage="Nessun pratica presente."
+				 model="@load(vm.listaPraticheRif)"
+				 onSelect="@command('onSelezionaPraticaDiPraticaTotale')"
+				 onDoubleClick="@command(vm.praticaDiPraticaTotaleOpenable ? 'onModificaPraticaDiPraticaTotale' : '')">
+			<listhead sizable="true">
+				<listheader label="Data"/>
+				<listheader label="Numero"/>
+				<listheader label="Importo Totale"/>
+				<listheader label="Importo Ridotto"/>
+				<listheader label="Importo Ridotto2"/>
+				<listheader label="Pratica"/>
+			</listhead>
+			<template name="model" var="rif">
+				<listitem>
+					<listcell sclass="destra"
+							  label="@load(rif.data ne null ? c:formatDate(rif.data, 'dd/MM/yyyy') : '')"/>
+					<listcell sclass="destra" label="@load(rif.numero)"/>
+					<listcell sclass="destra"
+							  label="@load(rif.importoTotale ne null ? c:formatNumber(rif.importoTotale, '€ #,##0.00'): '')"/>
+					<listcell sclass="destra"
+							  label="@load(rif.importoRidotto ne null ? c:formatNumber(rif.importoRidotto, '€ #,##0.00'): '')"/>
+					<listcell sclass="destra"
+							  label="@load(rif.importoRidotto2 ne null ? c:formatNumber(rif.importoRidotto2, '€ #,##0.00'): '')"/>
+					<listcell sclass="destra" label="@load(rif.id)"/>
+				</listitem>
+			</template>
+		</listbox>
+	</vbox>
+</zk>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <listbox span="true" nonselectableTags="" sizedByContent="true"
+             model="@load(vm.listaContribuenti)" emptyMessage="Nessun contribuente presente."
+             vflex="true" selectedItem="@bind(vm.contribuenteSelezionato)">
+        <listhead sizable="true">
+            <listheader label="N.Ind." tooltiptext="Numero Individuale" align="right"/>
+            <listheader label="Contribuente"/>
+            <listheader label="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+            <listheader label="Data di nascita"/>
+            <listheader label="Codice contribuente"/>
+            <listheader label="Partiva IVA"/>
+            <listheader label="Indirizzo"/>
+        </listhead>
+        <template name="model" var="oggCo">
+            <listitem>
+                <listcell label="@load(oggCo.ni)"/>
+                <listcell label="@load(c:cat3(oggCo.cognome, ' ', oggCo.nome))"/>
+                <listcell sclass="centro" label="@load(oggCo.codFiscale)"/>
+                <listcell sclass="centro"
+                          label="@load(oggCo.dataNascita eq null? '' :c:formatDate(oggCo.dataNascita, 'dd/MM/yyyy'))"/>
+                <listcell sclass="centro" label="@load(oggCo.codContribuente)"/>
+                <listcell sclass="centro" label="@load(oggCo.partitaIVA)"/>
+                <listcell sclass="centro" label="@load(oggCo.indirizzo)"/>
+            </listitem>
+        </template>
+    </listbox>
+
+</zk>

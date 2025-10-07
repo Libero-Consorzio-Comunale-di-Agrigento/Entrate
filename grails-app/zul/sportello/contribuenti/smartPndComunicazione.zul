@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?component name="noteLabelWithButton" extends="div" class="it.finmatica.zkutils.NoteLabelWithButton"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('smartPndComunicazioneViewModel')"
+            border="normal" sizable="false" width="900px" height="480px">
+        <!--        La proprietà readonly non funziona su tutti i componenti.-->
+        <!--        Componenti impostati a disabled e stile configurato per assomigliare ad un read-only -->
+        <style>
+            .z-datebox-rounded-disd,
+            .z-datebox-rounded-focus .z-datebox-rounded-disd {
+            opacity: 1;
+            -moz-opacity: 1;
+            filter: alpha(opacity=100);
+            }
+            .z-datebox-rounded-text-disd {
+            color: #000000 !important;
+            }
+            .z-combobox-rounded-disd {
+            opacity: 1;
+            -moz-opacity: 1;
+            filter: alpha(opacity=100);
+            }
+            .z-combobox-rounded-text-disd {
+            color: #000000 !important;
+            }
+        </style>
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell>
+                        <!-- titolo della pagina -->
+                        <label value="Comunicazione"
+                               class="documentoTitolo"/>
+                        <image src="/images/afc/16x16/warn.png" visible="@load(vm.comunicazione.inSospeso eq 'Y')"
+                               style="padding-left:10px;padding-right:5px"/>
+                        <label visible="@load(vm.comunicazione.inSospeso eq 'Y')" value="   (In sospeso)"
+                               style="color: #8B5A00"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <tabbox vflex="1">
+            <tabs id="tabs">
+                <tab id="comunicazione" label="Comunicazione"/>
+                <tab id="allegati" label="Allegati"/>
+                <tab id="invio" label="Modalità di invio"/>
+                <tab id="dettagli" label="Dettagli"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <vbox vflex="1">
+                        <grid>
+                            <rows>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Cognome/Rag.Soc."/>
+                                    </cell>
+                                    <cell>
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.cognomeRgs)" width="100%"/>
+                                    </cell>
+                                    <cell width="150px" align="right">
+                                        <label value="Nome"/>
+                                    </cell>
+                                    <cell>
+                                        <textbox mold="rounded" maxlength="50" readonly="true"
+                                                 value="@bind(vm.comunicazione.nome)"
+                                                 width="100%"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Codice Fisc./P.IVA"/>
+                                    </cell>
+                                    <cell>
+                                        <textbox mold="rounded" maxlength="16" readonly="true"
+                                                 value="@bind(vm.comunicazione.cfiscPiva)"/>
+                                    </cell>
+                                    <cell width="150px" align="right">
+                                        <label value="Data"/>
+                                    </cell>
+                                    <cell>
+                                        <datebox readonly="true" disabled="true"
+                                                 value="@bind(vm.comunicazione.data)"
+                                                 format="dd/MM/yyyy" width="100px"
+                                                 mold="rounded"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Data pratica"/>
+                                    </cell>
+                                    <cell>
+                                        <datebox readonly="true" disabled="true"
+                                                 value="@bind(vm.comunicazione.dataPratica)"
+                                                 format="dd/MM/yyyy" width="100px"
+                                                 mold="rounded"/>
+                                    </cell>
+                                    <cell width="150px" align="right">
+                                        <label value="Numero pratica"/>
+                                    </cell>
+                                    <cell>
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.numeroPratica)"
+                                                 width="100%"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Tipo pratica"/>
+                                    </cell>
+                                    <cell>
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.tipoPratica)"/>
+                                    </cell>
+                                    <cell width="150px" align="right">
+                                        <label value="Oggetto"/>
+                                    </cell>
+                                    <cell>
+                                        <textbox mold="rounded" readonly="true" value="@bind(vm.comunicazione.oggetto)"
+                                                 hflex="1"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Tipo comunicazione"/>
+                                    </cell>
+                                    <cell>
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.tipoComunicazioneDescr)"
+                                                 style="background-color: #C0C0C0"
+                                                 hflex="1"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Da firmare"/>
+                                    </cell>
+                                    <cell>
+                                        <combobox readonly="true" disabled="true"
+                                                  selectedItem="@bind(vm.comunicazione.daFirmare)" mold="rounded">
+                                            <comboitem label="NO" value="NF"/>
+                                            <comboitem label="SI" value="DF"/>
+                                            <comboitem label="Automaticamente" value="FA"/>
+                                        </combobox>
+                                    </cell>
+                                    <cell width="150px" align="right">
+                                        <label value="Da Protocollare"/>
+                                    </cell>
+                                    <cell>
+                                        <combobox readonly="true" disabled="true"
+                                                  selectedItem="@bind(vm.comunicazione.daProtocollare)" mold="rounded">
+                                            <comboitem label="NO" value="N"/>
+                                            <comboitem label="SI" value="S"/>
+                                        </combobox>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Anno Prot"/>
+                                    </cell>
+                                    <cell width="50px">
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.annoProto)"
+                                                 width="50px"/>
+                                    </cell>
+                                    <cell width="150px" align="right">
+                                        <label value="Num. Prot"/>
+                                    </cell>
+                                    <cell width="50px">
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.numeroProto)"
+                                                 width="50px"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Classifica"/>
+                                    </cell>
+                                    <cell width="50px">
+                                        <textbox mold="rounded" readonly="true" value="@bind(vm.comunicazione.classCod)"
+                                                 width="50px"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell width="150px" align="right">
+                                        <label value="Anno Fasc."/>
+                                    </cell>
+                                    <cell width="50px">
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.fascicoloAnno)"
+                                                 width="50px"/>
+                                    </cell>
+                                    <cell width="150px" align="right">
+                                        <label value="Num. Fasc."/>
+                                    </cell>
+                                    <cell width="50px">
+                                        <textbox mold="rounded" readonly="true"
+                                                 value="@bind(vm.comunicazione.fascicoloNumero)"
+                                                 width="50px"/>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </vbox>
+                </tabpanel>
+                <tabpanel>
+                    <listbox model="@load(vm.comunicazione.allegati)" emptyMessage="Nessun allegato" vflex="1"
+                             hflex="1">
+                        <listhead>
+                            <listheader label="Descrizione" width="30%" align="left"/>
+                            <listheader label="Nome File / URL" align="left"/>
+                            <listheader label="" width="15%" align="center"/>
+                        </listhead>
+                        <template name="model" var="allegato">
+                            <listitem value="@load(allegato)">
+                                <listcell label="@load(allegato.descrizione)"/>
+                                <listcell>
+                                    <label value="@load(allegato.filename ne null ? allegato.filename : allegato.url)"
+                                           style="text-align: left"/>
+                                    <image src="/images/afc/16x16/testo_firmato.png" tooltiptext="Firmato"
+                                           visible="@load(allegato.firmato eq 'F')"/>
+                                </listcell>
+                                <listcell>
+                                    <toolbarbutton
+                                            visible="@load(not empty allegato.filename or not empty allegato.url)"
+                                            image="/images/afc/22x22/arrow_down.png"
+                                            onClick="@command('onDownloadFileAllegato', allegato=allegato)"
+                                            tooltiptext="Scarica allegato">
+                                    </toolbarbutton>
+                                </listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+                <tabpanel>
+                    <listbox model="@load(vm.modInvioList)" emptyMessage="Nessuna modalità di invio" vflex="1"
+                             hflex="1">
+                        <listhead>
+                            <listheader label="Tipo"/>
+                            <listheader label="Mittente"/>
+                            <listheader label="Oggetto"/>
+                            <listheader label="Destinatari"/>
+                            <listheader label="Testo" visible="@load(vm.testoColumnVisible)"/>
+                        </listhead>
+                        <template name="model" var="modalitaInvio">
+                            <listitem value="@load(modalitaInvio)">
+                                <listcell label="@load(modalitaInvio.tipo)"/>
+                                <listcell label="@load(modalitaInvio.nominativoMittente)"/>
+                                <listcell label="@load(modalitaInvio.oggetto)"/>
+                                <listcell label="@load(modalitaInvio.destinatari)"/>
+                                <listcell>
+                                    <noteLabelWithButton dialogTitle="Testo" value="@load(modalitaInvio.testo)"/>
+                                </listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+                <tabpanel>
+                    <listbox model="@load(vm.comunicazione.dettagliExtra)" emptyMessage="Nessun dettaglio" vflex="1"
+                             hflex="1">
+                        <listhead>
+                            <listheader label="Campo" width="40%" align="left"/>
+                            <listheader label="Valore" width="60%" align="left"/>
+                        </listhead>
+                        <template name="model" var="dettaglio">
+                            <listitem value="@load(dettaglio)">
+                                <listcell label="@load(dettaglio.campo)"/>
+                                <listcell label="@load(dettaglio.valore)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Chiudi" onClick="@command('onChiudiPopup')" mold="trendy"
+                        image="/images/afc/16x16/close.png"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

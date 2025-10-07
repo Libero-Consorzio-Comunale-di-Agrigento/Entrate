@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox vflex="1" class="z-groupbox-hr-bottom">
+		<caption label="@bind(c:cat3('Oggetti della pratica (', vm.listaOggettiPratica.size(), ')'))"/>
+		<listbox id="praticheOggettiListbox" model="@load(vm.listaOggettiPratica)" sizedByContent="true"
+				 vflex="true" span="true" emptyMessage="Nessun Oggetto"
+				 selectedItem="@bind(vm.oggettoPraticaSelezionato)">
+			<listhead sizable="true">
+				<listheader sclass="centro"
+							label="@load(c:l('sportello.label.oggetto'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+				<listheader sclass="centro"
+							label="@load(c:l('sportello.label.tipoOggetto'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+				<listheader sclass="centro"
+					label="@load(c:l('sportello.label.indirizzo'))" tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))" />
+				<listheader sclass="centro"
+					label="@load(c:l('sportello.label.sezione'))" tooltiptext="@load(c:l('sportello.label.estesa.sezione'))" />
+				<listheader sclass="centro" label="@load(c:l('sportello.label.foglio'))"
+					tooltiptext="@load(c:l('sportello.label.estesa.foglio'))" />
+				<listheader sclass="centro" label="@load(c:l('sportello.label.numero'))"
+					tooltiptext="@load(c:l('sportello.label.estesa.numero'))" />
+				<listheader sclass="centro"
+					label="@load(c:l('sportello.label.subalterno'))" tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))" />
+				<listheader sclass="centro"
+					label="@load(c:l('sportello.label.categoriaCatasto'))" tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))" />
+				<listheader sclass="centro"
+					label="@load(c:l('sportello.label.flagAbPrincipale'))" tooltiptext="@load(c:l('sportello.label.estesa.flagAbPrincipale'))" />
+			</listhead>
+			<template name="model" var="oggPr">
+				<listitem context="funzioniOggettoPratiche" onDoubleClick="@command('onModificaOggetto', contesto='PRATICA')">
+					<listcell label="@load(oggPr.id)" />
+					<listcell label="@load(oggPr.tipoOggetto)" sclass="centro" />
+					<listcell label="@load(oggPr.indirizzo)" />
+					<listcell label="@load(oggPr.sezione)" sclass="centro" />
+					<listcell label="@load(oggPr.foglio)" sclass="centro" />
+					<listcell label="@load(oggPr.numero)" sclass="centro" />
+					<listcell label="@load(oggPr.subalterno)" sclass="centro" />
+					<listcell label="@load(oggPr.categoriaCatasto)" sclass="centro" />
+				</listitem>
+			</template>
+		</listbox>
+	</groupbox>
+</zk>

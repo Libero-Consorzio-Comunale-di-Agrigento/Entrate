@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox vflex="1" class="z-groupbox-hr-bottom">
+        <caption label="@bind(c:cat3('Oggetti a ruolo (', vm.listaOggettiRuolo.size(), ')'))"/>
+        <listbox span="true" model="@load(vm.listaOggettiRuolo)"
+                 emptyMessage="Nessun Oggetto" vflex="true" sizedByContent="true"
+                 selectedItem="@bind(vm.oggettoRuoloSelezionato)" visible="@load(vm.ruoloSelezionato ne null)"
+                 onClick="@command('onClickOggettoRuolo', popup=dettOggettoRuolo)">
+            <listhead sizable="true">
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.tipoOggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.zona'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.zona'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.categoriaCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.codiceTributoCod'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.codiceTributoCod'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.categoria'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoria'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.tipoTariffa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTariffa'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.consistenza'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.consistenza'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.puntoDiRaccolta'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.puntoDiRaccolta'))"/>
+                <listheader sclass="destra"
+                            label="@load(c:l('sportello.label.componentiFamiglia'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.componentiFamiglia'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.importo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.importo'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.sgravio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sgravio'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.mesiRuolo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.mesiRuolo'))"/>
+                <listheader sclass="centro"
+                            label="@load(c:l('sportello.label.giorniRuolo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.giorniRuolo'))"/>
+            </listhead>
+            <template name="model" var="oggru">
+                <listitem context="funzioniRuoliOggetto">
+                    <listcell label="@load(oggru.id)" sclass="destra"/>
+                    <listcell label="@load(oggru.tipoOggetto)" sclass="centro"/>
+                    <listcell label="@load(oggru.indirizzo)"/>
+                    <listcell label="@load(oggru.sezione)" sclass="destra"/>
+                    <listcell label="@load(oggru.foglio)" sclass="destra"/>
+                    <listcell label="@load(oggru.numero)" sclass="destra"/>
+                    <listcell label="@load(oggru.subalterno)" sclass="destra"/>
+                    <listcell label="@load(oggru.zona)" sclass="destra"/>
+                    <listcell label="@load(oggru.categoriaCatasto)" sclass="centro"/>
+                    <listcell label="@load(oggru.codiceTributo)" sclass="destra"/>
+                    <listcell label="@load(oggru.categoria)" sclass="destra"/>
+                    <listcell label="@load(oggru.tipoTariffa)" sclass="centro"/>
+                    <listcell sclass="destra"
+                              label="@load(oggru.consistenza ne null ? c:formatNumber(oggru.consistenza, '###.00'): '')"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(oggru.flagPuntoRaccolta)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="destra" hflex="1">
+                        <hlayout>
+                            <label value="@load(oggru.numFamiliari)"/>
+                            <image src="/images/afc/16x16/info.png"
+                                   visible="@load(!empty oggru.numeroFamiliariTooltip)"
+                                   style="cursor: pointer;"
+                                   popup="@load(!empty oggru.numeroFamiliariTooltip ? c:cat('fam-', oggru.sequenza) : '')"/>
+                            <popup id="@load(c:cat('fam-', oggru.sequenza))" width="300px">
+                                <label value="@bind(oggru.numeroFamiliariTooltip)"/>
+                            </popup>
+                        </hlayout>
+                    </listcell>
+
+                    <listcell sclass="destra"
+                              label="@load(oggru.importo ne null ? c:formatNumber(oggru.importo, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(oggru.sgravio ne null ? c:formatNumber(oggru.sgravio, '€ #,##0.00'): '')"/>
+                    <listcell label="@load(oggru.mesiRuolo)" sclass="destra"/>
+                    <listcell label="@load(oggru.giorniRuolo)" sclass="destra"/>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+
+    <window id="dettOggettoRuolo" width="200px" position="center"
+            title="Dettaglio" border="normal" mode="popup" visible="false">
+        <script src="/js/decimalbox.js"/>
+        <grid>
+            <rows>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.estesa.imposta'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoRuoloSelezionato.imposta ne 0 and vm.oggettoRuoloSelezionato.imposta ne null) ? c:formatNumber(vm.oggettoRuoloSelezionato.imposta, '€ #,##0.00'): '')"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.addizionaleMaggiorazioneECA'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoRuoloSelezionato.addMaggEca ne 0 and vm.oggettoRuoloSelezionato.addMaggEca ne null) ? c:formatNumber(vm.oggettoRuoloSelezionato.addMaggEca, '€ #,##0.00'): '')"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.addizionaleProvinciale'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoRuoloSelezionato.addProv ne 0 and vm.oggettoRuoloSelezionato.addProv ne null) ? c:formatNumber(vm.oggettoRuoloSelezionato.addProv, '€ #,##0.00'): '')"/>
+                    </cell>
+                </row>
+
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.iva'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoRuoloSelezionato.iva ne 0 and vm.oggettoRuoloSelezionato.iva ne null) ? c:formatNumber(vm.oggettoRuoloSelezionato.iva, '€ #,##0.00'): '')"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.componentiPereq'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoRuoloSelezionato.maggiorazioneTares ne 0 and vm.oggettoRuoloSelezionato.maggiorazioneTares ne null) ? c:formatNumber(vm.oggettoRuoloSelezionato.maggiorazioneTares, '€ #,##0.00'): '')"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </window>
+</zk>

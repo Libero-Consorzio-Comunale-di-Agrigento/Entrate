@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxSoggetti" extends="bandbox" class="it.finmatica.zkutils.BandboxSoggetti"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window sizable="true" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('creazioneRavvedimentoOperosoViewModel')" border="normal" width="600px">
+		<script src="/js/decimalbox.js"/>
+
+      <h:div sclass="barraTitoloPagina">
+        <hlayout>
+          <label visible="@load(!vm.calcoloSanzioni)" class="titoloPagina" value="Ravvedimento Operoso"/>
+          <label visible="@load(vm.calcoloSanzioni)" class="titoloPagina" value="Calcolo Sanzioni"/>
+        </hlayout>
+      </h:div>
+
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" width="120px">
+                      <label value="Contribuente" style="white-space:nowrap;"/>
+                    </cell>
+                    <cell colspan="3">
+                      <textbox hflex="1" value="@load(c:cat3(vm.contribuente.soggetto.cognome,' ',vm.contribuente.soggetto.nome))"
+                               style="text-transform: uppercase" mold="rounded"
+                               readonly="true"/>
+                    </cell>
+                    <cell colspan="2">
+                      <textbox hflex="1" value="@load(vm.contribuente.codFiscale)"
+                               style="text-transform: uppercase" mold="rounded"
+                               readonly="true"/>
+                    </cell>
+                </row>
+                <row visible="@load(!vm.calcoloSanzioni)">
+                    <cell align="right">
+                     	<h:span class="mandatoryLabel">*</h:span>
+                        <label value="Tipo Tributo" style="white-space:nowrap;"/>
+                    </cell>
+                    <cell colspan="@load(vm.tipoTributo eq 'TARSU' ? '1' : '5')">
+                        <combobox model="@load(vm.tipiTributo)" mold="rounded"
+                                  readonly="true"
+                                  onChange="@command('onSelezionaTipoTributo')"
+                                  selectedItem="@bind(vm.tipoTributo) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                  hflex="1"
+                                  disabled="@load(!vm.modificaTipoTributo)">
+                            <template name="model" var="tt">
+                                <comboitem label="@load(tt.value)"
+                                           value="@load(tt.key)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                  <cell align="right"
+                        visible="@load(vm.tipoTributo eq 'TARSU')">
+                    <h:span class="mandatoryLabel">*</h:span>
+                    <label value="Data Pagamento" style="white-space:nowrap;"/>
+                  </cell>
+                  <cell visible="@load(vm.tipoTributo eq 'TARSU')">
+                    <datebox mold="rounded" hflex="1" format="dd/MM/yyyy"
+                             value="@bind(vm.dataVersamento)"
+                             disabled="@load(vm.lettura)"/>
+                  </cell>
+                  <cell sclass="destra"
+                        visible="@load(vm.tipoTributo eq 'TARSU')">
+                    <h:span class="mandatoryLabel">*</h:span>
+                    <label value="Anno"/>
+                  </cell>
+                  <cell visible="@load(vm.tipoTributo eq 'TARSU')">
+                    <intbox mold="rounded" hflex="1" value="@bind(vm.daAnno)"
+                        onChange="@command('onChangeAnnoDa')"
+                        disabled="@load(vm.lettura)"/>
+                  </cell>
+                </row>
+                <row visible="@bind(vm.tipoTributo eq 'CUNI')">
+                    <cell align="right">
+                        <label value="Gruppo Tributo" style="white-space:nowrap;"/>
+                    </cell>
+                    <cell colspan="5">
+                        <combobox model="@load(vm.gruppiTributo)" mold="rounded" hflex="1"
+                                  readonly="true"
+                                  selectedItem="@bind(vm.gruppoTributo) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                  onChange="@command('onSelezionaGruppoTributo')"
+                                  disabled="@bind(vm.calcoloSanzioni)">
+                            <template name="model" var="tt">
+                                <comboitem label="@load(tt.value)"
+                                           value="@load(tt.key)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+                <row visible="@load((!vm.calcoloSanzioni) and (vm.tipoTributo ne null) and (vm.tipoTributo ne 'TARSU'))">
+                    <cell align="right">
+                     	<h:span class="mandatoryLabel">*</h:span>
+                        <label value="Data Pagamento" style="white-space:nowrap;"/>
+                    </cell>
+                    <cell colspan="5">
+                        <datebox mold="rounded" hflex="1" format="dd/MM/yyyy"
+                                 value="@bind(vm.dataVersamento)"
+                                 disabled="@load(vm.lettura)"/>
+                    </cell>
+                </row>
+                <row visible="@bind((!vm.calcoloSanzioni) and (vm.tipoTributo ne null) and (vm.tipoTributo ne 'TARSU'))">
+                    <cell sclass="destra">
+                     	<h:span class="mandatoryLabel">*</h:span>
+                        <label value="Anno"/>
+                    </cell>
+                    <cell colspan="5">
+				            <hlayout valign="middle">
+				                <label value="Da" />
+				                <intbox mold="rounded" hflex="1" value="@bind(vm.daAnno)"
+				                		onChange="@command('onChangeAnnoDa')"
+				                		disabled="@load(vm.lettura)"/>
+				                <label value="A" />
+				                <intbox mold="rounded" hflex="1" value="@bind(vm.adAnno)"
+						                disabled="@bind((vm.lettura) or ((vm.tipoTributo ne 'ICI') and (vm.tipoTributo ne 'TASI')))"
+				                		onChange="@command('controlloTipoVersamento')"/>
+				            </hlayout>                    
+                    </cell>
+                </row>
+                <row visible="@bind((vm.tipoTributo eq 'ICI') or (vm.tipoTributo eq 'TASI'))">
+                    <cell align="right">
+                     	<h:span class="mandatoryLabel">*</h:span>
+                        <label value="Tipo Versamento" style="white-space:nowrap;"/>
+                    </cell>
+                    <cell colspan="5">
+                        <combobox model="@load(vm.tipiVersamento)" mold="rounded"
+                                  readonly="true"
+                                  disabled="@load(!vm.cambioTipoVersamento)"
+                                  selectedItem="@bind(vm.tipoVersamento) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                  hflex="1">
+                            <template name="model" var="tv">
+                                <comboitem label="@load(tv.value)"
+                                           value="@load(tv.key)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+                <row visible="@bind(vm.tipoTributo eq 'CUNI')">
+                    <cell align="right">
+                     	<h:span class="mandatoryLabel">*</h:span>
+                        <label value="Rata" style="white-space:nowrap;"/>
+                    </cell>
+                    <cell colspan="5">
+                        <combobox model="@load(vm.listaRate)" mold="rounded" hflex="1"
+                                  readonly="true"
+                                  selectedItem="@bind(vm.rata) @converter('it.finmatica.zkutils.PropertyConverter', property='rata')"
+                                  disabled="@bind(vm.calcoloSanzioni)">
+                            <template name="model" var="ra">
+                                <comboitem label="@load(ra.rata eq 0 ? 'Rata Unica' : c:cat('Rata ', ra.rata))"
+                                           value="@load(ra)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+                <row visible="@bind((!vm.calcoloSanzioni) and ((vm.tipoTributo eq 'ICI') or (vm.tipoTributo eq 'TASI')))">
+                    <cell align="right">
+                     	<h:span class="mandatoryLabel">*</h:span>
+                        <label value="Tipologia"/>
+                    </cell>
+                    <cell colspan="5">
+                        <combobox model="@load(vm.tipologie)" mold="rounded"
+                                  readonly="true"
+                                  selectedItem="@bind(vm.tipologia) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                  hflex="1">
+                            <template name="model" var="t">
+                                <comboitem label="@load(t.value)"
+                                           value="@load(t.key)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        
+        <h:div visible="@bind(vm.tipoTributo eq 'TARSU')">
+        
+			<grid id="listBoxRuolo" span="true" sizedByContent="true" hflex="1"
+				  model="@bind(vm.dettagliRuoli)" emptyMessage="Nessun ruolo presente">
+				<columns visible="false" sizable="false">
+          <column align="center" label="" width="10%"/>
+          <column align="center" label="" width="15%"/>
+          <column align="center" label="" width="24%"/>
+          <column align="center" label="" width="24%"/>
+          <column align="center" label="" width="24%"/>
+          <column align="center" label="" width="2%"/>
+        </columns>
+				<rows>
+					<template name="model" var="dr">
+						<row value="@load(v)">
+							<cell colspan="6">
+								<h:div sclass="sinistra">
+									<label value="@load(dr.descrizione)" sclass='intestazioneGrid'/>
+								</h:div>
+								<h:div>
+							
+			<grid span="true" sizedByContent="true" hflex="1" sclass="form"
+				  model="@bind(dr.rate)" emptyMessage="Nessuna rata presente">
+				<columns sizable="true">
+					<column align="center" label="Rata" tooltiptext="Numero Rata" width="10%"/>
+					<column align="center" label="Scadenza" tooltiptext="Scadenza Rata" width="15%"/>
+          <column align="center" label="Importo" tooltiptext="Importo Lordo" width="24%"/>
+					<column align="center" label="Versato" tooltiptext="Versato Lordo" width="24%"/>
+					<column align="center" label="Residuo" tooltiptext="Residuo Lordo" width="24%"/>
+				</columns>
+				<rows>
+					<template name="model" var="rt">
+						<row value="@load(v)">
+							<cell sclass="centro">
+								<label value="@load(rt.rata)"/>
+							</cell>
+							<cell sclass="centro">
+								<label value="@load(rt.scadenzaRata)"/>
+							</cell>
+              <cell sclass="destra">
+								<decimalbox disabled="true" mold="rounded" hflex="1"
+				                            inplace="true" style="text-align: right" format="€ #,##0.00"
+				                            value="@bind(rt.importo)"/>							
+							</cell>
+							<cell sclass="destra">
+								<decimalbox disabled="@load((vm.lettura) or (rt.scaduta eq false))" mold="rounded" hflex="1" maxlength="15"
+				                            style="text-align: right" format="€ #,##0.00"
+				                            value="@bind(rt.versato)"
+                                    droppable="versatoSuImposte"
+                                    onDrop="@command('onDropVersatoSuRata', rata=rt.rataId)"
+				                            onChange="@command('onChangeVersatoRata', rata=rt.rataId)"
+                                    visible="@bind(!rt.superato and rt.scaduta)"/>
+							</cell>
+							<cell sclass="destra">
+								<decimalbox disabled="true" mold="rounded" hflex="1"
+				                            inplace="true" style="text-align: right" format="€ #,##0.00"
+				                            value="@bind(rt.residuo)"
+                                    visible="@bind(!rt.superato and rt.scaduta)"/>
+							</cell>
+						</row>
+					</template>
+				</rows>
+			</grid>
+			
+								</h:div>
+							</cell>
+						</row>
+					</template>
+        </rows>
+        <foot>
+          <footer align="right">
+            <label value="Totali:"/>
+          </footer>
+          <footer/>
+          <footer align="right">
+            <label value="@load(vm.totaliDebiti.dovuto ne null ? c:formatNumber(vm.totaliDebiti.dovuto, '€ #,##0.00'): '')"/>
+          </footer>
+          <footer align="right">
+            <label value="@load(vm.totaliDebiti.versamenti ne null ? c:formatNumber(vm.totaliDebiti.versamenti, '€ #,##0.00'): '')"/>
+          </footer>
+          <footer align="right">
+            <label value="@load(vm.totaliDebiti.residuo ne null ? c:formatNumber(vm.totaliDebiti.residuo, '€ #,##0.00'): '')"/>
+          </footer>
+          <footer>
+          </footer>
+        </foot>
+      </grid>
+          
+        </h:div>
+
+        <h:div visible="@bind(vm.tipoTributo eq 'TARSU')">
+			
+			<grid span="true" sizedByContent="true" hflex="1">
+				<columns visible="false" sizable="false">
+					<column align="center" label="" width="98%"/>
+				</columns>
+				<rows>
+					<row>
+						<cell>
+							<h:div sclass="sinistra">
+								<label value="@load(c:cat('Somme a credito per l\'anno ',(vm.totaliCrediti.lordo ne null ? c:formatNumber(vm.totaliCrediti.lordo, '€ #,##0.00') : '')))"
+									  sclass='intestazioneGrid'/>
+							</h:div>
+							<h:div>
+
+                <listbox id="listBoxCrediti" span="true" sizedByContent="true" hflex="1"
+                    model="@bind(vm.dettagliCrediti)" emptyMessage="Nessun credito presente">
+                  <listhead sizable="true">
+                    <listheader label="Tipo" width="20%"/>
+                    <listheader label="Rata" tooltiptext="Rata" width="5%"/>
+                    <listheader label="Versato" tooltiptext="Importo Versato Lordo" width="9%"/>
+                    <listheader label="Imposte" tooltiptext="Versato per Imposta e Addizionali" width="12%"/>
+                    <listheader label="Sanzioni" tooltiptext="Sanzioni" width="8%"/>
+                    <listheader label="Interessi" tooltiptext="Interessi" width="8%"/>
+                    <listheader label="Altro" tooltiptext="Spese varie" width="8%"/>
+                    <listheader label="Data Vers." tooltiptext="Data Versamento" width="10%"/>
+                    <listheader label="IUV" tooltiptext="Codice IUV" width="20%"/>
+                  </listhead>
+                  <template name="model" var="cr">
+                    <listitem>
+                      <listcell sclass="sinistra">
+                        <hlayout>
+                          <label hflex="2"
+                             value="@load(cr.tipoVersamento)"/>
+                          <image tooltiptext="@bind(cr.ravvNote)"
+                              src="/images/afc/16x16/document.png"
+                              style="cursor: pointer;"
+                              visible="@load(!empty cr.ravvNote)"
+                              onClick="@command('onApriNoteCredito', arg=cr.ravvNote)"/>
+                        </hlayout>
+                      </listcell>
+                      <listcell sclass="centro"
+                          label="@load(cr.rata eq 0 ? 'U' : cr.rata)"/>
+                      <listcell sclass="destra"
+                          label="@load(cr.importoVersato ne null ? c:formatNumber(cr.importoVersato, '€ #,##0.00') : '')"/>
+                      <listcell sclass="destra"
+                          label="@load(((cr.importo ne null) and (cr.importo ne 0)) ? c:formatNumber(cr.importo, '€ #,##0.00') : '')"
+                          draggable="@load(((vm.lettura eq false) and (cr.importo ne null) and (cr.importo ne 0)) ? 'versatoSuImposte' : false)"/>
+                      <listcell sclass="destra"
+                          label="@load(((cr.totSanzioni ne null) and (cr.totSanzioni ne 0)) ? c:formatNumber(cr.totSanzioni, '€ #,##0.00'): '')" />
+                      <listcell sclass="destra"
+                          label="@load(((cr.totInteressi ne null) and (cr.totInteressi ne 0)) ? c:formatNumber(cr.totInteressi, '€ #,##0.00'): '')" />
+                      <listcell sclass="destra"
+                          label="@load(((cr.totAltro ne null) and (cr.totAltro ne 0)) ? c:formatNumber(cr.totAltro, '€ #,##0.00'): '')" />
+                      <listcell sclass="centro"
+                          label="@load(cr.dataPagamento ne null ? c:formatDate(cr.dataPagamento, 'dd/MM/yyyy') : null)" />
+                      <listcell sclass="sinistra">
+                        <hlayout>
+                          <label hflex="2"
+                             value="@load(cr.IUV)" />
+                          <image tooltiptext="@bind(cr.IUV)"
+                              src="/images/afc/16x16/document.png"
+                              style="cursor: pointer;"
+                              visible="@load(!empty cr.IUV)"
+                              onClick="@command('onApriIUVCredito', arg=cr.IUV)"/>
+                        </hlayout>
+                      </listcell>
+                    </listitem>
+                  </template>
+                </listbox>
+
+              </h:div>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+        </h:div>
+
+        <h:div sclass="barraPulsanti">
+            <h:span>
+              <button label="Funzioni" sclass="button-menu-up" popup="funzioni, position=before_end"
+                      mold="trendy" image="/images/afc/16x16/arrows.png"
+                      visible="@load((!vm.calcoloSanzioni) and (vm.tipoTributo eq 'TARSU'))"/>
+            </h:span>
+            <h:div>
+                <button visible="@load((!vm.lettura) and (!vm.calcoloSanzioni))" label="Ok" onClick="@command('onCreaRavvedimento')"
+                        mold="trendy"
+                        image="/images/afc/16x16/ok.png"/>
+                <button visible="@load(vm.calcoloSanzioni)" label="Ok" onClick="@command('onCalcolaSanzioni')"
+                        mold="trendy"
+                        image="/images/afc/16x16/ok.png"/>
+                <button label="Chiudi" onClick="@command('onChiudi')" mold="trendy"
+                        image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+      
+        <menupopup id="funzioni">
+          <menuitem label="Assegna Versato Residuo" onClick="@command('onDistribuisciResiduo')"
+                    disabled="@load((vm.lettura) or (vm.totaliCrediti.residuo eq 0))"/>
+          <menuitem label="Annulla Assegnazione Versato" onClick="@command('onAnnullaVersatoRate')"
+                    disabled="@load(vm.lettura)"/>
+          <menuseparator/>
+          <menuitem label="Aggiungi Versamento" onClick="@command('onAggiungiVersamento')"
+                    disabled="@load(vm.lettura)"/>
+        </menupopup>
+
+    </window>
+
+</zk>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer"
+            viewModel="@id('vm') @init('archivioIndexViewModel')" width="100%" height="100%">
+		<script src="/js/decimalbox.js"/>
+
+        <borderlayout width="100%">
+            <west width="15%" splittable="true" collapsible="true">
+                <caption/>
+                <tabbox mold="accordion" selectedIndex="@bind(vm.selectedTab)">
+                    <tabs>
+                        <tab label="Archivio" sclass="titoloAccordion"/>
+                        <tab label="Dizionari" sclass="titoloAccordion"/>
+                    </tabs>
+                    <tabpanels>
+                        <tabpanel>
+                            <listbox selectedItem="@bind(vm.selectedSezione)">
+                                <listitem label="Soggetti" value="soggetti"/>
+                                <listitem label="Oggetti" value="oggetti"/>
+                                <listitem label="Catasto" value="catasto"
+                                          disabled="@load(!vm.cbTributiAbilitati.ICI and !vm.cbTributiAbilitati.TASI)"/>
+                            </listbox>
+                        </tabpanel>
+                        <tabpanel>
+                            <listbox selectedItem="@bind(vm.selectedSezioneDizionari)">
+                                <listitem label="IMU" value="ici"
+                                          disabled="@load(!vm.cbTributiAbilitati.ICI)"/>
+                                <listitem label="TASI" value="tasi"
+                                          disabled="@load(!vm.cbTributiAbilitati.TASI)"/>
+                                <listitem label="TARI" value="tarsu"
+                                          disabled="@load(!vm.cbTributiAbilitati.TARSU)"/>
+                                <listitem label="CUNI" value="cuni"
+                                          disabled="@load(!vm.cbTributiAbilitati.CUNI)"/>
+                                <listitem label="Trasversale" value="trasv"
+                                          disabled="@load(!vm.cbTributiAbilitati.TRASV)"/>
+                                <listitem label="Codifiche" value="codifiche"
+                                          disabled="@load(!vm.amministratore)"/>
+                                <listitem label="Modelli di stampa" value="modelli"/>
+                                <listitem label="Dati contabili" value="datiContabili"/>
+                                <listitem label="Installazione Parametri" value="installParams"
+                                          disabled="@load(!vm.amministratore)"/>
+                                <listitem label="Competenze" value="competenze"
+                                          disabled="@load(!vm.amministratore or !vm.gestioneCompetenzeAbilitata)"/>
+                                <listitem label="Dati Generali" value="datiGenerali"
+                                          disabled="@load(!vm.amministratore)"/>
+                                <listitem label="Stradario" value="stradario"/>
+                                <listitem label="Aggiorna" value="aggiorna"/>
+                            </listbox>
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
+            </west>
+            <center>
+                <include id="includeSezioneDizionari" src="@load(vm.urlSezione)" pagina="@load(vm.zul)"/>
+            </center>
+        </borderlayout>
+    </window>
+
+</zk>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<bandpopup>
+		<listbox multiple="false" width="500px" height="250px">
+			<listhead>
+				<listheader label="Comune"/>
+				<listheader label="Provincia" width="100px"/>
+				<listheader label="Data Soppressione" width="140px"/>
+			</listhead>
+			<template name="model">
+				<listitem>
+					<listcell label="#{each.denominazione}"/>
+					<listcell label="#{each.provincia.sigla}"/>
+					<listcell sclass="centro"
+							  label="#{each.dataSoppressione eq null ? '' : c:formatDate(each.dataSoppressione, 'dd/MM/yyyy')}"/>
+				</listitem>
+			</template>
+		</listbox>
+		<paging/>
+	</bandpopup>
+
+</zk>

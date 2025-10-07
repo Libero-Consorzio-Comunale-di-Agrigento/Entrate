@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('ruoliEsgraviViewModel')"
+            border="normal" width="1000px" sizable="true">
+		<script src="/js/decimalbox.js"/>
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="Oggetto: "/>
+                <label class="documentoTitolo" value="@load(vm.oggetto.oggetto)"/>
+                <label class="titoloPagina" value=" - "/>
+                <label class="documentoTitolo"
+                       value="@load(vm.oggetto.indirizzo ? vm.oggetto.indirizzo : vm.oggetto.indirizzoCompleto)"/>
+            </hlayout>
+        </h:div>
+        <groupbox width="100%">
+            <grid sclass="form">
+                <rows>
+                    <row>
+
+                        <cell colspan="2" align="right">
+                            <label value="Tipo oggetto "/>
+                        </cell>
+
+                        <cell colspan="6" align="rigth">
+                            <textbox readonly="true" mold="rounded"
+                                     value="@load(vm.oggetto.tipoOggetto)"/>
+                        </cell>
+
+
+                        <cell colspan="2" align="right">
+                            <label value="Oggetto "/>
+                        </cell>
+                        <cell colspan="6">
+                            <textbox readonly="true" value="@load(vm.oggetto.oggetto)" mold="rounded"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell colspan="2" align="right">
+                            <label value="Indirizzo"/>
+                        </cell>
+                        <cell colspan="6">
+                            <textbox readonly="true" hflex="1" mold="rounded"
+                                     value="@load(vm.oggetto.indirizzo ? vm.oggetto.indirizzo : vm.oggetto.indirizzoLocalita)"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Civico"/>
+                        </cell>
+                        <cell colspan="2" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.numCiv)" tooltiptext="Numero"/>
+                        </cell>
+                        <cell colspan="1" align="center">
+                            <label value="/"/>
+                        </cell>
+                        <cell colspan="2" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.suffisso)" tooltiptext="Suffisso"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Scala"/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.scala)" tooltiptext="Numero"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Piano"/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.piano)" tooltiptext="Numero"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Interno"/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.interno)" tooltiptext="Numero"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+        <groupbox width="100%">
+            <caption label="Estremi catasto"/>
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell colspan="1" align="right">
+                            <label value="Sezione "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.sezione)" tooltiptext="Sezione"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Foglio "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.foglio)" tooltiptext="Foglio"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Numero "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.numero)" tooltiptext="Numero"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Subalterno "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.subalterno)" tooltiptext="Subalterno"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Partita "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.partita)" tooltiptext="Partita"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell colspan="1" align="right">
+                            <label value="Zona "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.zona)" tooltiptext="Zona"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Protocollo "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.protocolloCatasto)"
+                                     tooltiptext="Protocollo Catasto"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Anno "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.annoCatasto)" tooltiptext="Anno catasto"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Categoria "/>
+                        </cell>
+                        <cell colspan="1">
+                            <textbox readonly="true" mold="rounded" hflex="1"
+                                     value="@bind(vm.oggetto.categoriaCatasto)"/>
+                        </cell>
+                        <cell colspan="1" align="right">
+                            <label value="Classe "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                            <textbox readonly="true" style="text-align: right;" mold="rounded"
+                                     hflex="1" value="@bind(vm.oggetto.classeCatasto)" tooltiptext="Classe catasto"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+        <vlayout vflex="1">
+            <space height="5px"/>
+            <groupbox vflex="1">
+                <caption label="Ruoli"/>
+
+                <listbox hflex="1" vflex="1" model="@load(vm.listRuoli)" rows="10"
+                         emptyMessage="Nessun ruolo presente." selectedItem="@bind(vm.ruoloSelezionato)"
+                         onSelect="@command('onSelezionaRuolo')">
+                    <listhead sizable="true">
+                        <listheader label="Ruolo" align="center"/>
+                        <listheader label="Anno" align="center"/>
+                        <listheader label="Anno Em." align="center"/>
+                        <listheader label="Progr." align="right"/>
+                        <listheader label="Emissione" align="center" width="8%"/>
+                        <listheader label="Invio" align="center" width="8%"/>
+                        <listheader label="C.Trib." align="right"/>
+                        <listheader label="Importo" align="right" width="10%"/>
+                        <listheader label="L." align="center"/>
+                        <listheader label="Sgravio" align="right" width="10%"/>
+                        <listheader label="Mesi" align="right"/>
+                        <listheader label="Giorni" align="right"/>
+                        <listheader label="Ruolo" align="center"/>
+                        <listheader label="Sp." align="center"/>
+                        <listheader label="T.Emiss." align="left"/>
+                    </listhead>
+                    <template name="model" var="ruolo">
+                        <listitem>
+                            <listcell label="@load(ruolo.tipoRuolo)"/>
+                            <listcell label="@load(ruolo.annoRuolo)"/>
+                            <listcell label="@load(ruolo.annoEmissione)"/>
+                            <listcell label="@load(ruolo.progrEmissione)"/>
+                            <listcell
+                                    label="@load(ruolo.dataEmissione eq null? '' :c:formatDate(ruolo.dataEmissione, 'dd/MM/yyyy'))"/>
+                            <listcell
+                                    label="@load(ruolo.invioConsorzio eq null? '' :c:formatDate(ruolo.invioConsorzio, 'dd/MM/yyyy'))"/>
+                            <listcell label="@load(ruolo.codiceTributo)"/>
+                            <listcell
+                                    label="@load(ruolo.importoRuoloContribuente eq null? '' :c:formatNumber(ruolo.importoRuoloContribuente, '€ #,##0.00'))"/>
+                            <listcell>
+                                <checkbox checked="@load(ruolo.importoLordo)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                            <listcell
+                                    label="@load(ruolo.importoSgravio eq null? '' :c:formatNumber(ruolo.importoSgravio, '€ #,##0.00'))"/>
+                            <listcell label="@load(ruolo.mesiCalcolo)"/>
+                            <listcell label="@load(ruolo.giorniCalcolo)"/>
+                            <listcell label="@load(ruolo.ruolo)"/>
+                            <listcell label="@load(ruolo.specie)"/>
+                            <listcell label="@load(ruolo.tipoEmissione)"/>
+                        </listitem>
+                    </template>
+                </listbox>
+            </groupbox>
+            <space height="5px"/>
+            <groupbox vflex="1">
+                <caption label="Sgravi"/>
+                <listbox hflex="1" vflex="1" model="@load(vm.listSgravi)"
+                         emptyMessage="Nessuno sgravio presente." selectedItem="@bind(vm.sgravioSelezionato)"
+                         onClick="@command('onVisualizzaSgravio', popup=popupSgravio)">
+                    <listhead sizable="true">
+                        <listheader label="Motivo" width="25%"/>
+                        <listheader label="Tipo" align="left"/>
+                        <listheader label="Automatico" align="center"/>
+                        <listheader label="Numero elenco" align="right"/>
+                        <listheader label="Data elenco" align="center"/>
+                        <listheader label="Importo" align="right"/>
+                    </listhead>
+                    <template name="model" var="sgravio">
+                        <listitem>
+                            <listcell
+                                    label="@load(c:cat3(sgravio.motivoSgravio.id, ' - ', sgravio.motivoSgravio.descrizione))"/>
+                            <listcell label="@load(sgravio.tipoSgravio)"/>
+                            <listcell>
+                                <checkbox checked="@load(sgravio.flagAutomatico)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                            <listcell label="@load(sgravio.numeroElenco)"/>
+                            <listcell
+                                    label="@load(sgravio.dataElenco eq null? '' :c:formatDate(sgravio.dataElenco, 'dd/MM/yyyy'))"/>
+                            <listcell
+                                    label="@load(sgravio.importo eq null? '' :c:formatNumber(sgravio.importo, '€ #,##0.00'))"/>
+                        </listitem>
+                    </template>
+                </listbox>
+            </groupbox>
+        </vlayout>
+
+        <window title="Dettagli sgravio" id="popupSgravio" width="800px"
+                position="center" border="normal" mode="popup" visible="false">
+            <script src="/js/decimalbox.js"/>
+            <grid>
+                <rows>
+
+                    <row>
+                        <cell colspan="2" align="right">
+                            <label value="Importo Ruolo"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox style="text-align: right;"
+                                     value="@load(vm.ruoloSelezionato.importoRuoloContribuente eq null? '' :c:formatNumber(vm.ruoloSelezionato.importoRuoloContribuente, '€ #,##0.00'))"
+                                     hflex="1" readonly="true"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Imp.netta"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.imposta eq null? '' :c:formatNumber(vm.sgravioSelezionato.imposta, '€ #,##0.00'))"
+                                     hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Cartella"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.numeroCartella)" hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Del"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.dataCartella eq null? '' :c:formatDate(vm.sgravioSelezionato.dataCartella, 'dd/MM/yyyy'))"
+                                     hflex="1"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell colspan="2" align="right">
+                            <label value="Num. Elenco"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.numeroElenco)" hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Del"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.dataElenco eq null? '' :c:formatDate(vm.sgravioSelezionato.dataElenco, 'dd/MM/yyyy'))"
+                                     hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Concessione"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.codConcessione)" hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Ruolo"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.numRuolo)" hflex="1"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell colspan="2" align="right">
+                            <label value="Motivo"/>
+                        </cell>
+                        <cell colspan="6" align="rigth">
+                            <textbox readonly="true"
+                                     value="@load(c:cat3(vm.sgravioSelezionato.motivoSgravio.id, ' - ', vm.sgravioSelezionato.motivoSgravio.descrizione))"
+                                     hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Tipo"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox value="@load(vm.sgravioSelezionato.tipoSgravio)"
+                                     readonly="true" hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Automatico"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <checkbox checked="@load(vm.sgravioSelezionato.flagAutomatico)"
+                                      disabled="true" w:onCheck="this.setChecked(!this.isChecked())"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell colspan="2" align="right">
+                            <label value="Semestri"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox value="@load(vm.sgravioSelezionato.semestri)"
+                                     style="text-align: right;" readonly="true" hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Mesi"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox value="@load(vm.sgravioSelezionato.mesiSgravio)"
+                                     style="text-align: right;" readonly="true" hflex="1"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Giorni"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox value="@load(vm.sgravioSelezionato.giorniSgravio)"
+                                     style="text-align: right;" readonly="true" hflex="1"/>
+                        </cell>
+                        <cell colspan="4"/>
+                    </row>
+
+                    <row>
+                        <cell colspan="2" align="right">
+                            <label value="Importo sgravio"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.importo eq null? '' :c:formatNumber(vm.sgravioSelezionato.importo, '€ #,##0.00'))"
+                                     hflex="1" readonly="true"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Netto"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.nettoSgravio eq null? '' :c:formatNumber(vm.sgravioSelezionato.nettoSgravio, '€ #,##0.00'))"
+                                     hflex="1" readonly="true"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="Ad.Pro."/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox hflex="1" readonly="true" style="text-align: right;"
+                                     value="@load(vm.sgravioSelezionato.provinciale eq null? '' :c:formatNumber(vm.sgravioSelezionato.provinciale, '€ #,##0.00'))"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="C.Pereq."/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox style="text-align: right;"
+                                     value="@load((vm.sgravioSelezionato.maggiorazioneTares eq null or vm.sgravioSelezionato.maggiorazioneTares eq 0) ? '' :c:formatNumber(vm.sgravioSelezionato.maggiorazioneTares, '€ #,##0.00'))"
+                                     hflex="1" readonly="true"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell colspan="2" align="right">
+                            <label value="ECA"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox style="text-align: right;"
+                                     value="@load((vm.sgravioSelezionato.eca eq null or vm.sgravioSelezionato.eca eq 0) ? '' :c:formatNumber(vm.sgravioSelezionato.eca, '€ #,##0.00'))"
+                                     hflex="1" readonly="true"/>
+                        </cell>
+                        <cell colspan="2" align="right">
+                            <label value="IVA"/>
+                        </cell>
+                        <cell colspan="2" align="rigth">
+                            <textbox style="text-align: right;"
+                                     value="@load((vm.sgravioSelezionato.iva eq null or vm.sgravioSelezionato.iva eq 0) ? '' :c:formatNumber(vm.sgravioSelezionato.iva, '€ #,##0.00' ))"
+                                     hflex="1" readonly="true"/>
+                        </cell>
+                        <cell colspan="8"/>
+                    </row>
+                </rows>
+            </grid>
+            <space height="10px"/>
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button label="Chiudi"
+                            onClick="@command('onChiudiPopupSgravio', popup=popupSgravio)"
+                            mold="trendy"/>
+                </h:div>
+            </h:div>
+        </window>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/save.png"
+                        label="Salva" onClick="@command('onSalva')"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png"
+                        label="Chiudi" onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

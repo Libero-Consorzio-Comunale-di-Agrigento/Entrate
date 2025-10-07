@@ -1,0 +1,946 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+<?component name="bandboxSoggetti" extends="bandbox" class="it.finmatica.zkutils.BandboxSoggetti"?>
+<?component name="bandboxContribuenti" extends="bandbox" class="it.finmatica.zkutils.BandboxContribuenti"?>
+
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('oggettoViewModel')"
+            contentStyle="overflow:auto;" border="normal" width="1240px" sizable="true"
+            title=" ">
+		<script src="/js/decimalbox.js"/>
+
+
+    <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="Oggetto: "/>
+                <label class="documentoTitolo" value="@load(vm.oggetto.id)">
+                </label>
+            </hlayout>
+        </h:div>
+
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell colspan="2" align="right">
+                        <label value="Oggetto"/>
+                    </cell>
+                    <cell colspan="3">
+                        <textbox mold="rounded" style="text-align: right;" value="@load(vm.oggetto.id)" disabled="true"
+                                 width="90%"/>
+                    </cell>
+                    <cell colspan="2" align="right">
+                        <h:span class="mandatoryLabel">*</h:span>
+                        <label value="Tipo oggetto "/>
+                    </cell>
+                    <cell colspan="5" align="rigth">
+                        <combobox mold="rounded" visible="@load(vm.modificaTipoOggetto)" readonly="true"
+                                  model="@load(vm.listaTipologiaOggetto)"
+                                  selectedItem="@bind(vm.oggetto.tipoOggetto) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoOggetto')"
+                                  width="90%">
+                            <template name="model" var="to">
+                                <comboitem label="@load(c:cat3(to.tipoOggetto, ' ', to.descrizione))"
+                                           value="@load(to)"/>
+                            </template>
+                        </combobox>
+                        <textbox width="90%" visible="@load(not vm.modificaTipoOggetto)"
+                                 disabled="true" inplace="true"
+                                 value="@load(c:cat3(vm.oggetto.tipoOggetto.tipoOggetto, ' - ', vm.oggetto.tipoOggetto.descrizione))"/>
+                        <toolbarbutton visible="@load(vm.modifica)"
+                                       image='@load(vm.modificaTipoOggetto?"/images/tr4web/16x16/ok.png":"/images/tr4web/16x16/pencil.png")'
+                                       tooltiptext='@load(vm.modificaTipoOggetto?"Imposta tipo oggetto":"Modifica tipo oggetto")'
+                                       onClick="@command('onModificaTipoOggetto')"/>
+                    </cell>
+                    <cell colspan="2" align="right">
+                        <label value="Id Immobile"/>
+                    </cell>
+                    <cell colspan="3">
+                        <textbox style="text-align: right;" mold="rounded" value="@load(vm.oggetto.idImmobile)"
+                                 tooltiptext="ID Immobile" disabled="true" width="98%"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="2" align="right">
+                        <label value="Indirizzo"/>
+                    </cell>
+                    <cell colspan="5">
+                        <bandboxVie hflex="1" oggetto="@bind(vm.filtri)"
+                                    style="text-transform: uppercase"
+                                    onSelect="@command('onSelectIndirizzo')"
+                                    disabled="@load(vm.lettura ne false)">
+                            <custom-attributes proprieta="indirizzo"/>
+                        </bandboxVie>
+                    </cell>
+                    <cell colspan="1" align="right">
+                      <label value="Civico"/>
+                    </cell>
+                    <cell colspan="3" align="left">
+                        <intbox mold="rounded" style="text-align: right;" width="40%" value="@bind(vm.oggetto.numCiv)"
+                                tooltiptext="Numero" maxlength="6"/>
+                        <label value=" / "/>
+                        <textbox mold="rounded" style="text-align: right;" width="40%"
+                                 value="@bind(vm.oggetto.suffisso)"
+                                 tooltiptext="Suffisso" maxlength="5"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Scala"/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox mold="rounded" style="text-align: right;" value="@bind(vm.oggetto.scala)"
+                                 tooltiptext="Numero"
+                                 width="90%" maxlength="5"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Piano"/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox mold="rounded" style="text-align: right;" value="@bind(vm.oggetto.piano)"
+                                 tooltiptext="Numero"
+                                 width="90%" maxlength="5"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Interno"/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <intbox mold="rounded" style="text-align: right;" value="@bind(vm.oggetto.interno)"
+                                tooltiptext="Numero"
+                                width="90%" maxlength="2"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="2" align="right">
+                        <label value="Indirizzo (Min.)"/>
+                    </cell>
+                    <cell colspan="5" align="left">
+                        <textbox mold="rounded" hflex="1" disabled="true" 
+                                 value="@bind(vm.oggetto.indirizzoLocalita)" />
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Descrizione"/>
+                    </cell>
+                    <cell colspan="9" align="left">
+                        <textbox mold="rounded" hflex="1" value="@bind(vm.oggetto.descrizione)" />
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <groupbox width="100%">
+            <caption label="Estremi catasto"/>
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="Sezione"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Sezione" width="90%"
+                                     value="@bind(vm.oggetto.sezione)" class="noresizable" maxlength="3"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Foglio"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Foglio" width="90%"
+                                     value="@bind(vm.oggetto.foglio)" class="noresizable" maxlength="5"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Numero"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Numero" width="90%"
+                                     value="@bind(vm.oggetto.numero)" class="noresizable" maxlength="5"/>
+                        </cell>
+                        <cell align="right" width="10%">
+                            <label value="Subalterno"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Subalterno" width="90%"
+                                     value="@bind(vm.oggetto.subalterno)" class="noresizable" maxlength="4"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Partita"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Partita" width="90%"
+                                     value="@bind(vm.oggetto.partita)" class="noresizable" maxlength="8"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Progressivo"/>
+                        </cell>
+                        <cell>
+                            <intbox mold="rounded" style="text-align: right;" tooltiptext="Progressivo" width="90%"
+                                    value="@bind(vm.oggetto.progrPartita)" class="noresizable" maxlength="9"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Zona"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Zona" width="90%"
+                                     value="@bind(vm.oggetto.zona)" class="noresizable" maxlength="3"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Protocollo"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Protocollo Catasto"
+                                     width="90%" value="@bind(vm.oggetto.protocolloCatasto)" class="noresizable"
+                                     maxlength="6"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell>
+                            <intbox mold="rounded" style="text-align: right;" tooltiptext="Anno catasto" width="90%"
+                                    value="@bind(vm.oggetto.annoCatasto)"
+                                    maxlength="4" constraint="no zero,no negative"/>
+                        </cell>
+                        <cell colspan="2"/>
+                        <cell align="right">
+                            <label value="Categoria"/>
+                        </cell>
+                        <cell>
+                            <combobox mold="rounded" model="@load(vm.listaCategorieCatasto)" readonly="true"
+                                      selectedItem="@bind(vm.oggetto.categoriaCatasto) @converter('it.finmatica.zkutils.PropertyConverter', property='categoriaCatasto')"
+                                      tooltiptext="@bind(vm.oggetto.categoriaCatasto.descrizione)" hflex="1">
+                                <template name="model" var="cc">
+                                    <comboitem description="@load(cc.descrizione)" label="@load(cc.categoriaCatasto)"
+                                               value="@load(cc)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell align="right">
+                            <label value="Classe"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" style="text-align: right;" tooltiptext="Classe catasto" width="90%"
+                                     value="@bind(vm.oggetto.classeCatasto)" class="noresizable" maxlength="2"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="3px"/>
+
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell colspan="1" align="right">
+                        <label value="Edificio "/>
+                    </cell>
+                    <cell colspan="4" align="left">
+                        <combobox mold="rounded" model="@load(vm.listaEdifici)" readonly="true"
+                                  selectedItem="@bind(vm.oggetto.edificio)"
+                                  tooltiptext="@load(vm.oggetto.edificio.descrizione)" hflex="1">
+                            <template name="model" var="ed">
+                                <comboitem label="@load(ed.descrizione)" value="@load(ed)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <label value="Sostituito "/>
+                    </cell>
+                    <cell align="left">
+                        <checkbox checked="@bind(vm.oggetto.flagSostituito)"
+                                  w:onCheck="this.setChecked(!this.isChecked())" disabled="true"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Cod. Ecografico"/>
+                    </cell>
+                    <cell colspan="4">
+                        <textbox mold="rounded" value="@load(vm.oggetto.codEcografico)" disabled="true" width="98%"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="1" align="right">
+                        <label value="Tipo uso "/>
+                    </cell>
+                    <cell colspan="4" align="left">
+                        <combobox mold="rounded" model="@load(vm.listaTipiUso)" readonly="true"
+                                  selectedItem="@bind(vm.oggetto.tipoUso) @converter('it.finmatica.zkutils.PropertyConverter', property='descrizione')"
+                                  tooltiptext="@load(vm.oggetto.tipoUso.descrizione)" hflex="1">
+                            <template name="model" var="tu">
+                                <comboitem value="@load(tu)"
+                                           label="@load(c:cat3(tu.id, ' - ', tu.descrizione))"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell colspan="2"/>
+                    <cell colspan="1" align="right">
+                        <label value="Cessato il "/>
+                    </cell>
+                    <cell colspan="3" align="left">
+                        <datebox format="dd/MM/yyyy" mold="rounded" value="@bind(vm.oggetto.dataCessazione)"
+                                 width="50%"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="1" align="right">
+                        <h:span class="mandatoryLabel">*</h:span>
+                        <label value="Fonte "/>
+                    </cell>
+                    <cell colspan="4" align="left">
+                        <combobox mold="rounded" model="@load(vm.listaFonti)" readonly="true"
+                                  selectedItem="@bind(vm.oggetto.fonte) @converter('it.finmatica.zkutils.PropertyConverter', property='fonte')"
+                                  tooltiptext="@load(vm.oggetto.fonte.descrizione)" hflex="1">
+                            <template name="model" var="fo">
+                                <comboitem label="@load(c:cat3(fo.fonte, ' - ', fo.descrizione))"
+                                           value="@load(fo)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell/>
+                    <cell align="right">
+                        <label value="Consistenza "/>
+                    </cell>
+                    <cell colspan="2" align="left">
+                        <decimalbox style="text-align: right;" hflex="1" mold="rounded" format="#,###0.00" locale="it"
+                                    value="@bind(vm.oggetto.consistenza)"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Vani "/>
+                    </cell>
+                    <cell colspan="2" align="left">
+                        <decimalbox style="text-align: right;" hflex="1" mold="rounded" format="#,###0.00" locale="it"
+                                    value="@bind(vm.oggetto.vani)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="1" align="right">
+                        <label value="Centiare "/>
+                    </cell>
+                    <cell colspan="2" align="left">
+                        <intbox style="text-align: right;" hflex="1" mold="rounded"
+                                value="@bind(vm.oggetto.centiare)" tooltiptext="Centiare"
+                                maxlength="2"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Are "/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <intbox style="text-align: right;" hflex="1" mold="rounded"
+                                value="@bind(vm.oggetto.are)" tooltiptext="Are" maxlength="2"/>
+                    </cell>
+                    <cell/>
+                    <cell colspan="1" align="right">
+                        <label value="Ettari "/>
+                    </cell>
+                    <cell colspan="2" align="left">
+                        <intbox style="text-align: right;" hflex="1" mold="rounded"
+                                value="@bind(vm.oggetto.ettari)" tooltiptext="Ettari" maxlength="5"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Superficie "/>
+                    </cell>
+                    <cell colspan="2" align="left">
+                        <decimalbox style="text-align: right;" hflex="1" mold="rounded"
+                                    format="#,###.00" locale="it" value="@bind(vm.oggetto.superficie)"
+                                    tooltiptext="Superficie"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="1" align="right">
+                        <label value="Qualità "/>
+                    </cell>
+                    <cell colspan="4" align="left">
+                        <hlayout>
+                            <combobox mold="rounded" hflex="1" readonly="true"
+                                      model="@load(vm.listaTipiQualita)"
+                                      selectedItem="@bind(vm.tipoQualitaSelezionato)"
+                                      tooltiptext="@load(vm.oggetto.tipoQualita.descrizione)">
+                                <template name="model" var="tq">
+                                    <comboitem label="@load(tq.value)"
+                                               value="@load(tq)"/>
+                                </template>
+                            </combobox>
+                            <space width="2px"/>
+                            <textbox value="@bind(vm.oggetto.qualita)" mold="rounded" width="120px"/>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <label value="Note "/>
+                    </cell>
+                    <cell colspan="6" align="left">
+                        <textbox hflex="1" multiline="true" value="@bind(vm.oggetto.note)" mold="rounded"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <space height="3px"/>
+        <tabbox orient="vertical">
+            <tabs id="tabs" width="130px">
+                <tab id="T1" label="Civici"
+                     sclass="@bind(empty vm.oggetto.civiciOggetto ? '' : 'not-empty')"/>
+                <tab id="T2" label="Utilizzi"
+                     sclass="@bind(empty vm.oggetto.utilizziOggetto ? '' : 'not-empty')"/>
+                <tab id="T3" label="Partizioni"
+                     sclass="@bind(empty vm.oggetto.partizioniOggetto ? '' : 'not-empty')"/>
+                <tab id="T4" label="Riferimenti"
+                     sclass="@bind(empty vm.oggetto.riferimentiOggetto ? '' : 'not-empty')"/>
+                <tab id="T5" label="Notifiche"
+                     sclass="@bind(empty vm.oggetto.notificheOggetto ? '' : 'not-empty')"/>
+                <tab id="T6" label="Anomalie"
+                     sclass="@bind(empty vm.listaAnomalieOggetto ? '' : 'not-empty')"
+                     selected="@load(vm.bonifiche)"/>
+                <tab id="T7" label="Geolocalizzazione"
+                     sclass="@bind(empty vm.oggetto.latitudine ? '' : 'not-empty')"/>
+            </tabs>
+            <tabpanels>
+                <!-- Civici -->
+                <tabpanel style="overflow:auto;">
+                    <grid hflex="max" model="@load(vm.oggetto.civiciOggetto)"
+                          emptyMessage="Nessun civico">
+                        <columns>
+                            <column label="Sequenza" sort="auto(sequenza)" align="right"/>
+                            <column label="Indirizzo"/>
+                            <column label="Numero" align="right"/>
+                            <column label="Suffisso"/>
+                            <column label="" width="5%" align="center">
+                                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                                       onClick="@command('onAggiungiCivico', arg=civ)"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </column>
+                        </columns>
+                        <template name="model" var="civ">
+                            <row>
+                                <intbox hflex="1" inplace="true" value="@bind(civ.sequenza)" style="text-align: right;"
+                                        disabled="true"/>
+                                <bandboxVie hflex="1" inplace="true"
+                                            oggetto="@bind(civ.archivioVie)" disabled="@bind(civ.riferimentoIndirizzo)"
+                                            onSelect="@command('onSelectIndirizzoCivico', arg=civ)">
+                                    <custom-attributes proprieta="denomUff"/>
+                                </bandboxVie>
+                                <intbox hflex="1" inplace="true" value="@bind(civ.numCiv)" mold="rounded"
+                                        style="text-align: right;"
+                                        readonly="@bind(civ.riferimentoIndirizzo)" maxlength="6"/>
+                                <textbox hflex="1" inplace="true" value="@bind(civ.suffisso)" mold="rounded"
+                                         readonly="@bind(civ.riferimentoIndirizzo)" maxlength="5"/>
+                                <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina civico"
+                                       style="cursor: pointer" visible="@bind((vm.lettura eq false) and (not civ.riferimentoIndirizzo))"
+                                       onClick="@command('onEliminaCivico', civ=civ)"/>
+                            </row>
+                        </template>
+                    </grid>
+                </tabpanel>
+                <!-- Utilizzi -->
+                <tabpanel fulfill="T2.onSelect" style="overflow:auto;">
+                    <grid hflex="max" model="@load(vm.oggetto.utilizziOggetto)"
+                          emptyMessage="Nessun utilizzo">
+                        <columns sizable="true">
+                            <column align="center" width="10%">
+                                <h:span class="my-star">*</h:span>
+                                <label value="Tributo" sclass="my-column"/>
+                            </column>
+                            <column align="center" width="7%">
+                                <h:span class="my-star">*</h:span>
+                                <label value="Anno" sclass="my-column"/>
+                            </column>
+                            <column align="center" width="15%">
+                                <h:span class="my-star">*</h:span>
+                                <label value="Utilizzo" sclass="my-column"/>
+                            </column>
+                            <column label="Mesi" align="center" width="5%"/>
+                            <column label="Scadenza" align="center"/>
+                            <column label="Cod.Fiscale" tooltiptext="Codice Fiscale" align="center" width="15%"/>
+                            <column label="Intestatario" align="center" width="15%"/>
+                            <column label="Uso" align="center" width="7%"/>
+                            <column label="Dal" align="center"/>
+                            <column label="Al" align="center"/>
+                            <column label="Note" align="sinistra" sclass="centro" width="5%"/>
+                            <column label="" width="3%" align="center">
+                                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                                       onClick="@command('onAggiungiUtilizzo')"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </column>
+                        </columns>
+                        <template name="model" var="uti">
+                            <row align="left">
+                                <combobox mold="rounded" hflex="1" inplace="true" readonly="true"
+                                          model="@load(vm.listaTipiTributo)"
+                                          selectedItem="@bind(uti.tipoTributo) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoTributo')">
+                                    <template name="model">
+                                        <comboitem label="@load(each.tipoTributoAttuale)"
+                                                   value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                                <intbox hflex="1" inplace="true" value="@bind(uti.anno)" style="text-align: right;"
+                                        tooltiptext="@bind(uti.anno)" readonly="#{empty uti.anno?false:true}"
+                                        maxlength="4"/>
+                                <combobox mold="rounded" hflex="1" inplace="true" readonly="true"
+                                          model="@load(vm.listaTipiUtilizzo)"
+                                          selectedItem="@bind(uti.tipoUtilizzo) @converter('it.finmatica.zkutils.PropertyConverter', property='id')"
+                                          tooltiptext="@load(uti.tipoUtilizzo.descrizione)">
+                                    <template name="model">
+                                        <comboitem description="@load(each.descrizione)"
+                                                   label="@load(c:cat3(each.id, '-', each.descrizione))"
+                                                   value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                                <intbox hflex="1" inplace="true" value="@bind(uti.mesiAffitto)"
+                                        style="text-align: right;"
+                                        tooltiptext="@bind(uti.mesiAffitto)" maxlength="2"/>
+                                <datebox hflex="1" value="@bind(uti.dataScadenza)" style="text-align: center;"
+                                         format="dd/MM/yyyy" inplace="true">
+                                </datebox>
+                                <bandboxSoggetti hflex="1" inplace="true"
+                                                 oggetto="@bind(uti.soggetto)"
+                                                 onSelect="@command('onSelectSoggettoUtilizzo', arg=uti)"
+                                                 style="text-transform: uppercase"
+                                                 onChanging="@command('onChangingSoggettoUtilizzo', arg=uti)"
+                                >
+                                    <custom-attributes proprieta="codFiscale"/>
+                                </bandboxSoggetti>
+                                <textbox hflex="1" disabled="true"
+                                         value="@bind(uti.soggetto.cognomeNome)" inplace="true"
+                                         tooltiptext="@bind(uti.intestatario)"/>
+                                <combobox mold="rounded" hflex="1" inplace="true" readonly="true"
+                                          model="@load(vm.listaTipiUso)"
+                                          selectedItem="@bind(uti.tipoUso) @converter('it.finmatica.zkutils.PropertyConverter', property='id')"
+                                          tooltiptext="@load(uti.tipoUso.descrizione)">
+                                    <template name="model">
+                                        <comboitem description="@load(each.descrizione)"
+                                                   label="@load(each.id)" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                                <datebox hflex="1" value="@bind(uti.dal)" inplace="true" style="text-align: center;"
+                                         format="dd/MM/yyyy">
+                                </datebox>
+                                <datebox hflex="1" value="@bind(uti.al)" inplace="true" style="text-align: center;"
+                                         format="dd/MM/yyyy">
+                                </datebox>
+                                <hlayout>
+                                    <label value="@bind(uti.note)" sclass="auto-trunc" hflex="2"
+                                           tooltiptext="@bind(uti.note)"/>
+                                    <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note" width="16px"
+                                           visible="@load(uti.note ne null and vm.lettura and not empty vm.oggetto.id)"
+                                           style="cursor: pointer" onClick="@command('onApriNote', arg=uti.note)"/>
+                                    <image src="/images/afc/16x16/edit.png" tooltiptext="Modifica note" width="16px"
+                                           visible="@load(!vm.lettura or empty vm.oggetto.id)"
+                                           style="cursor: pointer"
+                                           onClick="@command('onApriPopupNote')"
+                                           popup="@load(c:cat('popupNote_', uti.uuid))"/>
+                                    <popup id="@load(c:cat('popupNote_', uti.uuid))" width="600px"
+                                           onOpen="@command('onApriPopupNote', popup=self)">
+                                        <h:div sclass="barraTitoloPagina">
+                                            <label class="titoloPagina" value="Note"/>
+                                        </h:div>
+                                        <hlayout>
+                                            <textbox rows="10" width="600px" value="@bind(uti.note)"/>
+                                        </hlayout>
+                                        <h:div sclass="barraPulsanti">
+                                            <h:div>
+                                                <button label="Chiudi" onClick="@command('onChiudiPopupNote')"
+                                                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+                                            </h:div>
+                                        </h:div>
+                                    </popup>
+                                </hlayout>
+                                <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina utilizzo"
+                                       style="cursor: pointer" onClick="@command('onEliminaUtilizzo', uti=uti)"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </row>
+                        </template>
+                    </grid>
+                </tabpanel>
+                <!-- Partizioni -->
+                <tabpanel fulfill="T3.onSelect" style="overflow:auto;">
+                    <grid model="@load(vm.oggetto.partizioniOggetto)"
+                          emptyMessage="Nessuna partizione">
+                        <columns>
+                            <column width="40px"/>
+                            <column>
+                                <h:span sclass="my-star">*</h:span>
+                                <label value="Tipo area" sclass="my-column"/>
+                            </column>
+                            <column>
+                                <h:span sclass="my-star">*</h:span>
+                                <label value="Consistenza" sclass="my-column"/>
+                            </column>
+                            <column label="" width="5%" align="center">
+                                <image width="15px" src="/images/afc/16x16/add.png"
+                                       tooltiptext="Aggiungi" style="cursor: pointer;"
+                                       onClick="@command('onAggiungiPartizione')"
+                                       sclass="my-column"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </column>
+                        </columns>
+                        <template name="model" var="part">
+                            <row>
+                                <detail open="@bind(part.open)" height="20px">
+                                    <grid model="@load(part.consistenzeTributo)">
+                                        <columns>
+                                            <column>
+                                                <h:span sclass="my-star">
+                                                    *
+                                                </h:span>
+                                                <label value="Tributo" sclass="my-column"/>
+                                            </column>
+                                            <column>
+                                                <h:span sclass="my-star">
+                                                    *
+                                                </h:span>
+                                                <label value="Consistenza" sclass="my-column"/>
+                                            </column>
+                                            <column label="Esente" align="center"/>
+                                            <column label="" width="5%" align="center">
+                                                <image width="15px" src="/images/afc/16x16/add.png"
+                                                       tooltiptext="Aggiungi" style="cursor: pointer;"
+                                                       onClick="@command('onAggiungiConsistenza', arg=part)"/>
+                                            </column>
+                                        </columns>
+                                        <template name="model" var="con">
+                                            <row>
+                                                <cell>
+                                                    <combobox mold="rounded" hflex="1" readonly="true"
+                                                              visible="@load(vm.modifica)" inplace="true"
+                                                              model="@load(vm.listaTipiTributo)"
+                                                              onChange="@command('onChangeTipoTributo',part=part,con=con)"
+                                                              selectedItem="@bind(con.tipoTributo) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoTributo')">
+                                                        <template name="model">
+                                                            <comboitem label="@load(each.tipoTributo)"
+                                                                       value="@load(each)"/>
+                                                        </template>
+                                                    </combobox>
+                                                </cell>
+                                                <intbox hflex="1" format="#,###.00" locale="it"
+                                                        style="text-align: right;"
+                                                        onChange="@command('onChangeConsistenza',part=part,con=con)"
+                                                        inplace="true" value="@bind(con.consistenza)"/>
+                                                <checkbox checked="@bind(con.flagEsenzione)"
+                                                          style="text-align:center;"/>
+                                                <image src="/images/tr4web/16x16/trash.png"
+                                                       tooltiptext="Elimina consistenza" style="cursor: pointer"
+                                                       onClick="@command('onEliminaConsistenza', con=con, part=part)"/>
+                                            </row>
+                                        </template>
+                                    </grid>
+                                </detail>
+
+                                <combobox mold="rounded" hflex="1" inplace="true" readonly="true"
+                                          model="@load(vm.listaTipiArea)"
+                                          selectedItem="@bind(part.tipoArea) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(c:cat3(each.id, '-', each.descrizione))"
+                                                   value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                                <intbox hflex="1" format="#,###.00" locale="it" style="text-align: right;"
+                                        value="@bind(part.consistenza)" inplace="true"/>
+                                <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina partizioni"
+                                       style="cursor: pointer" onClick="@command('onEliminaPartizione', part=part)"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </row>
+                        </template>
+                    </grid>
+                </tabpanel>
+                <!-- Riferimenti -->
+                <tabpanel fulfill="T4.onSelect" style="overflow:auto;">
+                    <hlayout>
+                        <hlayout sclass="afc-control-bar" valign="middle">
+                            <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                           width="20px"
+                                           tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                           popup="funzioniOggetto"/>
+                        </hlayout>
+                    </hlayout>
+
+                    <grid model="@load(vm.listaRiferimento)" emptyMessage="Nessun riferimento">
+                        <columns>
+                            <column sclass="centro">
+                                <h:span sclass="my-star">*</h:span>
+                                <label value="Dal" sclass="my-column"/>
+                            </column>
+                            <column sclass="centro">
+                                <h:span sclass="my-star">*</h:span>
+                                <label value="Al" sclass="my-column"/>
+                            </column>
+                            <column sclass="centro">
+                                <h:span sclass="my-star">*</h:span>
+                                <label value="Rendita" sclass="my-column"/>
+                            </column>
+                            <column label="Anno" sclass="centro"/>
+                            <column label="Categoria" sclass="centro"/>
+                            <column label="Classe" sclass="centro"/>
+                            <column label="Data reg. atti" sclass="centro" width="12%"/>
+                            <column label="Data registrazione" sclass="centro" width="12%"/>
+                            <column label="Data variazione" sclass="centro" width="12%"/>
+                            <column label="Note" align="sinistra" sclass="centro"/>
+                            <column label="" width="5%" align="center">
+                                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                                       onClick="@command('onAggiungiRiferimento')"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </column>
+                        </columns>
+                        <template name="model" var="rif">
+                            <row>
+                                <datebox hflex="1" value="@bind(rif.inizioValidita)"
+                                         onChange="@command('onCheckDataDal',datarif=rif)"
+                                         inplace="true" format="dd/MM/yyyy"/>
+                                <datebox hflex="1" value="@bind(rif.fineValidita)"
+                                         onChange="@command('onCheckDataAl',datarif=rif)"
+                                         inplace="true" format="dd/MM/yyyy"/>
+                                <decimalbox hflex="1" format="#,###.00" locale="it" style="text-align: right;"
+                                            value="@bind(rif.rendita)" inplace="true"/>
+                                <intbox hflex="1" inplace="true" value="@bind(rif.annoRendita)"
+                                        style="text-align: right;"
+                                        maxlength="4"/>
+                                <combobox mold="rounded" hflex="1" inplace="true" readonly="true"
+                                          model="@load(vm.listaCategorieCatasto)"
+                                          selectedItem="@bind(rif.categoriaCatasto) @converter('it.finmatica.zkutils.PropertyConverter', property='categoriaCatasto')">
+                                    <template name="model">
+                                        <comboitem label="@load(each.categoriaCatasto)"
+                                                   value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                                <textbox hflex="1" value="@bind(rif.classeCatasto)" inplace="true" maxlength="2"
+                                         style="text-align: right;"/>
+                                <datebox hflex="1" value="@bind(rif.dataRegAtti)" format="dd/MM/yyyy" inplace="true"
+                                         style="text-align: center;"/>
+                                <datebox hflex="1" value="@bind(rif.dataReg)" inplace="true" format="dd/MM/yyyy"
+                                         style="text-align: center;"/>
+                                <datebox hflex="1" value="@bind(rif.lastUpdated)" inplace="true" format="dd/MM/yyyy"
+                                         style="text-align: center;"/>
+                                <hlayout>
+                                    <label value="@bind(rif.note)" sclass="auto-trunc" tooltiptext="@bind(rif.note)"
+                                           hflex="3"/>
+                                    <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note" width="16px"
+                                           visible="@load(rif.note ne null and vm.lettura and not empty vm.oggetto.id)"
+                                           style="cursor: pointer" onClick="@command('onApriNote', arg=rif.note)"/>
+                                    <image src="/images/afc/16x16/edit.png" tooltiptext="Modifica note" width="16px"
+                                           visible="@load(!vm.lettura or empty vm.oggetto.id)"
+                                           style="cursor: pointer"
+                                           onClick="@command('onApriPopupNote')"
+                                           popup="@load(c:cat('popupNote_', rif.uuid))"/>
+                                    <popup id="@load(c:cat('popupNote_', rif.uuid))" width="600px"
+                                           onOpen="@command('onApriPopupNote', popup=self)">
+                                        <h:div sclass="barraTitoloPagina">
+                                            <label class="titoloPagina" value="Note"/>
+                                        </h:div>
+                                        <hlayout>
+                                            <textbox rows="10" width="600px" value="@bind(rif.note)"/>
+                                        </hlayout>
+                                        <h:div sclass="barraPulsanti">
+                                            <h:div>
+                                                <button label="Chiudi" onClick="@command('onChiudiPopupNote')"
+                                                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+                                            </h:div>
+                                        </h:div>
+                                    </popup>
+                                </hlayout>
+                                <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina riferimenti"
+                                       style="cursor: pointer" onClick="@command('onEliminaRiferimento', rif=rif)"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </row>
+                        </template>
+                    </grid>
+                </tabpanel>
+                <!-- Notifiche -->
+                <tabpanel fulfill="T5.onSelect" style="overflow:auto;">
+                    <grid model="@load(vm.oggetto.notificheOggetto)" emptyMessage="Nessuna notifica">
+                        <columns>
+                            <column>
+                                <h:span sclass="my-star">*</h:span>
+                                <label value="Cod.Fiscale" tooltiptext="Codice Fiscale" sclass="my-column"/>
+                            </column>
+                            <column label="Contribuente"/>
+                            <column label="Pratica"/>
+                            <column>
+                                <h:span sclass="my-star">*</h:span>
+                                <label value="Anno" sclass="my-column"/>
+                            </column>
+                            <column label="Note"/>
+                            <column label="" width="5%" align="center">
+                                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                                       onClick="@command('onAggiungiNotifica')"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </column>
+                        </columns>
+                        <template name="model" var="noti">
+                            <row>
+                                <bandboxContribuenti hflex="1" inplace="true"
+                                                     oggetto="@bind(noti.contribuente)"
+                                                     disabled="#{empty noti.contribuente.codFiscale?false:true}"
+                                                     onSelect="@command('onSelectContribuente', arg=noti)"
+                                                     style="text-transform: uppercase">
+                                    <custom-attributes proprieta="codFiscale"/>
+                                </bandboxContribuenti>
+                                <textbox hflex="1"
+                                         value="@bind(noti.contribuente.soggetto.cognomeNome)" disabled="true"
+                                         inplace="true">
+                                </textbox>
+                                <!-- <intbox value="@bind(noti.pratica.id)" readonly ="#{empty noti.pratica.id?false:true}"
+                                    inplace="true"/> -->
+                                <intbox hflex="1" value="@bind(noti.pratica.id)" style="text-align: right;"
+                                        readonly="true" inplace="true"/>
+                                <intbox hflex="1" value="@bind(noti.annoNotifica)" style="text-align: right;"
+                                        inplace="true" maxlength="4"/>
+                                <textbox hflex="1" value="@bind(noti.note)" inplace="true"
+                                         maxlength="2000"/>
+                                <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina notifica"
+                                       style="cursor: pointer" onClick="@command('onEliminaNotifica', noti=noti)"
+                                       visible="@load(vm.lettura eq false)"/>
+                            </row>
+                        </template>
+                    </grid>
+                </tabpanel>
+                <!-- Anomalie -->
+                <tabpanel fulfill="T6.onSelect" style="overflow:auto;">
+                    <listbox model="@load(vm.listaAnomalieOggetto)" height="300px"
+                             emptyMessage="Nessuna anomalia" sizedByContent="true" span="true">
+                        <listhead>
+                            <listheader align="right" label="Anno"/>
+                            <listheader align="center" label="Tipo"/>
+                            <listheader align="left" label="Anomalia"/>
+                            <listheader align="left" label="Tributo"/>
+                            <listheader align="right" label="Rendita Da"/>
+                            <listheader align="right" label="Rendita A"/>
+                            <listheader align="right" label="Scarto"/>
+                            <listheader align="center" label="Da imposta"/>
+                            <listheader align="center" label="Data"/>
+                        </listhead>
+                        <template name="model" var="anom">
+                            <listitem>
+                                <listcell label="@load(anom.anno)"/>
+                                <listcell label="@load(anom.tipoAnomalia)"/>
+                                <listcell label="@load(anom.descrizione)"/>
+                                <listcell label="@load(anom.tipoTributo)"/>
+                                <listcell
+                                        label="@load((empty anom.renditaDa or anom.renditaDa eq 0)? '' : c:formatNumber(anom.renditaDa, '€ #,##0.00'))"/>
+                                <listcell
+                                        label="@load((empty anom.renditaA or anom.renditaA eq 0)? '' : c:formatNumber(anom.renditaA, '€ #,##0.00'))"/>
+                                <listcell
+                                        label="@load((empty anom.scarto or anom.scarto eq 0)? '' : c:formatNumber(anom.scarto, '#,##0.00'))"/>
+                                <listcell>
+                                    <checkbox checked="@load((anom.flagImposta=='S')?true:false)"
+                                              w:onCheck="this.setChecked(!this.isChecked())"/>
+                                </listcell>
+                                <listcell
+                                        label="@load((anom.dataCreazione eq null)? '' : c:formatDate(anom.dataCreazione, 'dd/MM/yyyy'))"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+                <!-- Geolocalizzazione -->
+                <tabpanel fulfill="T7.onSelect" style="overflow:auto;">
+                  <grid sclass="form">
+                    <rows>
+                      <row>
+                        <cell colspan="1" align="right">
+                          <label value="Latitudine Da "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                          <textbox value="@bind(vm.filtri.latitudine)" maxlength="15" hflex="1"
+                                   mold="rounded" style="text-transform: uppercase"
+                                   tooltiptext="Latitudine Da"
+                                   onChange="@command('onChangeLatitudineDa')" />
+                        </cell>
+                        <cell colspan="1" align="right">
+                          <label value="Longitudine Da "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                          <textbox value="@bind(vm.filtri.longitudine)" maxlength="15" hflex="1"
+                                   mold="rounded" style="text-transform: uppercase"
+                                   tooltiptext="Longitudine Da"
+                                   onChange="@command('onChangeLongitudineDa')" />
+                        </cell>
+                        <cell colspan="1" align="left">
+                          <button label="" onClick="@command('onGeolocalizzaOggettoDa')"
+                                  tooltiptext="Geolocalizza oggetto"
+                                  mold="trendy" image="/images/afc/16x16/world.png"
+                                  disabled="@bind((vm.oggetto.latitudine eq null) or (vm.oggetto.longitudine eq null))"/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                        </cell>
+                        <cell colspan="1" align="left">
+                        </cell>
+                      </row>
+                      <row>
+                        <cell colspan="1" align="right">
+                          <label value="Latitudine A "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                          <textbox value="@bind(vm.filtri.aLatitudine)" maxlength="15" hflex="1"
+                                   mold="rounded" style="text-transform: uppercase"
+                                   tooltiptext="Latitudine A"
+                                   onChange="@command('onChangeLatitudineA')" />
+                        </cell>
+                        <cell colspan="1" align="right">
+                          <label value="Longitudine A "/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                          <textbox value="@bind(vm.filtri.aLongitudine)" maxlength="15" hflex="1"
+                                   mold="rounded" style="text-transform: uppercase"
+                                   tooltiptext="Longitudine A"
+                                   onChange="@command('onChangeLongitudineA')" />
+                        </cell>
+                        <cell colspan="1" align="left">
+                          <button label="" onClick="@command('onGeolocalizzaOggettoA')"
+                                  tooltiptext="Geolocalizza oggetto"
+                                  mold="trendy" image="/images/afc/16x16/world.png"
+                                  disabled="@bind((vm.oggetto.aLatitudine eq null) or (vm.oggetto.aLongitudine eq null))"/>
+                        </cell>
+                        <cell colspan="1" align="left">
+                        </cell>
+                        <cell colspan="1" align="left">
+                        </cell>
+                      </row>
+                    </rows>
+                  </grid>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+
+        <menupopup id="funzioniOggetto">
+            <menuitem label="Ripristino Rendite"
+                      disabled="@load(not vm.ripristinoRendite)"
+                      onClick="@command('onRipristinoRendite')"/>
+        </menupopup>
+        <space height="3px"/>
+        <h:div sclass="barraPulsanti">
+
+            <h:span>
+                <button label="Funzioni"
+                        mold="trendy"
+                        image="/images/afc/16x16/arrows.png"
+                        sclass="button-menu-up"
+                        popup="elencoFunzioni, position=before_end"/>
+            </h:span>
+
+            <h:div>
+                <button label="Elimina" onClick="@command('onElimina')" mold="trendy"
+                        image="/images/afc/16x16/delete.png"
+                        disabled="@bind((empty vm.oggetto.id or vm.lettura))"/>
+                <space width="10px"/>
+                <button mold="trendy" image="/images/afc/16x16/save.png"
+                        visible="@load(vm.bonifiche)" label="Salva e aggiorna stato"
+                        onClick="@command('onSalva', aggiornaStato=true)"
+                        disabled="@load(vm.lettura ne false)"/>
+                <button mold="trendy" image="/images/afc/16x16/save.png"
+                        label="Salva"
+                        onClick="@command('onSalva', aggiornaStato=true, aggiornaStato=false)"
+                        disabled="@load(vm.lettura ne false)"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png"
+                        label="Chiudi" onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+
+        <menupopup id="elencoFunzioni">
+            <menuitem disabled="@bind((empty vm.oggetto.id or not vm.modifica))" label="Duplica"
+                      onClick="@command('onDuplica')"/>
+            <menuitem label="Acquisisci Geolocalizzazione Da" tooltiptext="Acquisisci Geolocalizzazione Da da appunti"
+                      onClick="@command('onAcquisisciGeolocalizzazioneDa')"
+                      disabled="@bind(vm.lettura)"/>
+            <menuitem label="Acquisisci Geolocalizzazione A" tooltiptext="Acquisisci Geolocalizzazione A da appunti"
+                      onClick="@command('onAcquisisciGeolocalizzazioneA')"
+                      disabled="@bind(vm.lettura)"/>
+        </menupopup>
+    </window>
+</zk>

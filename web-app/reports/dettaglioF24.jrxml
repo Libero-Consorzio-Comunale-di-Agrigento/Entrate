@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2021-05-04T13:23:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dettaglioF24" language="groovy" pageWidth="450" pageHeight="20" columnWidth="450" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2e6c7ba8-b040-4d68-bbeb-3ccafe01d3e9">
+	<property name="ireport.zoom" value="1.464100000000002"/>
+	<property name="ireport.x" value="8"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.background.image" value="/home/sfoglia/Workspaces/sts/TributiWeb/web-app/reports/dettaglio_f24.png"/>
+	<property name="ireport.background.image.properties" value="true,false,0.75,-8,-8,0,0,516,32"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="acconto" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[acconto]]></fieldDescription>
+	</field>
+	<field name="annoRiferimento" class="java.lang.String">
+		<fieldDescription><![CDATA[annoRiferimento]]></fieldDescription>
+	</field>
+	<field name="codiceEnte" class="java.lang.String">
+		<fieldDescription><![CDATA[codiceEnte]]></fieldDescription>
+	</field>
+	<field name="codiceTributo" class="java.lang.String">
+		<fieldDescription><![CDATA[codiceTributo]]></fieldDescription>
+	</field>
+	<field name="detrazione" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[detrazione]]></fieldDescription>
+	</field>
+	<field name="importiCredito" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[importiCredito]]></fieldDescription>
+	</field>
+	<field name="importiDebito" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[importiDebito]]></fieldDescription>
+	</field>
+	<field name="numeroImmobili" class="java.lang.Integer">
+		<fieldDescription><![CDATA[numeroImmobili]]></fieldDescription>
+	</field>
+	<field name="rateazione" class="java.lang.String">
+		<fieldDescription><![CDATA[rateazione]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[saldo]]></fieldDescription>
+	</field>
+	<field name="sezione" class="java.lang.String">
+		<fieldDescription><![CDATA[sezione]]></fieldDescription>
+	</field>
+	<field name="detrazioneDec" class="java.lang.String">
+		<fieldDescription><![CDATA[detrazioneDec]]></fieldDescription>
+	</field>
+	<field name="detrazioneInt" class="java.lang.String">
+		<fieldDescription><![CDATA[detrazioneInt]]></fieldDescription>
+	</field>
+	<field name="importiDebitoDecimali" class="java.lang.String"/>
+	<field name="ravvedimento" class="java.lang.String"/>
+	<detail>
+		<band height="11" splitType="Prevent">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<textField>
+				<reportElement positionType="Float" mode="Transparent" x="355" y="1" width="55" height="10" backcolor="#E7F2B3" uuid="b2b03cd7-0654-41a5-bddb-3447b3bea0a5">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importiDebito} as Integer]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="4" y="1" width="13" height="10" uuid="c5ea2faf-4073-4d27-977e-7bfd5d25e05e">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sezione}[0]]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="18" y="1" width="13" height="10" uuid="e8d1e247-13bb-435e-9eee-392b5df5806a">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sezione}[1]]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="45" y="1" width="33" height="10" uuid="84f5ce6b-9f9d-4a5c-beb8-9d7184598da8">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="82" y="1" width="10" height="10" uuid="302baead-37ec-4f66-8c0d-28921459c5fe">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceEnte}[0]]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="92" y="1" width="10" height="10" uuid="20763fab-b16c-45c8-8c37-a0fdb2c385b6">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceEnte}[1]]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="102" y="1" width="10" height="10" uuid="99fd926d-ff51-4daf-afe7-89876e61c276">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceEnte}[2]]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="112" y="1" width="10" height="10" uuid="d2515e40-572f-4c1f-ad26-ed75e6119e9e">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceEnte}[3]]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="412" y="1" width="5" height="10" uuid="a87576d3-092c-4c78-b463-dac02a0f1b6b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importiDebitoDecimali} ? $F{importiDebitoDecimali}[0..0] : '0']]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="184" y="1" width="10" height="10" uuid="2f572945-fda2-4690-8b06-c5fbf94b14c0">
+					<printWhenExpression><![CDATA[$F{saldo} && !$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo} ? 'X' : '']]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="205" y="1" width="10" height="10" uuid="f05a5059-1dcd-4bbb-a1e8-88ddb49de4f1">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO) && $F{numeroImmobili} != null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroImmobili}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="224" y="1" width="32" height="10" uuid="da470c11-eb9e-4110-bb5a-c5bb8583813d">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rateazione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="259" y="1" width="32" height="10" uuid="67a0e78e-a621-4a45-b98b-6a89a1696917">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{annoRiferimento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="299" y="1" width="32" height="10" uuid="b149a07d-cb4c-4e13-8f99-a07a7d213ba9">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detrazioneInt}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="333" y="1" width="5" height="10" uuid="a84fbdb2-c78e-4e31-b5bb-e70265fb76a9">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detrazioneDec}[0]]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="340" y="1" width="5" height="10" uuid="da1bc951-0138-4576-b6ed-09c713215816">
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detrazioneDec}[1]]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="168" y="1" width="10" height="10" uuid="2336b865-a1a9-4948-be1a-95fb030eb633">
+					<printWhenExpression><![CDATA[$F{acconto} && !$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acconto} ? 'X' : '']]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="419" y="1" width="5" height="10" uuid="06e16e86-75f2-4c60-a5ef-462365291b8f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[!$F{importiDebito}.equals(BigDecimal.ZERO)]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importiDebitoDecimali} ? $F{importiDebitoDecimali}[1..1] : '0']]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="1" width="10" height="10" uuid="d2f788a1-1c78-4e43-9eb9-f6952022911e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ravvedimento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

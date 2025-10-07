@@ -1,0 +1,23 @@
+--liquibase formatted sql
+--changeset dmarotta:20250326_152438_init_dbchangelog_gsd stripComments:false context:"TRT2 or TRV2"
+--validCheckSum: 1:any
+--preConditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 select count(1) from USER_OBJECTS where OBJECT_TYPE ='TABLE' and  OBJECT_NAME = 'PRATICHE_TRIBUTO'
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_TR4TRB_dr', 'dmarotta', 'integration/trb/tr4sql/TR4TRB_dr.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 931, 'EXECUTED', '8:b21856c345a5c0712f80185da6b300d0', 'sql', null, null, '3.10.2-fix1106', '(TRT2 or TRV2)', null, '4882031938');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_Tr4TRB_s', 'dmarotta', 'integration/trb/tr4sql/Tr4TRB_s.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 932, 'EXECUTED', '8:49f09216d7c0cd44ffd8e957774b2dc0', 'sql', null, null, '3.10.2-fix1106', '(TRT2 or TRV2)', null, '4882031938');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_Tr4TRBps', 'dmarotta', 'integration/trb/tr4sql/Tr4TRBps.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 933, 'EXECUTED', '8:b335b693240c17eb44bd508aa2b76683', 'sql', null, null, '3.10.2-fix1106', '(TRT2 or TRV2)', null, '4882031938');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250331_124838_Tr4TRB_g', 'abrandolini', 'integration/trb/trbsql/Tr4TRB_g.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 935, 'EXECUTED', '8:d0dbf9fdf726758a78a4700ba1133051', 'sql', null, null, '3.10.2-fix1106', '(TRT2 or TRV2)', null, '4882032740');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_TRBTr4pg', 'dmarotta', 'integration/trb/trbsql/TRBTr4pg.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 936, 'EXECUTED', '8:e603dbb759d4d939a3a5b7e7c6f52f07', 'sql', null, null, '3.10.2-fix1106', '(TRT2 or TRV2)', null, '4882032740');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250331_125538_Tr4TRB_t', 'abrandolini', 'integration/trb/trbsql/Tr4TRB_t.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 937, 'EXECUTED', '8:8186d4abaea917a5bc1fb31559dd1285', 'sql', null, null, '3.10.2-fix1106', '(TRT2 or TRV2)', null, '4882032740');

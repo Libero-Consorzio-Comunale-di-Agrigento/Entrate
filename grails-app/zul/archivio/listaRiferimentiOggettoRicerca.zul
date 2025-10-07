@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window width="950px" apply="grailsBindComposer" viewModel="@id('vm') @init('listaRiferimentiOggettoRicercaViewModel')" border="normal" sizable="true">
+		<script src="/js/decimalbox.js"/>
+
+
+    <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="Ripristino Rendite"/>
+            </hlayout>
+        </h:div>
+        <hlayout>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="30%">
+                                <label value="Data recupero da catasto"/>
+                            </cell>
+                            <cell align="right">
+                                <combobox model="@load(vm.listaDate)" mold="rounded" hflex="1"
+                                          selectedItem="@bind(vm.dataSelezionata)"
+                                          onSelect="@command('onSelectData')" >
+                                    <template name="model" var="dato">
+                                        <comboitem label="@load(dato)" value="@load(dato)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+        </hlayout>
+        <space height="5px"/>
+        <grid model="@load(vm.listaRiferimenti)" emptyMessage="Nessun riferimento" sizedByContent="true" span="true" >
+            <columns>
+                <column label="Dal"/>
+                <column label="Al" />
+                <column label="Rendita"/>
+                <column label="Anno"/>
+                <column label="Categoria"/>
+                <column label="Classe"/>
+                <column label="Data reg. atti"/>
+                <column label="Data registrazione"/>
+                <column label="Data var."/>
+                <column label="Note"/>
+            </columns>
+            <template name="model" var="rif">
+                <row>
+                    <cell>
+                        <label value="@bind(empty rif.inizioValidita ? '' : c:formatDate(rif.inizioValidita, 'dd/MM/yyyy'))" />
+                    </cell>
+                    <cell>
+                        <label value="@bind(empty rif.fineValidita ? '' : c:formatDate(rif.fineValidita, 'dd/MM/yyyy'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@bind(empty rif.rendita ? '' : c:formatNumber(rif.rendita, '€ #,###.00'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@bind(rif.annoRendita)"/>
+                    </cell>
+                    <cell>
+                        <label value="@bind(rif.categoriaCatasto.categoriaCatasto)"/>
+                    </cell>
+                    <cell>
+                        <label value="@bind(rif.classeCatasto)" />
+                    </cell>
+                    <cell>
+                        <label value="@bind(empty rif.dataRegAtti ? '' : c:formatDate(rif.dataRegAtti, 'dd/MM/yyyy'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@bind(empty rif.dataReg ? '' : c:formatDate(rif.dataReg, 'dd/MM/yyyy'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@bind(empty rif.dataOraVariazione ? '' : c:formatDate(rif.dataOraVariazione, 'dd/MM/yyyy hh:mm:ss'))"/>
+                    </cell>
+                    <cell>
+                        <hlayout width="200px">
+                            <label value="@load(rif.note)" hflex="2"
+                                   sclass="auto-trunc"/>
+                            <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note"
+                                   visible="@load(rif.note ne null))"
+                                   style="cursor: pointer" onClick="@command('onApriNote', arg=rif.note)"
+                                   width="16px"/>
+                        </hlayout>
+                    </cell>
+                </row>
+            </template>
+        </grid>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/ok.png" label="Seleziona"
+                        onClick="@command('onScegliRiferimento')"
+                        disabled="@load(empty vm.listaRiferimenti)"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png"
+                        label="Chiudi" onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

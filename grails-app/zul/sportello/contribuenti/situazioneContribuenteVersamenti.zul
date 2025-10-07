@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/16x16/add.png"
+                               tooltiptext='#{empty arg.addTooltip?"Nuovo Versamento":arg.addTooltip}'
+                               onClick="@command('onNuovoVersamentoTribAtt')"
+                               visible="@bind(vm.contaTributiSelezionati eq 1)"
+                               disabled="@load(vm.contaTributiSelezionati eq 1 ? !vm.cbTributiInScrittura[vm.singleTributoSelezionato] : true)"/>
+                <toolbarbutton image="/images/afc/16x16/multi_plus.png"
+                               tooltiptext='#{empty arg.addTooltip?"Nuovo Versamento":arg.addTooltip}'
+                               popup="funzioniNuovoVersamento"
+                               visible="@bind(vm.contaTributiSelezionati gt 1)"/>
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaVersamento')"
+                               disabled="@load((empty vm.versamentoSelezionato) or (vm.cbTributiVersamentoDettaglio[vm.versamentoSelezionato.tipoTributo.tipoTributo] ne true))"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               tooltiptext='Esporta in XLS' popup="funzioniVersamentiToXls"/>
+                <toolbarbutton image="/images/afc/16x16/print.png"
+                               tooltiptext='Esporta in PDF' onClick="@command('versamentiToPdf')"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniVersamenti"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+    <groupbox vflex="1" class="z-groupbox-hr-top" contentStyle="border: 3px #53718E solid;border-top:0px">
+        <caption label="@bind(c:cat3('Versamenti (', vm.numVersamenti, ')'))"/>
+        <listbox span="true" nonselectableTags="" sizedByContent="true"
+                 model="@load(vm.listaVersamenti)" emptyMessage="Nessun versamento presente."
+                 vflex="true" selectedItem="@bind(vm.versamentoSelezionato)"
+                 onSelect="@command('onSelezionaVersamento', popup=dettaglioVersamento)">
+            <listhead sizable="true">
+                <listheader label="@load(c:l('sportello.label.tipoTributo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTributo'))"/>
+                <listheader label="@load(c:l('sportello.label.anno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.anno'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoPratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoPratica'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoVersamento'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoVersamento'))"/>
+                <listheader label="@load(c:l('sportello.label.rata'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.rata'))"/>
+                <listheader label="@load(c:l('sportello.label.importoVersato'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.importoVersato'))"/>
+                <listheader label="@load(c:l('sportello.label.dataPagamento'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.dataPagamento'))"/>
+                <listheader label="@load(c:l('sportello.label.ruolo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.ruolo'))"/>
+                <listheader label="@load(c:l('sportello.label.fabbricati'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.fabbricati'))"/>
+                <listheader label="@load(c:l('sportello.label.terreniAgricoli'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.terreniAgricoli'))"/>
+                <listheader label="@load(c:l('sportello.label.areeFabbricabili'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.areeFabbricabili'))"/>
+                <listheader label="@load(c:l('sportello.label.abitazionePrincipale'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.abitazionePrincipale'))"/>
+                <listheader label="@load(c:l('sportello.label.altriFabbricati'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.altriFabbricati'))"/>
+                <listheader label="@load(c:l('sportello.label.detrazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.detrazione'))"/>
+                <listheader label="@load(c:l('sportello.label.fabbricatiRurali'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.fabbricatiRurali'))"/>
+                <listheader label="@load(c:l('sportello.label.fabbricatiD'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.fabbricatiD'))"/>
+                <listheader label="@load(c:l('sportello.label.fabbricatiMerce'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.fabbricatiMerce'))"/>
+                <listheader label="@load(c:l('sportello.label.addTefa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.addTefa'))"/>
+                <listheader label="@load(c:l('sportello.label.componentiPereq'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.componentiPereq'))"/>
+                <listheader label="@load(c:l('sportello.label.oggettoImposta'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggettoImposta'))"/>
+                <listheader label="@load(c:l('sportello.label.fonte'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.fonte'))"/>
+                <listheader label="@load(c:l('sportello.label.compensazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.compensazione'))"/>
+            </listhead>
+            <template name="model" var="vers">
+                <listitem context="funzioniVersamenti" onDoubleClick="@command('onModificaVersamento')">
+                    <listcell label="@load(vers.descrizioneTributo)"/>
+                    <listcell label="@load(vers.anno)" sclass="destra"/>
+                    <listcell label="@load(vers.pratica.tipoPratica)" sclass="centro"/>
+                    <listcell label="@load(vers.tipoVersamento)" sclass="centro"/>
+                    <listcell label="@load(vers.rata)" sclass="centro"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.importoVersato ne null ? c:formatNumber(vers.importoVersato, '€ #,##0.00'): '')"/>
+                    <listcell sclass="centro"
+                              label="@load(vers.dataPagamento ne null ? c:formatDate(vers.dataPagamento, 'dd/MM/yyyy'): '')"/>
+                    <listcell label="@load(vers.ruolo.id)"/>
+                    <listcell label="@load(vers.fabbricati)" sclass="destra"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.terreniAgricoli ne null ? c:formatNumber(vers.terreniAgricoli, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.areeFabbricabili ne null ? c:formatNumber(vers.areeFabbricabili, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.abPrincipale ne null ? c:formatNumber(vers.abPrincipale, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.altriFabbricati ne null ? c:formatNumber(vers.altriFabbricati, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.detrazione ne null ? c:formatNumber(vers.detrazione, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.rurali ne null ? c:formatNumber(vers.rurali, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.fabbricatiD ne null ? c:formatNumber(vers.fabbricatiD, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.fabbricatiMerce ne null ? c:formatNumber(vers.fabbricatiMerce, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.addizionalePro ne null ? c:formatNumber(vers.addizionalePro, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(vers.maggiorazioneTares ne null ? c:formatNumber(vers.maggiorazioneTares, '€ #,##0.00'): '')"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((empty vers.oggettoImposta) ? false : true)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell label="@load(vers.fonte.fonte)" sclass="destra"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((empty vers.idCompensazione) ? false : true)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+    <groupbox vflex="1" class="z-groupbox-hr-top" contentStyle="border: 3px #53718E solid;border-top:0px">
+        <caption label="@bind(c:cat3('Bonifiche (', vm.numBonifiche, ')'))"/>
+
+        <include vflex="1"
+                 src="/ufficiotributi/bonificaDati/versamenti/versamentiDettaglioAnomalia.zul"
+                 parentZul="sc"/>
+
+    </groupbox>
+
+    <menupopup id="funzioniNuovoVersamento">
+        <menuitem label="@load(c:cat('Versamento ', c:l('label.tributoImu')))"
+                  onClick="@command('onNuovoVersamento', tributo='ICI')"
+                  disabled="@bind(!vm.cbTributiInScrittura['ICI'])"
+                  visible="@bind(vm.cbTributi['ICI'])"/>
+        <menuitem label="@load(c:cat('Versamento ', c:l('label.tributoTasi')))"
+                  onClick="@command('onNuovoVersamento', tributo='TASI')"
+                  disabled="@bind(!vm.cbTributiInScrittura['TASI'])"
+                  visible="@bind(vm.cbTributi['TASI'])"/>
+        <menuitem label="@load(c:cat('Versamento ', c:l('label.tributoTari')))"
+                  onClick="@command('onNuovoVersamento', tributo='TARSU')"
+                  disabled="@bind(!vm.cbTributiInScrittura['TARSU'])"
+                  visible="@bind(vm.cbTributi['TARSU'])"/>
+        <menuitem label="@load(c:cat('Versamento ', c:l('label.tributoPubb')))"
+                  onClick="@command('onNuovoVersamento', tributo='ICP')"
+                  disabled="@bind(!vm.cbTributiInScrittura['ICP'])"
+                  visible="@bind(vm.cbTributi['ICP'])"/>
+        <menuitem label="@load(c:cat('Versamento ', c:l('label.tributoCosap')))"
+                  onClick="@command('onNuovoVersamento', tributo='TOSAP')"
+                  disabled="@bind(!vm.cbTributiInScrittura['TOSAP'])"
+                  visible="@bind(vm.cbTributi['TOSAP'])"/>
+        <menuitem label="@load(c:cat('Versamento ', c:l('label.tributoCUnico')))"
+                  onClick="@command('onNuovoVersamento', tributo='CUNI')"
+                  disabled="@bind(!vm.cbTributiInScrittura['CUNI'])"
+                  visible="@bind(vm.cbTributi['CUNI'])"/>
+    </menupopup>
+    <menupopup id="funzioniVersamenti">
+        <menuitem label="Carica Archivi" onClick="@command('onApriCaricaArchivi')"
+                  disabled="@bind(empty vm.listaDettaglioAnomalie)"/>
+        <menuseparator/>
+        <menuitem label="Trasferisci" onClick="@command('onTrasferisciVersamento')"
+                  disabled="@load((empty vm.versamentoSelezionato) or (vm.cbTributiVersamentoTrasferisci[vm.versamentoSelezionato.tipoTributo.tipoTributo] ne true))"/>
+    </menupopup>
+    <window id="dettaglioVersamento" position="center" title="Dettaglio"
+            border="normal" mode="popup" visible="false"
+            width="@load((empty vm.versamentoSelezionato.pratica.tipoPratica and not ((vm.versamentoSelezionato.tipoTributo.tipoTributo eq 'ICI' or vm.versamentoSelezionato.tipoTributo.tipoTributo eq 'TASI') and vm.versamentoSelezionato.anno >= 2012)) ? '400px' : '1000px')">
+        <script src="/js/decimalbox.js"/>
+        <hlayout>
+            <!-- -->
+            <grid hflex="1"
+                  visible="@load(!empty vm.versamentoSelezionato.pratica.tipoPratica)">
+                <columns>
+                    <column hflex="1"/>
+                    <column hflex="2"/>
+                </columns>
+                <rows>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.tipoPratica'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.descrizioneTipoPraticaVersamentoSelezionato)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.numeroDel'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(c:cat3(vm.versamentoSelezionato.pratica.numero, (!empty vm.versamentoSelezionato.pratica.numero and !empty vm.versamentoSelezionato.pratica.data) ? ' - ' : '', vm.versamentoSelezionato.pratica.data ne null ? c:formatDate(vm.versamentoSelezionato.pratica.data, 'dd/MM/yyyy') : ''))"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.estesa.stato'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.pratica.tipoStato.descrizione)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.dataNotifica'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.pratica.dataNotifica ne null ? c:formatDate(vm.versamentoSelezionato.pratica.dataNotifica, 'dd/MM/yyyy') : '')"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.pratica'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.pratica.id)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.importoTotale'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.pratica.importoTotale ne null ? c:formatNumber(vm.versamentoSelezionato.pratica.importoTotale, '€ #,##0.00'): '')"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.importoRidotto'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.pratica.importoRidotto ne null ? c:formatNumber(vm.versamentoSelezionato.pratica.importoRidotto, '€ #,##0.00'): '')"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+            <!-- -->
+            <grid hflex="1"
+                  visible="@load(vm.versamentoSelezionato.tipoTributo.tipoTributo eq 'ICI' and vm.versamentoSelezionato.anno ge 2012 and empty vm.versamentoSelezionato.pratica.tipoPratica)">
+                <columns>
+                    <column width="30%"/>
+                    <column/>
+                    <column label="Comune"/>
+                    <column label="Stato"/>
+                    <column label="Fabb."/>
+                </columns>
+                <rows>
+                    <!-- terreni -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.terreniAgricoli'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.terreniAgricoli ne null ? c:formatNumber(vm.versamentoSelezionato.terreniAgricoli, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.terreniComune ne null ? c:formatNumber(vm.versamentoSelezionato.terreniComune, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.terreniErariale ne null ? c:formatNumber(vm.versamentoSelezionato.terreniErariale, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiTerreni)"/>
+                        </cell>
+                    </row>
+                    <!-- aree fabbricabili -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.areeFabbricabili'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.areeFabbricabili ne null ? c:formatNumber(vm.versamentoSelezionato.areeFabbricabili, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.areeComune ne null ? c:formatNumber(vm.versamentoSelezionato.areeComune, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.areeErariale ne null ? c:formatNumber(vm.versamentoSelezionato.areeErariale, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiAree)"/>
+                        </cell>
+                    </row>
+                    <!-- ab principale -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.abitazionePrincipale'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.abPrincipale ne null ? c:formatNumber(vm.versamentoSelezionato.abPrincipale, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right" colspan="3">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiAb)"/>
+                        </cell>
+                    </row>
+                    <!-- fabbricati rurali -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.fabbricatiRurali'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.rurali ne null ? c:formatNumber(vm.versamentoSelezionato.rurali, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.ruraliComune ne null ? c:formatNumber(vm.versamentoSelezionato.ruraliComune, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.ruraliErariale ne null ? c:formatNumber(vm.versamentoSelezionato.ruraliErariale, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiRurali)"/>
+                        </cell>
+                    </row>
+                    <!-- altri fabbricati -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.altriFabbricati'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.altriFabbricati ne null ? c:formatNumber(vm.versamentoSelezionato.altriFabbricati, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.altriComune ne null ? c:formatNumber(vm.versamentoSelezionato.altriComune, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.altriErariale ne null ? c:formatNumber(vm.versamentoSelezionato.altriErariale, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiAltri)"/>
+                        </cell>
+                    </row>
+                    <!-- fabbricati d -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.fabbricatiD'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.fabbricatiD ne null ? c:formatNumber(vm.versamentoSelezionato.fabbricatiD, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.fabbricatiDComune ne null ? c:formatNumber(vm.versamentoSelezionato.fabbricatiDComune, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.fabbricatiDErariale ne null ? c:formatNumber(vm.versamentoSelezionato.fabbricatiDErariale, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiD)"/>
+                        </cell>
+                    </row>
+                    <!-- fabbricati merce -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="Fabbricati Merce"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.fabbricatiMerce ne null ? c:formatNumber(vm.versamentoSelezionato.fabbricatiMerce, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right" colspan="3">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiMerce)"/>
+                        </cell>
+                    </row>
+                </rows>
+                <foot>
+                    <footer align="right" sclass="intestazioneGrid" label="Totale"/>
+                    <footer align="right"
+                            label="@load(vm.versamentoSelezionato.totaleDaVersare ne null ? c:formatNumber(vm.versamentoSelezionato.totaleDaVersare, '€ #,##0.00'): '')"/>
+                    <footer align="right" sclass="intestazioneGrid" span="2"
+                            label="Fabbricati"/>
+                    <footer align="right" label="@load(vm.versamentoSelezionato.fabbricati)"/>
+                </foot>
+            </grid>
+
+            <grid hflex="1"
+                  visible="@load(vm.versamentoSelezionato.tipoTributo.tipoTributo eq 'TASI' and vm.versamentoSelezionato.anno ge 2012 and empty vm.versamentoSelezionato.pratica.tipoPratica)">
+                <columns>
+                    <column width="30%"/>
+                    <column width="50%"/>
+                    <column label="Fabb." width="20%"/>
+                </columns>
+                <rows>
+                    <!-- aree fabbricabili -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.areeFabbricabili'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.areeFabbricabili ne null ? c:formatNumber(vm.versamentoSelezionato.areeFabbricabili, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiAree)"/>
+                        </cell>
+                    </row>
+                    <!-- ab principale -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.abitazionePrincipale'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.abPrincipale ne null ? c:formatNumber(vm.versamentoSelezionato.abPrincipale, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right" colspan="3">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiAb)"/>
+                        </cell>
+                    </row>
+                    <!-- fabbricati rurali -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.fabbricatiRurali'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.rurali ne null ? c:formatNumber(vm.versamentoSelezionato.rurali, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiRurali)"/>
+                        </cell>
+                    </row>
+                    <!-- altri fabbricati -->
+                    <row>
+                        <cell align="right">
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.altriFabbricati'))"/>
+                        </cell>
+                        <cell align="right">
+                            <label
+                                    value="@load(vm.versamentoSelezionato.altriFabbricati ne null ? c:formatNumber(vm.versamentoSelezionato.altriFabbricati, '€ #,##0.00'): '')"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.versamentoSelezionato.numFabbricatiAltri)"/>
+                        </cell>
+                    </row>
+                </rows>
+                <foot>
+                    <footer align="right" sclass="intestazioneGrid" label="Totale"/>
+                    <footer align="right"
+                            label="@load(vm.versamentoSelezionato.totaleDaVersare ne null ? c:formatNumber(vm.versamentoSelezionato.totaleDaVersare, '€ #,##0.00'): '')"/>
+                    <footer align="right" label="@load(vm.versamentoSelezionato.fabbricati)"/>
+                </foot>
+            </grid>
+
+
+            <!-- -->
+            <grid hflex="1">
+                <columns>
+                    <column hflex="1"/>
+                    <column hflex="2"/>
+                </columns>
+                <rows>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.numeroBollettino'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.numBollettino)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.dataRegistrazione'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.dataReg ne null ? c:formatDate(vm.versamentoSelezionato.dataReg, 'dd/MM/yyyy'): '')"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.speseSpedizione'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.speseSpedizione ne null ? c:formatNumber(vm.versamentoSelezionato.speseSpedizione, '€ #,##0.00'): '')"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.speseMora'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.speseMora ne null ? c:formatNumber(vm.versamentoSelezionato.speseMora, '€ #,##0.00'): '')"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.descrizione'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.descrizione)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.provvedimento'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.provvedimento)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.dataProvvedimento'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.dataProvvedimento ne null ? c:formatDate(vm.versamentoSelezionato.dataProvvedimento, 'dd/MM/yyyy'): '')"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.estremiSentenza'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.estremiSentenza)"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.estesa.dataSentenza'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.dataSentenza ne null ? c:formatDate(vm.versamentoSelezionato.dataSentenza, 'dd/MM/yyyy'): '')"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.ufficioPT'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.ufficioPt)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.causale'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.causale)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.utente'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.utente)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid"
+                                   value="@load(c:l('sportello.label.dataVariazione'))"/>
+                        </cell>
+                        <cell>
+                            <label
+                                    value="@load(vm.versamentoSelezionato.lastUpdated ne null ? c:formatDate(vm.versamentoSelezionato.lastUpdated, 'dd/MM/yyyy'): '')"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.note'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.note)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell>
+                            <label sclass="intestazioneGrid" value="@load(c:l('sportello.label.numeroFattura'))"/>
+                        </cell>
+                        <cell>
+                            <label value="@load(vm.versamentoSelezionato.fattura)"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </hlayout>
+    </window>
+</zk>

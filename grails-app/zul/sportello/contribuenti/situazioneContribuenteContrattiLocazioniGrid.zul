@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid model="@load(vm.listaContrattiLocazioni)" sclass="anomalie-grid" hflex="auto" vflex="1"
+          emptyMessage="Non sono presenti locazioni" span="true" sizedByContent="true">
+        <columns>
+            <column label=""/>
+            <column label="Ufficio"/>
+            <column label="Anno" align="right"/>
+            <column label="Num." align="right"/>
+            <column label="Sotto Num." align="right"/>
+            <column label="Prog.Negozio" align="right"/>
+            <column label="Registrazione" align="center"/>
+            <column label="Stipula" align="center"/>
+            <column label="Indirizzo" align="left"/>
+            <column label="Sez." align="right"/>
+            <column label="Fgl." align="right"/>
+            <column label="Num." align="right"/>
+            <column label="Sub." align="right"/>
+            <column label="Inizio" align="center"/>
+            <column label="Fine" align="center"/>
+            <column label="Tipo Soggetto" align="left"/>
+            <column label="Subentro" align="center"/>
+            <column label="Cessione" align="center"/>
+            <column label="Cod. Oggetto" align="right"/>
+            <column label="Cod. Negozio" align="right"/>
+            <column label="Canone" align="right"/>
+            <column label="Tipo Canone" align="left"/>
+            <column label="In Accatastamento" align="center"/>
+            <column label="Catasto" align="left"/>
+            <column label="Int./Porz." align="left"/>
+            <column label="Doc.Id." align="right"/>
+			<column label="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+        </columns>
+        <template name="model" var="loc">
+            <row>
+
+                <detail fulfill="onOpen">
+
+                    <grid span="true" sizedByContent="true" model="@load(loc.dettagli)"
+                          emptyMessage="Non sono presenti dettagli">
+
+                        <columns>
+                            <column label="Cod.Fiscale"
+                                    sort="auto(dett.codFiscale)"
+                                    onSort="@command('onCambiaOrdinamentoDettaglioLocazioni', valore='codFiscale', rowNum=loc.row)"/>
+                            <column label="Contraente"
+                                    sort="auto(dett.contraente)"
+                                    onSort="@command('onCambiaOrdinamentoDettaglioLocazioni', valore='contraente', rowNum=loc.row)"/>
+                            <column label="Sesso" align="center"/>
+                            <column label="Dati Nascita"/>
+                            <column label="Dati Residenza"/>
+                            <column label="Tipo Soggetto"/>
+                            <column label="Subentro" align="center"/>
+                            <column label="Cessione" align="center"/>
+                        </columns>
+                        <template name="model" var="dett">
+                            <row>
+                                <cell>
+                                    <label value="@load(dett.codFiscale)"/>
+                                </cell>
+                                <cell>
+                                    <label value="@load(dett.contraente)"/>
+                                </cell>
+                                <cell>
+                                    <label value="@load(dett.sesso)"/>
+                                </cell>
+                                <cell>
+                                    <label value="@load(dett.datiNascita)"/>
+                                </cell>
+                                <cell>
+                                    <label value="@load(dett.datiResidenza)"/>
+                                </cell>
+                                <cell>
+                                    <label value="@load(dett.tipoSoggetto)"/>
+                                </cell>
+
+                                <cell>
+                                    <label value="@load(loc.dataSubentro)"/>
+                                </cell>
+                                <cell>
+                                    <label value="@load(loc.dataCessione)"/>
+                                </cell>
+                            </row>
+                        </template>
+
+
+                    </grid>
+                </detail>
+                <cell>
+                    <label value="@load(loc.ufficio)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.anno)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.numero)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.sottoNumero)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.progressivoNegozio)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.dataRegistrazione)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.dataStipula)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.indirizzo)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.sezUrbComCat)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.foglio)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.particellaNum)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.subalterno)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.dataInizio)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.dataFine)"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.soggetto.contribuente.codFiscale eq loc.codFiscale ? loc.tipoSoggetto : null)"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.soggetto.contribuente.codFiscale eq loc.codFiscale ? loc.dataSubentro : null)"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.soggetto.contribuente.codFiscale eq loc.codFiscale ? loc.dataCessazione : null)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.codiceOggetto)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.codiceNegozio)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.importoCanone)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.tipoCanone)"/>
+                </cell>
+                <cell>
+                    <checkbox disabled="true" checked="@load(loc.immAccatastamento)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.tipoCatasto)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.flagIp)"/>
+                </cell>
+                <cell>
+                    <label value="@load(loc.documentoId)"/>
+                </cell>
+                <cell>
+					<label value="@load(loc.codFiscale)" style="@load((!empty vm.codFiscale and loc.codFiscale ne vm.codFiscale)? 'font-weight:bold' : 'font-weight:normal')"/>
+                </cell>
+            </row>
+        </template>
+    </grid>
+</zk>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window apply="grailsBindComposer" viewModel="@id('vm') @init('denunciaDichiarazioneENCViewModel')"
+		border="normal" sizable="false" width="720px" title=" ">
+			<script src="/js/decimalbox.js"/>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell align="center" valign="center">
+                        <label value="Dati caricamento" class="documentoTitolo"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+		<groupbox closable="true" >
+			<caption>
+				<label value="Frontespizio"/>
+			</caption>
+	        <grid sclass="formFrontespizio">
+	            <rows>
+	                <row>
+	                    <cell align="right" width="30%">
+							<label value="Progr. Documento"/>
+	                    </cell>
+	                    <cell  width="20%">
+							<intbox value="@bind(vm.datiDichiarazione.idDocumento)" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right" width="30%">
+							<label value="Progr. Dichiarazione"/>
+	                    </cell>
+	                    <cell width="20%">
+							<intbox value="@bind(vm.datiDichiarazione.dichiarazioneProgr)" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right">
+							<label value="Anno Dichiarazione"/>
+	                    </cell>
+	                    <cell>
+							<intbox value="@bind(vm.datiDichiarazione.dichiarazioneAnno)" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right">
+							<label value="Periodo d'imposta"/>
+	                    </cell>
+	                    <cell>
+							<intbox value="@bind(vm.datiDichiarazione.annoImposta)" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right">
+							<label value="Num. Immobili di tipo A"/>
+	                    </cell>
+	                    <cell  width="20%">
+							<intbox value="@bind(vm.datiDichiarazione.numImmobiliA)" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right">
+							<label value="Num. Immobili di tipo B"/>
+	                    </cell>
+	                    <cell>
+							<intbox value="@bind(vm.datiDichiarazione.numImmobiliB)" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		
+		<groupbox closable="true" >
+			<caption>
+				<label value="Determinazione dell'IMU e della TASI - Quadro C"/>
+			</caption>
+			<grid>
+	            <rows>
+	                <row>
+	                    <cell align="right" width="30%">
+							<label value="1) IMU dovuta"/>
+	                    </cell>
+	                    <cell  width="20%">
+                            <decimalbox value="@bind(vm.datiDichiarazione.dovutoIMU)" 
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right" width="30%">
+							<label value="7) TASI dovuta"/>
+	                    </cell>
+	                    <cell width="20%">
+                            <decimalbox value="@bind(vm.datiDichiarazione.dovutoTASI)" 
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right" >
+							<label value="2) Ecc. IMU prec. dich."/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.eccedenzaDicPrecIMU)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right">
+							<label value="8) Ecc. TASI prec. dich."/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.eccedenzaDicPrecFTASI)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right" >
+							<label value="3) Ecc. IMU comp. F24"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.eccedenzaDicPrecF24IMU)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right">
+							<label value="9) Ecc. TASI comp. F24"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.eccedenzaDicPrecF24TASI)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right" >
+							<label value="4) Rate versate"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.rateIMUVersate)"
+										format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right">
+							<label value="10) Rate versate"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.rateVersateTASI)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right" >
+							<label value="5) IMU a debito"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.debitoIMU)"
+										format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right">
+							<label value="11) TASI a debito"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.debitoTASI)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right" >
+							<label value="6) IMU a credito"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoIMU)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell align="right">
+							<label value="12) TASI a credito"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoTASI)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		
+		<groupbox closable="true" >
+			<caption>
+				<label value="Compensazioni e rimborsi - Quadro D"/>
+			</caption>
+			<grid>
+	            <rows>
+	                <row>
+	                    <cell align="right" width="16%">
+	                    </cell>
+	                    <cell align="center" width="28%">
+							<label value="Importo a credito risultante dalla presente dichiarazione"/>
+	                    </cell>
+	                    <cell align="center" width="28%">
+							<label value="Credito di cui si chiede il rimborso"/>
+	                    </cell>
+	                    <cell align="center" width="28%">
+							<label value="Credito da utilizzare in"/>
+	                    </cell>
+					</row>
+					
+	                <row>
+	                    <cell align="right">
+							<label value="1) IMU"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoIMUDicPresente)" 
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoIMURimborso)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoIMUCompensazione)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+	                <row>
+	                    <cell align="right">
+							<label value="2) TASI"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoTASIDicPresente)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoTASIRimborso)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+	                    <cell>
+                            <decimalbox value="@bind(vm.datiDichiarazione.creditoTASICompensazione)"
+                            			format="€ #,##0.00" style="text-align: right" readonly="true" hflex="1"/>
+	                    </cell>
+					</row>
+				</rows>
+			</grid>
+    	</groupbox>
+        
+        <space height="5px"/>
+		<h:div sclass="barraPulsanti">
+			<h:div>
+				<button label="Chiudi" onClick="@command('onChiudi')"
+					mold="trendy" image="/images/pulsanti/16x16/window_close.png" />
+			</h:div>
+		</h:div>
+	</window>
+</zk>

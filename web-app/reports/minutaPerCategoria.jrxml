@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2024-10-15T11:20:41 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="minutaPerCategoria" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="2a594c80-4533-4f7b-bf88-6a8657c7c985">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totaleGeneraleQuantita" class="java.math.BigDecimal"/>
+	<parameter name="totaleGeneraleSuperficie" class="java.math.BigDecimal"/>
+	<parameter name="totaleGeneraleImporto" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="testata" class="java.util.Map"/>
+	<field name="dati" class="java.util.List"/>
+	<field name="extra" class="java.util.Map"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20">
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="-1" y="0" width="781" height="20" uuid="c7014ac6-76e2-453b-bba6-2aaa6afaeeda"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "minutaPerCategoriaTestata.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<subreport runToBottom="false">
+				<reportElement x="-1" y="0" width="781" height="20" uuid="1960fd43-3da6-4aab-8a3b-1fc83210b41f"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dati">
+					<subreportParameterExpression><![CDATA[$F{dati}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="testata">
+					<subreportParameterExpression><![CDATA[$F{testata}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="totaleGeneraleImporto">
+					<subreportParameterExpression><![CDATA[$P{totaleGeneraleImporto}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="totaleGeneraleQuantita">
+					<subreportParameterExpression><![CDATA[$P{totaleGeneraleQuantita}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="totaleGeneraleSuperficie">
+					<subreportParameterExpression><![CDATA[$P{totaleGeneraleSuperficie}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="extra">
+					<subreportParameterExpression><![CDATA[$F{extra}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{dati})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "minutaPerCategoriaDati.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="371" y="0" width="80" height="20" uuid="2826b2f9-ed68-4e50-87eb-08b68288e2f5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="451" y="0" width="40" height="20" uuid="5ab0b5cc-6935-4844-936b-25e495079ece"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy HH:mm">
+				<reportElement x="580" y="0" width="220" height="20" uuid="7753c473-4e19-4a98-8b43-207b947e84ee"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

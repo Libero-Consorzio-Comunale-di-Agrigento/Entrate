@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2025-08-25T12:21:31 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="versamenti" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="5" bottomMargin="5" uuid="216d6370-59a3-44e5-833f-823517651b4e">
+	<property name="ireport.zoom" value="1.2100000000000024"/>
+	<property name="ireport.x" value="338"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titolo" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="abPrincipale" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[abPrincipale]]></fieldDescription>
+	</field>
+	<field name="altriComune" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[altriComune]]></fieldDescription>
+	</field>
+	<field name="altriErariale" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[altriErariale]]></fieldDescription>
+	</field>
+	<field name="altriFabbricati" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[altriFabbricati]]></fieldDescription>
+	</field>
+	<field name="anno" class="java.lang.Short">
+		<fieldDescription><![CDATA[anno]]></fieldDescription>
+	</field>
+	<field name="areeComune" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[areeComune]]></fieldDescription>
+	</field>
+	<field name="areeErariale" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[areeErariale]]></fieldDescription>
+	</field>
+	<field name="areeFabbricabili" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[areeFabbricabili]]></fieldDescription>
+	</field>
+	<field name="causale" class="java.lang.String">
+		<fieldDescription><![CDATA[causale]]></fieldDescription>
+	</field>
+	<field name="contribuente" class="it.finmatica.tr4.dto.ContribuenteDTO">
+		<fieldDescription><![CDATA[contribuente]]></fieldDescription>
+	</field>
+	<field name="dataPagamento" class="java.util.Date">
+		<fieldDescription><![CDATA[dataPagamento]]></fieldDescription>
+	</field>
+	<field name="dataProvvedimento" class="java.util.Date">
+		<fieldDescription><![CDATA[dataProvvedimento]]></fieldDescription>
+	</field>
+	<field name="dataReg" class="java.util.Date">
+		<fieldDescription><![CDATA[dataReg]]></fieldDescription>
+	</field>
+	<field name="dataSentenza" class="java.util.Date">
+		<fieldDescription><![CDATA[dataSentenza]]></fieldDescription>
+	</field>
+	<field name="lastUpdated" class="java.util.Date">
+		<fieldDescription><![CDATA[lastUpdated]]></fieldDescription>
+	</field>
+	<field name="descrizione" class="java.lang.String">
+		<fieldDescription><![CDATA[descrizione]]></fieldDescription>
+	</field>
+	<field name="descrizioneTributo" class="java.lang.String">
+		<fieldDescription><![CDATA[descrizioneTributo]]></fieldDescription>
+	</field>
+	<field name="detrazione" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[detrazione]]></fieldDescription>
+	</field>
+	<field name="domainObject" class="java.lang.Object">
+		<fieldDescription><![CDATA[domainObject]]></fieldDescription>
+	</field>
+	<field name="estremiProvvedimento" class="java.lang.String">
+		<fieldDescription><![CDATA[estremiProvvedimento]]></fieldDescription>
+	</field>
+	<field name="estremiSentenza" class="java.lang.String">
+		<fieldDescription><![CDATA[estremiSentenza]]></fieldDescription>
+	</field>
+	<field name="fabbricati" class="java.lang.Short">
+		<fieldDescription><![CDATA[fabbricati]]></fieldDescription>
+	</field>
+	<field name="fabbricatiD" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fabbricatiD]]></fieldDescription>
+	</field>
+	<field name="fabbricatiDComune" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fabbricatiDComune]]></fieldDescription>
+	</field>
+	<field name="fabbricatiDErariale" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fabbricatiDErariale]]></fieldDescription>
+	</field>
+	<field name="fattura" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[fattura]]></fieldDescription>
+	</field>
+	<field name="fonte" class="it.finmatica.tr4.dto.FonteDTO">
+		<fieldDescription><![CDATA[fonte]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="importoVersato" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[importoVersato]]></fieldDescription>
+	</field>
+	<field name="imposta" class="java.lang.Long">
+		<fieldDescription><![CDATA[imposta]]></fieldDescription>
+	</field>
+	<field name="interessi" class="java.lang.Long">
+		<fieldDescription><![CDATA[interessi]]></fieldDescription>
+	</field>
+	<field name="maggiorazioneTares" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[maggiorazioneTares]]></fieldDescription>
+	</field>
+	<field name="metaClass" class="groovy.lang.MetaClass">
+		<fieldDescription><![CDATA[metaClass]]></fieldDescription>
+	</field>
+	<field name="note" class="java.lang.String">
+		<fieldDescription><![CDATA[note]]></fieldDescription>
+	</field>
+	<field name="numBollettino" class="java.lang.Long">
+		<fieldDescription><![CDATA[numBollettino]]></fieldDescription>
+	</field>
+	<field name="numFabbricatiAb" class="java.lang.Short">
+		<fieldDescription><![CDATA[numFabbricatiAb]]></fieldDescription>
+	</field>
+	<field name="numFabbricatiAltri" class="java.lang.Short">
+		<fieldDescription><![CDATA[numFabbricatiAltri]]></fieldDescription>
+	</field>
+	<field name="numFabbricatiAree" class="java.lang.Short">
+		<fieldDescription><![CDATA[numFabbricatiAree]]></fieldDescription>
+	</field>
+	<field name="numFabbricatiD" class="java.lang.Short">
+		<fieldDescription><![CDATA[numFabbricatiD]]></fieldDescription>
+	</field>
+	<field name="numFabbricatiRurali" class="java.lang.Short">
+		<fieldDescription><![CDATA[numFabbricatiRurali]]></fieldDescription>
+	</field>
+	<field name="numFabbricatiTerreni" class="java.lang.Short">
+		<fieldDescription><![CDATA[numFabbricatiTerreni]]></fieldDescription>
+	</field>
+	<field name="oggettoImposta" class="it.finmatica.tr4.dto.OggettoImpostaDTO">
+		<fieldDescription><![CDATA[oggettoImposta]]></fieldDescription>
+	</field>
+	<field name="ogprOgim" class="java.lang.Long">
+		<fieldDescription><![CDATA[ogprOgim]]></fieldDescription>
+	</field>
+	<field name="pratica" class="it.finmatica.tr4.dto.pratiche.PraticaTributoDTO">
+		<fieldDescription><![CDATA[pratica]]></fieldDescription>
+	</field>
+	<field name="progrAnci" class="java.lang.Long">
+		<fieldDescription><![CDATA[progrAnci]]></fieldDescription>
+	</field>
+	<field name="provvedimento" class="java.lang.Integer">
+		<fieldDescription><![CDATA[provvedimento]]></fieldDescription>
+	</field>
+	<field name="rata" class="java.lang.Short">
+		<fieldDescription><![CDATA[rata]]></fieldDescription>
+	</field>
+	<field name="rataImposta" class="it.finmatica.tr4.dto.RataImpostaDTO">
+		<fieldDescription><![CDATA[rataImposta]]></fieldDescription>
+	</field>
+	<field name="ruolo" class="it.finmatica.tr4.dto.RuoloDTO">
+		<fieldDescription><![CDATA[ruolo]]></fieldDescription>
+	</field>
+	<field name="rurali" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[rurali]]></fieldDescription>
+	</field>
+	<field name="ruraliComune" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[ruraliComune]]></fieldDescription>
+	</field>
+	<field name="ruraliErariale" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[ruraliErariale]]></fieldDescription>
+	</field>
+	<field name="sanzioni1" class="java.lang.Long">
+		<fieldDescription><![CDATA[sanzioni1]]></fieldDescription>
+	</field>
+	<field name="sanzioni2" class="java.lang.Long">
+		<fieldDescription><![CDATA[sanzioni2]]></fieldDescription>
+	</field>
+	<field name="sequenza" class="java.lang.Short">
+		<fieldDescription><![CDATA[sequenza]]></fieldDescription>
+	</field>
+	<field name="speseMora" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[speseMora]]></fieldDescription>
+	</field>
+	<field name="speseSpedizione" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[speseSpedizione]]></fieldDescription>
+	</field>
+	<field name="terreniAgricoli" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[terreniAgricoli]]></fieldDescription>
+	</field>
+	<field name="terreniComune" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[terreniComune]]></fieldDescription>
+	</field>
+	<field name="terreniErariale" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[terreniErariale]]></fieldDescription>
+	</field>
+	<field name="tipoTributo" class="it.finmatica.tr4.dto.TipoTributoDTO">
+		<fieldDescription><![CDATA[tipoTributo]]></fieldDescription>
+	</field>
+	<field name="tipoVersamento" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoVersamento]]></fieldDescription>
+	</field>
+	<field name="ufficioPt" class="java.lang.String">
+		<fieldDescription><![CDATA[ufficioPt]]></fieldDescription>
+	</field>
+	<field name="utente" class="it.finmatica.ad4.dto.autenticazione.Ad4UtenteDTO">
+		<fieldDescription><![CDATA[utente]]></fieldDescription>
+	</field>
+	<sortField name="anno" order="Descending"/>
+	<sortField name="dataPagamento" order="Descending"/>
+	<sortField name="tipoVersamento" order="Descending"/>
+	<sortField name="rata"/>
+	<sortField name="pratica"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="26" splitType="Prevent">
+			<textField>
+				<reportElement x="0" y="0" width="254" height="26" uuid="d191ed0d-eed5-4fbb-8de1-e6c61148b6ca"/>
+				<textElement>
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titolo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Prevent">
+			<staticText>
+				<reportElement x="0" y="0" width="32" height="15" uuid="69b66874-35c4-4575-a785-84fc40701eed"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Anno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="0" width="53" height="15" uuid="a9608598-3897-4680-a1b2-0813a4b3d7fd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Prat.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="0" width="55" height="15" uuid="cb7fb507-f19c-4474-ad61-c249b8c7379a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Vers.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="145" y="0" width="32" height="15" uuid="92b376cd-b708-47da-bb19-9acec94fc544"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Rata]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="0" width="74" height="15" uuid="09252335-9531-44c5-b8b0-f8a297e4fa08"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Importo Vers.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="0" width="60" height="15" uuid="5dfdebda-a077-4139-bc9f-67c67a7ca7ea"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Data Pag.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="0" width="30" height="15" uuid="2471e112-43da-4ae0-8903-2b6d2294377c">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fab]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="348" y="0" width="74" height="15" uuid="312e7a10-d5db-4191-a20d-e42b6545ca08">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Terr. Agricoli]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="0" width="68" height="15" uuid="83b5dd3b-68b0-4ed4-badf-54339d8fc4d4">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Aree Fabbr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="0" width="60" height="15" uuid="1ab73ac0-c7e5-4eab-ad77-540db768f781">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Abit. Princ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="557" y="0" width="53" height="15" uuid="c7481ddd-47fd-4803-92b2-a28237983c67">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Rurali]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="612" y="0" width="56" height="15" uuid="02a4c3ed-b48f-435d-b0ef-5f570a4416ca">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fabbr. D]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="63" height="15" uuid="88aef384-7ccd-4d27-af8e-367784af531d">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Altri Fabb.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="734" y="0" width="36" height="15" uuid="ea0f2ca9-a9d5-4e42-bfe2-eec048f7379d">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Detr.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="16" width="832" height="1" uuid="67e604f1-3730-48e1-86fb-653a171e29a9"/>
+			</line>
+			<staticText>
+				<reportElement x="770" y="0" width="31" height="15" uuid="1b9aae30-e62c-4866-b82e-ed1c318e6c96">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fonte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="348" y="0" width="74" height="15" uuid="e6a69f4c-521c-46a0-a7b1-dc0e82d8cf74">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo == "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[C.Pereq.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="0" width="68" height="15" uuid="eac86c6d-e029-49a3-8787-a3e87e816d8f">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo == "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Spese Sped.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Prevent">
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="3" width="32" height="13" uuid="1c377459-096a-4787-8ca6-d0f1b7ba3ea5"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="34" y="3" width="53" height="13" uuid="2541603c-a3b9-4b85-9536-6c8fdac0d543"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pratica}.tipoPratica]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="89" y="3" width="55" height="13" uuid="a6d2b325-e876-4277-a7c3-5d74381a86b4"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoVersamento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="145" y="3" width="32" height="13" uuid="c2fb89d6-e0bd-4b87-84f5-6ffa2c4becf2"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rata}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="178" y="3" width="74" height="13" uuid="12a39ad6-6b67-453f-98c7-70f25c8f0035"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importoVersato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="253" y="3" width="60" height="13" uuid="57784626-0907-4c77-abfe-bae2a8e1e1a1"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataPagamento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="315" y="3" width="30" height="13" uuid="ef990a50-b04c-4daa-8334-fffe22855109">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fabbricati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="348" y="3" width="74" height="13" uuid="f6205e73-3b0b-4b6b-91db-3d92f7cff245">
+					<printWhenExpression><![CDATA[$F{terreniAgricoli}> 0 && $F{tipoTributo}.tipoTributo != "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{terreniAgricoli}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="425" y="3" width="68" height="13" uuid="78039d6b-cb61-49b8-9f2b-e9a48af1dfea">
+					<printWhenExpression><![CDATA[$F{areeFabbricabili} > 0 && $F{tipoTributo}.tipoTributo != "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{areeFabbricabili}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="495" y="3" width="60" height="13" uuid="fdde763b-07f7-4cb7-ac51-8597a19a8b70">
+					<printWhenExpression><![CDATA[$F{abPrincipale} > 0 && $F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abPrincipale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="557" y="3" width="53" height="13" uuid="6769fdcd-3ae9-4fa8-a4e5-a21e9041a309">
+					<printWhenExpression><![CDATA[$F{rurali} > 0 && $F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rurali}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="612" y="3" width="56" height="13" uuid="716c7d50-d95e-46fa-a0ce-b49d5bc5f483">
+					<printWhenExpression><![CDATA[$F{fabbricatiD} > 0 && $F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fabbricatiD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="670" y="3" width="63" height="13" uuid="10fd0755-71f3-43b5-b1b0-d89a1a9d9cc9">
+					<printWhenExpression><![CDATA[$F{altriFabbricati} > 0 && $F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{altriFabbricati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="734" y="3" width="36" height="13" uuid="dbdc70a9-3090-473b-80b4-9c66cf4d2bb3">
+					<printWhenExpression><![CDATA[$F{detrazione} > 0 && $F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detrazione}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="770" y="3" width="31" height="13" uuid="e345c954-3ab0-4e26-b9f4-88cc5a7ec326">
+					<printWhenExpression><![CDATA[$F{tipoTributo}.tipoTributo != "TARSU" && $F{tipoTributo}.tipoTributo != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fonte}.fonte]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="348" y="3" width="74" height="13" uuid="d5cc5799-8eda-49fb-8b10-0e32b6de5ecb">
+					<printWhenExpression><![CDATA[$F{maggiorazioneTares} > 0 && $F{tipoTributo}.tipoTributo == "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{maggiorazioneTares}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="425" y="3" width="68" height="13" uuid="871f762a-c252-493a-8e6e-97cc9675f260">
+					<printWhenExpression><![CDATA[$F{speseSpedizione} > 0 && $F{tipoTributo}.tipoTributo == "TARSU"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{speseSpedizione}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

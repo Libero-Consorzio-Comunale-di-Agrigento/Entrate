@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <hbox>
+        <label value="Oggetto:"/>
+        <label value="@load(vm.oggettoSelezionato.progrOggetto)"/>
+        <label value="@load(vm.oggettoSelezionato.indirizzo)"/>
+        <label visible="@load(!empty vm.oggettoSelezionato.numCivico)" value=","/>
+        <label visible="@load(!empty vm.oggettoSelezionato.numCivico)"
+               value="@load(vm.oggettoSelezionato.numCivico)"/>
+    </hbox>
+    <space height="3px"/>
+    <hlayout sclass="navigazione" valign="middle">
+        <!-- PAGINAZIONE -->
+        <hlayout hflex="1">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <paging sclass="afc-paging"
+                        onPaging="@command('onCaricaListaSoggetti')"
+                        activePage="@bind(vm.listaSoggettiPaginazione.activePage)"
+                        pageSize="@bind(vm.listaSoggettiPaginazione.max)"
+                        totalSize="@load(vm.soggetti.numeroRecord)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <!-- LISTA SOGGETTI -->
+    <listbox id="soggettiListBox" model="@load(vm.soggetti.record)"
+             selectedItem="@bind(vm.soggettoSelezionato)"
+             emptyMessage="Non sono presenti soggetti"
+             sizedByContent="true"
+             vflex="1"
+             span="true">
+        <listhead>
+            <listheader label="Prg."/>
+            <listheader label="Denominazione"/>
+            <listheader label="Comune Nascita"/>
+            <listheader label="Prov."/>
+            <listheader label="Data Nascita"/>
+            <listheader label="Sesso"/>
+            <listheader label="Cod.Fiscale"/>
+            <listheader label="Tipo"/>
+            <listheader label="Regime"/>
+            <listheader label="Prg.Rif."/>
+            <listheader label="Spec.Diritto"/>
+            <listheader label="%Poss."/>
+            <listheader label="Titolo"/>
+            <listheader label="Caricam."/>
+            <listheader/>
+            <listheader/>
+        </listhead>
+        <template name="model" var="sogg">
+            <listitem>
+                <listcell sclass="destra" label="@load(sogg.progrSoggetto)"/>
+                <listcell label="@load(vm.formattaDenominazione(sogg.denominazione))"/>
+                <listcell label="@load(sogg.comuneNascita)"/>
+                <listcell label="@load(sogg.provinciaNascita)"/>
+                <listcell
+                        label="@load(!empty sogg.dataNascita ? c:formatDate(sogg.dataNascita, 'dd/MM/yyyy') : null)"/>
+                <listcell sclass="cebtro" label="@load(sogg.sesso)"/>
+                <listcell label="@load(sogg.codiceFiscale)"/>
+                <listcell label="@load(vm.tipiSoggetto[sogg.tipo])"/>
+                <listcell label="@load(vm.regimi[sogg.regime])"/>
+                <listcell sclass="destra" label="@load(sogg.progressivoIntRif)"/>
+                <listcell label="@load(sogg.specDiritto)"/>
+                <listcell sclass="destra"
+                          label="@load(!empty sogg.percPossesso ? c:formatNumber(sogg.percPossesso, '#,##0.00') : null)"/>
+                <listcell label="@load(sogg.titolo)"/>
+                <listcell label="@load(vm.tipiCaricamento[sogg.flagCaricamento])"/>
+
+                <listcell sclass="centro">
+                    <image src="/images/afc/16x16/pen.png" style="cursor: pointer;" width="16px" height="16px"
+                           tooltiptext="Apre il soggetto per la modifica"
+                           onClick="@command('onModificaSoggetto', soggetto=sogg)"/>
+                </listcell>
+
+                <listcell sclass="centro">
+                    <image src="/images/afc/16x16/delete.png" style="cursor: pointer;" width="16px"
+                           height="16px"
+                           tooltiptext="Elimina soggetto"
+                           onClick="@command('onEliminaSoggetto', soggettoSelezionato=sogg)"
+                           visible="@load(vm.modifica ne false)"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

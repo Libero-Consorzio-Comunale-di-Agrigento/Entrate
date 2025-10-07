@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<listbox hflex="max" model="@load(vm.renditeOggetto)" span="true"
+			 sizedByContent="true" emptyMessage="Nessundato presente">
+		<listhead>
+			<listheader label="Inizio validità" align="center" />
+			<listheader label="Fine validità" align="center" />
+			<listheader label="Rendita" align="center" />
+			<listheader label="Anno" align="center" />
+			<listheader label="Categoria" align="center" />
+			<listheader label="Classe" align="center" />
+		</listhead>
+		<template name="model" var="rifOgg">
+			<listitem>
+				<listcell label="@load(c:formatDate(rifOgg.inizioValidita, 'dd/MM/yyyy'))" />
+				<listcell label="@load(c:formatDate(rifOgg.fineValidita, 'dd/MM/yyyy'))" />
+				<listcell style="text-align: right;"
+						  label="@load(c:formatNumber(rifOgg.rendita, '€ #,##0.00'))" />
+				<listcell label="@load(rifOgg.annoRendita)" />
+				<listcell label="@load(rifOgg.categoriaCatasto.categoriaCatasto)" />
+				<listcell label="@load(rifOgg.classeCatasto)" />
+			</listitem>
+		</template>
+	</listbox>
+</zk>

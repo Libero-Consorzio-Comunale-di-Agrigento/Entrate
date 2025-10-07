@@ -1,0 +1,2509 @@
+{
+	"<CODICE-BEFLIORE>": {
+		"anno": 2024,
+		"validoDal": "20240521",
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Codice Belfiore",
+				"posizione": 1,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Codice Belfiore"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Data presentazione",
+				"posizione": 22,
+				"lunghezza": 6,
+				"formato": "DT",
+				"key": "Codice Belfiore"
+			}
+		]
+	},
+	"A": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Filler",
+				"posizione": 2,
+				"lunghezza": 14,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Codice fornitura",
+				"posizione": 16,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Codice fornitura"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Tipo fornitore",
+				"posizione": 21,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Tipo fornitore"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Codice fiscale fornitore",
+				"posizione": 23,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale fornitore"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Tipologia dichiarazione",
+				"posizione": 39,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipologia dichiarazione"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Filler",
+				"posizione": 40,
+				"lunghezza": 482,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Progressivo dell'invio telematico",
+				"posizione": 522,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo dell'invio telematico"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Numero totale degli invii telematici",
+				"posizione": 526,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero totale degli invii telematici"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Filler",
+				"posizione": 530,
+				"lunghezza": 1168,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Spazio riservato al Servizio Telematico",
+				"posizione": 1698,
+				"lunghezza": 200,
+				"formato": "AN",
+				"key": "Spazio riservato al Servizio Telematico"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"B": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale o partita IVA del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale o partita IVA del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Anno della dichiarazione",
+				"posizione": 90,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Anno della dichiarazione"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Periodo d'imposta",
+				"posizione": 94,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Periodo d'imposta"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Codice catastale comune",
+				"posizione": 98,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Codice catastale comune"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Denominazione comune",
+				"posizione": 102,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Denominazione comune"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Codice fiscale o partita IVA",
+				"posizione": 152,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Codice fiscale o partita IVA"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Telefono - Prefisso",
+				"posizione": 168,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Telefono - Prefisso"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Telefono - Numero",
+				"posizione": 172,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Telefono - Numero"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Indirizzo di posta elettronica del contribuente",
+				"posizione": 180,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Indirizzo di posta elettronica del contribuente"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Cognome del contribuente o Ragione sociale",
+				"posizione": 230,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Cognome del contribuente o Ragione sociale"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Nome del contribuente",
+				"posizione": 254,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Nome del contribuente"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Data di nascita del contribuente",
+				"posizione": 274,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di nascita del contribuente"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Sesso del contribuente",
+				"posizione": 282,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Sesso del contribuente"
+			},
+			{
+				"campo": 18,
+				"descrizione": "Comune o stato estero di nascita del contribuente",
+				"posizione": 283,
+				"lunghezza": 40,
+				"formato": "AN",
+				"key": "Comune o stato estero di nascita del contribuente"
+			},
+			{
+				"campo": 19,
+				"descrizione": "Sigla della provincia di nascita del contribuente",
+				"posizione": 323,
+				"lunghezza": 2,
+				"formato": "PN",
+				"key": "Sigla della provincia di nascita del contribuente"
+			},
+			{
+				"campo": 20,
+				"descrizione": "Filler",
+				"posizione": 325,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 21,
+				"descrizione": "Indirizzo del domicilio fiscale - sede legale",
+				"posizione": 328,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo del domicilio fiscale - sede legale"
+			},
+			{
+				"campo": 22,
+				"descrizione": "Numero civico del domicilio fiscale - sede legale",
+				"posizione": 363,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Numero civico del domicilio fiscale - sede legale"
+			},
+			{
+				"campo": 23,
+				"descrizione": "Scala del domicilio fiscale- sede legale",
+				"posizione": 368,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Scala del domicilio fiscale- sede legale"
+			},
+			{
+				"campo": 24,
+				"descrizione": "Piano del domicilio fiscale - sede legale",
+				"posizione": 373,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Piano del domicilio fiscale - sede legale"
+			},
+			{
+				"campo": 25,
+				"descrizione": "Interno del domicilio fiscale - sede legale",
+				"posizione": 378,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Interno del domicilio fiscale - sede legale"
+			},
+			{
+				"campo": 26,
+				"descrizione": "C.A.P. del domicilio fiscale - sede legale",
+				"posizione": 383,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "C.A.P. del domicilio fiscale - sede legale"
+			},
+			{
+				"campo": 27,
+				"descrizione": "Comune o stato estero del domicilio fiscale - sede legale",
+				"posizione": 388,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Comune o stato estero del domicilio fiscale - sede legale"
+			},
+			{
+				"campo": 28,
+				"descrizione": "Provincia (sigla) del domicilio fiscale - sede legale - EE per stato",
+				"posizione": 488,
+				"lunghezza": 2,
+				"formato": "PR",
+				"key": "Provincia (sigla) del domicilio fiscale - sede legale - EE per stato"
+			},
+			{
+				"campo": 29,
+				"descrizione": "Codice Stato estero del domicilio fiscale - sede legale",
+				"posizione": 490,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero del domicilio fiscale - sede legale"
+			},
+			{
+				"campo": 31,
+				"descrizione": "Codice carica del dichiarante",
+				"posizione": 509,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Codice carica del dichiarante"
+			},
+			{
+				"campo": 32,
+				"descrizione": "Cognome del dichiarante o Ragione sociale",
+				"posizione": 511,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Cognome del dichiarante o Ragione sociale"
+			},
+			{
+				"campo": 33,
+				"descrizione": "Nome del dichiarante",
+				"posizione": 535,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Nome del dichiarante"
+			},
+			{
+				"campo": 34,
+				"descrizione": "Telefono del dichiarante: prefisso",
+				"posizione": 555,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Telefono del dichiarante: prefisso"
+			},
+			{
+				"campo": 35,
+				"descrizione": "Telefono del dichiarante: numero",
+				"posizione": 559,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Telefono del dichiarante: numero"
+			},
+			{
+				"campo": 36,
+				"descrizione": "Indirizzo di posta elettronica del dichiarante",
+				"posizione": 567,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Indirizzo di posta elettronica del dichiarante"
+			},
+			{
+				"campo": 37,
+				"descrizione": "Indirizzo del domicilio fiscale",
+				"posizione": 617,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo del domicilio fiscale"
+			},
+			{
+				"campo": 38,
+				"descrizione": "Numero civico del domicilio fiscale",
+				"posizione": 652,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Numero civico del domicilio fiscale"
+			},
+			{
+				"campo": 39,
+				"descrizione": "Scala del domicilio fiscale",
+				"posizione": 657,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Scala del domicilio fiscale"
+			},
+			{
+				"campo": 40,
+				"descrizione": "Piano del domicilio fiscale",
+				"posizione": 662,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Piano del domicilio fiscale"
+			},
+			{
+				"campo": 41,
+				"descrizione": "Interno del domicilio fiscale",
+				"posizione": 667,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Interno del domicilio fiscale"
+			},
+			{
+				"campo": 42,
+				"descrizione": "C.A.P. del domicilio fiscale",
+				"posizione": 672,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "C.A.P. del domicilio fiscale"
+			},
+			{
+				"campo": 43,
+				"descrizione": "Comune o Stato estero del domicilio fiscale",
+				"posizione": 677,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Comune o Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 44,
+				"descrizione": "Provincia (sigla) del domicilio fiscale - EE per stato estero",
+				"posizione": 777,
+				"lunghezza": 2,
+				"formato": "PR",
+				"key": "Provincia (sigla) del domicilio fiscale - EE per stato estero"
+			},
+			{
+				"campo": 45,
+				"descrizione": "Codice Stato estero del domicilio fiscale",
+				"posizione": 779,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 46,
+				"descrizione": "Codice fiscale dell'intermediario",
+				"posizione": 782,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale dell'intermediario"
+			},
+			{
+				"campo": 47,
+				"descrizione": "Numero di iscrizione all'albo dei C.A.F.",
+				"posizione": 798,
+				"lunghezza": 5,
+				"formato": "NU",
+				"key": "Numero di iscrizione all'albo dei C.A.F."
+			},
+			{
+				"campo": 48,
+				"descrizione": "Impegno a trasmettere in via telematica la dichiarazione",
+				"posizione": 803,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Impegno a trasmettere in via telematica la dichiarazione"
+			},
+			{
+				"campo": 49,
+				"descrizione": "Data dell'impegno",
+				"posizione": 804,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data dell'impegno"
+			},
+			{
+				"campo": 50,
+				"descrizione": "Firma dell'intermediario",
+				"posizione": 812,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma dell'intermediario"
+			},
+			{
+				"campo": 51,
+				"descrizione": "Filler",
+				"posizione": 813,
+				"lunghezza": 42,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 52,
+				"descrizione": "Filler",
+				"posizione": 855,
+				"lunghezza": 1043,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 53,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 54,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"C": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale o partita IVA del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale o partita IVA del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Numero d'ordine",
+				"posizione": 90,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale",
+				"posizione": 94,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Comune o stato estero di nascita del Contitolare",
+				"posizione": 144,
+				"lunghezza": 40,
+				"formato": "AN",
+				"key": "Comune o stato estero di nascita del Contitolare"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Sigla della provincia di nascita del Contitolare - EE per stato estero",
+				"posizione": 184,
+				"lunghezza": 2,
+				"formato": "PN",
+				"key": "Sigla della provincia di nascita del Contitolare - EE per stato estero"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Filler",
+				"posizione": 186,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Codice fiscale del Contitolare",
+				"posizione": 189,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale del Contitolare"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Data di nascita del Contitolare",
+				"posizione": 205,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di nascita del Contitolare"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Sesso del Contitolare",
+				"posizione": 213,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Sesso del Contitolare"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Indirizzo del domicilio fiscale",
+				"posizione": 214,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo del domicilio fiscale"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Numero civico del domicilio fiscale",
+				"posizione": 249,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Numero civico del domicilio fiscale"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Scala del domicilio fiscale",
+				"posizione": 254,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Scala del domicilio fiscale"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Piano del domicilio fiscale",
+				"posizione": 259,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Piano del domicilio fiscale"
+			},
+			{
+				"campo": 18,
+				"descrizione": "Interno del domicilio fiscale",
+				"posizione": 264,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Interno del domicilio fiscale"
+			},
+			{
+				"campo": 19,
+				"descrizione": "C.A.P. del domicilio fiscale",
+				"posizione": 269,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "C.A.P. del domicilio fiscale"
+			},
+			{
+				"campo": 20,
+				"descrizione": "Comune o Stato estero del domicilio fiscale",
+				"posizione": 274,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Comune o Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 21,
+				"descrizione": "Provincia (sigla) del domicilio fiscale - EE per stato estero",
+				"posizione": 374,
+				"lunghezza": 2,
+				"formato": "PR",
+				"key": "Provincia (sigla) del domicilio fiscale - EE per stato estero"
+			},
+			{
+				"campo": 22,
+				"descrizione": "Codice Stato estero del domicilio fiscale",
+				"posizione": 376,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 23,
+				"descrizione": "Percentuale di possesso - parte intera",
+				"posizione": 379,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte intera"
+			},
+			{
+				"campo": 24,
+				"descrizione": "Percentuale di possesso - parte decimale",
+				"posizione": 382,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte decimale"
+			},
+			{
+				"campo": 25,
+				"descrizione": "Detrazione per abitazione principale",
+				"posizione": 384,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Detrazione per abitazione principale"
+			},
+			{
+				"campo": 26,
+				"descrizione": "Firma del Contitolare",
+				"posizione": 393,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma del Contitolare"
+			},
+			{
+				"campo": 27,
+				"descrizione": "Numero d'ordine",
+				"posizione": 394,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 28,
+				"descrizione": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale",
+				"posizione": 398,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale"
+			},
+			{
+				"campo": 29,
+				"descrizione": "Comune o stato estero di nascita del Contitolare",
+				"posizione": 448,
+				"lunghezza": 40,
+				"formato": "AN",
+				"key": "Comune o stato estero di nascita del Contitolare"
+			},
+			{
+				"campo": 30,
+				"descrizione": "Sigla della provincia di nascita del Contitolare - EE per stato estero",
+				"posizione": 488,
+				"lunghezza": 2,
+				"formato": "PN",
+				"key": "Sigla della provincia di nascita del Contitolare - EE per stato estero"
+			},
+			{
+				"campo": 31,
+				"descrizione": "Filler",
+				"posizione": 490,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 32,
+				"descrizione": "Codice fiscale del Contitolare",
+				"posizione": 493,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale del Contitolare"
+			},
+			{
+				"campo": 33,
+				"descrizione": "Data di nascita del Contitolare",
+				"posizione": 509,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di nascita del Contitolare"
+			},
+			{
+				"campo": 34,
+				"descrizione": "Sesso del Contitolare",
+				"posizione": 517,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Sesso del Contitolare"
+			},
+			{
+				"campo": 35,
+				"descrizione": "Indirizzo del domicilio fiscale",
+				"posizione": 518,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo del domicilio fiscale"
+			},
+			{
+				"campo": 36,
+				"descrizione": "Numero civico del domicilio fiscale",
+				"posizione": 553,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Numero civico del domicilio fiscale"
+			},
+			{
+				"campo": 37,
+				"descrizione": "Scala del domicilio fiscale",
+				"posizione": 558,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Scala del domicilio fiscale"
+			},
+			{
+				"campo": 38,
+				"descrizione": "Piano del domicilio fiscale",
+				"posizione": 563,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Piano del domicilio fiscale"
+			},
+			{
+				"campo": 39,
+				"descrizione": "Interno del domicilio fiscale",
+				"posizione": 568,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Interno del domicilio fiscale"
+			},
+			{
+				"campo": 40,
+				"descrizione": "C.A.P. del domicilio fiscale",
+				"posizione": 573,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "C.A.P. del domicilio fiscale"
+			},
+			{
+				"campo": 41,
+				"descrizione": "Comune o Stato estero del domicilio fiscale",
+				"posizione": 578,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Comune o Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 42,
+				"descrizione": "Provincia (sigla) del domicilio fiscale - EE per stato estero",
+				"posizione": 678,
+				"lunghezza": 2,
+				"formato": "PR",
+				"key": "Provincia (sigla) del domicilio fiscale - EE per stato estero"
+			},
+			{
+				"campo": 43,
+				"descrizione": "Codice Stato estero del domicilio fiscale",
+				"posizione": 680,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 44,
+				"descrizione": "Percentuale di possesso - parte intera",
+				"posizione": 683,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte intera"
+			},
+			{
+				"campo": 45,
+				"descrizione": "Percentuale di possesso - parte decimale",
+				"posizione": 686,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte decimale"
+			},
+			{
+				"campo": 46,
+				"descrizione": "Detrazione per abitazione principale",
+				"posizione": 688,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Detrazione per abitazione principale"
+			},
+			{
+				"campo": 47,
+				"descrizione": "Firma del Contitolare",
+				"posizione": 697,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma del Contitolare"
+			},
+			{
+				"campo": 48,
+				"descrizione": "Numero d'ordine",
+				"posizione": 698,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 49,
+				"descrizione": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale",
+				"posizione": 702,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale"
+			},
+			{
+				"campo": 50,
+				"descrizione": "Comune o stato estero di nascita del Contitolare",
+				"posizione": 752,
+				"lunghezza": 40,
+				"formato": "AN",
+				"key": "Comune o stato estero di nascita del Contitolare"
+			},
+			{
+				"campo": 51,
+				"descrizione": "Sigla della provincia di nascita del Contitolare - EE per stato estero",
+				"posizione": 792,
+				"lunghezza": 2,
+				"formato": "PN",
+				"key": "Sigla della provincia di nascita del Contitolare - EE per stato estero"
+			},
+			{
+				"campo": 52,
+				"descrizione": "Filler",
+				"posizione": 794,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 53,
+				"descrizione": "Codice fiscale del Contitolare",
+				"posizione": 797,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale del Contitolare"
+			},
+			{
+				"campo": 54,
+				"descrizione": "Data di nascita del Contitolare",
+				"posizione": 813,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di nascita del Contitolare"
+			},
+			{
+				"campo": 55,
+				"descrizione": "Sesso del Contitolare",
+				"posizione": 821,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Sesso del Contitolare"
+			},
+			{
+				"campo": 56,
+				"descrizione": "Indirizzo del domicilio fiscale",
+				"posizione": 822,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo del domicilio fiscale"
+			},
+			{
+				"campo": 57,
+				"descrizione": "Numero civico del domicilio fiscale",
+				"posizione": 857,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Numero civico del domicilio fiscale"
+			},
+			{
+				"campo": 58,
+				"descrizione": "Scala del domicilio fiscale",
+				"posizione": 862,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Scala del domicilio fiscale"
+			},
+			{
+				"campo": 59,
+				"descrizione": "Piano del domicilio fiscale",
+				"posizione": 867,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Piano del domicilio fiscale"
+			},
+			{
+				"campo": 60,
+				"descrizione": "Interno del domicilio fiscale",
+				"posizione": 872,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Interno del domicilio fiscale"
+			},
+			{
+				"campo": 61,
+				"descrizione": "C.A.P. del domicilio fiscale",
+				"posizione": 877,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "C.A.P. del domicilio fiscale"
+			},
+			{
+				"campo": 62,
+				"descrizione": "Comune o Stato estero del domicilio fiscale",
+				"posizione": 882,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Comune o Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 63,
+				"descrizione": "Provincia (sigla) del domicilio fiscale - EE per stato estero",
+				"posizione": 982,
+				"lunghezza": 2,
+				"formato": "PR",
+				"key": "Provincia (sigla) del domicilio fiscale - EE per stato estero"
+			},
+			{
+				"campo": 64,
+				"descrizione": "Codice Stato estero del domicilio fiscale",
+				"posizione": 984,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 65,
+				"descrizione": "Percentuale di possesso - parte intera",
+				"posizione": 987,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte intera"
+			},
+			{
+				"campo": 66,
+				"descrizione": "Percentuale di possesso - parte decimale",
+				"posizione": 990,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte decimale"
+			},
+			{
+				"campo": 67,
+				"descrizione": "Detrazione per abitazione principale",
+				"posizione": 992,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Detrazione per abitazione principale"
+			},
+			{
+				"campo": 68,
+				"descrizione": "Firma del Contitolare",
+				"posizione": 1001,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma del Contitolare"
+			},
+			{
+				"campo": 69,
+				"descrizione": "Numero d'ordine",
+				"posizione": 1002,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 70,
+				"descrizione": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale",
+				"posizione": 1006,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Cognome e Nome del Contitolare - Denominazione o Ragione sociale"
+			},
+			{
+				"campo": 71,
+				"descrizione": "Comune o stato estero di nascita del Contitolare",
+				"posizione": 1056,
+				"lunghezza": 40,
+				"formato": "AN",
+				"key": "Comune o stato estero di nascita del Contitolare"
+			},
+			{
+				"campo": 72,
+				"descrizione": "Sigla della provincia di nascita del Contitolare - EE per stato estero",
+				"posizione": 1096,
+				"lunghezza": 2,
+				"formato": "PN",
+				"key": "Sigla della provincia di nascita del Contitolare - EE per stato estero"
+			},
+			{
+				"campo": 73,
+				"descrizione": "Filler",
+				"posizione": 1098,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 74,
+				"descrizione": "Codice fiscale del Contitolare",
+				"posizione": 1101,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale del Contitolare"
+			},
+			{
+				"campo": 75,
+				"descrizione": "Data di nascita del Contitolare",
+				"posizione": 1117,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di nascita del Contitolare"
+			},
+			{
+				"campo": 76,
+				"descrizione": "Sesso del Contitolare",
+				"posizione": 1125,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Sesso del Contitolare"
+			},
+			{
+				"campo": 77,
+				"descrizione": "Indirizzo del domicilio fiscale",
+				"posizione": 1126,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo del domicilio fiscale"
+			},
+			{
+				"campo": 78,
+				"descrizione": "Numero civico del domicilio fiscale",
+				"posizione": 1161,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Numero civico del domicilio fiscale"
+			},
+			{
+				"campo": 79,
+				"descrizione": "Scala del domicilio fiscale",
+				"posizione": 1166,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Scala del domicilio fiscale"
+			},
+			{
+				"campo": 80,
+				"descrizione": "Piano del domicilio fiscale",
+				"posizione": 1171,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Piano del domicilio fiscale"
+			},
+			{
+				"campo": 81,
+				"descrizione": "Interno del domicilio fiscale",
+				"posizione": 1176,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Interno del domicilio fiscale"
+			},
+			{
+				"campo": 82,
+				"descrizione": "C.A.P. del domicilio fiscale",
+				"posizione": 1181,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "C.A.P. del domicilio fiscale"
+			},
+			{
+				"campo": 83,
+				"descrizione": "Comune o Stato estero del domicilio fiscale",
+				"posizione": 1186,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Comune o Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 84,
+				"descrizione": "Provincia (sigla) del domicilio fiscale - EE per stato estero",
+				"posizione": 1286,
+				"lunghezza": 2,
+				"formato": "PR",
+				"key": "Provincia (sigla) del domicilio fiscale - EE per stato estero"
+			},
+			{
+				"campo": 85,
+				"descrizione": "Codice Stato estero del domicilio fiscale",
+				"posizione": 1288,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero del domicilio fiscale"
+			},
+			{
+				"campo": 86,
+				"descrizione": "Percentuale di possesso - parte intera",
+				"posizione": 1291,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte intera"
+			},
+			{
+				"campo": 87,
+				"descrizione": "Percentuale di possesso - parte decimale",
+				"posizione": 1294,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso - parte decimale"
+			},
+			{
+				"campo": 88,
+				"descrizione": "Detrazione per abitazione principale",
+				"posizione": 1296,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Detrazione per abitazione principale"
+			},
+			{
+				"campo": 89,
+				"descrizione": "Firma del Contitolare",
+				"posizione": 1305,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma del Contitolare"
+			},
+			{
+				"campo": 90,
+				"descrizione": "Filler",
+				"posizione": 1306,
+				"lunghezza": 538,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 91,
+				"descrizione": "Filler",
+				"posizione": 1844,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 92,
+				"descrizione": "Filler",
+				"posizione": 1864,
+				"lunghezza": 34,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 93,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 94,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"D": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale o partita IVA del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale o partita IVA del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Numero d'ordine",
+				"posizione": 90,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Progressivo immobile",
+				"posizione": 94,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo immobile"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Indicatore di continuità",
+				"posizione": 98,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Indicatore di continuità"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Caratteristiche",
+				"posizione": 99,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Caratteristiche"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Indirizzo",
+				"posizione": 102,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Indirizzo"
+			},
+			{
+				"campo": 11,
+				"descrizione": "T/U",
+				"posizione": 202,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "T/U"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Codice Catastale Immobile/Terreno",
+				"posizione": 203,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Codice Catastale Immobile/Terreno"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Sezione",
+				"posizione": 208,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Sezione"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Foglio",
+				"posizione": 211,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Foglio"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Particella",
+				"posizione": 215,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Particella"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Subalterno",
+				"posizione": 225,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Subalterno"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Categoria/Qualità",
+				"posizione": 229,
+				"lunghezza": 25,
+				"formato": "AN",
+				"key": "Categoria/Qualità"
+			},
+			{
+				"campo": 18,
+				"descrizione": "Classe",
+				"posizione": 254,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Classe"
+			},
+			{
+				"campo": 19,
+				"descrizione": "N. Protocollo",
+				"posizione": 264,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "N. Protocollo"
+			},
+			{
+				"campo": 20,
+				"descrizione": "Anno",
+				"posizione": 284,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Anno"
+			},
+			{
+				"campo": 21,
+				"descrizione": "Valore",
+				"posizione": 288,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Valore"
+			},
+			{
+				"campo": 22,
+				"descrizione": "Percentuale di possesso, parte intera",
+				"posizione": 303,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte intera"
+			},
+			{
+				"campo": 23,
+				"descrizione": "Percentuale di possesso, parte decimale",
+				"posizione": 306,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte decimale"
+			},
+			{
+				"campo": 24,
+				"descrizione": "Detrazione per l'abitazione principale",
+				"posizione": 308,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Detrazione per l'abitazione principale"
+			},
+			{
+				"campo": 25,
+				"descrizione": "Equiparazione a abitazione principale",
+				"posizione": 317,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Equiparazione a abitazione principale"
+			},
+			{
+				"campo": 26,
+				"descrizione": "Riduzioni",
+				"posizione": 318,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Riduzioni"
+			},
+			{
+				"campo": 27,
+				"descrizione": "Esenzione",
+				"posizione": 319,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Esenzione"
+			},
+			{
+				"campo": 28,
+				"descrizione": "Acquisto",
+				"posizione": 320,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Acquisto"
+			},
+			{
+				"campo": 29,
+				"descrizione": "Cessione",
+				"posizione": 321,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Cessione"
+			},
+			{
+				"campo": 30,
+				"descrizione": "Altro",
+				"posizione": 322,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Altro"
+			},
+			{
+				"campo": 31,
+				"descrizione": "Altro Descrizione",
+				"posizione": 323,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Altro Descrizione"
+			},
+			{
+				"campo": 32,
+				"descrizione": "Inizio/Termine del possesso o variazione d'imposta",
+				"posizione": 423,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Inizio/Termine del possesso o variazione d'imposta"
+			},
+			{
+				"campo": 33,
+				"descrizione": "Dati immobile - Inizio/Termine dell'agevolazione",
+				"posizione": 431,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Inizio/Termine dell'agevolazione"
+			},
+			{
+				"campo": 34,
+				"descrizione": "Agenzia delle Entrate di",
+				"posizione": 432,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Agenzia delle Entrate di"
+			},
+			{
+				"campo": 35,
+				"descrizione": "Estremi del titolo",
+				"posizione": 456,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Estremi del titolo"
+			},
+			{
+				"campo": 36,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Tipo",
+				"posizione": 480,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Tipo"
+			},
+			{
+				"campo": 37,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Autorità",
+				"posizione": 481,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Autorità"
+			},
+			{
+				"campo": 38,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento",
+				"posizione": 581,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento"
+			},
+			{
+				"campo": 39,
+				"descrizione": "Numero d'ordine",
+				"posizione": 589,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 40,
+				"descrizione": "Progressivo immobile",
+				"posizione": 593,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo immobile"
+			},
+			{
+				"campo": 41,
+				"descrizione": "Indicatore di continuità",
+				"posizione": 597,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Indicatore di continuità"
+			},
+			{
+				"campo": 42,
+				"descrizione": "Caratteristiche",
+				"posizione": 598,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Caratteristiche"
+			},
+			{
+				"campo": 43,
+				"descrizione": "Indirizzo",
+				"posizione": 601,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Indirizzo"
+			},
+			{
+				"campo": 44,
+				"descrizione": "T/U",
+				"posizione": 701,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "T/U"
+			},
+			{
+				"campo": 45,
+				"descrizione": "Codice Catastale Immobile/Terreno",
+				"posizione": 702,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Codice Catastale Immobile/Terreno"
+			},
+			{
+				"campo": 46,
+				"descrizione": "Sezione",
+				"posizione": 707,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Sezione"
+			},
+			{
+				"campo": 47,
+				"descrizione": "Foglio",
+				"posizione": 710,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Foglio"
+			},
+			{
+				"campo": 48,
+				"descrizione": "Particella",
+				"posizione": 714,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Particella"
+			},
+			{
+				"campo": 49,
+				"descrizione": "Subalterno",
+				"posizione": 724,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Subalterno"
+			},
+			{
+				"campo": 50,
+				"descrizione": "Categoria/Qualit-",
+				"posizione": 728,
+				"lunghezza": 25,
+				"formato": "AN",
+				"key": "Categoria/Qualit-"
+			},
+			{
+				"campo": 51,
+				"descrizione": "Classe",
+				"posizione": 753,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Classe"
+			},
+			{
+				"campo": 52,
+				"descrizione": "N. Protocollo",
+				"posizione": 763,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "N. Protocollo"
+			},
+			{
+				"campo": 53,
+				"descrizione": "Anno",
+				"posizione": 783,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Anno"
+			},
+			{
+				"campo": 54,
+				"descrizione": "Valore",
+				"posizione": 787,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Valore"
+			},
+			{
+				"campo": 55,
+				"descrizione": "Percentuale di possesso, parte intera",
+				"posizione": 802,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte intera"
+			},
+			{
+				"campo": 56,
+				"descrizione": "Percentuale di possesso, parte decimale",
+				"posizione": 805,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte decimale"
+			},
+			{
+				"campo": 57,
+				"descrizione": "Detrazione per l'abitazione principale",
+				"posizione": 807,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Detrazione per l'abitazione principale"
+			},
+			{
+				"campo": 58,
+				"descrizione": "Equiparazione a abitazione principale",
+				"posizione": 816,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Equiparazione a abitazione principale"
+			},
+			{
+				"campo": 59,
+				"descrizione": "Riduzioni",
+				"posizione": 817,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Riduzioni"
+			},
+			{
+				"campo": 60,
+				"descrizione": "Esenzione",
+				"posizione": 818,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Esenzione"
+			},
+			{
+				"campo": 61,
+				"descrizione": "Acquisto",
+				"posizione": 819,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Acquisto"
+			},
+			{
+				"campo": 62,
+				"descrizione": "Cessione",
+				"posizione": 820,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Cessione"
+			},
+			{
+				"campo": 63,
+				"descrizione": "Altro",
+				"posizione": 821,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Altro"
+			},
+			{
+				"campo": 64,
+				"descrizione": "Altro Descrizione",
+				"posizione": 822,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Altro Descrizione"
+			},
+			{
+				"campo": 65,
+				"descrizione": "Inizio/Termine del possesso o variazione d'imposta",
+				"posizione": 922,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Inizio/Termine del possesso o variazione d'imposta"
+			},
+			{
+				"campo": 66,
+				"descrizione": "Dati immobile - Inizio/Termine dell'agevolazione",
+				"posizione": 930,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Inizio/Termine dell'agevolazione"
+			},
+			{
+				"campo": 67,
+				"descrizione": "Agenzia delle Entrate di",
+				"posizione": 931,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Agenzia delle Entrate di"
+			},
+			{
+				"campo": 68,
+				"descrizione": "Estremi del titolo",
+				"posizione": 955,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Estremi del titolo"
+			},
+			{
+				"campo": 69,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Tipo",
+				"posizione": 979,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Tipo"
+			},
+			{
+				"campo": 70,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Autorità",
+				"posizione": 980,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Autorità"
+			},
+			{
+				"campo": 71,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento",
+				"posizione": 1080,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento"
+			},
+			{
+				"campo": 72,
+				"descrizione": "Annotazioni",
+				"posizione": 1088,
+				"lunghezza": 500,
+				"formato": "AN",
+				"key": "Annotazioni"
+			},
+			{
+				"campo": 73,
+				"descrizione": "Data",
+				"posizione": 1588,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data"
+			},
+			{
+				"campo": 74,
+				"descrizione": "Firma del dichiarante",
+				"posizione": 1596,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma del dichiarante"
+			},
+			{
+				"campo": 75,
+				"descrizione": "Filler",
+				"posizione": 1597,
+				"lunghezza": 301,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 76,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 77,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"E": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale o partita IVA del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale o partita IVA del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Numero d'ordine",
+				"posizione": 90,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Progressivo piattaforma o rigassificatore",
+				"posizione": 94,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo piattaforma o rigassificatore"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Caratteristiche",
+				"posizione": 98,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Caratteristiche"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Denominazione del manufatto",
+				"posizione": 100,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Denominazione del manufatto"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Valore",
+				"posizione": 200,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Valore"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Percentuale di possesso, parte intera",
+				"posizione": 215,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte intera"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Percentuale di possesso, parte decimale",
+				"posizione": 218,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte decimale"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Data di cessazione della funzione del manufatto",
+				"posizione": 220,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di cessazione della funzione del manufatto"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Numero d'ordine",
+				"posizione": 228,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Progressivo piattaforma o rigassificatore",
+				"posizione": 232,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo piattaforma o rigassificatore"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Caratteristiche",
+				"posizione": 236,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Caratteristiche"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Denominazione del manufatto",
+				"posizione": 238,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Denominazione del manufatto"
+			},
+			{
+				"campo": 18,
+				"descrizione": "Valore",
+				"posizione": 338,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Valore"
+			},
+			{
+				"campo": 19,
+				"descrizione": "Percentuale di possesso, parte intera",
+				"posizione": 353,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte intera"
+			},
+			{
+				"campo": 20,
+				"descrizione": "Percentuale di possesso, parte decimale",
+				"posizione": 356,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte decimale"
+			},
+			{
+				"campo": 21,
+				"descrizione": "Data di cessazione della funzione del manufatto",
+				"posizione": 358,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di cessazione della funzione del manufatto"
+			},
+			{
+				"campo": 22,
+				"descrizione": "Numero d'ordine",
+				"posizione": 366,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 23,
+				"descrizione": "Progressivo piattaforma o rigassificatore",
+				"posizione": 370,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo piattaforma o rigassificatore"
+			},
+			{
+				"campo": 24,
+				"descrizione": "Caratteristiche",
+				"posizione": 374,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Caratteristiche"
+			},
+			{
+				"campo": 25,
+				"descrizione": "Denominazione del manufatto",
+				"posizione": 376,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Denominazione del manufatto"
+			},
+			{
+				"campo": 26,
+				"descrizione": "Valore",
+				"posizione": 476,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Valore"
+			},
+			{
+				"campo": 27,
+				"descrizione": "Percentuale di possesso, parte intera",
+				"posizione": 491,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte intera"
+			},
+			{
+				"campo": 28,
+				"descrizione": "Percentuale di possesso, parte decimale",
+				"posizione": 494,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte decimale"
+			},
+			{
+				"campo": 29,
+				"descrizione": "Data di cessazione della funzione del manufatto",
+				"posizione": 496,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di cessazione della funzione del manufatto"
+			},
+			{
+				"campo": 30,
+				"descrizione": "Numero d'ordine",
+				"posizione": 504,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 31,
+				"descrizione": "Progressivo piattaforma o rigassificatore",
+				"posizione": 508,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo piattaforma o rigassificatore"
+			},
+			{
+				"campo": 32,
+				"descrizione": "Caratteristiche",
+				"posizione": 512,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Caratteristiche"
+			},
+			{
+				"campo": 33,
+				"descrizione": "Denominazione del manufatto",
+				"posizione": 514,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Denominazione del manufatto"
+			},
+			{
+				"campo": 34,
+				"descrizione": "Valore",
+				"posizione": 614,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Valore"
+			},
+			{
+				"campo": 35,
+				"descrizione": "Percentuale di possesso, parte intera",
+				"posizione": 629,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte intera"
+			},
+			{
+				"campo": 36,
+				"descrizione": "Percentuale di possesso, parte decimale",
+				"posizione": 632,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte decimale"
+			},
+			{
+				"campo": 37,
+				"descrizione": "Data di cessazione della funzione del manufatto",
+				"posizione": 634,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di cessazione della funzione del manufatto"
+			},
+			{
+				"campo": 38,
+				"descrizione": "Numero d'ordine",
+				"posizione": 642,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 39,
+				"descrizione": "Progressivo piattaforma o rigassificatore",
+				"posizione": 646,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo piattaforma o rigassificatore"
+			},
+			{
+				"campo": 40,
+				"descrizione": "Caratteristiche",
+				"posizione": 650,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Caratteristiche"
+			},
+			{
+				"campo": 41,
+				"descrizione": "Denominazione del manufatto",
+				"posizione": 652,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Denominazione del manufatto"
+			},
+			{
+				"campo": 42,
+				"descrizione": "Valore",
+				"posizione": 752,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Valore"
+			},
+			{
+				"campo": 43,
+				"descrizione": "Percentuale di possesso, parte intera",
+				"posizione": 767,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte intera"
+			},
+			{
+				"campo": 44,
+				"descrizione": "Percentuale di possesso, parte decimale",
+				"posizione": 770,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Percentuale di possesso, parte decimale"
+			},
+			{
+				"campo": 45,
+				"descrizione": "Data di cessazione della funzione del manufatto",
+				"posizione": 772,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di cessazione della funzione del manufatto"
+			},
+			{
+				"campo": 46,
+				"descrizione": "Annotazioni",
+				"posizione": 780,
+				"lunghezza": 500,
+				"formato": "AN",
+				"key": "Annotazioni"
+			},
+			{
+				"campo": 47,
+				"descrizione": "Data",
+				"posizione": 1280,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data"
+			},
+			{
+				"campo": 48,
+				"descrizione": "Firma del dichiarante",
+				"posizione": 1288,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma del dichiarante"
+			},
+			{
+				"campo": 49,
+				"descrizione": "Filler",
+				"posizione": 1289,
+				"lunghezza": 609,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 50,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 51,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"Z": {
+		"fields": [
+			{
+				"campo": 2,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Numero record di tipo 'B'",
+				"posizione": 2,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'B'"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Numero record di tipo 'C'",
+				"posizione": 11,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'C'"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Numero record di tipo 'D'",
+				"posizione": 20,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'D'"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Numero record di tipo 'E'",
+				"posizione": 29,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'E'"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Filler",
+				"posizione": 38,
+				"lunghezza": 1860,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"fields": {
+		"B": {
+			"num": 1,
+			"daCampo": 0,
+			"offset": 0,
+			"fields": {
+				"codFiscale": 2,
+				"codComune": 8,
+				"annoDichiarazione": 6,
+				"annoImposta": 7,
+				"telefonoPrefisso": 11,
+				"telefonoNumero": 12,
+				"email": 13,
+				"denominazione": 14,
+				"indirizzo": 21,
+				"numCiv": 22,
+				"scala": 23,
+				"piano": 24,
+				"interno": 25,
+				"cap": 26,
+				"comune": 27,
+				"provincia": 28,
+				"nome": 15,
+				"sesso": 17,
+				"dataNascita": 16,
+				"comuneNascita": 18,
+				"provinciaNascita": 19
+			}
+		},
+		"C": {
+			"num": 4,
+			"daCampo": 6,
+			"offset": 21,
+			"fields": {
+				"numOrdine": 6,
+				"denominazione": 7,
+				"codFiscale": 11,
+				"indirizzo": 14,
+				"numCiv": 15,
+				"scala": 16,
+				"piano": 17,
+				"interno": 18,
+				"cap": 19,
+				"comune": 20,
+				"provincia": 21,
+				"percPossessoParteIntera": 23,
+				"percPossessoParteDecimale": 24,
+				"detrazione": 25,
+				"firmaContitolare": 26
+			}
+		},
+		"D": {
+			"num": 2,
+			"daCampo": 6,
+			"offset": 33,
+			"fields": {
+				"numOrdine": 6,
+				"progrImmobileDich": 7,
+				"indContinuita": 8,
+				"caratteristica": 9,
+				"indirizzo": 10,
+				"tipo": 11,
+				"codCatastale": 12,
+				"sezione": 13,
+				"foglio": 14,
+				"numero": 15,
+				"subalterno": 16,
+				"categoriaCatasto": 17,
+				"classeCatasto": 18,
+				"protocolloCatasto": 19,
+				"annoCatasto": 20,
+				"valore": 21,
+				"percPossessoParteIntera": 22,
+				"percPossessoParteDecimale": 23,
+				"detrazione": 24,
+				"equiparazioneAp": 25,
+				"codRiduzione": 26,
+				"codEsenzione": 27,
+				"dataVarImposta": 32,
+				"flagAcquisto": 28,
+				"flagCessione": 29,
+				"flagAltro": 30,
+				"descrizioneAltro": 31,
+				"agenziaEntrate": 34,
+				"estremiTitolo": 35,
+				"annotazioni": 72,
+				"inizioTermineAgevolazione": 33,
+				"nonUtilizzDispTipo": 36,
+				"nonUtilizzDispAutorita": 37,
+				"nonUtilizzDispData": 38
+			}
+		}
+	}
+}

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle">
+        <!-- PAGINAZIONE -->
+        <hlayout hflex="1">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <paging sclass="afc-paging"
+                        onPaging="@command('onCaricaAccLiq')"
+                        activePage="@bind(vm.listaOggettiPaginazione.activePage)"
+                        pageSize="@bind(vm.listaOggettiPaginazione.max)"
+                        totalSize="@load(vm.oggetti.numeroRecord)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <!-- LISTA OGGETTI -->
+    <listbox id="oggettiListBox" model="@load(vm.oggetti.record)"
+             selectedItem="@bind(vm.oggettoSelezionato)"
+             onSelect="@command('onSelectOggetto')"
+             emptyMessage="Non sono presenti oggetti"
+             sizedByContent="true"
+             vflex="1"
+             span="true">
+        <listhead>
+            <listheader label="Prg."/>
+            <listheader label="Tipo Operazione"/>
+            <listheader label="Sez."/>
+            <listheader label="Fgl."/>
+            <listheader label="Num."/>
+            <listheader label="Sub."/>
+            <listheader label="Indirizzo"/>
+            <listheader label="Civio"/>
+            <listheader label="Piano"/>
+            <listheader label="Scala"/>
+            <listheader label="Int."/>
+            <listheader label="Zona"/>
+            <listheader label="Ctg."/>
+            <listheader label="Classe"/>
+            <listheader label="Cons."/>
+            <listheader label="Sup.Catastale"/>
+            <listheader label="Rendita"/>
+            <listheader label="TR4 Oggetto"/>
+            <listheader/>
+        </listhead>
+        <template name="model" var="ogg">
+            <listitem>
+                <listcell sclass="destra" label="@load(ogg.progrOggetto)"/>
+                <listcell label="@load(vm.tipiOperazione[ogg.tipoOperazione])"/>
+                <listcell sclass="destra" label="@load(ogg.sezione)"/>
+                <listcell sclass="destra" label="@load(ogg.foglio)"/>
+                <listcell sclass="destra" label="@load(ogg.numero)"/>
+                <listcell sclass="destra" label="@load(ogg.subalterno)"/>
+                <listcell label="@load(ogg.indirizzo)"/>
+                <listcell sclass="destra" label="@load(ogg.numCivico)"/>
+                <listcell label="@load(ogg.piano)"/>
+                <listcell label="@load(ogg.scala)"/>
+                <listcell label="@load(ogg.interno)"/>
+                <listcell label="@load(ogg.zona)"/>
+                <listcell label="@load(ogg.categoria)"/>
+                <listcell label="@load(ogg.classe)"/>
+                <listcell sclass="destra" label="@load(ogg.consistenza)"/>
+                <listcell sclass="destra"
+                          label="@load(!empty ogg.superficieCatastale ? c:formatNumber(ogg.superficieCatastale, '#,##0.00') : null)"/>
+                <listcell sclass="destra"
+                          label="@load(!empty ogg.rendita ? c:formatNumber(ogg.rendita, '€ #,##0.00') : null)"/>
+                <listcell sclass="destra" label="@load(ogg.tr4Oggetto)"/>
+                <listcell sclass="centro">
+                    <image src="/images/afc/16x16/pen.png" style="cursor: pointer;" width="16px" height="16px"
+                           tooltiptext="Apre l'oggetto per la modifica"
+                           onClick="@command('onModificaOggetto', oggetto=ogg)"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

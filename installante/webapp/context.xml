@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+    <Environment name="modulo@istanza" value="${modulo.codice}@${progetto.istanza.codice}" type="java.lang.String"
+                 override="false"/>
+    <Environment name="pathModelli" value="/workarea/modelli/" type="java.lang.String"/>
+
+    <Logger className="org.apache.catalina.logger.FileLogger" prefix="standard." suffix=".txt" timestamp="true"/>
+
+    <Realm className="it.finmatica.login.tomcat.DSRealm" dataSourceName="${global.db.ad4.jndi-name}" validate="false"/>
+
+    <!-- connessione principale -->
+    <ResourceLink global="${global.db.target.jndi-name}" name="jdbc/tr4" type="javax.sql.DataSource"/>
+    <ResourceLink global="${global.db.ad4.jndi-name}" name="jdbc/ad4" type="javax.sql.DataSource"/>
+    <ResourceLink global="jdbc/as4" name="jdbc/as4" type="javax.sql.DataSource"/>
+    <ResourceLink global="jdbc/so4" name="jdbc/so4" type="javax.sql.DataSource"/>
+    <ResourceLink global="jdbc/si4cs" name="jdbc/si4cs" type="javax.sql.DataSource"/>
+</Context>

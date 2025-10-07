@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox>
+        <caption label="Sgravio"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell sclass="destra">
+                        <label value="Motivo"/>
+                    </cell>
+                    <cell colspan="5">
+                        <combobox
+                                model="@load(vm.listaMotivi)" mold="rounded" hflex="1"
+                                selectedItem="@bind(vm.sgravio.motivoSgravio)"
+                                width="90%" readonly="true">
+                            <template name="model" var="mot">
+                                <comboitem
+                                        label="@load(c:cat3(mot.id, ' - ', mot.descrizione)))"
+                                        value="@load(mot.id)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell sclass="destra">
+                        <label value="Tipo"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox onChange="@command('onChangeTipoSgravio')"
+                                  model="@bind(vm.listaTipi)" mold="rounded" hflex="1"
+                                  selectedItem="@bind(vm.sgravio.tipoSgravio)  @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                  readonly="true">
+                            <template name="model" var="tipo">
+                                <comboitem
+                                        label="@load(tipo.value)"
+                                        value="@load(tipo.key)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+
+                    <cell sclass="destra">
+                        <label value="Num."/>
+                    </cell>
+                    <cell>
+                        <intbox value="@load(vm.sgravio.numeroElenco)" hflex="1"
+                                mold="rounded" disabled="true"
+                                style="text-align: right;"/>
+                    </cell>
+
+                    <cell sclass="destra">
+                        <label value="Del"/>
+                    </cell>
+                    <cell colspan="2">
+                        <datebox value="@load(vm.sgravio.dataElenco)" hflex="1" mold="rounded"
+                                 format="dd/MM/yyyy" disabled="true"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="destra">
+                        <label value="Sem."/>
+                    </cell>
+                    <cell colspan="1">
+                        <intbox value="@bind(vm.sgravio.semestri)" hflex="1"
+                                mold="rounded" style="text-align: right;"/>
+                    </cell>
+                    <cell sclass="destra" colspan="1">
+                        <label value="Mesi"/>
+                    </cell>
+                    <cell colspan="1">
+                        <intbox value="@load(vm.sgravio.mesiSgravio)" hflex="1"
+                                mold="rounded" disabled="true"
+                                style="text-align: right;"/>
+                    </cell>
+                    <cell sclass="destra" colspan="1">
+                        <label value="GG"/>
+                    </cell>
+                    <cell colspan="1">
+                        <intbox value="@load(vm.sgravio.giorniSgravio)" hflex="1"
+                                mold="rounded" disabled="true"
+                                style="text-align: right;"/>
+                    </cell>
+                    <cell sclass="destra" colspan="2">
+                        <label value="Automatico"/>
+                    </cell>
+                    <cell colspan="1">
+                        <checkbox checked="@load(vm.sgravio.flagAutomatico eq 'S')"
+                                  disabled="true"/>
+                    </cell>
+                    <cell/>
+                    <cell/>
+                    <cell/>
+                    <cell/>
+                </row>
+            </rows>
+        </grid>
+
+        <space height="5px"/>
+
+        <grid sclass="form">
+            <rows>
+                <row visible="@load(!empty vm.ruolo.importoLordo)">
+                    <cell sclass="destra">
+                        <label value="Netto"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <decimalbox style="text-align: right"
+                                    value="@bind(vm.sgravio.nettoSgravi)" format="€ #,##0.00"
+                                    mold="rounded" hflex="1"
+                                    onChange="@command('onCalcolaImporto', campoModificato='netto')"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <label value="Imp. Netta"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <decimalbox style="text-align: right"
+                                    value="@load(vm.sgravio.imposta)" format="€ #,##0.00"
+                                    mold="rounded" hflex="1" disabled="true"/>
+                    </cell>
+                    <cell width="40px"/>
+                    <cell/>
+                    <cell width="40px"/>
+                    <cell/>
+                </row>
+                <row>
+
+                    <cell sclass="destra">
+                        <label value="Importo"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <decimalbox style="text-align: right"
+                                    value="@bind(vm.sgravio.importo)" format="€ #,##0.00"
+                                    mold="rounded" hflex="1" disabled="@load(!empty vm.ruolo.importoLordo)"/>
+                    </cell>
+
+                    <cell sclass="destra">
+                        <label value="Add.Prov./TEFA" visible="@load(!empty vm.ruolo.importoLordo)"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <hlayout valign="middle" visible="@load(!empty vm.ruolo.importoLordo)">
+                            <decimalbox style="text-align: right"
+                                        value="@bind(vm.sgravio.addizionalePro)" format="€ #,##0.00"
+                                        mold="rounded" hflex="1"
+                                        disabled="@load(!vm.isModificaAddProv)"
+                                        onChange="@command('onCalcolaImporto', campoModificato='addProv')"/>
+                            <image src="/images/afc/16x16/pen.png" visible="@bind(!vm.isModificaAddProv)"
+                                   onClick="@command('onModificaAddProv')" width="16px" style="cursor: pointer;"/>
+                        </hlayout>
+                    </cell>
+                    <cell sclass="destra">
+                        <label value="ECA" visible="@load(!empty vm.ruolo.importoLordo)"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <decimalbox style="text-align: right" visible="@load(!empty vm.ruolo.importoLordo)"
+                                    value="@load(vm.sgravio.addizionaleEca)" format="€ #,##0.00"
+                                    mold="rounded" hflex="1" disabled="true"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <label value="IVA" visible="@load(!empty vm.ruolo.importoLordo)"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <decimalbox style="text-align: right" visible="@load(!empty vm.ruolo.importoLordo)"
+                                    value="@load(vm.sgravio.iva)" format="€ #,##0.00"
+                                    mold="rounded" hflex="1" disabled="true"/>
+                    </cell>
+                </row>
+                <row visible="@load(!empty vm.ruolo.importoLordo)">
+                    <cell/>
+                    <cell/>
+                    <cell sclass="destra">
+                        <label value="C.Pereq."/>
+                    </cell>
+                    <cell sclass="destra">
+                        <hlayout valign="middle">
+                            <decimalbox style="text-align: right"
+                                        value="@bind(vm.sgravio.maggiorazioneTares)" format="€ #,##0.00"
+                                        mold="rounded" hflex="1"
+                                        disabled="@load(!vm.isModificaMaggTARES)"
+                                        onChange="@command('onCalcolaImporto', campoModificato='maggTar')"/>
+                            <image src="/images/afc/16x16/pen.png" visible="@bind(!vm.isModificaMaggTARES)"
+                                   onClick="@command('onModificaMaggTARES')" width="16px" style="cursor: pointer;"/>
+                        </hlayout>
+                    </cell>
+                    <cell/>
+                    <cell/>
+                    <cell/>
+                    <cell/>
+                </row>
+            </rows>
+        </grid>
+
+        <space height="5px"/>
+
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell sclass="destra" hflex="min">
+                        <label value="Note"/>
+                    </cell>
+                    <cell sclass="destra">
+                        <textbox hflex="1" mold="rounded" multiline="true" rows="1" value="@bind(vm.sgravio.note)"
+                                 maxlength="2000"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+    <space height="5px"/>
+    <h:div sclass="barraPulsanti">
+        <h:div>
+            <button label="Salva" onClick="@command('onSalvaSgravio')"
+                    mold="trendy" image="/images/afc/16x16/save.png"/>
+            <button label="Chiudi" onClick="@command('onAnnullaSgravio')"
+                    mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+        </h:div>
+    </h:div>
+</zk>

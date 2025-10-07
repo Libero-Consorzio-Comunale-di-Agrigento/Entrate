@@ -1,0 +1,80 @@
+<groupbox width="100%">
+	<grid sclass="form">
+		<rows>
+			<row>
+				<cell colspan="2" align="right">
+					<label value="Oggetto"/>
+				</cell>
+				<cell colspan="4">
+					<textbox style="text-align: right;" mold="rounded" value="@load(vm.oggetto.id)" disabled="true" width="100%"/>
+				</cell>
+				<cell colspan="2" align="right">
+					<label value="Tipo oggetto "/>
+				</cell>
+				<cell colspan="5" align="rigth">
+					<textbox mold="rounded"
+							 value="@load(c:cat3(vm.oggetto.tipoOggetto.tipoOggetto, ' - ', vm.oggetto.tipoOggetto.descrizione))" disabled="true" width="100%"/>
+				</cell>
+				<cell colspan="2" align="right">
+					<label value="Id Immobile"/>
+				</cell>
+				<cell colspan="2">
+					<textbox style="text-align: right;" mold="rounded" value="@load(vm.oggetto.idImmobile)" tooltiptext="ID Immobile" disabled="true" width="100%"/>
+				</cell>
+			</row>
+			<row>
+				<cell colspan="2" align="right">
+					<label value="Indirizzo"/>
+				</cell>
+				<cell colspan="4">
+					<textbox mold="rounded" value="@load(vm.oggetto.indirizzo)" disabled="true" width="100%"/>
+				</cell>
+				<cell colspan="2" align="right">
+					<label value="Civico"/>
+				</cell>
+				<cell colspan="3" align="left">
+					<intbox mold="rounded" style="text-align: right;" width="45%" value="@bind(vm.oggetto.numCiv)" disabled="true"
+							tooltiptext="Numero" maxlength="6"/>
+					<label value=" / "/>
+					<textbox mold="rounded" style="text-align: right;" width="45%" value="@bind(vm.oggetto.suffisso)" disabled="true"
+							 tooltiptext="Suffisso" maxlength="5"/>
+				</cell>
+				<cell colspan="1" align="right">
+					<label value="Scala"/>
+				</cell>
+				<cell colspan="1" align="left">
+					<textbox mold="rounded" style="text-align: right;" value="@bind(vm.oggetto.scala)" tooltiptext="Numero" disabled="true"
+							 width="90%" maxlength="5"/>
+				</cell>
+				<cell colspan="1" align="right">
+					<label value="Piano"/>
+				</cell>
+				<cell colspan="1" align="left">
+					<textbox mold="rounded" style="text-align: right;" value="@bind(vm.oggetto.piano)" tooltiptext="Numero" disabled="true"
+							 width="90%" maxlength="5"/>
+				</cell>
+				<cell colspan="1" align="right">
+					<label value="Interno"/>
+				</cell>
+				<cell colspan="1" align="left">
+					<intbox mold="rounded" style="text-align: right;" value="@bind(vm.oggetto.interno)" tooltiptext="Numero" disabled="true"
+							width="90%" maxlength="2"/>
+				</cell>
+			</row>
+			<row>
+				<cell colspan="2" align="right">
+					<label value="Indirizzo (Min.)"/>
+				</cell>
+				<cell colspan="4" align="left">
+					<textbox mold="rounded" disabled="true" value="@bind(vm.oggetto.indirizzoLocalita)" width="100%"/>
+				</cell>
+				<cell colspan="2" align="right">
+					<label value="Descrizione "/>
+				</cell>
+				<cell colspan="9" align="left">
+					<textbox mold="rounded" value="@bind(vm.oggetto.descrizione)" disabled="true" width="100%"/>
+				</cell>
+			</row>
+		</rows>
+	</grid>
+</groupbox>

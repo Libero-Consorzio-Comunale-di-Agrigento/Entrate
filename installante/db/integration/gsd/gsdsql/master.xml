@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+
+    <include file="GSDTr4_s.sql" relativeToChangelogFile="true"/>
+    <include file="GSDTr4_v.sql" relativeToChangelogFile="true"/>
+    <include file="Tr4GSD_g.sql" relativeToChangelogFile="true"/>
+    <include file="Tr4GSDpg.sql" relativeToChangelogFile="true"/>
+    <include file="anaana_tr4_fi.sql" relativeToChangelogFile="true"/>
+    <include file="anafam_tr4_fi.sql" relativeToChangelogFile="true"/>
+    <include file="arcvie_tr4_fi.sql" relativeToChangelogFile="true"/>
+    <include file="compile_gsd.sql" relativeToChangelogFile="true"/>
+    <include file="drop_trg_gsd.sql" relativeToChangelogFile="true"/>
+    <include file="Tr4GSD_tr.sql" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

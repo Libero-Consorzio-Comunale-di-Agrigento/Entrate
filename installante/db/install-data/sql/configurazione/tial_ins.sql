@@ -1,0 +1,70 @@
+--liquibase formatted sql
+--changeset dmarotta:20250326_152438_tial_ins stripComments:false
+--validCheckSum: 1:any
+
+ALTER TABLE tipi_aliquota DISABLE ALL TRIGGERS;
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 9, 'IMMOBILI DI CATEGORIA D (ESCLUSI D10)');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 11, 'FABBRICATI D10');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 51, 'TERRENI');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 52, 'TERRENI CON RIDUZIONE');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 53, 'AREE FABBRICABILI');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 61, 'FABBRICATI STRUM. ATTIVITA'' AGRICOLA');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 62, 'PENSIONATI DISABILI RICOVERATI');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 63, 'FABBRICATI COSTRUITI E DESTINATI VENDITA');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 64, 'PENSIONATI AIRE');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 65, 'ESERCIZIO DI ATTIVITÀ INDUSTRIALI, ARTIGIANALI E COMMERCIAL');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 66, 'RURALI STRUMENTALI DIVERSI DA D10');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 67, 'BENI MERCE');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 68, 'CANONE CONCORDATO (RIDUZONE 25%)');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 69, 'COMODATO USO GRATUITO PARENTI 1° GRADO');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 70, 'COMODATO FINANZIARIA 2016');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 1, 'ALIQUOTA BASE');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 2, 'ABITAZIONE PRINCIPALE');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 3, 'IMMOBILI AFFITTATI');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 4, 'IMMOBILI NON AFFITTATI');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 5, 'IMMOBILI DIVERSI DA ABITAZIONI (NEGOZI)');
+
+insert into tipi_aliquota (TIPO_TRIBUTO, TIPO_ALIQUOTA, DESCRIZIONE)
+values ('ICI', 10, 'ABITAZIONI NON PRINCIPALI');
+
+ALTER TABLE tipi_aliquota ENABLE ALL TRIGGERS;

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <window apply="grailsBindComposer"
+            onOK="@command('onCerca')"
+            viewModel="@id('vm') @init('listaCodiciTributoRicercaViewModel')"
+            vflex="1" border="normal" sizable="false" width="700px">
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="@load(vm.titolo)"/>
+            </hlayout>
+        </h:div>
+        <div>
+            <groupbox width="100%">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" hflex="1">
+                                <label value="Codice"/>
+                            </cell>
+                            <cell sclass="destra" colspan="3" hflex="4">
+                                <hlayout valign="middle" hflex="1">
+                                    <label value="Da"/>
+                                    <intbox hflex="1"
+                                            mold="rounded"
+                                            style="text-align: right;"
+                                            value="@bind(vm.filtro.daCodice)"
+                                    />
+                                    <label value="A"/>
+                                    <intbox hflex="1"
+                                            mold="rounded"
+                                            style="text-align: right;"
+                                            value="@bind(vm.filtro.aCodice)"
+                                    />
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row if="#{vm.tipoTributo eq 'CUNI'}">
+                            <cell align="right">
+                                <label value="Nome"/>
+                            </cell>
+                            <cell colspan="3">
+                                <textbox
+                                        hflex="1"
+                                        mold="rounded"
+                                        style="text-align: right; text-transform: uppercase"
+                                        value="@bind(vm.filtro.nome)"
+                                />
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="Descrizione"/>
+                            </cell>
+                            <cell colspan="3">
+                                <textbox
+                                        hflex="1"
+                                        mold="rounded"
+                                        style="text-align: right; text-transform: uppercase"
+                                        value="@bind(vm.filtro.descrizione)"
+                                />
+                            </cell>
+                        </row>
+                        <row if="#{vm.tipoTributo ne 'CUNI'}">
+                            <cell align="right">
+                                <label value="Descrizione ruolo"/>
+                            </cell>
+                            <cell colspan="3">
+                                <textbox
+                                        hflex="1"
+                                        mold="rounded"
+                                        style="text-align: right; text-transform: uppercase"
+                                        value="@bind(vm.filtro.nome)"
+                                />
+                            </cell>
+                        </row>
+                        <row if="#{vm.tipoTributo eq 'CUNI'}">
+                            <cell align="right">
+                                <label value="Tributo precedente"/>
+                            </cell>
+                            <cell>
+                                <textbox
+                                        hflex="1"
+                                        mold="rounded"
+                                        style="text-align: right; text-transform: uppercase"
+                                        value="@bind(vm.filtro.tributoPrecedente)"
+                                />
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load((vm.tipoTributo eq 'CUNI') ? 'Cod.Gruppo Tributo' : 'Numero C/C' )"/>
+                            </cell>
+                            <cell>
+                                <intbox maxlength="8" constraint="no negative"
+                                        hflex="1"
+                                        mold="rounded"
+                                        style="text-align: right; text-transform: uppercase"
+                                        value="@bind(vm.filtro.contoCorrente)"
+                                />
+                            </cell>
+                            <cell align="right">
+                                <label value="@load((vm.tipoTributo eq 'CUNI') ? 'Nome Gruppo Tributo' : 'Descrizione C/C')"/>
+                            </cell>
+                            <cell>
+                                <textbox
+                                        hflex="1"
+                                        mold="rounded"
+                                        style="text-align: right; text-transform: uppercase"
+                                        value="@bind(vm.filtro.descrizioneCc)"
+                                />
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="Stampa C/C"/>
+                            </cell>
+                            <cell>
+                                <radiogroup selectedItem="@bind(vm.filtro.flagStampaCc)">
+                                    <radio value="Tutti" label=" Entrambi " selected="true"/>
+                                    <radio value="Con" label=" Si "/>
+                                    <radio value="Senza" label=" No "/>
+                                </radiogroup>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load((vm.tipoTributo eq 'CUNI') ? 'Sospeso' : 'A Ruolo')"/>
+                            </cell>
+                            <cell>
+                                <radiogroup selectedItem="@bind(vm.filtro.flagRuolo)">
+                                    <radio value="Tutti" label=" Entrambi " selected="true"/>
+                                    <radio value="Con" label=" Si "/>
+                                    <radio value="Senza" label=" No "/>
+                                </radiogroup>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="Calcolo Interessi"/>
+                            </cell>
+                            <cell>
+                                <radiogroup selectedItem="@bind(vm.filtro.flagCalcoloInteressi)">
+                                    <radio value="Tutti" label=" Entrambi " selected="true"/>
+                                    <radio value="Con" label=" Si "/>
+                                    <radio value="Senza" label=" No "/>
+                                </radiogroup>
+                            </cell>
+                            <cell align="right">
+                                <label value="Codice Entrata"/>
+                            </cell>
+                            <cell>
+                                <textbox hflex="1"
+                                         mold="rounded"
+                                         style="text-align: right; text-transform: uppercase"
+                                         value="@bind(vm.filtro.codEntrata)"
+                                />
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button mold="trendy" image="/images/afc/16x16/filter_box.png"
+                            label="Cancella Filtri" onClick="@command('svuotaFiltri')"/>
+                    <button mold="trendy" image="/images/afc/16x16/search.png"
+                            label="Cerca" onClick="@command('onCerca')"/>
+                    <button mold="trendy" image="/images/afc/16x16/close.png"
+                            label="Chiudi" onClick="@command('onChiudi')"/>
+                </h:div>
+            </h:div>
+        </div>
+    </window>
+</zk>

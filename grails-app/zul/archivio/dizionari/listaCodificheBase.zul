@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaCodificheBaseViewModel')" width="100%"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout>
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModificaCodificaBase')"
+                                   disabled="@load(empty vm.tipoCodificaSelezionata or !vm.tipoCodificaSelezionata.modificabile)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   onClick="@command('onAggiungiCodificaBase')"/>
+                    <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                   onClick="@command('onDuplica')"
+                                   disabled="@load(empty vm.tipoCodificaSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                   onClick="@command('onEliminaCodificaBase')"
+                                   disabled="@load(empty vm.tipoCodificaSelezionata
+                                   or (vm.tipoCodifica eq 'recapiti' and vm.tipoCodificaSelezionata.tipo lt 10))"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS'
+                                   disabled="@load(empty vm.listaCodifiche)"
+                                   onClick="@command('onExportXls')"/>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+        <listbox vflex="1" selectedItem="@bind(vm.tipoCodificaSelezionata)" span="true" model="@bind(vm.listaCodifiche)"
+                 emptyMessage="Nessuna codifica" sizedByContent="true">
+            <listhead sizable="true">
+                <listheader label="@load(vm.intestazioneTipo)"/>
+                <listheader if="#{vm.tipoCodifica eq 'cariche'}" label="Codice Soggetto"/>
+                <listheader label="@load(vm.intestazioneDescrizione)"/>
+                <listheader label="@load(vm.intestazioneOrdine)"
+                			visible="@load(vm.tipoCodifica eq 'stati')"/>
+                <listheader if="#{vm.tipoCodifica eq 'cariche'}" label="Online"/>
+            </listhead>
+            <template name="model" var="cod">
+                <listitem onDoubleClick="@command('onModificaCodificaBase')">
+                    <!--Per le codifiche stato il codice deve essere allineato a sinistra, altrimenti a destra per tutti gli altri-->
+                    <listcell if="#{vm.tipoCodifica ne 'stati'}"
+                              label="@load(cod.tipo)" style="text-align: right;"/>
+                    <listcell if="#{vm.tipoCodifica eq 'stati'}"
+                              label="@load(cod.tipo)" style="text-align: left;"/>
+                    <!--Solo per le cariche: codice soggetto-->
+                    <listcell if="#{vm.tipoCodifica eq 'cariche'}"
+                              label="@load(cod.codSoggetto.descrizione)" style="text-transform: uppercase"/>
+                    <!--Per le codifiche di tipi codice attività o stato la descrizione può essere minuscola, per il resto maiuscola-->
+                    <listcell if="#{vm.tipoCodifica eq 'codiciAttività' or vm.tipoCodifica eq 'stati'}"
+                              label="@load(cod.descrizione)"/>
+                    <listcell if="#{vm.tipoCodifica ne 'codiciAttività' and vm.tipoCodifica ne 'stati'}"
+                              label="@load(cod.descrizione)" style="text-transform: uppercase"/>
+                    <listcell label="@load(cod.ordine)" style="text-transform: uppercase; text-align: right;"/>
+                    <!--Solo per le cariche: flag online-->
+                    <listcell if="#{vm.tipoCodifica eq 'cariche'}" style="text-align: center;">
+                        <checkbox checked="@load((cod.flagOnline)?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

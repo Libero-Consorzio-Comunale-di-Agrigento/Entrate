@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <vlayout vflex="1">
+        <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+            <hlayout>
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <label value="Tipologia"/>
+                    <space width="2px"/>
+                    <checkbox label="Ordinari" checked="@bind(vm.cbSpecieRuolo.ORDINARIO)"
+                              onClick="@command('onChangeSpecieRuolo')"/>
+                    <checkbox label="Coattivi" checked="@bind(vm.cbSpecieRuolo.COATTIVO)"
+                              onClick="@command('onChangeSpecieRuolo')"/>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+
+        <listbox hflex="1" vflex="1" span="true" nonselectableTags=""
+                 sizedByContent="true" emptyMessage="Nessun ruolo presente." model="@load(vm.ruoli)">
+            <listhead sizable="true">
+                <listheader label="T.Ruolo" tooltiptext="Tipo Ruolo"/>
+                <listheader label="Anno"/>
+                <listheader label="Anno Em." tooltiptext="Anno Emissione"/>
+                <listheader label="Pr." tooltiptext="Progressivo Emissione"/>
+                <listheader label="Emissione" tooltiptext="Data Emissione"/>
+                <listheader label="Invio" tooltiptext="Data Invio"/>
+                <listheader label="Cod." tooltiptext="Codice Tributo"/>
+                <listheader label="Importo"/>
+                <listheader label="L." tooltiptext="Importo Lordo"/>
+                <listheader label="Sgravio"/>
+                <listheader label="Sp." tooltiptext="Specie Ruolo"/>
+                <listheader label="T.Emiss." tooltiptext="Tipo Emissione"/>
+                <listheader label="Ruolo"/>
+                <listheader label="Mesi"/>
+                <listheader label="Giorni"/>
+            </listhead>
+            <template name="model" var="ruOgg">
+                <listitem>
+                    <listcell sclass="centro"
+                              label="@load(ruOgg.ruolo.tipoRuolo eq 1 ? 'P' : 'S')"/>
+                    <listcell sclass="centro" label="@load(ruOgg.ruolo.annoRuolo)"/>
+                    <listcell sclass="centro" label="@load(ruOgg.ruolo.annoEmissione)"/>
+                    <listcell sclass="destra" label="@load(ruOgg.ruolo.progrEmissione)"/>
+                    <listcell sclass="destra"
+                              label="@load(ruOgg.ruolo.dataEmissione ne null ? c:formatDate(ruOgg.ruolo.dataEmissione, 'dd/MM/yyyy') : '')"/>
+                    <listcell sclass="destra"
+                              label="@load(ruOgg.ruolo.invioConsorzio ne null ? c:formatDate(ruOgg.ruolo.invioConsorzio, 'dd/MM/yyyy') : '')"/>
+                    <listcell sclass="centro" label="@load(ruOgg.codiceTributo.id)"/>
+                    <listcell sclass="destra"
+                              label="@load(ruOgg.importo ne null ? c:formatNumber(ruOgg.importo, '€ #,##0.00'): '')"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ruOgg.importoLordo)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="destra"
+                              label="@load(ruOgg.ruoloContribuente.totaleSgraviCalcolato ne null ? c:formatNumber(ruOgg.ruoloContribuente.totaleSgraviCalcolato, '€#,##0.00'): ''))"/>
+                    <listcell
+                            label="@load(ruOgg.ruolo.specieRuolo ? 'Coattivo' : 'Ordinario')"/>
+                    <listcell
+                            label="@load(ruOgg.ruolo.tipoEmissione eq 'A' ? 'Acconto' : ruOgg.ruolo.tipoEmissione eq 'S' ? 'Saldo' : ruOgg.ruolo.tipoEmissione eq 'T' ? 'Totale' : ruOgg.ruolo.tipoEmissione eq 'X' ? '' : '')"/>
+                    <listcell sclass="destra" label="@load(ruOgg.ruolo.id)"/>
+                    <listcell sclass="destra" label="@load(ruOgg.mesiRuolo)"/>
+                    <listcell sclass="destra" label="@load(ruOgg.giorniRuolo)"/>
+                </listitem>
+            </template>
+        </listbox>
+    </vlayout>
+</zk>

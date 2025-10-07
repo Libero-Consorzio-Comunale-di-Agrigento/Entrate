@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    
+    <!--
+    	Copia quasi identica di : datiLiquidazioneAccertamento.zul
+    	
+    	So che non è bello duplicare ma non ho trovato un metodo più semplice
+    	per utilizzare uno ZUL diversoo per il folder degli oggetti
+     -->
+
+    <space visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI')" height="15px"/>
+    <tabbox id="infoTabBox" orient="vertical" height="350px"
+            onCreate="@command('onCreateInfoTabbox', tabbox=self)">
+        <tabs width="@load((vm.situazione eq 'accManTari') ? '120px' : '90px')">
+            <tab id="pratiche" label="Pratiche"
+                 sclass="@bind(vm.numPraticheRif eq 0 ? '' : 'not-empty')"
+                 visible="@load(vm.accertamento eq 'T')"
+                 selected="@load(vm.accertamento eq 'T')"
+                 onSelect="@command('caricaTab', folder=self.id)"/>
+                 
+            <tab id="oggetti" label="Oggetti"
+                 sclass="@bind(vm.numOggetti eq 0 ? '' : 'not-empty')"
+                 selected="@load((vm.accertamento ne 'T') and (vm.accManTari eq false))"
+                 onSelect="@command('caricaTab', folder=self.id)"
+                 visible="@load((vm.tipoPratica eq 'V') ? (((vm.tipoRavvedimento eq 'V') or (vm.ravvTribMin ne false)) ? false : true) : ((vm.accertamento eq 'T') or (vm.accManTari eq false)))"/>
+            <tab id="localiEdAree" label="@load(c:l('label.locali'))"
+                 sclass="@bind(vm.numLocaliEdAree eq 0 ? '' : 'not-empty')"
+                 selected="@load((vm.accertamento ne 'T') and (vm.accManTari ne false))"
+            	 onSelect="@command('caricaTab', folder=self.id)"
+           		 visible="@load((vm.accertamento ne 'T') and (vm.accManTari ne false))" />
+            <tab id="canoni" label="@load(c:l('label.canoni'))"
+                 sclass="@bind(vm.numCanoni eq 0 ? '' : 'not-empty')"
+                 selected="@load(vm.ravvTribMin ne false)"
+            	 onSelect="@command('caricaTab', folder=self.id)"
+           		 visible="@load((vm.ravvTribMin ne false) and (vm.tipoRavvedimento ne 'V'))" />
+           		 
+            <tab id="sanzioni" label="Sanzioni"
+                 sclass="@bind(vm.numSanzioni eq 0 ? '' : 'not-empty')"
+                 onSelect="@command('caricaTab', folder=self.id)"/>
+            <tab id="iter" label="Iter"
+                 sclass="@bind(vm.numIter eq 0 ? '' : 'not-empty')"
+                 onSelect="@command('caricaTab', folder=self.id)"/>
+            <tab id="rateazione" label="Rateazione" onSelect="@command('caricaTab', folder=self.id)"
+                 sclass="@bind(vm.numRateazioni eq 0 ? '' : 'not-empty')"
+                 visible="@bind(vm.pratica.tipoAtto.tipoAtto eq 90 and !empty vm.pratica.dataNotifica)"/>
+            <tab id="versamenti" label="Versamenti"
+                 onSelect="@command('caricaTab', folder=self.id)"
+                 sclass="@bind(vm.numVersamenti eq 0 ? '' : 'not-empty')"/>
+            <tab id="ruoli" label="Ruoli" disabled="@load(vm.numRuoli eq 0)"
+                 sclass="@bind(vm.numRuoli eq 0 ? '' : 'not-empty')"
+                 visible="@load(vm.tipoPratica ne 'V')"
+                 onSelect="@command('caricaTab', folder=self.id)"/>
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                <include src="/pratiche/folderPraticheRif.zul" id="folderPraticheRif"/>
+            </tabpanel>
+            <tabpanel>
+                <include src="/pratiche/violazioni/folderOggettiAccMan.zul" id="folderOggettiAccMan" vflex="1"/>
+            </tabpanel>
+			<tabpanel>
+				<include src="/pratiche/violazioni/folderLocaliEdAree.zul" id="folderLocaliEdAree"/>
+			</tabpanel>
+            <tabpanel>
+            	<include src="/ufficiotributi/canoneunico/folderCanoni.zul" id="folderCanoni"/>
+            </tabpanel>
+            <tabpanel>
+                <include src="/pratiche/folderSanzioni.zul" id="folderSanzioni"/>
+            </tabpanel>
+            <tabpanel fulfill="iter.onSelect">
+                <include src="/pratiche/folderIter.zul" id="folderIter"/>
+            </tabpanel>
+            <tabpanel fulfill="rateazione.onSelect">
+                <include src="/pratiche/folderRateazione.zul" id="folderRateazione"/>
+            </tabpanel>
+            <tabpanel fulfill="versamenti.onSelect">
+                <include vflex="1" visible="@load(vm.pratica.tipoPratica ne 'V')" src="/pratiche/folderVersamenti.zul"
+                         id="folderVersamenti"/>
+                <include vflex="1" visible="@load(vm.pratica.tipoPratica eq 'V')"
+                         src="/pratiche/folderVersamentiRavvedimento.zul" id="folderVersamentiRavv"/>
+            </tabpanel>
+            <tabpanel fulfill="ruoli.onSelect">
+                <include src="/pratiche/folderRuoli.zul"/>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+</zk>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <tabbox hflex="1" vflex="1">
+        <tabs>
+            <tab label="Pratica"/>
+            <tab label="Rate"
+                 onSelect="@command('onRateTabSelected')"/>
+            <tab label="Versamenti"/>
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                <include src="/pratiche/rateazione/rateazionePratica.zul"/>
+            </tabpanel>
+            <tabpanel>
+                <include src="/pratiche/rateazione/rateazioneRate.zul"/>
+            </tabpanel>
+            <tabpanel>
+                <include src="/pratiche/folderVersamenti.zul"/>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+
+</zk>

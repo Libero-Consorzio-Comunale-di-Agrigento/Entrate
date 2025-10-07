@@ -1,0 +1,2208 @@
+{
+	"<CODICE-BEFLIORE>": {
+		"anno": 2024,
+		"validoDal": "20240521",
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Codice Belfiore",
+				"posizione": 1,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Codice Belfiore"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Data presentazione",
+				"posizione": 22,
+				"lunghezza": 6,
+				"formato": "DT",
+				"key": "Codice Belfiore"
+			}
+		]
+	},
+	"A": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Filler",
+				"posizione": 2,
+				"lunghezza": 14,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Codice fornitura",
+				"posizione": 16,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Codice fornitura"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Tipo fornitore",
+				"posizione": 21,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Tipo fornitore"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Codice fiscale fornitore",
+				"posizione": 23,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale fornitore"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Tipologia dichiarazione",
+				"posizione": 39,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipologia dichiarazione"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Filler",
+				"posizione": 40,
+				"lunghezza": 482,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Progressivo dell'invio telematico",
+				"posizione": 522,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Progressivo dell'invio telematico"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Numero totale degli invii telematici",
+				"posizione": 526,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero totale degli invii telematici"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Filler",
+				"posizione": 530,
+				"lunghezza": 1168,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Spazio riservato al Servizio Telematico",
+				"posizione": 1698,
+				"lunghezza": 200,
+				"formato": "AN",
+				"key": "Spazio riservato al Servizio Telematico"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"B": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Anno della dichiarazione",
+				"posizione": 90,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Anno della dichiarazione"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Periodo d'imposta",
+				"posizione": 94,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Periodo d'imposta"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Codice catastale comune",
+				"posizione": 98,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Codice catastale comune"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Denominazione comune",
+				"posizione": 102,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Denominazione comune"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Denominazione",
+				"posizione": 152,
+				"lunghezza": 60,
+				"formato": "AN",
+				"key": "Denominazione"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Codice fiscale",
+				"posizione": 212,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Codice fiscale"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Telefono - Prefisso",
+				"posizione": 228,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Telefono - Prefisso"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Telefono - Numero",
+				"posizione": 232,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Telefono - Numero"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Indirizzo di posta elettronica",
+				"posizione": 240,
+				"lunghezza": 50,
+				"formato": "AN",
+				"key": "Indirizzo di posta elettronica"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Indirizzo del domicilio fiscale",
+				"posizione": 290,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo del domicilio fiscale"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Numero civico del domicilio fiscale",
+				"posizione": 325,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Numero civico del domicilio fiscale"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Scala del domicilio fiscale",
+				"posizione": 330,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Scala del domicilio fiscale"
+			},
+			{
+				"campo": 18,
+				"descrizione": "Piano del domicilio fiscale",
+				"posizione": 335,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Piano del domicilio fiscale"
+			},
+			{
+				"campo": 19,
+				"descrizione": "Interno del domicilio fiscale",
+				"posizione": 340,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Interno del domicilio fiscale"
+			},
+			{
+				"campo": 20,
+				"descrizione": "C.A.P. del domicilio fiscale",
+				"posizione": 345,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "C.A.P. del domicilio fiscale"
+			},
+			{
+				"campo": 21,
+				"descrizione": "Comune del domicilio fiscale - Località estera",
+				"posizione": 350,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Comune del domicilio fiscale - Località estera"
+			},
+			{
+				"campo": 22,
+				"descrizione": "Provincia (sigla) del domicilio fiscale - EE per stato estero",
+				"posizione": 450,
+				"lunghezza": 2,
+				"formato": "PR",
+				"key": "Provincia (sigla) del domicilio fiscale - EE per stato estero"
+			},
+			{
+				"campo": 23,
+				"descrizione": "Codice Stato estero",
+				"posizione": 452,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero"
+			},
+			{
+				"campo": 24,
+				"descrizione": "Codice fiscale del rappresentante",
+				"posizione": 455,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale del rappresentante"
+			},
+			{
+				"campo": 25,
+				"descrizione": "Codice Carica del rappresentante",
+				"posizione": 471,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Codice Carica del rappresentante"
+			},
+			{
+				"campo": 26,
+				"descrizione": "Cognome del rappresentante",
+				"posizione": 473,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Cognome del rappresentante"
+			},
+			{
+				"campo": 27,
+				"descrizione": "Nome del rappresentante",
+				"posizione": 497,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Nome del rappresentante"
+			},
+			{
+				"campo": 28,
+				"descrizione": "Sesso del rappresentante",
+				"posizione": 517,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Sesso del rappresentante"
+			},
+			{
+				"campo": 29,
+				"descrizione": "Data di nascita del rappresentante",
+				"posizione": 518,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data di nascita del rappresentante"
+			},
+			{
+				"campo": 30,
+				"descrizione": "Comune o stato estero di nascita del rappresentante",
+				"posizione": 526,
+				"lunghezza": 40,
+				"formato": "AN",
+				"key": "Comune o stato estero di nascita del rappresentante"
+			},
+			{
+				"campo": 31,
+				"descrizione": "Sigla della provincia di nascita del rappresentante - EE per stato estero",
+				"posizione": 566,
+				"lunghezza": 2,
+				"formato": "PN",
+				"key": "Sigla della provincia di nascita del rappresentante - EE per stato estero"
+			},
+			{
+				"campo": 32,
+				"descrizione": "Residenza all'estero",
+				"posizione": 568,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Residenza all'estero"
+			},
+			{
+				"campo": 33,
+				"descrizione": "Codice Stato estero di residenza",
+				"posizione": 569,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Codice Stato estero di residenza"
+			},
+			{
+				"campo": 34,
+				"descrizione": "Stato federato provincia contea di residenza",
+				"posizione": 572,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Stato federato provincia contea di residenza"
+			},
+			{
+				"campo": 35,
+				"descrizione": "Località di residenza estera",
+				"posizione": 596,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Località di residenza estera"
+			},
+			{
+				"campo": 36,
+				"descrizione": "Indirizzo Estero",
+				"posizione": 620,
+				"lunghezza": 35,
+				"formato": "AN",
+				"key": "Indirizzo Estero"
+			},
+			{
+				"campo": 37,
+				"descrizione": "Telefono del rappresentante: prefisso",
+				"posizione": 655,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Telefono del rappresentante: prefisso"
+			},
+			{
+				"campo": 38,
+				"descrizione": "Telefono del rappresentante: numero",
+				"posizione": 659,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Telefono del rappresentante: numero"
+			},
+			{
+				"campo": 39,
+				"descrizione": "Codice fiscale società o ente dichiarante",
+				"posizione": 667,
+				"lunghezza": 11,
+				"formato": "CN",
+				"key": "Codice fiscale società o ente dichiarante"
+			},
+			{
+				"campo": 40,
+				"descrizione": "Numero immobili presenti nel quadro A",
+				"posizione": 678,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero immobili presenti nel quadro A"
+			},
+			{
+				"campo": 41,
+				"descrizione": "Numero d'ordine presenti nel quadro A",
+				"posizione": 687,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero d'ordine presenti nel quadro A"
+			},
+			{
+				"campo": 42,
+				"descrizione": "Numero immobili presenti nel quadro B",
+				"posizione": 696,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero immobili presenti nel quadro B"
+			},
+			{
+				"campo": 43,
+				"descrizione": "Indicatore di compilazione del quadro C",
+				"posizione": 705,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Indicatore di compilazione del quadro C"
+			},
+			{
+				"campo": 44,
+				"descrizione": "Indicatore di compilazione del quadro D",
+				"posizione": 706,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Indicatore di compilazione del quadro D"
+			},
+			{
+				"campo": 45,
+				"descrizione": "Firma del dichiarante",
+				"posizione": 707,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma del dichiarante"
+			},
+			{
+				"campo": 46,
+				"descrizione": "Codice fiscale dell'intermediario",
+				"posizione": 708,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale dell'intermediario"
+			},
+			{
+				"campo": 47,
+				"descrizione": "Numero di iscrizione all'albo dei C.A.F.",
+				"posizione": 724,
+				"lunghezza": 5,
+				"formato": "NU",
+				"key": "Numero di iscrizione all'albo dei C.A.F."
+			},
+			{
+				"campo": 48,
+				"descrizione": "Data dell'impegno",
+				"posizione": 729,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Data dell'impegno"
+			},
+			{
+				"campo": 49,
+				"descrizione": "Firma dell'intermediario",
+				"posizione": 737,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Firma dell'intermediario"
+			},
+			{
+				"campo": 50,
+				"descrizione": "Filler",
+				"posizione": 738,
+				"lunghezza": 1106,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 51,
+				"descrizione": "Spazio riservato al Servizio Telematico",
+				"posizione": 1844,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Spazio riservato al Servizio Telematico"
+			},
+			{
+				"campo": 52,
+				"descrizione": "Filler",
+				"posizione": 1864,
+				"lunghezza": 34,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 53,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 54,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"C": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale o partita IVA del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale o partita IVA del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Numero d'ordine",
+				"posizione": 90,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Dati immobile - Progressivo immobile",
+				"posizione": 94,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Dati immobile - Progressivo immobile"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Dati immobile - Indicatore di continuità",
+				"posizione": 98,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Indicatore di continuità"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Dati immobile - Caratteristiche",
+				"posizione": 99,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Caratteristiche"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Dati immobile - Indirizzo",
+				"posizione": 100,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Indirizzo"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Dati immobile - T/U",
+				"posizione": 200,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - T/U"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Dati immobile - Codice Catastale Immobile/Terreno",
+				"posizione": 201,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Dati immobile - Codice Catastale Immobile/Terreno"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Dati immobile - Sezione",
+				"posizione": 206,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Dati immobile - Sezione"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Dati immobile - Foglio",
+				"posizione": 209,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Foglio"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Dati immobile - Particella",
+				"posizione": 213,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Dati immobile - Particella"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Dati immobile - Subalterno",
+				"posizione": 223,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Subalterno"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Dati immobile - Categoria/Qualità",
+				"posizione": 227,
+				"lunghezza": 25,
+				"formato": "AN",
+				"key": "Dati immobile - Categoria/Qualità"
+			},
+			{
+				"campo": 18,
+				"descrizione": "Dati immobile - Classe",
+				"posizione": 252,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Dati immobile - Classe"
+			},
+			{
+				"campo": 19,
+				"descrizione": "Dati immobile - N. Protocollo",
+				"posizione": 262,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Dati immobile - N. Protocollo"
+			},
+			{
+				"campo": 20,
+				"descrizione": "Dati immobile - Anno",
+				"posizione": 282,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Anno"
+			},
+			{
+				"campo": 21,
+				"descrizione": "Dati immobile - Valore",
+				"posizione": 286,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Dati immobile - Valore"
+			},
+			{
+				"campo": 22,
+				"descrizione": "Dati immobile - Percentuale di possesso - parte intera",
+				"posizione": 301,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di possesso - parte intera"
+			},
+			{
+				"campo": 23,
+				"descrizione": "Dati immobile - Percentuale di possesso - parte decimale",
+				"posizione": 304,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di possesso - parte decimale"
+			},
+			{
+				"campo": 24,
+				"descrizione": "Dati immobile - Riduzioni",
+				"posizione": 306,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Riduzioni"
+			},
+			{
+				"campo": 25,
+				"descrizione": "Dati immobile - Esenzione",
+				"posizione": 307,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Esenzione"
+			},
+			{
+				"campo": 26,
+				"descrizione": "Dati immobile - Acquisto",
+				"posizione": 308,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Acquisto"
+			},
+			{
+				"campo": 27,
+				"descrizione": "Dati immobile - Cessione",
+				"posizione": 309,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Cessione"
+			},
+			{
+				"campo": 28,
+				"descrizione": "Dati immobile - Altro",
+				"posizione": 310,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Altro"
+			},
+			{
+				"campo": 29,
+				"descrizione": "Dati immobile - Altro Descrizione",
+				"posizione": 311,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Altro Descrizione"
+			},
+			{
+				"campo": 30,
+				"descrizione": "Dati immobile - Inizio/Termine del possesso o variazione d'imposta",
+				"posizione": 411,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Dati immobile - Inizio/Termine del possesso o variazione d'imposta"
+			},
+			{
+				"campo": 31,
+				"descrizione": "Dati immobile - Inizio/Termine dell'agevolazione",
+				"posizione": 419,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Inizio/Termine dell'agevolazione"
+			},
+			{
+				"campo": 32,
+				"descrizione": "Dati immobile - Agenzia delle Entrate di",
+				"posizione": 420,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Dati immobile - Agenzia delle Entrate di"
+			},
+			{
+				"campo": 33,
+				"descrizione": "Dati immobile - Estremi del titolo",
+				"posizione": 444,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Dati immobile - Estremi del titolo"
+			},
+			{
+				"campo": 34,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Tipo",
+				"posizione": 468,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Tipo"
+			},
+			{
+				"campo": 35,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Autorità",
+				"posizione": 469,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Autorità"
+			},
+			{
+				"campo": 36,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento",
+				"posizione": 569,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento"
+			},
+			{
+				"campo": 37,
+				"descrizione": "Numero d'ordine",
+				"posizione": 577,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Numero d'ordine"
+			},
+			{
+				"campo": 38,
+				"descrizione": "Dati immobile - Progressivo immobile",
+				"posizione": 581,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Dati immobile - Progressivo immobile"
+			},
+			{
+				"campo": 39,
+				"descrizione": "Dati immobile - Indicatore di continuità",
+				"posizione": 585,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Indicatore di continuità"
+			},
+			{
+				"campo": 40,
+				"descrizione": "Dati immobile - Caratteristiche",
+				"posizione": 586,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Caratteristiche"
+			},
+			{
+				"campo": 41,
+				"descrizione": "Dati immobile - Indirizzo",
+				"posizione": 587,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Indirizzo"
+			},
+			{
+				"campo": 42,
+				"descrizione": "Dati immobile - T/U",
+				"posizione": 687,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - T/U"
+			},
+			{
+				"campo": 43,
+				"descrizione": "Dati immobile - Codice Catastale Immobile/Terreno",
+				"posizione": 688,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Dati immobile - Codice Catastale Immobile/Terreno"
+			},
+			{
+				"campo": 44,
+				"descrizione": "Dati immobile - Sezione",
+				"posizione": 693,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Dati immobile - Sezione"
+			},
+			{
+				"campo": 45,
+				"descrizione": "Dati immobile - Foglio",
+				"posizione": 696,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Foglio"
+			},
+			{
+				"campo": 46,
+				"descrizione": "Dati immobile - Particella",
+				"posizione": 700,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Dati immobile - Particella"
+			},
+			{
+				"campo": 47,
+				"descrizione": "Dati immobile - Subalterno",
+				"posizione": 710,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Subalterno"
+			},
+			{
+				"campo": 48,
+				"descrizione": "Dati immobile - Categoria/Qualità",
+				"posizione": 714,
+				"lunghezza": 25,
+				"formato": "AN",
+				"key": "Dati immobile - Categoria/Qualità"
+			},
+			{
+				"campo": 49,
+				"descrizione": "Dati immobile - Classe",
+				"posizione": 739,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Dati immobile - Classe"
+			},
+			{
+				"campo": 50,
+				"descrizione": "Dati immobile - N. Protocollo",
+				"posizione": 749,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Dati immobile - N. Protocollo"
+			},
+			{
+				"campo": 51,
+				"descrizione": "Dati immobile - Anno",
+				"posizione": 769,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Anno"
+			},
+			{
+				"campo": 52,
+				"descrizione": "Dati immobile - Valore",
+				"posizione": 773,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Dati immobile - Valore"
+			},
+			{
+				"campo": 53,
+				"descrizione": "Dati immobile - Percentuale di possesso - parte intera",
+				"posizione": 788,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di possesso - parte intera"
+			},
+			{
+				"campo": 54,
+				"descrizione": "Dati immobile - Percentuale di possesso -  parte decimale",
+				"posizione": 791,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di possesso -  parte decimale"
+			},
+			{
+				"campo": 55,
+				"descrizione": "Dati immobile - Riduzioni",
+				"posizione": 793,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Riduzioni"
+			},
+			{
+				"campo": 56,
+				"descrizione": "Dati immobile - Esenzione",
+				"posizione": 794,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Esenzione"
+			},
+			{
+				"campo": 57,
+				"descrizione": "Dati immobile - Acquisto",
+				"posizione": 795,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Acquisto"
+			},
+			{
+				"campo": 58,
+				"descrizione": "Dati immobile - Cessione",
+				"posizione": 796,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Cessione"
+			},
+			{
+				"campo": 59,
+				"descrizione": "Dati immobile - Altro",
+				"posizione": 797,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Altro"
+			},
+			{
+				"campo": 60,
+				"descrizione": "Dati immobile - Altro Descrizione",
+				"posizione": 798,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Altro Descrizione"
+			},
+			{
+				"campo": 61,
+				"descrizione": "Dati immobile - Inizio/Termine del possesso o variazione d'imposta",
+				"posizione": 898,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Dati immobile - Inizio/Termine del possesso o variazione d'imposta"
+			},
+			{
+				"campo": 62,
+				"descrizione": "Dati immobile - Inizio/Termine dell'agevolazione",
+				"posizione": 906,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Inizio/Termine dell'agevolazione"
+			},
+			{
+				"campo": 63,
+				"descrizione": "Dati immobile - Agenzia delle Entrate di",
+				"posizione": 907,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Dati immobile - Agenzia delle Entrate di"
+			},
+			{
+				"campo": 64,
+				"descrizione": "Dati immobile - Estremi del titolo",
+				"posizione": 931,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Dati immobile - Estremi del titolo"
+			},
+			{
+				"campo": 65,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Tipo",
+				"posizione": 955,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Tipo"
+			},
+			{
+				"campo": 66,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Autorità",
+				"posizione": 956,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Autorità"
+			},
+			{
+				"campo": 67,
+				"descrizione": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento",
+				"posizione": 1056,
+				"lunghezza": 8,
+				"formato": "DT",
+				"key": "Dati immobile - Non utilizzabili / Non disponibili - Data denuncia / provvedimento"
+			},
+			{
+				"campo": 68,
+				"descrizione": "Annotazioni",
+				"posizione": 1064,
+				"lunghezza": 500,
+				"formato": "AN",
+				"key": "Annotazioni"
+			},
+			{
+				"campo": 69,
+				"descrizione": "Filler",
+				"posizione": 1564,
+				"lunghezza": 334,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 70,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 71,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"D": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale o partita IVA del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale o partita IVA del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Dati immobile - Numero d'ordine",
+				"posizione": 90,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Dati immobile - Numero d'ordine"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Dati immobile - Progressivo immobile",
+				"posizione": 94,
+				"lunghezza": 4,
+				"formato": "NU",
+				"key": "Dati immobile - Progressivo immobile"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Dati immobile - Indicatore di continuità",
+				"posizione": 98,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Indicatore di continuità"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività assistenziali",
+				"posizione": 99,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività assistenziali"
+			},
+			{
+				"campo": 10,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività previdenziali",
+				"posizione": 100,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività previdenziali"
+			},
+			{
+				"campo": 11,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività sanitarie",
+				"posizione": 101,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività sanitarie"
+			},
+			{
+				"campo": 12,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività didattiche",
+				"posizione": 102,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività didattiche"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività ricettive",
+				"posizione": 103,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività ricettive"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività culturali",
+				"posizione": 104,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività culturali"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività ricreative",
+				"posizione": 105,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività ricreative"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività sportive",
+				"posizione": 106,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività sportive"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività di religione e di culto",
+				"posizione": 107,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività di religione e di culto"
+			},
+			{
+				"campo": 18,
+				"descrizione": "Dati immobile - Tipologia attività svolta: attività di ricerca scientifica",
+				"posizione": 108,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Tipologia attività svolta: attività di ricerca scientifica"
+			},
+			{
+				"campo": 19,
+				"descrizione": "Dati immobile - Caratteristiche",
+				"posizione": 109,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - Caratteristiche"
+			},
+			{
+				"campo": 20,
+				"descrizione": "Dati immobile - Indirizzo",
+				"posizione": 110,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Indirizzo"
+			},
+			{
+				"campo": 21,
+				"descrizione": "Dati immobile - T/U",
+				"posizione": 210,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile - T/U"
+			},
+			{
+				"campo": 22,
+				"descrizione": "Dati immobile - Codice Catastale Immobile/Terreno",
+				"posizione": 211,
+				"lunghezza": 5,
+				"formato": "AN",
+				"key": "Dati immobile - Codice Catastale Immobile/Terreno"
+			},
+			{
+				"campo": 23,
+				"descrizione": "Dati immobile - Sezione",
+				"posizione": 216,
+				"lunghezza": 3,
+				"formato": "AN",
+				"key": "Dati immobile - Sezione"
+			},
+			{
+				"campo": 24,
+				"descrizione": "Dati immobile - Foglio",
+				"posizione": 219,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Foglio"
+			},
+			{
+				"campo": 25,
+				"descrizione": "Dati immobile - Particella",
+				"posizione": 223,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Dati immobile - Particella"
+			},
+			{
+				"campo": 26,
+				"descrizione": "Dati immobile - Subalterno",
+				"posizione": 233,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Subalterno"
+			},
+			{
+				"campo": 27,
+				"descrizione": "Dati immobile - Categoria/Qualità",
+				"posizione": 237,
+				"lunghezza": 25,
+				"formato": "AN",
+				"key": "Dati immobile - Categoria/Qualità"
+			},
+			{
+				"campo": 28,
+				"descrizione": "Dati immobile - Classe",
+				"posizione": 262,
+				"lunghezza": 10,
+				"formato": "AN",
+				"key": "Dati immobile - Classe"
+			},
+			{
+				"campo": 29,
+				"descrizione": "Dati immobile - N. Protocollo",
+				"posizione": 272,
+				"lunghezza": 20,
+				"formato": "AN",
+				"key": "Dati immobile - N. Protocollo"
+			},
+			{
+				"campo": 30,
+				"descrizione": "Dati immobile - Anno",
+				"posizione": 292,
+				"lunghezza": 4,
+				"formato": "AN",
+				"key": "Dati immobile - Anno"
+			},
+			{
+				"campo": 31,
+				"descrizione": "Dati immobile - Valore",
+				"posizione": 296,
+				"lunghezza": 15,
+				"formato": "NU",
+				"key": "Dati immobile - Valore"
+			},
+			{
+				"campo": 32,
+				"descrizione": "Dati immobile - Percentuale di possesso - parte intera",
+				"posizione": 311,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di possesso - parte intera"
+			},
+			{
+				"campo": 33,
+				"descrizione": "Dati immobile - Percentuale di possesso - parte decimale",
+				"posizione": 314,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di possesso - parte decimale"
+			},
+			{
+				"campo": 34,
+				"descrizione": "Dati immobile - Riduzioni",
+				"posizione": 316,
+				"lunghezza": 1,
+				"formato": "NU",
+				"key": "Dati immobile - Riduzioni"
+			},
+			{
+				"campo": 35,
+				"descrizione": "Dati immobile - Esenzione",
+				"posizione": 317,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Esenzione"
+			},
+			{
+				"campo": 36,
+				"descrizione": "Dati immobile - Acquisto",
+				"posizione": 318,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Acquisto"
+			},
+			{
+				"campo": 37,
+				"descrizione": "Dati immobile - Cessione",
+				"posizione": 319,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Cessione"
+			},
+			{
+				"campo": 38,
+				"descrizione": "Dati immobile - Altro",
+				"posizione": 320,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Altro"
+			},
+			{
+				"campo": 39,
+				"descrizione": "Dati immobile - Altro Descrizione",
+				"posizione": 321,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile - Altro Descrizione"
+			},
+			{
+				"campo": 40,
+				"descrizione": "Dati immobile - Inizio/Termine del possesso o variazione d'imposta",
+				"posizione": 421,
+				"lunghezza": 8,
+				"formato": "AN",
+				"key": "Dati immobile - Inizio/Termine del possesso o variazione d'imposta"
+			},
+			{
+				"campo": 41,
+				"descrizione": "Dati immobile – Inizio/Termine dell’agevolazione",
+				"posizione": 429,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile – Inizio/Termine dell’agevolazione"
+			},
+			{
+				"campo": 42,
+				"descrizione": "Dati immobile - Agenzia delle Entrate di",
+				"posizione": 430,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Dati immobile - Agenzia delle Entrate di"
+			},
+			{
+				"campo": 43,
+				"descrizione": "Dati immobile - Estremi del titolo",
+				"posizione": 454,
+				"lunghezza": 24,
+				"formato": "AN",
+				"key": "Dati immobile - Estremi del titolo"
+			},
+			{
+				"campo": 44,
+				"descrizione": "Dati immobile – Comodato / immobili strutturali - Tipo",
+				"posizione": 478,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Dati immobile – Comodato / immobili strutturali - Tipo"
+			},
+			{
+				"campo": 45,
+				"descrizione": "Dati immobile – Comodato / immobili strutturali - Comodatario",
+				"posizione": 479,
+				"lunghezza": 100,
+				"formato": "AN",
+				"key": "Dati immobile – Comodato / immobili strutturali - Comodatario"
+			},
+			{
+				"campo": 46,
+				"descrizione": "Dati immobile - Cm (Corrispettivo medio percepito dall’ente non commerciale)",
+				"posizione": 579,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Dati immobile - Cm (Corrispettivo medio percepito dall’ente non commerciale)"
+			},
+			{
+				"campo": 47,
+				"descrizione": "Dati immobile - Cms (Costo medio per studente pubblicato sul sito internet del ministero competente)",
+				"posizione": 588,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Dati immobile - Cms (Costo medio per studente pubblicato sul sito internet del ministero competente)"
+			},
+			{
+				"campo": 48,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte intera",
+				"posizione": 597,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte intera"
+			},
+			{
+				"campo": 49,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte decimale",
+				"posizione": 600,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte decimale"
+			},
+			{
+				"campo": 50,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte Intera",
+				"posizione": 602,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte Intera"
+			},
+			{
+				"campo": 51,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte decimale",
+				"posizione": 605,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte decimale"
+			},
+			{
+				"campo": 52,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte intera",
+				"posizione": 607,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte intera"
+			},
+			{
+				"campo": 53,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte decimale",
+				"posizione": 610,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte decimale"
+			},
+			{
+				"campo": 54,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte Intera",
+				"posizione": 612,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte Intera"
+			},
+			{
+				"campo": 55,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte decimale",
+				"posizione": 615,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte decimale"
+			},
+			{
+				"campo": 56,
+				"descrizione": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte intera",
+				"posizione": 617,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte intera"
+			},
+			{
+				"campo": 57,
+				"descrizione": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte decimale",
+				"posizione": 620,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte decimale"
+			},
+			{
+				"campo": 58,
+				"descrizione": "Dati immobile - Percentuale di imponibilità. Parte intera",
+				"posizione": 622,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di imponibilità. Parte intera"
+			},
+			{
+				"campo": 59,
+				"descrizione": "Dati immobile - Percentuale di imponibilità. Parte decimale",
+				"posizione": 625,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di imponibilità. Parte decimale"
+			},
+			{
+				"campo": 60,
+				"descrizione": "Dati immobile - Valore da considerare ai fini dell'applicazione IMU ai sensi dell’art. 5 del Regolamento",
+				"posizione": 627,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Dati immobile - Valore da considerare ai fini dell'applicazione IMU ai sensi dell’art. 5 del Regolamento"
+			},
+			{
+				"campo": 61,
+				"descrizione": "Dati immobile - Valore da considerare ai fini dell’applicazione/esenzione IMU ai sensi della lett. c) del comma 3 dell’art. 4 del Regolamento",
+				"posizione": 639,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Dati immobile - Valore da considerare ai fini dell’applicazione/esenzione IMU ai sensi della lett. c) del comma 3 dell’art. 4 del Regolamento"
+			},
+			{
+				"campo": 62,
+				"descrizione": "Dati immobile - Caso Cm<Cms",
+				"posizione": 651,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Caso Cm<Cms"
+			},
+			{
+				"campo": 63,
+				"descrizione": "Dati immobile - Caso Cm>=Cms",
+				"posizione": 652,
+				"lunghezza": 1,
+				"formato": "CB",
+				"key": "Dati immobile - Caso Cm>=Cms"
+			},
+			{
+				"campo": 64,
+				"descrizione": "Dati immobile - Rapporto percentuale Cms/Cm. Parte intera",
+				"posizione": 653,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale Cms/Cm. Parte intera"
+			},
+			{
+				"campo": 65,
+				"descrizione": "Dati immobile - Rapporto percentuale Cms/Cm. Parte decimale",
+				"posizione": 656,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale Cms/Cm. Parte decimale"
+			},
+			{
+				"campo": 66,
+				"descrizione": "Dati immobile - Valore parziale da assoggettare a IMU",
+				"posizione": 658,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Dati immobile - Valore parziale da assoggettare a IMU"
+			},
+			{
+				"campo": 67,
+				"descrizione": "Dati immobile - Valore complessivo da assoggettare a IMU",
+				"posizione": 670,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Dati immobile - Valore complessivo da assoggettare a IMU"
+			},
+			{
+				"campo": 68,
+				"descrizione": "Dati immobile - Cenc (Corrispettivo medio percepito dall’ente non commerciale)",
+				"posizione": 682,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Dati immobile - Cenc (Corrispettivo medio percepito dall’ente non commerciale)"
+			},
+			{
+				"campo": 69,
+				"descrizione": "Dati immobile - Cm (Corrispettivo medio previsto per analoghe attività svolte con modalità commerciali nello stesso ambito territoriale)",
+				"posizione": 691,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Dati immobile - Cm (Corrispettivo medio previsto per analoghe attività svolte con modalità commerciali nello stesso ambito territoriale)"
+			},
+			{
+				"campo": 70,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte intera",
+				"posizione": 700,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte intera"
+			},
+			{
+				"campo": 71,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte decimale",
+				"posizione": 703,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile. Parte decimale"
+			},
+			{
+				"campo": 72,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte intera",
+				"posizione": 705,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte intera"
+			},
+			{
+				"campo": 73,
+				"descrizione": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte decimale",
+				"posizione": 708,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale superficie per attività commerciali/superficie totale dell’immobile per giorni di utilizzo/365. Parte decimale"
+			},
+			{
+				"campo": 74,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte intera",
+				"posizione": 710,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte intera"
+			},
+			{
+				"campo": 75,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte decimale",
+				"posizione": 713,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti. Parte decimale"
+			},
+			{
+				"campo": 76,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte intera",
+				"posizione": 715,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte intera"
+			},
+			{
+				"campo": 77,
+				"descrizione": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte decimale",
+				"posizione": 718,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale numero soggetti a modalità commerciali/numero totale soggetti per giorni di utilizzo/365. Parte decimale"
+			},
+			{
+				"campo": 78,
+				"descrizione": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte intera",
+				"posizione": 720,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte intera"
+			},
+			{
+				"campo": 79,
+				"descrizione": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte decimale",
+				"posizione": 723,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Rapporto percentuale giorni utilizzo con modalità commerciali/365 giorni. Parte decimale"
+			},
+			{
+				"campo": 80,
+				"descrizione": "Dati immobile - Percentuale di imponibilità. Parte intera",
+				"posizione": 725,
+				"lunghezza": 3,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di imponibilità. Parte intera"
+			},
+			{
+				"campo": 81,
+				"descrizione": "Dati immobile - Percentuale di imponibilità. Parte decimale",
+				"posizione": 728,
+				"lunghezza": 2,
+				"formato": "NU",
+				"key": "Dati immobile - Percentuale di imponibilità. Parte decimale"
+			},
+			{
+				"campo": 82,
+				"descrizione": "Dati immobile - Valore da considerare ai fini dell'applicazione IMU ai sensi dell’art. 5 del Regolamento",
+				"posizione": 730,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Dati immobile - Valore da considerare ai fini dell'applicazione IMU ai sensi dell’art. 5 del Regolamento"
+			},
+			{
+				"campo": 83,
+				"descrizione": "Annotazioni",
+				"posizione": 742,
+				"lunghezza": 500,
+				"formato": "AN",
+				"key": "Annotazioni"
+			},
+			{
+				"campo": 84,
+				"descrizione": "Filler",
+				"posizione": 1242,
+				"lunghezza": 656,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 85,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 86,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"E": {
+		"fields": [
+			{
+				"campo": 1,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 2,
+				"descrizione": "Codice fiscale del soggetto dichiarante",
+				"posizione": 2,
+				"lunghezza": 16,
+				"formato": "CF",
+				"key": "Codice fiscale del soggetto dichiarante"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Progressivo modulo",
+				"posizione": 18,
+				"lunghezza": 8,
+				"formato": "NU",
+				"key": "Progressivo modulo"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Filler",
+				"posizione": 26,
+				"lunghezza": 48,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Identificativo del produttore del software (codice fiscale)",
+				"posizione": 74,
+				"lunghezza": 16,
+				"formato": "AN",
+				"key": "Identificativo del produttore del software (codice fiscale)"
+			},
+			{
+				"campo": 6,
+				"descrizione": "IMU dovuta",
+				"posizione": 90,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "IMU dovuta"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Eccedenza IMU risultante dalla precedente dichiarazione",
+				"posizione": 102,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Eccedenza IMU risultante dalla precedente dichiarazione"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Eccedenza IMU risultante dalla precedente dichiarazione compensata nel mod. F24",
+				"posizione": 114,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Eccedenza IMU risultante dalla precedente dichiarazione compensata nel mod. F24"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Rate IMU versate",
+				"posizione": 126,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Rate IMU versate"
+			},
+			{
+				"campo": 10,
+				"descrizione": "IMU a debito",
+				"posizione": 138,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "IMU a debito"
+			},
+			{
+				"campo": 11,
+				"descrizione": "IMU a credito",
+				"posizione": 150,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "IMU a credito"
+			},
+			{
+				"campo": 12,
+				"descrizione": "IMU a credito risultante dalla presente dichiarazione",
+				"posizione": 162,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "IMU a credito risultante dalla presente dichiarazione"
+			},
+			{
+				"campo": 13,
+				"descrizione": "Credito IMU di cui si chiede il rimborso",
+				"posizione": 174,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Credito IMU di cui si chiede il rimborso"
+			},
+			{
+				"campo": 14,
+				"descrizione": "Credito IMU da utilizzare in compensazione",
+				"posizione": 186,
+				"lunghezza": 12,
+				"formato": "NU",
+				"key": "Credito IMU da utilizzare in compensazione"
+			},
+			{
+				"campo": 15,
+				"descrizione": "Filler",
+				"posizione": 198,
+				"lunghezza": 1700,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 16,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 17,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"Z": {
+		"fields": [
+			{
+				"campo": 2,
+				"descrizione": "Tipo record",
+				"posizione": 1,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Tipo record"
+			},
+			{
+				"campo": 3,
+				"descrizione": "Numero record di tipo 'B'",
+				"posizione": 2,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'B'"
+			},
+			{
+				"campo": 4,
+				"descrizione": "Numero record di tipo 'C'",
+				"posizione": 11,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'C'"
+			},
+			{
+				"campo": 5,
+				"descrizione": "Numero record di tipo 'D'",
+				"posizione": 20,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'D'"
+			},
+			{
+				"campo": 6,
+				"descrizione": "Numero record di tipo 'E'",
+				"posizione": 29,
+				"lunghezza": 9,
+				"formato": "NU",
+				"key": "Numero record di tipo 'E'"
+			},
+			{
+				"campo": 7,
+				"descrizione": "Filler",
+				"posizione": 38,
+				"lunghezza": 1860,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 8,
+				"descrizione": "Filler",
+				"posizione": 1898,
+				"lunghezza": 1,
+				"formato": "AN",
+				"key": "Filler"
+			},
+			{
+				"campo": 9,
+				"descrizione": "Filler",
+				"posizione": 1899,
+				"lunghezza": 2,
+				"formato": "AN",
+				"key": "Filler"
+			}
+		]
+	},
+	"fields": {
+		"B": {
+			"num": 1,
+			"daCampo": 0,
+			"offset": 0,
+			"fields": {
+				"codFiscale": 2,
+				"codComune": 8,
+				"annoDichiarazione": 6,
+				"annoImposta": 7,
+				"telefonoPrefisso": 12,
+				"telefonoNumero": 13,
+				"email": 14,
+				"denominazione": 10,
+				"indirizzo": 15,
+				"numCiv": 16,
+				"scala": 17,
+				"piano": 18,
+				"interno": 19,
+				"cap": 20,
+				"comune": 21,
+				"provincia": 22,
+				"numImmobiliA": 40,
+				"numImmobiliB": 42,
+				"firmaDichiarazione": 45
+			}
+		},
+		"C": {
+			"num": 2,
+			"daCampo": 6,
+			"offset": 31,
+			"fields": {
+				"numOrdine": 6,
+				"progrImmobileDich": 7,
+				"indContinuita": 8,
+				"caratteristica": 9,
+				"indirizzo": 10,
+				"tipo": 11,
+				"codCatastale": 12,
+				"sezione": 13,
+				"foglio": 14,
+				"numero": 15,
+				"subalterno": 16,
+				"categoriaCatasto": 17,
+				"classeCatasto": 18,
+				"protocolloCatasto": 19,
+				"annoCatasto": 20,
+				"codRiduzione": 24,
+				"codEsenzione": 25,
+				"valore": 21,
+				"percPossessoParteIntera": 22,
+				"percPossessoParteDecimale": 23,
+				"dataVarImposta": 30,
+				"flagAcquisto": 26,
+				"flagCessione": 27,
+				"flagAltro": 28,
+				"descrizioneAltro": 29,
+				"agenziaEntrate": 32,
+				"estremiTitolo": 33,
+				"annotazioni": 68,
+				"inizioTermineAgevolazione": 31,
+				"nonUtilizzDispTipo": 34,
+				"nonUtilizzDispAutorita": 35,
+				"nonUtilizzDispData": 36
+			}
+		},
+		"D": {
+			"num": 1,
+			"daCampo": 0,
+			"offset": 0,
+			"fields": {
+				"numOrdine": 6,
+				"progrImmobileDich": 7,
+				"indContinuita": 8,
+				"assistenziali": 9,
+				"previdenziali": 10,
+				"sanitarie": 11,
+				"didattiche": 12,
+				"ricettive": 13,
+				"culturali": 14,
+				"ricreative": 15,
+				"sportive": 16,
+				"culto": 17,
+				"ricercaScientifica": 18,
+				"caratteristica": 19,
+				"indirizzo": 20,
+				"tipo": 21,
+				"codCatastale": 22,
+				"sezione": 23,
+				"foglio": 24,
+				"numero": 25,
+				"subalterno": 26,
+				"categoriaCatasto": 27,
+				"classeCatasto": 28,
+				"protocolloCatasto": 29,
+				"annoCatasto": 30,
+				"codRiduzione": 34,
+				"codEsenzione": 35,
+				"valore": 31,
+				"percPossessoParteIntera": 32,
+				"percPossessoParteDecimale": 33,
+				"dataVarImposta": 40,
+				"flagAcquisto": 36,
+				"flagCessione": 37,
+				"flagAltro": 38,
+				"descrizioneAltro": 39,
+				"agenziaEntrate": 42,
+				"estremiTitolo": 43,
+				"annotazioni": 83,
+				"inizioTermineAgevolazione": 41,
+				"comodatoImmStruttTipo": 44,
+				"comodatoImmStruttCom": 45,
+				"dCorrispettivoMedio": 46,
+				"dCostoMedio": 47,
+				"dRapportoSuperficieParteIntera": 48,
+				"dRapportoSuperficieParteDecimale": 49,
+				"dRapportoSupGgParteIntera": 50,
+				"dRapportoSupGgParteDecimale": 51,
+				"dRapportoSoggettiParteIntera": 52,
+				"dRapportoSoggettiParteDecimale": 53,
+				"dRapportoSoggGgParteIntera": 54,
+				"dRapportoSoggGgParteDecimale": 55,
+				"dRapportoGiorniParteIntera": 56,
+				"dRapportoGiorniParteDecimale": 57,
+				"dPercImponibilitaParteIntera": 58,
+				"dPercImponibilitaParteDecimale": 59,
+				"dValoreAssArt5": 60,
+				"dValoreAssArt4": 61,
+				"dCasellaRigoG": 62,
+				"dCasellaRigoH": 63,
+				"dRapportoCmsCmParteIntera": 64,
+				"dRapportoCmsCmParteDecimale": 65,
+				"dValoreAssParziale": 66,
+				"dValoreAssCompl": 67,
+				"aCorrispettivoMedioPerc": 68,
+				"aCorrispettivoMedioPrev": 69,
+				"aRapportoSuperficieParteIntera": 70,
+				"aRapportoSuperficieParteDecimale": 71,
+				"aRapportoSupGgParteIntera": 72,
+				"aRapportoSupGgParteDecimale": 73,
+				"aRapportoSoggettiParteIntera": 74,
+				"aRapportoSoggettiParteDecimale": 75,
+				"aRapportoSoggGgParteIntera": 76,
+				"aRapportoSoggGgParteDecimale": 77,
+				"aRapportoGiorniParteIntera": 78,
+				"aRapportoGiorniParteDecimale": 79,
+				"aPercImponibilitaParteIntera": 80,
+				"aPercImponibilitaParteDecimale": 81,
+				"aValoreAssoggettato": 82
+			}
+		},
+		"E": {
+			"num": 1,
+			"daCampo": 0,
+			"offset": 0,
+			"fields": {
+				"imuDovuta": 6,
+				"eccedenzaImuDicPrec": 7,
+				"eccedenzaImuDicPrecF24": 8,
+				"rateImuVersate": 9,
+				"imuDebito": 10,
+				"imuCredito": 11,
+				"imuCreditoDicPresente": 12,
+				"creditoImuRimborso": 13,
+				"creditoImuCompensazione": 14
+			}
+		}
+	}
+}

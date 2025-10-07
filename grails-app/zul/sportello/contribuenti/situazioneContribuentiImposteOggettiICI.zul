@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <groupbox vflex="1" class="z-groupbox-hr-bottom">
+        <caption label="@bind(vm.captionlistaOggettiImposta)"/>
+        <listbox selectedItem="@bind(vm.oggettoSelezionato)" span="true"
+                 model="@load(vm.listaOggettiImposta)" emptyMessage="Nessun Oggetto"
+                 vflex="1" sizedByContent="true" onClick="@command('onClickOggettoImposta', popup=dettaglioOggetto)">
+            <listhead sizable="true">
+                <listheader label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+                <listheader label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader label="@load(c:l('sportello.label.zona'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.zona'))"/>
+                <listheader label="@load(c:l('sportello.label.protocollo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.protocollo'))"/>
+                <listheader label="@load(c:l('sportello.label.anno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.anno'))"/>
+                <listheader label="@load(c:l('sportello.label.partita'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.partita'))"/>
+                <listheader label="@load(c:l('sportello.label.categoriaCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+                <listheader label="@load(c:l('sportello.label.classeCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.classeCatasto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoPratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoPratica'))"/>
+                <listheader label="@load(c:l('sportello.label.imposta'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.imposta'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoRapporto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoRapporto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoAliquota'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoAliquota'))"/>
+                <listheader label="@load(c:l('sportello.label.aliquota'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.aliquota'))"/>
+                <listheader label="@load(c:l('sportello.label.impostaAcconto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.impostaAcconta'))"/>
+            </listhead>
+            <template name="model" var="ogg">
+                <listitem popup="dettaglioOggetto, position=before_end">
+                    <listcell label="@load(ogg.oggetto)" sclass="destra"/>
+                    <listcell label="@load(ogg.tipoOggetto)" sclass="centro"/>
+                    <listcell label="@load(ogg.indirizzoOggetto)"/>
+                    <listcell label="@load(ogg.sezione)" sclass="destra"/>
+                    <listcell label="@load(ogg.foglio)" sclass="destra"/>
+                    <listcell label="@load(ogg.numero)" sclass="destra"/>
+                    <listcell label="@load(ogg.subalterno)" sclass="destra"/>
+                    <listcell label="@load(ogg.zona)" sclass="destra"/>
+                    <listcell label="@load(ogg.protocollo)" sclass="destra"/>
+                    <listcell label="@load(ogg.anno)" sclass="destra"/>
+                    <listcell label="@load(ogg.partita)" sclass="destra"/>
+                    <listcell label="@load(ogg.categoriaCatasto)" sclass="centro"/>
+                    <listcell label="@load(ogg.classe)" sclass="destra"/>
+                    <listcell label="@load(ogg.tipoPratica)" sclass="centro"/>
+                    <listcell label="@load(c:formatNumber(ogg.imposta, '€ #,##0.00'))"
+                              sclass="destra"/>
+                    <listcell label="@load(ogg.tipoRapporto)" sclass="centro"/>
+                    <listcell label="@load(c:cat3(ogg.tipoAliquota, ' - ', ogg.descrizioneALiquota))"/>
+                    <listcell sclass="@load(ogg.hasAliquoteMultiple? 'centro' : 'destra')">
+                        <image if="#{ogg.hasAliquoteMultiple}"
+                               src="/images/afc/16x16/info.png"
+                               width="16px" style="cursor: pointer"
+                               popup="@load((ogg.hasAliquoteMultiple) ? c:cat('aliquoteMultiple-', ogg.oggetto) : '')"/>
+                        <popup id="@load(c:cat('aliquoteMultiple-', ogg.oggetto))" width="300px"
+                               onOpen="@command('onTooltipInfoOggettiImposta', sorgente='aliquoteMultiple', oggettoImposta=ogg)">
+                            <label value="@load(vm.aliquoteMultipleTooltipText[ogg.oggetto])" multiline="true"/>
+                        </popup>
+                        <label if="#{not ogg.hasAliquoteMultiple}"
+                               value="@load((empty ogg.aliquota) ? '' : c:formatNumber(ogg.aliquota, '#,##0.00'))"/>
+                    </listcell>
+                    <listcell sclass="destra"
+                              label="@load((empty ogg.impostaAcconto) ? '' : c:formatNumber(ogg.impostaAcconto, '€ #,##0.00'))"/>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+
+    <window id="dettaglioOggetto" width="400px" position="center" title="Dettaglio"
+            border="normal" mode="popup" visible="false">
+        <grid hflex="1">
+            <columns>
+                <column hflex="1"/>
+                <column hflex="2"/>
+            </columns>
+            <rows>
+                <row visible="@load(vm.impostaSelezionata.tipoTributo eq 'ICI')">
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.impostaErariale'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.impostaErariale eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.impostaErariale, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.aliquotaErariale'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.aliquotaErariale eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.aliquotaErariale, '#,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.aliquotaStandard'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.aliquotaStandard eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.aliquotaStandard, '#,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.detrazione'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.detrazione eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.detrazione, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.detrazioneAcconto'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.detrazioneAcconto eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.detrazioneAcconto, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.impostaAlComune'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.impostaAliquota eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.impostaAliquota, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.impostaAlStandard'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.impostaStd eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.impostaStd, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.impostaMiniIMU'))"/>
+                    </cell>
+                    <cell>
+                        <label
+                                value="@load((vm.oggettoSelezionato.impostaMini eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.impostaMini, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </window>
+</zk>

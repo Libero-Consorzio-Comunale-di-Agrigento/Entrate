@@ -1,0 +1,108 @@
+--liquibase formatted sql
+--changeset abrandolini:20250408_100438_anadce_ins_AIR context:"TRT2 or TRV4"
+
+-- A.i.r.e.
+DECLARE
+nConta   NUMBER := 1;
+BEGIN
+select count(*)
+  into nConta
+  from ANADCE
+ where ANAGRAFE = 'AIR'
+;
+if nConta = 0 then
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_TPR, TIPO_EVENTO_TPR, DES_EVENTO_TPR, SEQ_EVENTO_TPR,
+     FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, FLAG_ELE, MOTIVO_ELE,
+     MOTIVO_GPO, MOTIVO_PSE, MOTIVO_SCR, SIGLA_VANA, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 14, 'CANCELLAZIONE D''UFFICIO', 4, 59,
+         'C', 'S', 'U', 'Cancellazione d''Ufficio', 6,
+         'S', 'S', 'E04', 'S', 16,
+         19, 19, 19, 'CUF', 'CANCELLATO A.I.R.E.',
+         'CANCELLATA A.I.R.E.');
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_TPR, TIPO_EVENTO_TPR, DES_EVENTO_TPR, SEQ_EVENTO_TPR,
+     FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, FLAG_ELE, MOTIVO_ELE,
+     MOTIVO_GPO, MOTIVO_PSE, MOTIVO_SCR, SIGLA_VANA, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 15, 'DOPPIA ISCRIZIONE', 4, 58,
+         'C', 'S', 'D', 'Doppia Iscrizione', 5,
+         'S', 'S', 'E04', 'S', 16,
+         19, 19, 19, 'DOP', 'CANCELLATO A.I.R.E.',
+         'CANCELLATA A.I.R.E.');
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_TPR, TIPO_EVENTO_TPR, DES_EVENTO_TPR, SEQ_EVENTO_TPR,
+     FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, FLAG_ELE, MOTIVO_ELE,
+     MOTIVO_GPO, MOTIVO_PSE, MOTIVO_SCR, SIGLA_VANA, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 17, 'IMMIGRAZIONE IN ALTRO COMUNE', 4, 55,
+         'C', 'S', 'I', 'Immigrazione in altro Comune', 1,
+         'S', 'S', 'E01', 'S', 16,
+         19, 19, 19, 'IMC', 'CANCELLATO A.I.R.E.',
+         'CANCELLATA A.I.R.E.');
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_TPR, TIPO_EVENTO_TPR, DES_EVENTO_TPR, SEQ_EVENTO_TPR,
+     FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, FLAG_ELE, MOTIVO_ELE,
+     MOTIVO_GPO, MOTIVO_PSE, MOTIVO_SCR, SIGLA_VANA, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 18, 'IRREPERIBILITA'' PRESUNTA', 4, 54,
+         'C', 'S', 'P', 'Irreperibilità Presunta', 2,
+         'S', 'S', 'E04', 'S', 11,
+         11, 11, 11, 'IRP', 'CANCELLATO A.I.R.E.',
+         'CANCELLATA A.I.R.E.');
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_TPR, TIPO_EVENTO_TPR, DES_EVENTO_TPR, SEQ_EVENTO_TPR,
+     FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, FLAG_ELE, MOTIVO_ELE,
+     MOTIVO_GPO, MOTIVO_PSE, MOTIVO_SCR, SIGLA_VANA, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 21, 'MORTE', 4, 50,
+         'C', 'S', 'X', 'Morte', 7,
+         'S', 'S', 'E02', 'S', 12,
+         12, 12, 12, 'MOR', 'CANCELLATO A.I.R.E.',
+         'CANCELLATA A.I.R.E.');
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_TPR, TIPO_EVENTO_TPR, DES_EVENTO_TPR, SEQ_EVENTO_TPR,
+     FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, FLAG_ELE, MOTIVO_ELE,
+     MOTIVO_GPO, MOTIVO_PSE, MOTIVO_SCR, SIGLA_VANA, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 23, 'PERDITA CITTADINANZA ITALIANA', 4, 57,
+         'C', 'S', 'C', 'Perdita Citt. Italiana', 3,
+         'S', 'S', 'E05', 'S', 13,
+         19, 19, 19, 'PCI', 'CANCELLATO A.I.R.E.',
+         'CANCELLATA A.I.R.E.');
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_TPR, TIPO_EVENTO_TPR, DES_EVENTO_TPR, SEQ_EVENTO_TPR,
+     FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, FLAG_ELE, MOTIVO_ELE,
+     MOTIVO_GPO, MOTIVO_PSE, MOTIVO_SCR, SIGLA_VANA, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 32, 'TRASFERIMENTO AIRE IN ALTRO C.', 4, 56,
+         'C', 'S', 'T', 'Trasf. AIRE in altro Comune', 4,
+         'S', 'S', 'E03', 'S', 16,
+         19, 19, 19, 'TAC', 'CANCELLATO A.I.R.E.',
+         'CANCELLATA A.I.R.E.');
+    Insert into ANADCE
+    (ANAGRAFE, CODICE, DESCRIZIONE, COD_MOV, COD_EVE,
+     TIPO_EVENTO, FLAG_R01, FLAG_AIRE01, MOTIVO_AIRE01, DESCRIZIONE_M,
+     DESCRIZIONE_F)
+    Values
+        ('AIR', 36, 'REIMMIGRAZIONE DA A.I.R.E.', 1, 4,
+         'C', 'S', 'S', 'E01', 'RESIDENTE',
+         'RESIDENTE');
+end if;
+END;
+/

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul https://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaCarichiViewModel')" width="100%"
+            height="100%">
+        <hlayout valign="middle" style="padding: 5px;">
+            <hlayout sclass="afc-control-bar">
+                <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                               tooltiptext="@load(vm.lettura ? 'Visualizza' : 'Modifica')"
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModifica')"
+                               disabled="@load(empty vm.caricoSelezionato)"/>
+                <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                               tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                               onClick="@command('onAggiungi')"
+                               disabled="@load(vm.lettura ne false)"/>
+                <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                               tooltiptext='#{empty arg.duplicate?"Duplica":arg.duplicate}'
+                               onClick="@command('onDuplica')"
+                               disabled="@load((vm.lettura ne false) or (empty vm.caricoSelezionato))"/>
+                <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                               tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                               visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                               onClick="@command('onElimina')"
+                               disabled="@load((vm.lettura ne false) or (empty vm.caricoSelezionato))"/>
+                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                               tooltiptext='Esporta in XLS'
+                               onClick="@command('onExportXls')"
+                               disabled="@load(empty vm.listaCarichi)"/>
+            </hlayout>
+            <hlayout valign="middle" style="text-align: right;" hflex="1">
+                <toolbarbutton width="26px"
+                               image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                               onClick="@command('openCloseFiltri')"/>
+            </hlayout>
+        </hlayout>
+        <listbox selectedItem="@bind(vm.caricoSelezionato)"
+                 model="@load(vm.listaCarichi)"
+                 emptyMessage="Nessun Carico" sizedByContent="true" span="true"
+                 vflex="true">
+            <listhead sizable="true">
+                <listheader label="Anno" tooltiptext="Anno"/>
+                <listheader label="Add.ECA" tooltiptext="Addizionale ECA"/>
+                <listheader label="Magg.ECA" tooltiptext="Maggiorazione ECA"/>
+                <listheader label="Add.Prov." tooltiptext="Addizionale Provinciale"/>
+                <listheader label="Non Dov.Prov." tooltiptext="Non Dovuto Provinciale"/>
+                <listheader label="Commiss.Com." tooltiptext="Commissione Comunale"/>
+                <listheader label="Tar.Dom." tooltiptext="Tariffa Domestica"/>
+                <listheader label="Tar.Non Dom." tooltiptext="Tariffa Non Domestica"/>
+                <listheader label="% IVA" tooltiptext="Aliquota IVA"/>
+                <listheader label="% IVA Fattura" tooltiptext="IVA Fattura"/>
+                <listheader label="Comp.Minimo" tooltiptext="Compenso Minimo"/>
+                <listheader label="Comp.Massimo" tooltiptext="Compenso Massimo"/>
+                <listheader label="% Comp." tooltiptext="Percentuale Compenso"/>
+                <listheader label="Limite" tooltiptext="Limite"/>
+                <listheader label="Lordo"
+                            tooltiptext="Indicatore di trattamento ad Importo Lordo per gli Accertamenti"/>
+                <listheader label="Add.Perm."
+                            tooltiptext="Indicatore di aggiunta dell'Addizionale Provinciale per il Calcolo Lordo delle Sanzioni su Occupazione Permanente"/>
+                <listheader label="Add.Temp."
+                            tooltiptext="Indicatore di aggiunta dell'Addizionale Provinciale per il Calcolo Lordo delle Sanzioni su Occupazione Temporanea"/>
+                <listheader label="Add.Int."
+                            tooltiptext="Indicatore di aggiunta dei Carichi Tarsu per il Calcolo Lordo degli Interessi"/>
+                <listheader label="Mesi Calcolo" tooltiptext="Mesi di Calcolo"/>
+                <listheader label="C.Pereq." tooltiptext="Componenti Perequative"/>
+                <listheader label="Magg.Anno" tooltiptext="Indicatore di Calcolo Annuale della Maggiorazione Tares"/>
+                <listheader label="Modalità Calcolo Familiari" tooltiptext="Modalità Calcolo Familiari"/>
+                <listheader label="Dis.Int.Tardivo" tooltiptext="Disabilitazione interessi tardivo versamento"/>
+                <listheader label="Tariffe Ruoli" tooltiptext="Attivazione emissione ruoli dell'anno con tariffa"/>
+                <listheader label="Rata Perequative"/>
+                <listheader label="Tariffa Puntuale"/>
+                <listheader label="Costo Unitario"/>
+            </listhead>
+            <template name="model" var="elem">
+                <listitem onDoubleClick="@command('onModifica')">
+                    <listcell sclass="destra"
+                              label="@load(elem.anno)"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.addizionaleEca) ? '' : c:formatNumber(elem.addizionaleEca, '#,##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.maggiorazioneEca) ? '' : c:formatNumber(elem.maggiorazioneEca, '#,##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.addizionalePro) ? '' : c:formatNumber(elem.addizionalePro, '#,##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.nonDovutoPro) ? '' : c:formatNumber(elem.nonDovutoPro, '#,##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.commissioneCom) ? '' : c:formatNumber(elem.commissioneCom, '#,##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.tariffaDomestica) ? '' : c:formatNumber(elem.tariffaDomestica, vm.tariffaFormat)}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.tariffaNonDomestica) ? '' : c:formatNumber(elem.tariffaNonDomestica, vm.tariffaFormat)}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.aliquota) ? '' : c:formatNumber(elem.aliquota , '#0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.ivaFattura) ? '' : c:formatNumber(elem.ivaFattura , '#0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.compensoMinimo) ? '' : c:formatNumber(elem.compensoMinimo , '##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.compensoMassimo) ? '' : c:formatNumber(elem.compensoMassimo , '##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.percCompenso) ? '' : c:formatNumber(elem.percCompenso , '##0.00')}"/>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.limite) ? '' : c:formatNumber(elem.limite , '##0.00')}"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagLordo eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagSanzioneAddP eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagSanzioneAddT eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagInteressiAdd eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="sinistra"
+                              label="@load((null eq elem.mesiCalcolo) ? '' : vm.mesiCalcolo[elem.mesiCalcolo])"/>
+                    <listcell sclass="sinistra"
+                              label="#{(null eq elem.maggiorazioneTares) ? '' : c:formatNumber(elem.maggiorazioneTares , '###0.00')}"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagMaggAnno eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="sinistra" style="text-align: left;"
+                              label="@load(empty elem.modalitaFamiliari ? '' : vm.listaModalita[elem.modalitaFamiliari].descrizione)"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagNoTardivo eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagTariffeRuolo eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="sinistra" style="text-align: left;"
+                              label="@load(empty elem.rataPerequative ? '' : elem.desRataPerequative)"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(elem.flagTariffaPuntuale eq 'S')"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="destra"
+                              label="#{(null eq elem.costoUnitario) ? '' : c:formatNumber(elem.costoUnitario , '##0.00000000')}"/>
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

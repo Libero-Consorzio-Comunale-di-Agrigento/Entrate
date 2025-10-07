@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <!-- esegue tutti gli script sql che trova nella directory "install" in ordine alfabetico. -->
+    <includeAll path="install" relativeToChangelogFile="true"/>
+
+    <include file="update/master.xml" relativeToChangelogFile="true" />
+
+    <!-- eseguo tutti gli script package etc -->
+    <includeAll path="latest/views" relativeToChangelogFile="true"/>
+    <includeAll path="latest/functions" relativeToChangelogFile="true"/>
+    <includeAll path="latest/procedures" relativeToChangelogFile="true"/>
+    <includeAll path="latest/packages" relativeToChangelogFile="true"/>
+    <includeAll path="latest/triggers" relativeToChangelogFile="true"/>
+
+    <include file="install-data/master.xml" relativeToChangelogFile="true"/>
+    <include file="update-data/master.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

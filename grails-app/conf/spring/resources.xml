@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="tributiSession" class="org.springframework.aop.scope.ScopedProxyFactoryBean" autowire="byName">
+        <property name="targetBeanName" value="tributiSessionUnproxied"/>
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+    <bean id="tributiSessionUnproxied" class="it.finmatica.tr4.commons.TributiSession" autowire="byName"
+          scope="session">
+    </bean>
+
+    <bean id="importCatastoCensuario" class="it.finmatica.datiesterni.beans.ImportCatastoCensuario" autowire="byName"
+          scope="singleton">
+    </bean>
+    <bean id="importUtenze" class="it.finmatica.datiesterni.beans.ImportUtenze" autowire="byName" scope="singleton">
+    </bean>
+
+    <bean id="importLocazioni" class="it.finmatica.datiesterni.beans.ImportLocazioni" autowire="byName"
+          scope="singleton">
+    </bean>
+
+    <bean id="importDatiMetrici" class="it.finmatica.datiesterni.beans.ImportDatiMetrici" autowire="byName"
+          scope="singleton">
+    </bean>
+
+    <bean id="importNotifiche" class="it.finmatica.datiesterni.beans.ImportNotifiche" autowire="byName" scope="singleton">
+    </bean>
+
+    <bean id="importAnagrafeTributaria" class="it.finmatica.datiesterni.beans.ImportAnagrafeTributaria" autowire="byName" scope="singleton">
+    </bean>
+
+    <bean id="importDicEncEcPf" class="it.finmatica.datiesterni.beans.ImportDicEncEcPf" autowire="byName"
+          scope="singleton">
+    </bean>
+
+    <!--  factory per F24 -->
+    <bean id="datiF24Factory" class="it.finmatica.tr4.reports.F24.DefaultDatiF24Factory" autowire="byName"
+          scope="singleton">
+    </bean>
+
+    <bean id="datiF24TASI" class="it.finmatica.tr4.reports.F24.DatiF24TASI" autowire="byName" scope="prototype">
+    </bean>
+
+    <bean id="datiF24ICI" class="it.finmatica.tr4.reports.F24.DatiF24ICI" autowire="byName" scope="prototype">
+    </bean>
+
+    <bean id="datiF24Ruolo" class="it.finmatica.tr4.reports.F24.DatiF24Ruolo" autowire="byName" scope="prototype">
+    </bean>
+
+    <bean id="datiF24UNICO" class="it.finmatica.tr4.reports.F24.DatiF24UNICO" autowire="byName" scope="prototype">
+    </bean>
+
+    <bean id="datiF24Bianco" class="it.finmatica.tr4.reports.F24.DatiF24Bianco" autowire="byName" scope="prototype">
+    </bean>
+
+    <bean id="datiF24ViolazioneICI" class="it.finmatica.tr4.reports.F24.DatiF24ViolazioneICI" autowire="byName"
+          scope="prototype">
+    </bean>
+
+    <bean id="datiF24ViolazioneTASI" class="it.finmatica.tr4.reports.F24.DatiF24ViolazioneTASI" autowire="byName"
+          scope="prototype">
+    </bean>
+
+    <bean id="datiF24ViolazioneTARSU" class="it.finmatica.tr4.reports.F24.DatiF24ViolazioneTARSU" autowire="byName"
+          scope="prototype">
+    </bean>
+
+    <bean id="datiF24ViolazioneICP" class="it.finmatica.tr4.reports.F24.DatiF24ViolazioneICP" autowire="byName"
+          scope="prototype">
+    </bean>
+
+    <bean id="datiF24ViolazioneTOSAP" class="it.finmatica.tr4.reports.F24.DatiF24ViolazioneTOSAP" autowire="byName"
+          scope="prototype">
+    </bean>
+
+    <bean id="datiF24Rate" class="it.finmatica.tr4.reports.F24.DatiF24Rate" autowire="byName"
+          scope="prototype">
+    </bean>
+
+    <bean id="datiF24Imposta" class="it.finmatica.tr4.reports.F24.DatiF24Imposta" autowire="byName"
+          scope="prototype">
+    </bean>
+
+    <bean id="comunicazioneTesto" class="it.finmatica.tr4.comunicazionitesti.ComunicazioneTesto"
+          autowire="byName"
+          scope="singleton">
+    </bean>
+
+    <bean id="imuIntegrazionePortaleStrategy" class="it.finmatica.tr4.portale.IMUIntegrazionePortaleStrategy"
+          autowire="byType"
+          scope="singleton">
+    </bean>
+
+    <!--  Singleton per oggetti di DB utilizzati di frequente -->
+    <bean id="oggettiCacheMap" class="it.finmatica.tr4.commons.OggettiCacheMap" autowire="byName" scope="singleton"
+          init-method="init">
+    </bean>
+
+    <!-- 	<bean id="Arial" class="net.sf.jasperreports.engine.fonts.SimpleFontFamily"> -->
+    <!-- 		<property name="name" value="Arial" /> -->
+    <!-- 		<property name="normal" value="fonts/Arial.ttf" /> -->
+    <!-- 		<property name="bold" value="fonts/Arial_Bold.ttf" /> -->
+    <!-- 		<property name="italic" value="fonts/Arial_Italic.ttf" /> -->
+    <!-- 		<property name="boldItalic" value="fonts/Arial_Bold_Italic.ttf" /> -->
+    <!-- 		<property name="pdfEncoding" value="Identity-H" /> -->
+    <!-- 		<property name="pdfEmbedded" value="true" /> -->
+    <!-- 	</bean> -->
+</beans>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <listbox id="lstFamiliari" span="true" nonselectableTags="" sizedByContent="true"
+             model="@load(vm.listaFamiliari)" emptyMessage="Nessun familiare presente."
+             vflex="true">
+        <listhead sizable="true">
+            <listheader label="Cognome e Nome"/>
+            <listheader label="Codice Fiscale"/>
+            <listheader label="Parentela" width="60px"/>
+            <listheader label="Data Nascita"/>
+            <listheader label="Comune nascita"/>
+            <listheader label="Sesso"/>
+            <listheader visible="@load(vm.modifica)" label="" width="50px"
+                        align="center">
+                <image width="15px" src="/images/afc/16x16/add.png"
+                       tooltiptext="Aggiungi familiare" style="cursor: pointer;"
+                       onClick="@command('onAggiungiFamiliare')"/>
+            </listheader>
+        </listhead>
+        <template name="model" var="fam">
+            <listitem>
+                <listcell label="@load(fam.cognomeNome)"/>
+                <listcell label="@load(fam.codFiscale)"/>
+                <listcell>
+                    <textbox hflex="1" mold="rounded" inplace="true"
+                             value="@load(fam.rapportoPar) @save(fam.rapportoPar, before={'onSalvaDenuncia', 'onEliminaFamiliare', 'onAggiungiFamiliare'})"/>
+                </listcell>
+                <listcell sclass="centro"
+                          label="@load((fam.dataNascita eq null) ? '' : c:formatDate(fam.dataNascita, 'dd/MM/yyyy'))"/>
+                <listcell label="@load(fam.comuneNascita)"/>
+                <listcell label="@load(fam.sesso)"/>
+                <listcell>
+                    <image width="15px" src="/images/tr4web/16x16/trash.png"
+                           style="cursor: pointer;"
+                           onClick="@command('onEliminaFamiliare', fam=fam)"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<!--<?page automaticTimeout="false"?>-->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('gestioneParametriViewModel')" border="normal"
+            width="550px">
+		<script src="/js/decimalbox.js"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" width="25%">
+                        <label value="Descrizione"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.parametro.descrizione)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="Testo Predefinito"/>
+                    </cell>
+                    <cell>
+                        <label multiline="true" value="@load(vm.parametro.testoPredefinito)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="Testo Personalizzato"/>
+                    </cell>
+                    <cell>
+                        <vbox hflex="1">
+                            <label value="@load(c:cat('Lunghezza Massima: ', vm.parametro.lunghezzaMax))"/>
+                            <textbox id="txtTesto" hflex="1" multiline="true"
+                                     value="@bind(vm.parametro.dettaglio.testo)"
+                                     maxlength="@load(vm.parametro.lunghezzaMax)"/>
+                        </vbox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/save.png" label="Salva"
+                        onClick="@command('onSalvaParametro')"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png" label="Annulla"
+                        onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

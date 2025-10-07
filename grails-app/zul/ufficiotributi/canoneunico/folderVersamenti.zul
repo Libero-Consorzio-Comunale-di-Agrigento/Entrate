@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid hflex="1" vflex="1" span="true" sizedByContent="true" id="gridVersamenti"
+          emptyMessage="Nessun versamento presente." model="@load(vm.listaVersamenti)">
+        <columns sizable="true">
+            <column label="T.Vers." sclass="centro" align="center" tooltiptext="Tipo Versamento"/>
+            <column label="Versato" sclass="centro" align="right" tooltiptext="Importo Versato"/>
+            <column label="Data Pag." sclass="centro" align="right" tooltiptext="Data Pagamento"/>
+            <column label="Ruolo" sclass="centro" align="center"/>
+            <column label="Rata" sclass="centro" align="center"/>
+            <column label="Fonte" sclass="centro"/>
+            <column label="Data Reg." sclass="centro" align="right" tooltiptext="Data Registrazione"/>
+            <column label="Note"/>
+            <column label="" align="center" visible="@load(vm.modificaVersamenti)">
+                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                       onClick="@command('onAggiungiVersamento')" visible="@load(vm.modificaVersamenti)"/>
+            </column>
+        </columns>
+        <template name="model" var="vers">
+            <row>
+                <label value="@load(vers.tipoVersamento)"/>
+                <decimalbox inplace="true" style="text-align: right"
+                            disabled="@load(!vm.modificaVersamenti)"
+                            value="@bind(vers.importoVersato)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <datebox inplace="true" hflex="1" style="text-align: right;"
+                         disabled="@load(!vm.modificaVersamenti)"
+                         value="@bind(vers.dataPagamento)" format="dd/MM/yyyy"
+                         mold="rounded"/>
+                <hbox hflex="1">
+                    <bandbox inplace="true" style="text-align: right;"
+                             disabled="@load(!vm.modificaVersamenti)"
+                             onChange="@command('onCambiaRuoloVersamento', bd=self, vers=vers)"
+                             onOpen="@command('onApriRuoloVersamento', bd=self)"
+                             value="@load(! empty vers.ruolo ? vers.ruolo.id : null)"
+                             hflex="1" mold="rounded">
+                        <bandpopup>
+                            <listbox height="250px" width="450px" mold="paging"
+                                     id="@load(c:cat('lbRuoliVersamento', vers.uuid))"
+                                     autopaging="true" sizedByContent="true"
+                                     selectedItem="@bind(vers.ruolo)"
+                                     onSelect="@command('onSelezionaRuoloVersamento', lb=self, vers=vers)"
+                                     model="@load(vm.ruoliVersamento)" span="true"
+                                     emptyMessage="Nessun ruolo presente.">
+                                <listhead>
+                                    <listheader label="Ruolo"/>
+                                    <listheader label="Anno"/>
+                                    <listheader label="Anno Em."/>
+                                    <listheader label="Pr."/>
+                                    <listheader label="Emissione"/>
+                                    <listheader label="Invio"/>
+                                    <listheader label="L."/>
+                                    <listheader label="Ruolo"/>
+                                    <listheader label="Sp."/>
+                                </listhead>
+                                <template name="model" var="ruo">
+                                    <listitem>
+                                        <listcell
+                                                label="@load((ruo.tipoRuolo eq 1) ? 'P' : ((ruo.tipoRuolo eq 2) ? 'S' : ''))"
+                                                sclass="centro"/>
+                                        <listcell label="@load(ruo.annoRuolo)" sclass="centro"/>
+                                        <listcell label="@load(ruo.annoEmissione)" sclass="centro"/>
+                                        <listcell label="@load(ruo.progrEmissione)" sclass="centro"/>
+                                        <listcell
+                                                label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+                                                sclass="centro"/>
+                                        <listcell
+                                                label="@load(ruo.invioConsorzio ne null ? c:formatDate(ruo.invioConsorzio, 'dd/MM/yyyy') : null)"
+                                                sclass="centro"/>
+                                        <listcell>
+                                            <checkbox checked="@load(ruo.importoLordo)"
+                                                      w:onCheck="this.setChecked(!this.isChecked())"/>
+                                        </listcell>
+                                        <listcell label="@load(ruo.id)" sclass="centro"/>
+                                        <listcell label="@load(ruo.specieRuolo ? 1 : 0)" sclass="centro"/>
+                                    </listitem>
+                                </template>
+                            </listbox>
+                        </bandpopup>
+                    </bandbox>
+                    <vbox>
+                        <image width="15px" src="/images/afc/16x16/cancel.png"
+                               style="cursor: pointer;"
+                               visible="@bind(empty vers.ruolo)"
+                               sclass="gray-scale"/>
+                        <image width="15px" src="/images/afc/16x16/cancel.png"
+                               style="cursor: pointer;"
+                               onClick="@command('onEliminaRuoloVersamento', vers=vers)"
+                               visible="@bind(!empty vers.ruolo)"/>
+                    </vbox>
+                </hbox>
+                <combobox readonly="true" model="@load(vm.listRata)" inplace="true" width="90%" mold="rounded"
+                          disabled="@load(!vm.modificaVersamenti)"
+                          onChange="@command('onVersatoModificato', vers=vers)"
+                          selectedItem="@bind(vers.rata) @converter('it.finmatica.zkutils.PropertyConverter', property='codice')">
+                    <template name="model" var="opz">
+                        <comboitem label="@load(opz.descrizione)" value="@load(opz.codice)"/>
+                    </template>
+                </combobox>
+                <combobox inplace="true" model="@bind(vm.listaFonti)" mold="rounded"
+                          disabled="@load(!vm.modificaVersamenti)"
+                          selectedItem="@bind(vers.fonte) @converter('it.finmatica.zkutils.PropertyConverter', property='fonte')"
+                          hflex="1" width="90%">
+                    <template name="model" var="fo">
+                        <comboitem label="@load(c:cat3(fo.fonte, ' - ', fo.descrizione))" value="@load(fo)"/>
+                    </template>
+                </combobox>
+                <datebox inplace="true" hflex="1" style="text-align: right;"
+                         disabled="@load(!vm.modificaVersamenti)"
+                         value="@bind(vers.dataReg)" format="dd/MM/yyyy"
+                         mold="rounded"/>
+                <hlayout width="200px">
+                    <label value="@bind(vers.note)" sclass="auto-trunc" hflex="2"/>
+                    <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note"
+                           visible="@load(vers.note ne null and !vm.modificaVersamenti)"
+                           style="cursor: pointer" onClick="@command('onApriNoteVersamento', arg=vers.note)"/>
+                    <image src="/images/afc/16x16/edit.png" tooltiptext="Modifica note"
+                           visible="@load(vm.modificaVersamenti)"
+                           style="cursor: pointer"
+                           popup="@load(c:cat('popupNote_', vers.uuid))"/>
+                    <popup id="@load(c:cat('popupNote_', vers.uuid))" width="600px"
+                           onOpen="@command('onApriPopupNoteVersamento', popup=self)">
+                        <h:div sclass="barraTitoloPagina">
+                            <label class="titoloPagina" value="Note"/>
+                        </h:div>
+                        <hlayout>
+                            <textbox rows="10" width="600px" value="@bind(vers.note)"/>
+                        </hlayout>
+                        <h:div sclass="barraPulsanti">
+                            <h:div>
+                                <button label="Chiudi" onClick="@command('onChiudiPopupNoteVersamento')" mold="trendy"
+                                        image="/images/pulsanti/16x16/window_close.png"/>
+                            </h:div>
+                        </h:div>
+                    </popup>
+                </hlayout>
+                <hlayout width="50px" visible="@load(vm.modificaVersamenti)">
+                    <image src="/images/afc/16x16/editcopy.png" tooltiptext="Duplica Versamento"
+                           onClick="@command('onDuplicaVersamento', vers=vers)"
+                           style="cursor: pointer"/>
+                    <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina Versamento"
+                           style="cursor: pointer" onClick="@command('onCancellaVersamento', vers=vers)"/>
+                </hlayout>
+            </row>
+        </template>
+        <foot visible="@load(!empty vm.listaVersamenti)">
+            <footer align="right">
+                <label value="Totale Versato:"/>
+            </footer>
+            <footer align="right">
+                <label
+                        value="@load(vm.totVersamenti ne null ? c:formatNumber(vm.totVersamenti, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer/>
+            <footer/>
+            <footer/>
+            <footer/>
+            <footer/>
+            <footer/>
+            <footer/>
+        </foot>
+    </grid>
+</zk>

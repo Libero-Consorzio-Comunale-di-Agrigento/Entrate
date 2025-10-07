@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<custom-attributes tipoTributo="#{oggetto.tipoTributo}"/>
+
+	<bandpopup height="250px">
+		<grid>
+			<rows>
+				<row>
+					<cell width="50px" align="right">
+						<label value="Anno "/>
+					</cell>
+					<cell align="left">
+						<combobox readonly="true" constraint="no empty" mold="rounded">
+							<template name="model" >
+									<comboitem label="#{each}" value="#{each}" />
+							</template>
+						</combobox>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+		<listbox span="true" multiple="false" emptyMessage="Nessun oggetto" vflex="1" >
+			<listhead sizable="true">
+				<listheader align="right" label="Oggetto" width="60px"/>
+				<listheader align="center" label="T" width="25px"/>
+				<listheader label="Indirizzo" />
+				<listheader align="center" label="Sez." width="40px"/>
+				<listheader align="center" label="Foglio" width="40px"/>
+				<listheader align="center" label="Num." width="40px"/>
+				<listheader align="center" label="Sub." width="40px"/>
+				<listheader align="center" label="Zona" width="40px"/>
+				<listheader align="center" label="Prot." width="40px"/>
+				<listheader align="center" label="Anno" width="40px"/>
+				<listheader align="center" label="Part." width="40px"/>
+				<listheader align="center" label="Cat." width="60px"/>
+				<listheader align="center" label="Cl." width="60px"/>
+				<listheader align="center" label="%Poss." width="60px"/>
+				<listheader align="center" label="MP" visible="#{tipoTributo ne 'TARSU'}" width="40px"/>
+				<listheader align="center" label="ME" width="40px"/>
+				<listheader align="center" label="MR" width="40px"/>
+				<listheader align="center" label="P" width="25px"/>
+				<listheader align="center" label="E" width="25px"/>
+				<listheader align="center" label="R" width="25px"/>
+				<listheader align="center" label="A" width="25px"/>
+				<listheader align="right" label="Valore" />
+				<listheader align="center" label="Provv." width="40px"/>
+				<listheader align="right" label="Detrazione" width="80px"/>
+<!-- 				<listheader align="center" label="MP" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="center" label="ME" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="center" label="MR" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="center" label="P" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="center" label="E" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="center" label="R" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="center" label="A" /> -->
+<!-- 				<listheader align="right" label="Valore" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="center" label="Provv." visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+<!-- 				<listheader align="right" label="Detrazione" visible="#{not each.oggettoPratica.tipoTributo.tipoTributo eq 'TARSU'}"/> -->
+			</listhead>
+			<template name="model">
+				<listitem>
+					<listcell label="#{each.oggettoPratica.oggetto.id}"></listcell>
+					<listcell label="#{each.oggettoPratica.tipoOggetto.tipoOggetto}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.indirizzo}"
+							  tooltiptext="#{each.oggettoPratica.oggetto.indirizzo}" style="white-space:nowrap;"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.sezione}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.foglio}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.numero}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.subalterno}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.zona}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.protocolloCatasto}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.annoCatasto}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.partita}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.categoriaCatasto.categoriaCatasto}"></listcell>
+					<listcell label="#{each.oggettoPratica.oggetto.classeCatasto}"></listcell>
+					<listcell label="#{(empty each.percPossesso)?'':c:formatNumber(each.percPossesso , '#,##0.00')}"></listcell>
+					<listcell label="#{each.mesiPossesso}"></listcell>
+					<listcell label="#{each.mesiEsclusione}"></listcell>
+					<listcell label="#{each.mesiRiduzione}"></listcell>
+					<listcell>
+						<checkbox disabled="true" checked="#{each.flagPossesso}"></checkbox>
+					</listcell>
+					<listcell>
+						<checkbox disabled="true" checked="#{each.flagEsclusione}"></checkbox>
+					</listcell>
+					<listcell>
+						<checkbox disabled="true" checked="#{each.flagRiduzione}"></checkbox>
+					</listcell>
+					<listcell>
+						<checkbox disabled="true" checked="#{each.flagAbPrincipale}"></checkbox>
+					</listcell>
+					<listcell label="#{(empty each.oggettoPratica.valore)?'':c:formatNumber(each.oggettoPratica.valore, '€ #,##0.00')}"
+							  tooltiptext="#{(empty each.oggettoPratica.valore)?'':c:formatNumber(each.oggettoPratica.valore, '€ #,##0.00')}"
+							  style="white-space:nowrap;"></listcell>
+					<listcell>
+						<checkbox disabled="true" checked="#{each.oggettoPratica.flagProvvisorio}"></checkbox>
+					</listcell>
+					<listcell label="#{(empty each.detrazione)?'':c:formatNumber(each.detrazione, '€ #,##0.00')}"></listcell>
+				</listitem>
+			</template>
+		</listbox>
+		<paging/>
+	</bandpopup>
+	
+</zk>

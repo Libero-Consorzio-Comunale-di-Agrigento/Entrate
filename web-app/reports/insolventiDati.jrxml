@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2022-03-29T14:35:01 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="insolventiDati" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="5" bottomMargin="5" uuid="216d6370-59a3-44e5-833f-823517651b4e">
+	<property name="ireport.zoom" value="1.2100000000000024"/>
+	<property name="ireport.x" value="338"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dati" class="java.util.Collection"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="dettagli" class="java.util.ArrayList"/>
+	<field name="csoggnome" class="java.lang.String"/>
+	<field name="indirizzoDich" class="java.lang.String"/>
+	<field name="residenzaDich" class="java.lang.String"/>
+	<field name="codFiscale" class="java.lang.String"/>
+	<field name="pIva" class="java.lang.String"/>
+	<field name="impostaRuolo" class="java.math.BigDecimal"/>
+	<field name="imposta" class="java.math.BigDecimal"/>
+	<field name="maggiorazioneTares" class="java.math.BigDecimal"/>
+	<field name="addMaggEca" class="java.math.BigDecimal"/>
+	<field name="addizionalePro" class="java.math.BigDecimal"/>
+	<field name="sgravioTot" class="java.math.BigDecimal"/>
+	<field name="importoSgravio" class="java.math.BigDecimal"/>
+	<field name="maggiorazioneTaresSgravio" class="java.math.BigDecimal"/>
+	<field name="addMaggEcaSgravio" class="java.math.BigDecimal"/>
+	<field name="addizionaleProSgravio" class="java.math.BigDecimal"/>
+	<field name="impostaLorda" class="java.math.BigDecimal"/>
+	<field name="versato" class="java.math.BigDecimal"/>
+	<field name="versatoNetto" class="java.math.BigDecimal"/>
+	<field name="versatoMaggiorazione" class="java.math.BigDecimal"/>
+	<field name="differenza" class="java.math.BigDecimal"/>
+	<variable name="dovuto" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{impostaLorda} == null ? 0 : $F{impostaLorda}) - ($F{importoSgravio} == null ? 0 : $F{importoSgravio}) + ($F{addMaggEcaSgravio} == null ? 0 : $F{addMaggEcaSgravio}) + ($F{addizionaleProSgravio} == null ? 0 : $F{addizionaleProSgravio})]]></variableExpression>
+	</variable>
+	<variable name="totImpostaRuolo" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{impostaRuolo}]]></variableExpression>
+	</variable>
+	<variable name="totImposta" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{imposta}]]></variableExpression>
+	</variable>
+	<variable name="nettoAddizionale" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{addMaggEca} == null ? 0 : $F{addMaggEca}) + ($F{addizionalePro} == null ? 0 : $F{addizionalePro})]]></variableExpression>
+	</variable>
+	<variable name="totNettoAddizionale" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{nettoAddizionale}]]></variableExpression>
+	</variable>
+	<variable name="totSgravioTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sgravioTot}]]></variableExpression>
+	</variable>
+	<variable name="totImportoSgravio" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{importoSgravio}]]></variableExpression>
+	</variable>
+	<variable name="totMaggTaresSgravio" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{maggiorazioneTaresSgravio}]]></variableExpression>
+	</variable>
+	<variable name="addSgrNetto" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{addMaggEcaSgravio} == null ? 0 : $F{addMaggEcaSgravio}) + ($F{addizionaleProSgravio} == null ? 0 : $F{addizionaleProSgravio})]]></variableExpression>
+	</variable>
+	<variable name="totAddSgrNetto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{addSgrNetto}]]></variableExpression>
+	</variable>
+	<variable name="dovutoTot" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{impostaRuolo} == null ? 0 : $F{impostaRuolo}) - ($F{sgravioTot} == null ? 0 : $F{sgravioTot})]]></variableExpression>
+	</variable>
+	<variable name="totDovutoTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{dovutoTot}]]></variableExpression>
+	</variable>
+	<variable name="totDovuto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{dovuto}]]></variableExpression>
+	</variable>
+	<variable name="dovutoMagg" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{maggiorazioneTares} == null ? 0 : $F{maggiorazioneTares}) - ($F{maggiorazioneTaresSgravio}  == null ? 0 : $F{maggiorazioneTaresSgravio})]]></variableExpression>
+	</variable>
+	<variable name="totDovutoMagg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{totDovutoMagg}]]></variableExpression>
+	</variable>
+	<variable name="totVersato" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{versato}]]></variableExpression>
+	</variable>
+	<variable name="totVersatoNetto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{versatoNetto}]]></variableExpression>
+	</variable>
+	<variable name="totVersatoMagg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{versatoMaggiorazione}]]></variableExpression>
+	</variable>
+	<variable name="differenzaNetto" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($V{dovuto} == null ? 0 : $V{dovuto}) - ($F{versatoNetto} == null ? 0 : $F{versatoNetto})]]></variableExpression>
+	</variable>
+	<variable name="differenzaMagg" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{maggiorazioneTares} == null ? 0 : $F{maggiorazioneTares}) - ($F{maggiorazioneTaresSgravio} == null ? 0 : $F{maggiorazioneTaresSgravio}) - ($F{versatoMaggiorazione} == null ? 0 : $F{versatoMaggiorazione})]]></variableExpression>
+	</variable>
+	<variable name="totDifferenzaNetto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{differenzaNetto}]]></variableExpression>
+	</variable>
+	<variable name="totDifferenzaMagg" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{differenzaMagg}]]></variableExpression>
+	</variable>
+	<variable name="totDifferenza" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{differenza}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="250" height="20" backcolor="#FFFFFF" uuid="88280dfa-3c12-46a6-a487-729f6177470c"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contribuente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="0" width="40" height="20" backcolor="#FFFFFF" uuid="bc2ba4d8-028d-456a-b36c-ca0f793117e4"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="70" height="20" backcolor="#FFFFFF" uuid="5f3b6ecf-5553-4783-b6e1-c7ff65a65b71"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[a Ruolo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="0" width="50" height="20" backcolor="#FFFFFF" uuid="f432c57b-9c53-4a51-bf34-dd8f334ce763"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Add.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="60" height="20" backcolor="#FFFFFF" uuid="51dc22bc-4384-4993-a0de-ffe89974cac1"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sgravi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="60" height="20" backcolor="#FFFFFF" uuid="60374d68-07e5-432a-b14c-c2471dccfc5b"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Add. Sgr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="0" width="70" height="20" backcolor="#FFFFFF" uuid="396b74df-a7a6-459f-a78e-20d150d7d753"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dovuto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="0" width="70" height="20" backcolor="#FFFFFF" uuid="0ca2a175-09a3-4e8a-848c-320a733a5fea"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Versato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="60" height="20" backcolor="#FFFFFF" uuid="e1ab1582-a792-4529-8d53-f8465a51f2f7"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Differenza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="730" y="0" width="80" height="20" backcolor="#FFFFFF" uuid="e0915d13-7964-47f3-805e-6e5921202d66"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dovuto/Rimborso]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="60">
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="10" width="250" height="10" backcolor="#FFFFFF" uuid="bb202fe1-6d07-474f-8d83-2832f018ebee">
+					<property name="local_mesure_unity" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{csoggnome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="20" width="250" height="10" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="bd0dfd98-be70-4ae3-9637-23643eebd6e1"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{indirizzoDich}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="30" width="250" height="10" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="eaf1a2cd-c864-4d5e-af7b-9271d6b35a3b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{residenzaDich}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="40" width="20" height="10" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="38ca9241-9bdb-4234-a1ae-1d469a193ab1"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codFiscale} != null ? "C.F." : null]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="20" y="40" width="230" height="10" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="767d1aaf-ac6d-4d2e-937e-7aa2b89ccb1b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codFiscale} != null ? $F{codFiscale} : null]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="50" width="30" height="10" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="04ed3463-697d-4f0d-a2c2-fee2c69a50cb"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pIva} != null ? "P.IVA:" : null]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="30" y="50" width="220" height="10" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="5a9a6f3d-a999-4837-9d04-1468f9e0c21e"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pIva} != null ? $F{pIva} : null]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="250" y="10" width="40" height="10" backcolor="#FFFFFF" uuid="7b0865f5-3597-4de5-aad3-cc227ecfd1dc"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["totali:"]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement x="0" y="5" width="810" height="1" uuid="f1ccd103-b224-4c41-bfe7-39f707416697">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="250" y="20" width="40" height="10" backcolor="#FFFFFF" uuid="a58a95e0-2501-4672-89df-cca5932f0e60"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["netto:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="250" y="30" width="40" height="10" backcolor="#FFFFFF" uuid="a603445f-6207-49c0-93b2-ccea29e89b60"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["magg.:"]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="290" y="10" width="70" height="10" backcolor="#FFFFFF" uuid="ba3dd6a4-840e-4041-aedf-7dba13655cdb">
+					<printWhenExpression><![CDATA[$F{impostaRuolo} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{impostaRuolo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="290" y="20" width="70" height="10" backcolor="#FFFFFF" uuid="6ec91831-7315-4ed8-97d9-e56dc611a172">
+					<printWhenExpression><![CDATA[$F{imposta} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imposta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="290" y="30" width="70" height="10" backcolor="#FFFFFF" uuid="36d47793-f6f3-4c61-bea9-4185105499b3">
+					<printWhenExpression><![CDATA[$F{maggiorazioneTares} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{maggiorazioneTares}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="360" y="10" width="50" height="10" backcolor="#FFFFFF" uuid="cacd7488-8f90-4740-96eb-931c97b83151"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="360" y="20" width="50" height="10" backcolor="#FFFFFF" uuid="6352db00-7f82-4ee8-93b1-107e1dd485f6">
+					<printWhenExpression><![CDATA[$V{nettoAddizionale} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{nettoAddizionale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="360" y="30" width="50" height="10" backcolor="#FFFFFF" uuid="e46dd745-132c-48e3-8394-a7f9d9f3d395"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="410" y="10" width="60" height="10" backcolor="#FFFFFF" uuid="5ce4482d-70a4-4b1a-948d-220410f93e6c">
+					<printWhenExpression><![CDATA[$F{sgravioTot} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sgravioTot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="410" y="20" width="60" height="10" backcolor="#FFFFFF" uuid="22c7e24e-68c6-436a-a66b-31891312afd9">
+					<printWhenExpression><![CDATA[$F{importoSgravio} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importoSgravio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="410" y="30" width="60" height="10" backcolor="#FFFFFF" uuid="545927c9-b7c3-4f1e-a495-245b80919219">
+					<printWhenExpression><![CDATA[$F{maggiorazioneTaresSgravio} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{maggiorazioneTaresSgravio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="470" y="30" width="60" height="10" backcolor="#FFFFFF" uuid="04d3925a-693e-40a5-b299-b7f9fb7873eb"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="470" y="20" width="60" height="10" backcolor="#FFFFFF" uuid="7be5ca03-9269-4b13-a484-e4cbab6f094f">
+					<printWhenExpression><![CDATA[$V{addSgrNetto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{addSgrNetto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="470" y="10" width="60" height="10" backcolor="#FFFFFF" uuid="d1ae99e3-5efa-4012-9863-0757a2dd6d0a"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="530" y="30" width="70" height="10" backcolor="#FFFFFF" uuid="bef56815-31f7-4619-b559-107f558b677b">
+					<printWhenExpression><![CDATA[$V{dovutoMagg} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{dovutoMagg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="530" y="20" width="70" height="10" backcolor="#FFFFFF" uuid="f0f7b5c4-c5e6-4117-be69-b57ea23b6968">
+					<printWhenExpression><![CDATA[$V{dovuto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{dovuto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="530" y="10" width="70" height="10" backcolor="#FFFFFF" uuid="68cd1afc-f6e2-40d5-b840-78b10be3edbc">
+					<printWhenExpression><![CDATA[$V{dovutoTot} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{dovutoTot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="600" y="10" width="70" height="10" backcolor="#FFFFFF" uuid="fde04a2b-dc37-409f-808f-3006ca1b9179">
+					<printWhenExpression><![CDATA[$F{versato} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{versato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="600" y="20" width="70" height="10" backcolor="#FFFFFF" uuid="b4cbb563-b3b0-4474-bd33-e97913b32765">
+					<printWhenExpression><![CDATA[$F{versatoNetto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{versatoNetto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="600" y="30" width="70" height="10" backcolor="#FFFFFF" uuid="f9c97195-40db-4319-960e-0175d3967b4f">
+					<printWhenExpression><![CDATA[$F{versatoMaggiorazione} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{versatoMaggiorazione}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="670" y="10" width="60" height="10" backcolor="#FFFFFF" uuid="c202a327-66b4-49dd-8cf1-a036c0a78cd6"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="670" y="20" width="60" height="10" backcolor="#FFFFFF" uuid="fe891f15-2f5c-4880-ade0-1264e98b7e0c">
+					<printWhenExpression><![CDATA[$V{differenzaNetto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{differenzaNetto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="670" y="30" width="60" height="10" backcolor="#FFFFFF" uuid="d6b3f06e-5953-4a1d-b4c2-6a699b86af6c">
+					<printWhenExpression><![CDATA[$V{differenzaMagg} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{differenzaMagg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="730" y="20" width="80" height="10" backcolor="#FFFFFF" uuid="249b5f13-3378-4f32-93a6-baf6b440191f"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="730" y="10" width="80" height="10" backcolor="#FFFFFF" uuid="582984ef-4735-4625-86fe-0591d1c8b620">
+					<printWhenExpression><![CDATA[$F{differenza} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{differenza}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="730" y="30" width="80" height="10" backcolor="#FFFFFF" uuid="88ad9415-fdfd-44bc-8b63-b5d9616f2ccd"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="250" y="10" width="40" height="10" backcolor="#FFFFFF" uuid="43c61ed6-4385-4695-ad1d-7d9acc792ad7"/>
+				<box>
+					<topPen lineColor="#E6E6E6"/>
+					<leftPen lineColor="#E6E6E6"/>
+					<bottomPen lineColor="#E6E6E6"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totali:]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="290" y="10" width="70" height="10" backcolor="#FFFFFF" uuid="4711a16e-3e64-4cb9-8418-5ee75d537b5e">
+					<printWhenExpression><![CDATA[$V{totImpostaRuolo} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totImpostaRuolo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="290" y="20" width="70" height="10" backcolor="#FFFFFF" uuid="b5a96d0d-5f3c-449a-a4d0-0f49ec5f7a17">
+					<printWhenExpression><![CDATA[$V{totImposta} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totImposta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="290" y="30" width="70" height="10" backcolor="#FFFFFF" uuid="4af43919-cdcc-403f-b013-bd6a05c0b6bb"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="360" y="10" width="50" height="10" backcolor="#FFFFFF" uuid="d8ff4547-bae9-489a-9787-833da60ee994"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="360" y="20" width="50" height="10" backcolor="#FFFFFF" uuid="69f55a6e-1ff8-4f68-9222-25335097498f">
+					<printWhenExpression><![CDATA[$V{totNettoAddizionale} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totNettoAddizionale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="360" y="30" width="50" height="10" backcolor="#FFFFFF" uuid="b2ebd5bd-cce8-458a-9b98-c14e1174564c"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="410" y="10" width="60" height="10" backcolor="#FFFFFF" uuid="35d44756-ae66-4573-b9bf-f60d60f77118">
+					<printWhenExpression><![CDATA[$V{totSgravioTot} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totSgravioTot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="410" y="30" width="60" height="10" backcolor="#FFFFFF" uuid="c1e60e6e-39c1-4029-b6a4-32402bc62af8">
+					<printWhenExpression><![CDATA[$V{totMaggTaresSgravio} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totMaggTaresSgravio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="410" y="20" width="60" height="10" backcolor="#FFFFFF" uuid="239bb866-2b98-4c20-b6c3-38acd87fae02">
+					<printWhenExpression><![CDATA[$V{totImportoSgravio} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totImportoSgravio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="470" y="20" width="60" height="10" backcolor="#FFFFFF" uuid="2e9259c5-438f-473b-a22c-eafaf3d3ce26">
+					<printWhenExpression><![CDATA[$V{totAddSgrNetto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totAddSgrNetto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="470" y="30" width="60" height="10" backcolor="#FFFFFF" uuid="432d12fc-08f7-4966-99c4-c741fa2c6154"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="470" y="10" width="60" height="10" backcolor="#FFFFFF" uuid="dfe2c8b8-7651-41e2-b9ef-e91acbae6a22"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="530" y="20" width="70" height="10" backcolor="#FFFFFF" uuid="0678bcd0-a64c-4cf1-bcfc-99b298c6814f">
+					<printWhenExpression><![CDATA[$V{totDovuto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDovuto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="530" y="30" width="70" height="10" backcolor="#FFFFFF" uuid="a27966b5-d554-4df0-af66-f219d0c0155f">
+					<printWhenExpression><![CDATA[$V{totDovutoMagg} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDovutoMagg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="530" y="10" width="70" height="10" backcolor="#FFFFFF" uuid="3ca840e4-0ae5-4cdf-aaee-2c5cb4b5211f">
+					<printWhenExpression><![CDATA[$V{totDovutoTot} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDovutoTot}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="600" y="20" width="70" height="10" backcolor="#FFFFFF" uuid="9e3b0dd8-e01c-47aa-a2a7-0af8b3f86700">
+					<printWhenExpression><![CDATA[$V{totVersatoNetto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totVersatoNetto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="600" y="30" width="70" height="10" backcolor="#FFFFFF" uuid="a9df19c5-7ada-4309-9762-a42796456f4a">
+					<printWhenExpression><![CDATA[$V{totVersatoMagg} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totVersatoMagg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="600" y="10" width="70" height="10" backcolor="#FFFFFF" uuid="a3511fcc-0f92-45b0-8ae0-566622dfcb97">
+					<printWhenExpression><![CDATA[$V{totVersato} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totVersato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="670" y="20" width="60" height="10" backcolor="#FFFFFF" uuid="cd9043ec-b9e3-452d-8011-472653a1f0c0">
+					<printWhenExpression><![CDATA[$V{totDifferenzaNetto} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDifferenzaNetto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="670" y="30" width="60" height="10" backcolor="#FFFFFF" uuid="9940627b-baa7-41f4-bf1a-573ef247c3a6">
+					<printWhenExpression><![CDATA[$V{totDifferenzaMagg} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDifferenzaMagg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="670" y="10" width="60" height="10" backcolor="#FFFFFF" uuid="b5bb6c32-a9e2-4a97-8580-5edd720f2f25"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="730" y="20" width="80" height="10" backcolor="#FFFFFF" uuid="0aeed8cb-1796-43a1-8ae0-4f108400643c"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="730" y="30" width="80" height="10" backcolor="#FFFFFF" uuid="e90d063e-99a4-4e89-93f0-bf8f4b290a35"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="" mode="Transparent" x="730" y="10" width="80" height="10" backcolor="#FFFFFF" uuid="1fdc3928-d8d5-447a-8310-5de63905c61e">
+					<printWhenExpression><![CDATA[$V{totDifferenza} != 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDifferenza}]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement x="0" y="5" width="810" height="1" uuid="2cfc4d15-aca0-45a6-abc8-8505c8582400">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+			</line>
+		</band>
+	</lastPageFooter>
+</jasperReport>

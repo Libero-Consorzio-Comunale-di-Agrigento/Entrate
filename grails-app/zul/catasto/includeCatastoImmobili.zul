@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox vflex="1">
+        <caption label="Immobili"/>
+        <listbox vflex="true" span="true" nonselectableTags=""
+                 sizedByContent="true" model="@load(vm.listaImmobiliPagina)"
+                 emptyMessage="Non sono presenti oggetti nel catasto" hflex="1"
+                 selectedItem="@bind(vm.immobileSelezionato)"
+                 onSelect="@command('onSelezionaImmobile')">
+            <listhead sizable="true">
+                <listheader label="Immobile" />
+                <listheader label="T"/>
+                <listheader label="Indirizzo"/>
+                <listheader label="Num.Civ." visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Partita"/>
+                <listheader label="Sez." sort="auto(estremiCatastoSort)"/>
+                <listheader label="Fgl."/>
+                <listheader label="Num."/>
+                <listheader label="Sub."/>
+                <listheader label="Zona"/>
+                <listheader label="Ctg."/>
+                <listheader label="Cl."/>
+                <listheader label="Cons."/>
+                <listheader label="Sup."/>
+
+                <listheader label="Ettari" visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Are" visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Centiare" visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+
+                <listheader label="Rend./Redd.Dom."/>
+                <listheader label="Reddito Agrario"/>
+
+                <listheader label="Qualità" visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+
+                <listheader label="Sc." visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Piano" visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Int." visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Possesso" visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Inizio Efficacia"/>
+                <listheader label="Fine Efficacia"/>
+                <listheader label="Inizio Val." visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Fine Val." visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Diritto" visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+                <listheader label="Graffato"/>
+                <listheader label="Sez./Fgl./Num/Sub. Princ."/>
+                <listheader label="Note"/>
+                <listheader label="Titolo Non Codificato"
+                            visible="@load(vm.bottomGroupLabel eq vm.groupLabel.immobili)"/>
+            </listhead>
+            <template name="model" var="oggCat">
+                <listitem draggable="true">
+                    <custom-attributes catasto="#{oggCat}"/>
+                    <listcell sclass="centro" label="@load(oggCat.IDFABBRICATO)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.TIPOOGGETTO)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(oggCat.isGraffato ? '':oggCat.INDIRIZZOCOMPLETO)"/>
+                    <listcell sclass="destra"
+                              label="@load(oggCat.isGraffato ? '':oggCat.NUMCIV)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.PARTITA)"/>
+                    <listcell sclass="centro" label="@load(oggCat.SEZIONE)"/>
+                    <listcell sclass="centro" label="@load(oggCat.FOGLIO)"/>
+                    <listcell sclass="centro" label="@load(oggCat.NUMERO)"/>
+                    <listcell sclass="centro" label="@load(oggCat.SUBALTERNO)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.ZONA)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.CATEGORIACATASTO)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.CLASSECATASTO)"/>
+                    <listcell sclass="destra"
+                              label="@load((oggCat.isGraffato or empty oggCat.CONSISTENZA)?'':c:formatNumber(oggCat.CONSISTENZA, '#,##0.0'))"/>
+                    <listcell sclass="destra"
+                              label="@load((oggCat.isGraffato or empty oggCat.SUPERFICIE)?'':c:formatNumber(oggCat.SUPERFICIE, '#'))"/>
+
+                    <listcell sclass="destra"
+                              label="@load((oggCat.isGraffato or empty oggCat.ETTARI)?'':c:formatNumber(oggCat.ETTARI, '#,##0'))"/>
+                    <listcell sclass="destra"
+                              label="@load((oggCat.isGraffato or empty oggCat.ARE)?'':c:formatNumber(oggCat.ARE, '#,##0'))"/>
+                    <listcell sclass="destra"
+                              label="@load((oggCat.isGraffato or empty oggCat.CENTIRARE)?'':c:formatNumber(oggCat.CENTIRARE, '#,##0'))"/>
+
+                    <listcell sclass="destra"
+                              label="@load((oggCat.isGraffato or empty oggCat.REDDITODOMINICALE)?'':c:formatNumber(oggCat.REDDITODOMINICALE, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((oggCat.isGraffato or empty oggCat.REDDITOAGRARIO)?'':c:formatNumber(oggCat.REDDITOAGRARIO, '€ #,##0.00'))"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.QUALITADES)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.SCALA)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.PIANO)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.INTERNO)"/>
+                    <listcell sclass="centro" label="@load(oggCat.isGraffato ? '':oggCat.POSSESSO)"/>
+                    <listcell sclass="centro"
+                              label="@load(oggCat.isGraffato ? null:oggCat.DATAEFFICACIAINIZIO) @converter('formattedDate', format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(oggCat.isGraffato ? null:oggCat.DATAEFFICACIAFINE) @converter('formattedDate', format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(oggCat.isGraffato ? null:oggCat.DATAVALIDITAINIZIO) @converter('formattedDate', format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(oggCat.isGraffato ? null:oggCat.DATAVALIDITAFINE) @converter('formattedDate', format='dd/MM/yyyy')"/>
+                    <listcell sclass="sinistra" label="@load(oggCat.isGraffato ? '':oggCat.DESDIRITTO)"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(oggCat.isGraffato)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell label="@load(oggCat.PRINCIPALE)"/>
+
+                    <listcell sclass="sinistra"
+                              label="@load(oggCat.isGraffato ? '':(oggCat.ANNOTAZIONE ne null and c:length(oggCat.ANNOTAZIONE) ge 20) ? c:cat(c:substring(oggCat.ANNOTAZIONE, 0, 20), '...') : oggCat.ANNOTAZIONE)">
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Note"
+                               visible="@load(oggCat.isGraffato ? false:oggCat.ANNOTAZIONE ne null and c:length(oggCat.ANNOTAZIONE) ge 20))"
+                               style="cursor: pointer;" popup="popupTesto"/>
+                    </listcell>
+                    <listcell sclass="sinistra"
+                              label="@load(oggCat.isGraffato ? '':(oggCat.TITOLO ne null and c:length(oggCat.TITOLO) ge 20) ? c:cat(c:substring(oggCat.TITOLO, 0, 20), '...') : oggCat.TITOLO)">
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Titolo Non Codificato"
+                               visible="@load(oggCat.isGraffato ? false:oggCat.TITOLO ne null and c:length(oggCat.TITOLO) ge 20))"
+                               style="cursor: pointer;" popup="popupTesto"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+
+    </groupbox>
+
+</zk>

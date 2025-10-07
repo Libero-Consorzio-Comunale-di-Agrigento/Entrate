@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <grid sclass="form" model="@load(vm.listaParametriExportInput)">
+        <rows>
+            <template name="model" var="pex">
+                <row>
+                    <cell width="30%" align="right">
+                        <h:span if="#{pex.flagObbligatorio eq 'S'}" class="mandatoryLabel">*</h:span>
+                        <label value="@load(pex.nomeParametro)"/>
+                    </cell>
+                    <cell align="right">
+                        <textbox if="#{empty pex.querySelezione}" hflex="1" mold="rounded"
+                                 value="@bind(vm.params[pex.tipoExport][pex.parametroExport])"/>
+                        <combobox if="#{!empty pex.querySelezione}"
+                                  model="@load(vm.paramsListValue[pex.tipoExport][pex.parametroExport])"
+                                  mold="rounded" hflex="1"
+                                  selectedItem="@bind(vm.params[pex.tipoExport][pex.parametroExport]) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                  readonly="true">
+                            <template name="model" var="item">
+                                <comboitem label="@load(item.value)" value="@load(item.key)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+            </template>
+        </rows>
+    </grid>
+</zk>

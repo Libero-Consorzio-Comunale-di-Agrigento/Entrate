@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+        .grid-dettaglio-pratiche div.z-grid-header tr.z-columns, div.z-grid-header tr.z-auxhead {
+	        background-color: #506E90;
+	        background-image: none;
+        }
+        .grid-dettaglio-pratiche div.z-column-cnt, .grid-dettaglio-pratiche div.z-row-cnt {
+	        color: #ffffff;
+	        font-family: arial, sans-serif;
+	        font-size: 12px;
+	        font-weight: bold;
+        }
+        .grid-dettaglio-pratiche tr.z-row {
+  			background: #ffffff;
+		}
+		.grid-dettaglio-pratiche tr.z-grid-odd {
+  			background: #f7f7f8;
+		}
+		.grid-dettaglio-pratiche tr.z-row .z-detail-outer {
+			background: #C6CCD6;
+			background-image: none;
+			border-top: 0;
+			border-left: 1px solid white;
+			border-right: 1px solid #c0c0c0;
+			border-bottom: 1px solid #506E90;
+			vertical-align: top;
+			padding: 10px;
+			width: 18px;
+		}
+		tr.rigaGruppoEven td.z-row-inner, tr.rigaGruppoEven {
+		    color: #000000;
+			font-family: arial, sans-serif;
+			font-size: 12px;
+			font-weight: bold;
+		    background-color: #DADFE5 !important;
+		}
+		tr.rigaGruppoOdd td.z-row-inner, tr.rigaGruppoOdd {
+		    color: #000000;
+			font-family: arial, sans-serif;
+			font-size: 12px;
+			font-weight: bold;
+		    background-color: #E4E6EB !important;
+		}
+		.labelGruppo {
+			font-family: arial, sans-serif;
+			font-size: 12px;
+			font-weight: bold;
+			padding: 2px 2px 2px 6px !important;
+		}		
+		.checkBoxActive {
+			filter: brightness(120%);
+		}		
+		.checkBoxThreeState {
+			filter: brightness(70%);
+		}		
+    </style>
+
+    <grid span="true" style="overflow: clip" vflex="1" sclass="grid-dettaglio-pratiche"
+          model="@load(vm.listaStati)" emptyMessage="Nessuna pratica presente">
+
+        <columns sizable="false">
+            <column label="" align="center" width="55px"/>
+            <column align="center" width="55px">
+                <checkbox checked="@bind(vm.anyStatoChecked)" onCheck="@command('onCheckStati')" style="padding-left: 2px !important;"
+                          sclass="@bind((vm.allStatoChecked || !vm.anyStatoChecked) ? 'checkBoxActive' :  'checkBoxThreeState')"/>
+            </column>
+            <column label="Stato / Tipo Atto" align="center" hflex="1"/>
+            <column label="Numero" align="center" width="90px"/>
+            <column label="Numerate" align="center" width="90px"/>
+            <column label="Non Numerate" align="center" width="90px"/>
+            <column label="Notificati" align="center" width="90px"/>
+            <column label="Non Notificati" align="center" width="90px"/>
+
+            <column label="@load(vm.colonnaImportoTitolo)" tooltiptext="@load(vm.colonnaImportoTooltip)"
+                    align="center" width="100px"
+                    visible="@load((vm.tipoPratica  ne 'S') or (vm.tipoTributo ne 'CUNI'))"/>
+            <column label="@load(vm.colonnaImportoRidTitolo)" tooltiptext="@load(vm.colonnaImportoRidTooltip)"
+                    align="center" width="100px"
+                    visible="@load((vm.tipoPratica ne '*') and (vm.tipoPratica ne 'S') and (vm.tipoPratica ne 'V'))"/>
+            <column label="Importo Netto" tooltiptext="Importo Netto" align="center" width="100px"
+                    visible="@load(vm.tipoPratica eq 'S')"/>
+            <column label="Imp.Rateizzato" tooltiptext="Importo Rateizzato" align="center" width="100px"
+                    visible="@load(vm.tipoPratica eq '*')"/>
+
+            <column label="Imp.Versato" tooltiptext="Importo Versato" align="center" width="100px"
+                    visible="@load(vm.tipoPratica ne '*')"/>
+            <column label="Imp.Versato" tooltiptext="Importo Versamenti" align="center" width="100px"
+                    visible="@load(vm.tipoPratica eq '*')"/>
+        </columns>
+        <template name="model" var="m"
+                  sclass="@load(((vm.statoSelezionato) and (vm.statoSelezionato.id eq m.id)) ? 'rigaSelezionata' : '')">
+            <row style="padding: 2px 2px 2px 2px !important;" sclass="@load((m.tipoRiga eq 0) ? 'z-row rigaGruppoEven' : 'z-row rigaGruppoOdd')"
+                 onClick="@command('onStatoClick', stato=m)">
+
+                <detail fulfill="onOpen" onOpen="@command('onOpenDettaglio', event=event))">
+                    <grid span="true" model="@load(m.tipiAtto)" style="padding: 2px 2px 2px 2px !important; border-bottom: 2px solid #506E90;"
+                          emptyMessage="Non sono presenti Tipi Atto">
+
+                        <columns>
+                            <column align="center" width="55px"/>
+                            <column align="center"/>
+                            <column align="center" width="90px"/>
+                            <column align="center" width="90px"/>
+                            <column align="center" width="90px"/>
+                            <column align="center" width="90px"/>
+                            <column align="center" width="90px"/>
+
+                            <column align="center" width="100px"
+                                    visible="@load((vm.tipoPratica ne 'S') or (vm.tipoTributo ne 'CUNI'))"/>
+                            <column align="center" width="100px"
+                                    visible="@load((vm.tipoPratica ne '*') and (vm.tipoPratica ne 'S') and (vm.tipoPratica ne 'V'))"/>
+                            <column align="center" width="100px"
+                                    visible="@load(vm.tipoPratica eq 'S')"/>
+                            <column align="center" width="100px"
+                                    visible="@load(vm.tipoPratica eq '*')"/>
+
+                            <column align="center" width="100px"
+                                    visible="@load(vm.tipoPratica ne '*')"/>
+                            <column align="center" width="100px"
+                                    visible="@load(vm.tipoPratica eq '*')"/>
+                        </columns>
+                        <template name="model" var="v">
+                            <row>
+                                <cell>
+                                    <checkbox checked="@bind(vm.statiSelezionati[v.id])"
+                                              onCheck="@command('onCheckTipoAtto', tipoAtto=v)" style="padding-left: 0px !important;"/>
+                                </cell>
+                                <cell sclass="sinistra">
+                                    <label value="@load(c:cat3((empty m.descrStato ? '' : m.descrStato), ' / ', (empty v.descrTipoAtto ? '' : v.descrTipoAtto)))"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load(v.numeroPratiche)"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load(v.numerate)"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load(v.nonNumerate)"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load(v.notificate)"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load(v.nonNotificate)"/>
+                                </cell>
+
+                                <cell sclass="destra">
+                                    <label value="@load((v.importoTotale eq null)?'':c:formatNumber(v.importoTotale, '€ #,##0.00'))"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load((v.importoRidotto eq null)?'':c:formatNumber(v.importoRidotto, '€ #,##0.00'))"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load((v.importoTotNetto eq null)?'':c:formatNumber(v.importoTotNetto, '€ #,##0.00'))"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load((v.importoRateizzato eq null)?'':c:formatNumber(v.importoRateizzato, '€ #,##0.00'))"/>
+                                </cell>
+
+                                <cell sclass="destra">
+                                    <label value="@load(((v.importoVersato eq null) or (v.importoVerssato eq 0))?'':c:formatNumber(v.importoVersato, '€ #,##0.00'))"/>
+                                </cell>
+                                <cell sclass="destra">
+                                    <label value="@load(((v.versatoRate eq null) or (v.versatoRate eq 0))?'':c:formatNumber(v.versatoRate, '€ #,##0.00'))"/>
+                                </cell>
+                            </row>
+                        </template>
+                    </grid>
+                </detail>
+
+                <cell>
+                    <checkbox checked="@bind(vm.statiSelezionati[m.id])" onCheck="@command('onCheckStato', stato=m)" style="padding-left: 6px !important;"
+                    			sclass="@bind(vm.statiSelezionatiAll[m.id] ? 'checkBoxActive' : 'checkBoxThreeState')"/>
+                </cell>
+                <cell sclass="sinistra">
+                    <label value="@load(m.descrStato)" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load(m.numeroPratiche)" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load(m.numerate)" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load(m.nonNumerate)" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load(m.notificate)" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load(m.nonNotificate)" class="labelGruppo"/>
+                </cell>
+
+                <cell sclass="destra">
+                    <label value="@load((m.importoTotale eq null)?'':c:formatNumber(m.importoTotale, '€ #,##0.00'))" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load((m.importoRidotto eq null)?'':c:formatNumber(m.importoRidotto, '€ #,##0.00'))" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load((m.importoTotNetto eq null)?'':c:formatNumber(m.importoTotNetto, '€ #,##0.00'))" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load((m.importoRateizzato eq null)?'':c:formatNumber(m.importoRateizzato, '€ #,##0.00'))" class="labelGruppo"/>
+                </cell>
+
+                <cell sclass="destra">
+                    <label value="@load(((m.importoVersato eq null) or (m.importoVersato eq 0))?'':c:formatNumber(m.importoVersato, '€ #,##0.00'))" class="labelGruppo"/>
+                </cell>
+                <cell sclass="destra">
+                    <label value="@load(((m.versatoRate eq null) or (m.versatoRate eq 0))?'':c:formatNumber(m.versatoRate, '€ #,##0.00'))" class="labelGruppo"/>
+                </cell>
+            </row>
+        </template>
+    </grid>
+
+</zk>

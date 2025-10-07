@@ -1,0 +1,71 @@
+<groupbox width="100%">
+	<grid sclass="form">
+		<rows>
+			<row>
+				<cell colspan="2" align="right">
+					<label value="Tipo oggetto " />
+				</cell>
+				<cell colspan="6" align="rigth">
+					<textbox readonly="true" hflex="1"
+						value="@load(c:cat3(vm.oggetto.tipoOggetto.tipoOggetto, ' - ', vm.oggetto.tipoOggetto.descrizione))" />
+				</cell>
+				<cell colspan="2" align="right">
+					<label value="Id Immobile " />
+				</cell>
+				<cell colspan="6">
+					<textbox readonly="true" value="@load(vm.oggetto.idImmobile)" />
+				</cell>
+				<cell colspan="2" align="right">
+					<label value="Oggetto " />
+				</cell>
+				<cell colspan="6">
+					<textbox readonly="true" value="@load(vm.oggetto.id)" />
+				</cell>
+			</row>
+			<row>
+				<cell colspan="2" align="right">
+					<label value="Indirizzo" />
+				</cell>
+				<cell colspan="6">
+					<textbox readonly="true" hflex="1"
+						value="@load(vm.oggetto.archivioVie.denomUff)" />
+				</cell>
+				<cell colspan="2" align="right">
+					<label value="Civico" />
+				</cell>
+				<cell colspan="2" align="left">
+					<textbox readonly="true" style="text-align: right;" hflex="1"
+						value="@bind(vm.oggetto.numCiv)" tooltiptext="Numero" />
+				</cell>
+				<cell colspan="1" align="center">
+					<label value="/" />
+				</cell>
+				<cell colspan="2" align="left">
+					<textbox readonly="true" style="text-align: right;" hflex="1"
+						value="@bind(vm.oggetto.suffisso)" tooltiptext="Suffisso" />
+				</cell>
+				<cell colspan="1" align="right">
+					<label value="Scala" />
+				</cell>
+				<cell colspan="1" align="left">
+					<textbox readonly="true" style="text-align: right;" hflex="1"
+						value="@bind(vm.oggetto.scala)" tooltiptext="Scala" />
+				</cell>
+				<cell colspan="1" align="right">
+					<label value="Piano" />
+				</cell>
+				<cell colspan="1" align="left">
+					<textbox readonly="true" style="text-align: right;" hflex="1"
+						value="@bind(vm.oggetto.piano)" tooltiptext="Piano" />
+				</cell>
+				<cell colspan="1" align="right">
+					<label value="Interno" />
+				</cell>
+				<cell colspan="1" align="left">
+					<textbox readonly="true" style="text-align: right;" hflex="1"
+						value="@bind(vm.oggetto.interno)" tooltiptext="Interno" />
+				</cell>
+			</row>
+		</rows>
+	</grid>
+</groupbox>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+        td.errore {
+        border-color: #B60202;
+        border-width: 2px;
+        }
+
+        td.vuoto {
+        border-color: #22AAE2;
+        border-width: 2px;
+        }
+    </style>
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('elencoUtenzeViewModel')" width="100%"
+            vflex="1">
+		<script src="/js/decimalbox.js"/>
+
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onCambioPagina')"
+                            pageSize="@bind(vm.pagingList.pageSize)"
+                            totalSize="@load(vm.pagingList.totalSize)"
+                            activePage="@bind(vm.pagingList.activePage)"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onContribuentiToXls')"
+                                   disabled="false"/>
+                    <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                   tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                   popup="funzioniUtentiTar"/>
+                </hlayout>
+            </hlayout>
+            <hlayout hflex="3" style="text-align: right;">
+
+                <groupbox style="text-align: left;">
+                    <caption label="Ordinamento" style="text-align: left;"/>
+
+                    <vlayout>
+                        <radiogroup id="ordinamento" onCheck="@command('onChangeOrderBy')"
+                                    selectedItem="@bind(vm.filtro.orderByType)"/>
+                        <radio label="Alfabetico" radiogroup="ordinamento" value="@load(vm.orderFields[0])"/>
+                        <radio label="Codice Fiscale" radiogroup="ordinamento" value="@load(vm.orderFields[1])"/>
+                    </vlayout>
+
+                </groupbox>
+
+                <groupbox style="text-align: left;">
+                    <caption label="Deceduti" style="text-align: left;"/>
+
+                    <vlayout>
+                        <radiogroup id="statoSoggetti" onCheck="@command('onChangeStato')"
+                                    selectedItem="@bind(vm.filtro.statoSoggetti)"/>
+                        <radio label="Deceduti e Non Deceduti" radiogroup="statoSoggetti" value="T"/>
+                        <radio label="Solo Non deceduti" radiogroup="statoSoggetti" value="ND"/>
+                        <radio label="Solo Deceduti" radiogroup="statoSoggetti" value="D"/>
+                    </vlayout>
+
+                </groupbox>
+
+                <groupbox style="text-align: left;">
+                    <caption label="Utenze" style="text-align: left;"/>
+
+                    <vlayout>
+                        <radiogroup id="statoUtenze" onCheck="@command('onChangeTipoUtenza')"
+                                    selectedItem="@bind(vm.filtro.statoUtenze)"/>
+                        <radio label="Tutte" radiogroup="statoUtenze" value="T"/>
+                        <radio label="Domestiche" radiogroup="statoUtenze" value="D"/>
+                        <radio label="Solo Non Domestiche" radiogroup="statoUtenze" value="ND"/>
+
+                    </vlayout>
+
+                </groupbox>
+
+            </hlayout>
+
+            <toolbarbutton width="26px"
+                           image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                           onClick="@command('openCloseFiltri')"/>
+        </hlayout>
+
+        <space height="3px"/>
+
+        <listbox span="true" nonselectableTags="" sizedByContent="true"
+                 model="@load(vm.listaUtenzeTari)" selectedItem="@bind(vm.utenzaTariSelezionata)"
+                 emptyMessage="Nessuna utenza Tari presente." vflex="1">
+
+            <listhead sizable="true">
+                <listheader label="Oggetto"/>
+                <listheader label="Contribuente"/>
+                <listheader label="Codice Fiscale"/>
+                <listheader label="Indirizzo"/>
+                <listheader label="C.Trib."/>
+                <listheader label="Cat."/>
+                <listheader label="Tar."/>
+                <listheader label="Cons."/>
+                <listheader label="Valido Dal"/>
+                <listheader label="Valido Al"/>
+                <listheader label="Note"/>
+                <listheader label="Dom." align="center"/>
+                <listheader label="A" align="center"/>
+                <listheader label="Comp."/>
+                <listheader label="Des.Cat."/>
+                <listheader label="Sez."/>
+                <listheader label="Foglio"/>
+                <listheader label="Numero"/>
+                <listheader label="Sub."/>
+                <listheader label="Ctg."/>
+                <listheader label="Res." align="center"/>
+                <listheader label="Stato"/>
+                <listheader label="Data Ultimo Ev."/>
+                <listheader label="Ind.Res."/>
+                <listheader label="Civ.Res."/>
+                <listheader label="Com.Res."/>
+                <listheader label="CAP Res."/>
+                <listheader label="Presso"/>
+                <listheader label="Tipo Occ."/>
+            </listhead>
+
+            <template name="model">
+                <listitem context="funzioniContext">
+                    <listcell label="@load(each.oggetto)" sclass="sinistra"/>
+                    <listcell label="@load(each.soggnome)" sclass="sinistra"/>
+                    <listcell>
+                        <hlayout>
+                            <label value="@load(each.codFiscale)"/>
+                            <space width="2px"/>
+                            <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                                   style="cursor: pointer;" width="16px"
+                                   visible="@load(each.codFiscale ne null ? true : false)"
+                                   onClick="@command('onOpenSituazioneContribuente',  ni=each.ni)"/>
+                        </hlayout>
+                    </listcell>
+                    <listcell label="@load(each.indiOgge)" sclass="sinistra"/>
+                    <listcell label="@load(each.tributo)" sclass="destra"/>
+                    <listcell label="@load(each.categoria)" sclass="destra"/>
+                    <listcell label="@load(each.tipoTariffa)" sclass="destra"/>
+                    <listcell label="@load((empty each.consistenza)?'':c:formatNumber(each.consistenza, '#,##0.00'))"
+                              sclass="destra"/>
+                    <listcell label="@load(each.dal ne null ? c:formatDate(each.dal,'dd/MM/yyyy'):'' )"
+                              sclass="centro"/>
+                    <listcell label="@load(each.al ne null ? c:formatDate(each.al,'dd/MM/yyyy'):'' )" sclass="centro"/>
+                    <listcell style="white-space: nowrap;"
+                              label="@load((each.note ne null and c:length(each.note) ge 20) ? c:cat(c:substring(each.note, 0, 20), '...') : each.note)">
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza Titolo non codificato"
+                               width="16px"
+                               visible="@load(each.note ne null and c:length(each.note) ge 20))"
+                               style="cursor: pointer"
+                               onClick="@command('onApriNote', arg=each.note)"/>
+                    </listcell>
+                    <listcell>
+                        <checkbox checked="@load(each.flagDomestica eq 'SI')" disabled="true"/>
+                    </listcell>
+                    <listcell sclass="center">
+                        <checkbox checked="@load(each.flagAbPrincipale eq 'SI')" disabled="true"/>
+                    </listcell>
+                    <listcell label="@load(each.numeroFamiliari)" sclass="destra"/>
+                    <listcell style="white-space: nowrap;"
+                              label="@load((each.desCategoria ne null and c:length(each.desCategoria) ge 20) ? c:cat(c:substring(each.desCategoria, 0, 20), '...') : each.desCategoria)"
+                              sclass="sinistra">
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza Titolo non codificato"
+                               width="16px"
+                               visible="@load(each.desCategoria ne null and c:length(each.desCategoria) ge 20))"
+                               style="cursor: pointer"
+                               onClick="@command('onApriNote', arg=each.desCategoria)"/>
+                    </listcell>
+                    <listcell label="@load(each.sezione)" sclass="centro"/>
+                    <listcell label="@load(each.foglio)" sclass="centro"/>
+                    <listcell label="@load(each.numero)" sclass="centro"/>
+                    <listcell label="@load(each.subalterno)" sclass="centro"/>
+                    <listcell label="@load(each.categoriaCatasto)" sclass="centro"/>
+                    <listcell>
+                        <checkbox checked="@load(each.residente eq 'SI')" disabled="true"/>
+                    </listcell>
+                    <listcell style="white-space: nowrap;"
+                              label="@load((each.descrizioneStato ne null and c:length(each.descrizioneStato) ge 20) ? c:cat(c:substring(each.descrizioneStato, 0, 20), '...') : each.descrizioneStato)"
+                              sclass="sinistra">
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza Titolo non codificato"
+                               width="16px"
+                               visible="@load(each.descrizioneStato ne null and c:length(each.descrizioneStato) ge 20))"
+                               style="cursor: pointer"
+                               onClick="@command('onApriNote', arg=each.descrizioneStato)"/>
+                    </listcell>
+                    <listcell
+                            label="@load(each.dataUltEve ne null ? c:formatDate(each.dataUltEve,'dd/MM/yyyy'):'' )"
+                            sclass="centro"/>
+                    <listcell style="white-space: nowrap;"
+                              label="@load((each.indirizzoRes ne null and c:length(each.indirizzoRes) ge 20) ? c:cat(c:substring(each.indirizzoRes, 0, 20), '...') : each.indirizzoRes)"
+                              sclass="@load(each.indirizzoRes eq null ? 'vuoto' : '')">
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza Titolo non codificato"
+                               width="16px"
+                               visible="@load(each.indirizzoRes ne null and c:length(each.indirizzoRes) ge 20))"
+                               style="cursor: pointer"
+                               onClick="@command('onApriNote', arg=each.indirizzoRes)"/>
+                    </listcell>
+                    <listcell label="@load(each.numCivicoRes)"
+                              sclass="@load(each.numCivicoRes eq null ? 'vuoto' : '')"/>
+                    <listcell label="@load(each.comuneRes)"
+                              sclass="@load(each.comuneRes eq null  ? 'vuoto' : each.verificaComuneRes eq 'ERR'  ? 'errore' : '' )"/>
+                    <listcell label="@load(each.capRes)"
+                              sclass="@load(each.capRes eq null ? 'vuoto' : each.verificaCap eq 'ERR' ? 'errore' : '')"/>
+                    <listcell style="white-space: nowrap;"
+                              label="@load((each.soggnomeP ne null and c:length(each.soggnomeP) ge 20) ? c:cat(c:substring(each.soggnomeP, 0, 20), '...') : each.soggnomeP)"
+                              sclass="sinistra">
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza Titolo non codificato"
+                               width="16px"
+                               visible="@load(each.soggnomeP ne null and c:length(each.soggnomeP) ge 20))"
+                               style="cursor: pointer"
+                               onClick="@command('onApriNote', arg=each.soggnomeP)"/>
+                    </listcell>
+                    <listcell label="@load(each.tipoOccupazione)" sclass="centro"/>
+                </listitem>
+            </template>
+            <listfoot>
+                <listfooter style="white-space:nowrap;" label="@load(vm.totaleContribuenti)"/>
+                <listfooter style="white-space:nowrap;" label="@load(vm.totaleUtenze)"/>
+            </listfoot>
+        </listbox>
+
+
+        <menupopup id="funzioniUtentiTar">
+            <menuitem label="Controllo Utenze Generale"
+                      onClick="@command('onControlloUtenzeGenerale')"/>
+            <menuseparator/>
+            <menuitem disabled="@load(empty vm.utenzaTariSelezionata)"
+                      label="Controllo Utenze Contribuente"
+                      onClick="@command('onControlloUtenzeContribuente')"/>
+            <menuitem disabled="@load(empty vm.utenzaTariSelezionata)"
+                      label="Contribuenti sull'Oggetto"
+                      onClick="@command('onVisualizzaContribuentiOggetto')"/>
+            <menuitem disabled="@load(empty vm.utenzaTariSelezionata)"
+                      label="Pratiche dell'Oggetto"
+                      onClick="@command('onVisualizzaPraticheOggetto')"/>
+        </menupopup>
+
+
+        <!-- Context Menu -->
+        <menupopup id="funzioniContext">
+            <menuitem disabled="@load(empty vm.utenzaTariSelezionata)"
+                      label="Contribuenti sull'Oggetto"
+                      onClick="@command('onVisualizzaContribuentiOggetto')"/>
+            <menuitem disabled="@load(empty vm.utenzaTariSelezionata)"
+                      label="Pratiche dell'Oggetto"
+                      onClick="@command('onVisualizzaPraticheOggetto')"/>
+        </menupopup>
+
+
+    </window>
+</zk>

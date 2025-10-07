@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               tooltiptext='#{empty arg.modifyTooltip?((!vm.modifica)?"Lettura":"Modifica"):arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaCostoStorico')"
+                               disabled="@load(empty vm.costoStoricoSelezionato || !vm.modifica || vm.oggCoSelezionato.oggettoPratica.tipoOggetto.tipoOggetto ne 4)"/>
+                <toolbarbutton image="/images/afc/16x16/add.png"
+                               tooltiptext='#{empty arg.addTooltip?"Aggiungi costo storico":arg.addTooltip}'
+                               disabled="@load(!vm.modifica || vm.oggCoSelezionato.oggettoPratica.tipoOggetto.tipoOggetto ne 4)"
+                               onClick="@command('onAggiungiCostoStorico')"/>
+                <toolbarbutton image="/images/afc/16x16/delete.png" tooltiptext='Cancella'
+                               disabled="@load((empty vm.costoStoricoSelezionato) || !vm.modifica || vm.oggCoSelezionato.oggettoPratica.tipoOggetto.tipoOggetto ne 4)"
+                               onClick="@command('onEliminaCostoStorico')"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               tooltiptext='Esporta in XLS' onClick="@command('onExportXlsCostiStorici')"
+                               disabled="@load(empty vm.listaCostiStorici)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+    <listbox vflex="1" height="100px" selectedItem="@bind(vm.costoStoricoSelezionato)" sizedByContent="true"
+             span="true" model="@load(vm.listaCostiStorici)" emptyMessage="Nessun costo storico">
+        <listhead sizable="true">
+            <listheader label="Anno"/>
+            <listheader label="Costo"/>
+        </listhead>
+        <template name="model" var="cost">
+            <listitem onDoubleClick="@command('onModificaCostoStorico')">
+                <listcell sclass="destra" label="@load(cost.anno)"/>
+                <listcell sclass="destra"
+                          label="@load(cost.costo ne null ? c:formatNumber(cost.costo, '€ #,##0.00') : '')"/>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

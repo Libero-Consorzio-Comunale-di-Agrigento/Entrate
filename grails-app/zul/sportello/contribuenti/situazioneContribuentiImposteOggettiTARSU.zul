@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <groupbox vflex="1" class="z-groupbox-hr-bottom">
+        <caption label="@bind(vm.captionlistaOggettiImposta)"/>
+        <listbox selectedItem="@bind(vm.oggettoSelezionato)" span="true"
+                 onClick="@command('onClickOggettoImposta', popup=dettaglioOggetto)"
+                 model="@load(vm.listaOggettiImposta)" emptyMessage="Nessun Oggetto"
+                 vflex="1" sizedByContent="true">
+            <listhead sizable="true">
+                <listheader label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+                <listheader label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader label="@load(c:l('sportello.label.zona'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.zona'))"/>
+                <listheader label="@load(c:l('sportello.label.categoriaCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoPratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoPratica'))"/>
+                <listheader label="@load(c:l('sportello.label.codiceTributoCod'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.codiceTributoCod'))"/>
+                <listheader label="@load(c:l('sportello.label.categoria'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoria'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoTariffa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTariffa'))"/>
+                <listheader label="@load(c:l('sportello.label.consistenza'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.consistenza'))"/>
+                <listheader label="@load(c:l('sportello.label.impostaLorda'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.impostaLorda'))"/>
+                <listheader label="@load(c:l('sportello.label.aRuolo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.aRuolo'))"/>
+                <listheader label="@load(c:l('sportello.label.componentiPereq'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.componentiPereq'))"/>
+            </listhead>
+            <template name="model" var="ogg">
+                <listitem popup="dettaglioOggetto, position=before_end">
+                    <listcell label="@load(ogg.oggetto)" sclass="destra"/>
+                    <listcell label="@load(ogg.tipoOggetto)" sclass="centro"/>
+                    <listcell label="@load(ogg.indirizzoOggetto)"/>
+                    <listcell label="@load(ogg.sezione)" sclass="destra"/>
+                    <listcell label="@load(ogg.foglio)" sclass="destra"/>
+                    <listcell label="@load(ogg.numero)" sclass="destra"/>
+                    <listcell label="@load(ogg.subalterno)" sclass="destra"/>
+                    <listcell label="@load(ogg.zona)" sclass="destra"/>
+                    <listcell label="@load(ogg.categoriaCatasto)" sclass="centro"/>
+                    <listcell label="@load(ogg.tipoPratica)" sclass="centro"/>
+                    <listcell label="@load(ogg.codiceTributo)" sclass="destra"/>
+                    <listcell label="@load(ogg.categoria)" sclass="centro"/>
+                    <listcell label="@load(ogg.tipoTariffa)" sclass="centro"/>
+                    <listcell
+                            label="@load(ogg.consistenza ne null ? c:formatNumber(ogg.consistenza, '###.00'): ''))"
+                            sclass="destra"/>
+                    <listcell
+                            label="@load(ogg.maggiorazioneTares + ogg.addMaggEca + ogg.addPro + ogg.iva eq 0 ? null : c:formatNumber(ogg.imposta + ogg.maggiorazioneTares + ogg.addMaggEca + ogg.addPro + ogg.iva, '€ #,##0.00'))"
+                            sclass="destra"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((!empty ogg.aRuolo)?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="destra"
+                              label="@load((ogg.maggiorazioneTares gt 0) ? c:formatNumber(ogg.maggiorazioneTares, '€ #,##0.00') : '')"/>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+
+    <window id="dettaglioOggetto" width="400px" position="center"
+            title="Dettaglio" border="normal" mode="popup" visible="false">
+		<script src="/js/decimalbox.js"/>
+        <grid hflex="1">
+            <columns>
+                <column hflex="1"/>
+                <column hflex="2"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load('Categoria')"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.oggettoSelezionato.descrizioneCategoria)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load('Tariffa')"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.oggettoSelezionato.descrizioneTariffa)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load('Quota fissa'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load((vm.oggettoSelezionato.quotaFissa eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.quotaFissa, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load('Quota variabile'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load((vm.oggettoSelezionato.quotaVariale eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.quotaVariale, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.imposta'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load((vm.oggettoSelezionato.imposta eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.imposta, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.addizionaleMaggiorazioneECA'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load((vm.oggettoSelezionato.addMaggEca eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.addMaggEca, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.addizionaleProvinciale'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load((vm.oggettoSelezionato.addPro eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.addPro, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.iva'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load((vm.oggettoSelezionato.iva eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.iva, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell>
+                        <label sclass="intestazioneGrid"
+                               value="@load(c:l('sportello.label.estesa.componentiPereq'))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load((vm.oggettoSelezionato.maggiorazioneTares eq null) ? '' : c:formatNumber(vm.oggettoSelezionato.maggiorazioneTares, '€ #,##0.00'))"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </window>
+</zk>

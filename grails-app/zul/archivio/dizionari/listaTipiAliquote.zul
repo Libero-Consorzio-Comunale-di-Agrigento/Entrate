@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaTipiAliquoteViewModel')" width="100%"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+            
+	<hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+        <hlayout sclass="afc-control-bar">
+            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                           visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                           onClick="@command('onRefresh')"/>
+            <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                           tooltiptext="@load(vm.lettura ? 'Visualizza' : 'Modifica')"
+                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                           onClick="@command('onModificaTipoAliquota')"
+                           disabled="@load(empty vm.tipoAliquotaSelezionato)"/>
+            <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                           tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                           onClick="@command('onAggiungiTipoAliquota')"
+                           disabled="@load((vm.lettura ne false) or (vm.listaTipiAliquota.size() ge 99))"/>
+            <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                           tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                           onClick="@command('onDuplicaTipoAliquota')"
+                           disabled="@load((vm.lettura ne false) or (empty vm.tipoAliquotaSelezionato))"/>
+            <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                           tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                           visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                           onClick="@command('onEliminaTipoAliquota')"
+                           disabled="@load((vm.lettura ne false) or (empty vm.tipoAliquotaSelezionato))"/>
+            <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                           tooltiptext='Esporta in XLS'
+                           onClick="@command('onExportXlsTipoAliquote')"
+                           disabled="@load(empty vm.listaTipiAliquota)"/>
+        </hlayout>
+        <hlayout valign="middle" if="@load(vm.selezioneTipoTributoVisibile)">
+            <space width="3px"/>
+            <label value="Tipo Tributo"/>
+            <space width="3px"/>
+            <combobox model="@load(vm.listaTipiTributo)" readonly="true"
+                      selectedItem="@bind(vm.tipoTributoSelezionato)" mold="rounded" width="500px"
+                      onChange="@command('onCambioTributo')">
+                <template name="model" var="item">
+                    <comboitem
+                            label="@load(c:cat3(item.tipoTributoAttuale, ' - ', item.descrizione))"
+                            value="@load(item.tipoTributo)"/>
+                </template>
+            </combobox>
+        </hlayout>
+        <hlayout valign="middle" style="text-align: right;" hflex="1">
+            <toolbarbutton width="26px"
+                           image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                           onClick="@command('openCloseFiltri')"/>
+        </hlayout>
+    </hlayout>
+    <listbox selectedItem="@bind(vm.tipoAliquotaSelezionato)" span="true"
+             model="@load(vm.listaTipiAliquota)"
+             emptyMessage="Nessun tipo aliquota" sizedByContent="true" vflex="true">
+        <listhead sizable="true">
+            <listheader label="Tipo Aliquota"/>
+            <listheader label="Descrizione"/>
+        </listhead>
+        <template name="model">
+            <listitem onDoubleClick="@command('onModificaTipoAliquota')">
+                <listcell label="@load(each.tipoAliquota)" sclass="destra"/>
+                <listcell label="@load(each.descrizione)"/>
+            </listitem>
+        </template>
+    </listbox>
+
+    </window>
+</zk>

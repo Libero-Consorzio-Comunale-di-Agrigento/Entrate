@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <!-- ARCHIVIO -->
+    <listbox selectedItems="@bind(vm.oggettiSelezionati)" span="true"
+             model="@load(vm.listaOggetti)" emptyMessage="Nessun Oggetto"
+             sizedByContent="true"
+             multiple="true" checkmark="true">
+        <listhead sizable="true">
+            <listheader align="center"/>
+            <listheader label="Oggetto" sort="auto(idOggetto)"/>
+            <listheader label="T"/>
+            <listheader label="Indirizzo" sort="auto(indirizzoCompletoSort)"/>
+            <listheader label="Sez." sort="auto(estremiCatastoSort)"/>
+            <listheader label="Fgl."/>
+            <listheader label="Num."/>
+            <listheader label="Sub."/>
+            <listheader label="Zona"/>
+            <listheader label="Prot."/>
+            <listheader label="Anno"/>
+            <listheader label="Partita"/>
+            <listheader label="Ctg."/>
+            <listheader label="Cl."/>
+        </listhead>
+        <template name="model" var="oggArch">
+            <listitem draggable="true">
+                <listcell sclass="centro" />
+                <listcell sclass="centro" label="@load(oggArch.idOggetto)"/>
+                <listcell sclass="centro" label="@load(oggArch.tipoOggetto)"/>
+                <listcell sclass="sinistra"
+                          label="@load(oggArch.indirizzoCompleto)"/>
+                <listcell sclass="centro" label="@load(oggArch.sezione)"/>
+                <listcell sclass="centro" label="@load(oggArch.foglio)"/>
+                <listcell sclass="centro" label="@load(oggArch.numero)"/>
+                <listcell sclass="centro" label="@load(oggArch.subalterno)"/>
+                <listcell sclass="centro" label="@load(oggArch.zona)"/>
+                <listcell sclass="centro" label="@load(oggArch.protocolloCatasto)"/>
+                <listcell sclass="centro" label="@load(oggArch.annoCatasto)"/>
+                <listcell sclass="centro" label="@load(oggArch.partita)"/>
+                <listcell sclass="centro" label="@load(oggArch.categoriaCatasto)"/>
+                <listcell sclass="centro" label="@load(oggArch.classeCatasto)"/>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:liquibase="antlib:liquibase.integration.ant">
+    <taskdef resource="liquibase/integration/ant/antlib.xml" uri="antlib:liquibase.integration.ant"/>
+
+    <!-- Classpath dove sono salvati gli script liquibase -->
+    <path id="classpath-liquibase">
+        <pathelement path="../db"/>
+    </path>
+
+    <liquibase:database id="target-database"
+                        driver="${global.db.target.driver}" url="${global.db.target.url}"
+                        user="${global.db.target.username}" password="${global.db.target.password}"/>
+    <liquibase:database id="ad4-database" driver="${global.db.target.driver}" url="${global.db.target.url}"
+                            user="${global.db.ad4.username}" password="${global.db.ad4.password}"/>
+    <liquibase:database id="gsd-database" driver="${global.db.target.driver}" url="${global.db.target.url}"
+                            user="${global.db.gsd.username}" password="${global.db.gsd.password}"/>
+    <liquibase:database id="cfa-database" driver="${global.db.target.driver}" url="${global.db.target.url}"
+                            user="${global.db.cfa.username}" password="${global.db.cfa.password}"/>
+    <liquibase:database id="trb-database" driver="${global.db.target.driver}" url="${global.db.target.url}"
+                            user="${global.db.trb.username}" password="${global.db.trb.password}"/>
+
+    <target name="-liquibase"
+            depends="-crea-utente-tr4ws-passwdDaPillar,-crea-utente-tr4ws-passwdStd,-crea-utente-smartpnd-passwdDaPillar,-crea-utente-smartpnd-passwdStd,-init,-ad4-integration,-so4-integration,-no-gsd-integration,-liquibase-tr4,-gsd-integration,-cfa-integration,-trb-integration,-depag-integration,-inizializzazione-tipi-tributo,-tr4web-integration,-finalizza">
+        <echo message="Task liquibase completata"/>
+    </target>
+
+    <target name="-init">
+        <liquibase:updateDatabase databaseref="target-database"
+                                  changelogfile="init/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}"/>
+    </target>
+
+    <target name="-liquibase-tr4">
+        <echo message="init Liquibase to ${global.db.target.username}"/>
+        <echo message="AD4 user: ${global.db.ad4.username}"/>
+        <echo message="GSD user: ${global.db.gsd.username}"/>
+        <echo message="TRB user: ${global.db.trb.username}"/>
+        <echo message="CFA user: ${global.db.cfa.username}"/>
+        <echo message="DEPAG user: ${global.db.depag.username}"/>
+        <echo message="Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database"
+                                  changelogfile="master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="ad4Username" value="${global.db.ad4.username}"/>
+                <liquibase:changeLogParameter name="gsdUsername" value="${global.db.gsd.username}"/>
+                <liquibase:changeLogParameter name="trbUsername" value="${global.db.trb.username}"/>
+                <liquibase:changeLogParameter name="cfaUsername" value="${global.db.cfa.username}"/>
+                <liquibase:changeLogParameter name="depagUsername" value="${global.db.depag.username}"/>
+                <liquibase:changeLogParameter name="tr4WebUsername" value="${global.db.tr4web.username}"/>
+                <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+                <liquibase:changeLogParameter name="istanza" value="${progetto.istanza.codice}"/>
+                <liquibase:changeLogParameter name="codiceComune" value="${tributiweb.codiceComune}"/>
+                <liquibase:changeLogParameter name="province" value="${tributiweb.province}"/>
+                <liquibase:changeLogParameter name="codiceProvincia" value="${tributiweb.codiceProvincia}"/>
+                <liquibase:changeLogParameter name="codiceIstat" value="${codiceIstat}"/>
+                <liquibase:changeLogParameter name="descrizione" value="${descrizione}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+
+    </target>
+
+    <target name="-ad4-integration">
+        <echo message="id 'ad4-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+        <echo message="id 'ad4-integration' Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/ad4/tr4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+                <liquibase:changeLogParameter name="ad4Username" value="${global.db.ad4.username}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+
+        <echo message="id 'ad4-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.ad4.username}' password='${global.db.ad4.password}'"/>
+        <echo message="id 'ad4-integration' Componenti: ${componenti}"/>
+        <integrazione nome="ad4" changelogfile="integration/ad4/ad4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <params>
+                <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+                <liquibase:changeLogParameter name="ad4Username" value="${global.db.ad4.username}"/>
+            </params>
+        </integrazione>
+    </target>
+
+    <target name="-no-gsd-integration">
+
+        <if>
+            <or>
+                <contains string="${componenti}" substring="TRT2" casesensitive="false"/>
+                <contains string="${componenti}" substring="TRV4" casesensitive="false"/>
+            </or>
+            <then>
+                <echo message="id 'no-gsd-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+                <echo message="id 'no-gsd-integration' Componenti: ${componenti}"/>
+                    <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/gsd/tr4sql/master.xml"
+                                              classpathref="classpath-liquibase"
+                                              contexts="${componenti}">
+                        <liquibase:changeLogParameters>
+                            <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+                            <liquibase:changeLogParameter name="gsdUsername" value="${global.db.gsd.username}"/>
+                        </liquibase:changeLogParameters>
+                    </liquibase:updateDatabase>
+            </then>
+        </if>
+    </target>
+
+    <target name="-gsd-integration">
+
+        <echo message="id 'gsd-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+        <echo message="id 'gsd-integration' Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/gsd/tr4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+                <liquibase:changeLogParameter name="gsdUsername" value="${global.db.gsd.username}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+
+        <if>
+            <or>
+                <contains string="${componenti}" substring="TRG2" casesensitive="false"/>
+                <contains string="${componenti}" substring="TRV2" casesensitive="false"/>
+            </or>
+            <then>
+                <echo message="id 'gsd-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.gsd.username}' password='${global.db.gsd.password}'"/>
+                <echo message="id 'gsd-integration' Componenti: ${componenti}"/>
+                <integrazione nome="gsd" changelogfile="integration/gsd/gsdsql/master.xml"
+                              classpathref="classpath-liquibase"
+                              contexts="${componenti}">
+                    <params>
+                        <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+                        <liquibase:changeLogParameter name="gsdUsername" value="${global.db.gsd.username}"/>
+                    </params>
+                </integrazione>
+            </then>
+        </if>
+    </target>
+
+    <target name="-cfa-integration">
+
+        <echo message="id 'cfa-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+        <echo message="id 'cfa-integration' Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/cfa/tr4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="cfaUsername" value="${global.db.cfa.username}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+
+        <echo message="id 'cfa-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.cfa.username}' password='${global.db.gsd.password}'"/>
+        <echo message="id 'cfa-integration' Componenti: ${componenti}"/>
+        <integrazione nome="cfa" changelogfile="integration/cfa/cfasql/master.xml"
+                                  classpathref="classpath-liquibase"
+                      contexts="${componenti}"
+                      componente="CFA">
+            <params>
+                <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+    </target>
+
+    <target name="-tr4web-integration">
+
+        <echo message="id 'tr4web-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+        <echo message="id 'tr4web-integration' Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/tr4web/tr4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="tr4webUsername" value="${global.db.tr4web.username}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+    </target>
+
+    <target name="-trb-integration">
+
+        <echo message="id 'trb-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+        <echo message="id 'trb-integration' Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/trb/tr4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="trbUsername" value="${global.db.trb.username}"/>
+                <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+
+        <if>
+            <or>
+                <contains string="${componenti}" substring="TRT2" casesensitive="false"/>
+                <contains string="${componenti}" substring="TRV2" casesensitive="false"/>
+            </or>
+            <then>
+                <echo message="id 'trb-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.trb.username}' password='${global.db.trb.password}'"/>
+                <echo message="id 'trb-integration' Componenti: ${componenti}"/>
+                <integrazione nome="trb" changelogfile="integration/trb/trbsql/master.xml"
+                                          classpathref="classpath-liquibase"
+                              contexts="${componenti}">
+                    <params>
+                        <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+                    </params>
+                </integrazione>
+            </then>
+        </if>
+    </target>
+
+    <target name="-so4-integration">
+
+        <echo message="id 'so4-database' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+        <echo message="id 'so4-integration' Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/so4/tr4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+        </liquibase:updateDatabase>
+
+    </target>
+
+    <target name="-depag-integration">
+
+        <echo message="id 'depag-database' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.target.username}' password='${global.db.target.password}'"/>
+        <echo message="id 'depag-integration' Componenti: ${componenti}"/>
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="integration/depag/tr4sql/master.xml"
+                                  classpathref="classpath-liquibase"
+                                  contexts="${componenti}">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="depagUsername" value="${global.db.depag.username}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+
+        <echo message="id 'depag-integration' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.depag.username}' password='${global.db.gsd.password}'"/>
+        <echo message="id 'depag-integration' Componenti: ${componenti}"/>
+        <integrazione nome="depag" changelogfile="integration/depag/depagsql/master.xml"
+                      classpathref="classpath-liquibase"
+                      contexts="${componenti}"
+                      componente="DEPAG">
+            <params>
+                <liquibase:changeLogParameter name="targetUsername" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+
+    </target>
+
+    <target name="-inizializzazione-tipi-tributo">
+        <echo message="Inizializzazine tipi tributo per moduli ${moduli}"/>
+        <!-- TRASV -->
+        <liquibase:updateDatabase databaseref="target-database"
+                                  changelogfile="install-data/sql/tipitributo/titr_trasv_ins.sql"
+                                  classpathref="classpath-liquibase"/>
+
+
+        <!-- ICI -->
+        <if>
+            <contains string="${moduli}" substring="TRWIMJB0" casesensitive="false"/>
+            <then>
+                <echo message="id 'inizializzazione-tipi-tributo' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.trb.username}' password='${global.db.trb.password}'"/>
+                <echo message="id 'inizializzazione-tipi-tributo' moduli: ${moduli}"/>
+                <liquibase:updateDatabase databaseref="target-database"
+                                          changelogfile="install-data/sql/tipitributo/titr_ici_ins.sql"
+                                          classpathref="classpath-liquibase"/>
+            </then>
+        </if>
+
+        <!-- TARSU o TEFA -->
+        <if>
+            <or>
+                <contains string="${moduli}" substring="TRWTAJB0" casesensitive="false"/>
+                <contains string="${moduli}" substring="TRWTEJB0" casesensitive="false"/>
+            </or>
+            <then>
+                <echo message="id 'inizializzazione-tipi-tributo' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.trb.username}' password='${global.db.trb.password}'"/>
+                <echo message="id 'inizializzazione-tipi-tributo' moduli: ${moduli}"/>
+                <liquibase:updateDatabase databaseref="target-database"
+                                          changelogfile="install-data/sql/tipitributo/titr_tarsu_ins.sql"
+                                          classpathref="classpath-liquibase"/>
+            </then>
+        </if>
+
+        <!-- CUNI -->
+        <if>
+            <contains string="${moduli}" substring="TRWCUJB0" casesensitive="false"/>
+            <then>
+                <echo message="id 'inizializzazione-tipi-tributo' driver='${global.db.target.driver}' url='${global.db.target.url}' user='${global.db.trb.username}' password='${global.db.trb.password}'"/>
+                <echo message="id 'inizializzazione-tipi-tributo' moduli: ${moduli}"/>
+                <liquibase:updateDatabase databaseref="target-database"
+                                          changelogfile="install-data/sql/tipitributo/titr_cuni_ins.sql"
+                                          classpathref="classpath-liquibase"/>
+            </then>
+        </if>
+    </target>
+
+    <target name="-crea-utente-smartpnd-passwdStd" unless="tr4.tr4spws.password">
+        <echo>Creo l'utente AD4 TR4SPWS con password standard TR4SPWS perché non specificata da pillar</echo>
+        <ad4-crea-utente codice="TR4SPWS" nominativo="TR4SPWS" passwd="TR4SPWS"/>
+    </target>
+
+    <target name="-crea-utente-smartpnd-passwdDaPillar" if="tr4.tr4spws.password">
+        <echo message="Creo l'utente AD4 TR4SPWS con password ${tr4.tr4spws.password} specificata nel pillar" />
+        <ad4-crea-utente codice="TR4SPWS" nominativo="TR4SPWS" passwd="${tr4.tr4spws.password}"/>
+    </target>
+
+    <target name="-crea-utente-tr4ws-passwdStd" unless="tr4.tr4ws.password">
+        <echo>Creo l'utente AD4 TR4WS con password standard TR4WS perché non specificata da pillar</echo>
+        <ad4-crea-utente codice="TR4WS" nominativo="TR4WS" passwd="TR4WS"/>
+    </target>
+
+    <target name="-crea-utente-tr4ws-passwdDaPillar" if="tr4.tr4ws.password">
+        <echo message="Creo l'utente AD4 TR4WS con password ${tr4.tr4ws.password} specificata nel pillar" />
+        <ad4-crea-utente codice="TR4WS" nominativo="TR4WS" passwd="${tr4.tr4ws.password}"/>
+    </target>
+
+    <target name="-finalizza">
+        <echo message="Finalizza: scelta_vista_catasto..."/>
+        <echo message="Finalizza: scompileInvalids..." />
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="utils/Tr4_scelta_cu.sql"
+                                  classpathref="classpath-liquibase"/>
+
+        <echo message="Finalizza: scompileInvalids..." />
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="utils/compileInvalids.xml"
+                                  classpathref="classpath-liquibase"/>
+
+        <echo message="Finalizza: checkInvalidObjects..." />
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="utils/checkInvalidObjects.xml"
+                                  classpathref="classpath-liquibase"/>
+    </target>
+</project>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<!--<?page automaticTimeout="false"?>-->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+	<!-- Mantiene attiva la sessione facendo un "ping" ogni 5 minuti -->
+	<timer repeats="true" running="true" delay="300000" onTimer=""/>
+	
+	<window apply="grailsBindComposer" 
+			viewModel="@id('vm') @init('standaloneViewModel')"
+			vflex="1">
+			<script src="/js/decimalbox.js"/>
+		<vlayout>
+		</vlayout>
+	</window>
+</zk>

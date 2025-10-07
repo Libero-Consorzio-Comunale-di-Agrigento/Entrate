@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="note" extends="div" class="it.finmatica.zkutils.NoteLabelWithButton"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('elencoViolazioniViewModel')"
+            vflex="1">
+		<script src="/js/decimalbox.js"/>
+        <include src="/commons/ordinamentoMultiColonna.zul"/>
+        <style>
+            td.z-listcell {
+            white-space:nowrap;
+            }
+            td.vuoto {
+            border-color: #22AAE2;
+            border-width: 2px;
+            }
+        </style>
+
+        <borderlayout width="100%">
+            <north size="40%" splittable="true">
+                <vlayout vflex="1">
+                    <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+                        <hlayout>
+                            <hlayout sclass="afc-control-bar" valign="middle">
+                                <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+				                               onClick="@command('onRefresh')"/>
+								<toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+								               tooltiptext='Esporta in XLS'
+								               onClick="@command('onExportStatisticheXls')"
+								               disabled="@bind(empty vm.listaStati)"/>
+				            </hlayout>
+				        </hlayout>
+				        <hlayout valign="middle" style="text-align: right;" hflex="1">
+				            <toolbarbutton width="26px"
+				                           image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+				                           onClick="@command('openCloseFiltri')"/>
+				        </hlayout>
+				    </hlayout>
+	    
+					<include vflex="1" src="/pratiche/violazioni/selezioneViolazioni.zul"/>
+	
+			    </vlayout>
+            </north>
+            <center title=""
+                    onOpen="@command('onApriElencoViolazioni', event=event)">
+			       
+				<vlayout vflex="1">
+        
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout>
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onPaging')"
+                            activePage="@bind(vm.listaViolazioniPaginazione.activePage)"
+                            pageSize="@bind(vm.listaViolazioniPaginazione.max)"
+                            totalSize="@load(vm.listaViolazioni.numeroRecord)"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext="@load((vm.lettura ne false) ? 'Dettagli' : 'Modifica')"
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command(vm.praticaOpenable ? 'onModificaPratica' : '')"
+                                   disabled="@load(empty vm.violazioneSelezionata or !vm.praticaOpenable)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onExportXls')"
+                                   disabled="@load(empty vm.listaViolazioni.record)"/>
+                    <toolbarbutton image="/images/afc/22x22/print.png" width="26px"
+                                   tooltiptext='Stampa'
+                                   popup="stampe"
+                                   disabled="@load(empty vm.violazioneSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                                   tooltiptext='Funzioni'
+                                   popup="funzioniPratiche"/>
+                </hlayout>
+            </hlayout>
+
+            <hlayout valign="middle" style="text-align: right;" hflex="1">
+                <groupbox style="text-align: left;"
+                          visible="@bind(vm.tipoTributo eq 'ICI' or vm.tipoTributo eq 'TASI')">
+                    <caption label="Tipo" style="text-align: left;"/>
+                    <checkbox label="Liq." checked="@bind(vm.filtri.rateizzate.tipo.L)"
+                              onCheck="@command('onCambiaFiltriRateazione', lbViolazioni=listBoxViolazioni)"/>
+                    <checkbox label="Acc." checked="@bind(vm.filtri.rateizzate.tipo.A)"
+                              onCheck="@command('onCambiaFiltriRateazione', lbViolazioni=listBoxViolazioni)"/>
+                </groupbox>
+
+                <!-- TODO Tipo per CUNI e TARI da gestire con la  #62142.
+                visible="@bind(vm.tipoTributo eq 'TARSU' or vm.tipoTributo eq 'CUNI')"
+                -->
+                <groupbox style="text-align: left;"
+                          visible="false">
+                    <caption label="Tipo" style="text-align: left;"/>
+                    <checkbox label="Sol." checked="@bind(vm.filtri.rateizzate.tipo.S)"
+                              onCheck="@command('onCambiaFiltriRateazione', lbViolazioni=listBoxViolazioni)"/>
+                    <checkbox label="Acc." checked="@bind(vm.filtri.rateizzate.tipo.A)"
+                              onCheck="@command('onCambiaFiltriRateazione', lbViolazioni=listBoxViolazioni)"/>
+                </groupbox>
+                <groupbox style="text-align: left;">
+                    <caption label="Con Rate" style="text-align: left;"/>
+                    <radiogroup id="conRate" selectedItem="@bind(vm.filtri.rateizzate.conRate)"
+                                onCheck="@command('onCambiaFiltriRateazione', lbViolazioni=listBoxViolazioni)"/>
+                    <radio label="Sì" radiogroup="conRate" value="S"/>
+                    <radio label="No" radiogroup="conRate" value="N"/>
+                    <radio label="Tutti" radiogroup="conRate" value="T" selected="true"/>
+                </groupbox>
+            </hlayout>
+        </hlayout>
+
+        <listbox id="listBoxViolazioni" span="true" sizedByContent="true" model="@load(vm.listaViolazioni.record)"
+                 selectedItem="@bind(vm.violazioneSelezionata)" emptyMessage="Nessuna pratica presente."
+                 onSelect="@command('onSelezionaViolazione')"
+                 vflex="1">
+            <listhead sizable="true">
+                <listheader label="DePag" align="center" visible="@load(vm.dePagAbilitato)"/>
+                <listheader label="Pratica"
+                            sort="auto(pratica)"
+                            onSort="@command('onCambiaOrdinamento', valore='pratica')"
+                            sclass="@load(vm.campiCssOrdinamento['pratica'])"/>
+                <listheader label="Res."/>
+                <listheader label="Contribuente" sort="auto(contribuente)"
+                            onSort="@command('onCambiaOrdinamento', valore='contribuente')"
+                            sclass="@load(vm.campiCssOrdinamento['contribuente'])"/>
+                <listheader label="Cod.Fiscale" sort="auto(codFiscale)"
+                            onSort="@command('onCambiaOrdinamento', valore='codFiscale')"
+                            sclass="@load(vm.campiCssOrdinamento['codFiscale'])"/>
+                <listheader label="T.Prat."/>
+                <listheader label="Tributo"/>
+                <listheader label="Anno" sort="auto(anno)"
+                            onSort="@command('onCambiaOrdinamento', valore='anno')"
+                            sclass="@load(vm.campiCssOrdinamento['anno'])"/>
+                <listheader label="Numero" align="right" sort="auto(clNumero)"
+                            onSort="@command('onCambiaOrdinamento', valore='clNumero')"
+                            sclass="@load(vm.campiCssOrdinamento['clNumero'])"/>
+                <listheader label="Stato" align="center" tooltiptext="Stato"
+                            sort="auto(stato)"
+                            onSort="@command('onCambiaOrdinamento', valore='statoAccertamento')"
+                            sclass="@load(vm.campiCssOrdinamento['statoAccertamento'])"/>
+                <listheader label="Data" align="center" sort="auto(data)"
+                            onSort="@command('onCambiaOrdinamento', valore='data')"
+                            sclass="@load(vm.campiCssOrdinamento['data'])"/>
+                <listheader label="Data Notifica" align="center" sort="auto(dataNotifica)"
+                            onSort="@command('onCambiaOrdinamento', valore='dataNotifica')"
+                            sclass="@load(vm.campiCssOrdinamento['dataNotifica'])"/>
+                <listheader label="Tipo Notifica" align="center" sort="auto(tipoNotifica)"
+                            onSort="@command('onCambiaOrdinamento', valore='tipoNotifica')"
+                            sclass="@load(vm.campiCssOrdinamento['tipoNotifica'])"/>
+                <listheader label="Data Rateaz."/>
+                <listheader label="Imp.Pratica" align="right"
+                            sort="auto(impTot)"
+                            onSort="@command('onCambiaOrdinamento', valore='impTot')"
+                            sclass="@load(vm.campiCssOrdinamento['impTot'])"/>
+                <listheader label="Imp.Rateizzato" align="right"
+                            sort="auto(importoRateizzato)"
+                            onSort="@command('onCambiaOrdinamento', valore='importoRateizzato')"
+                            sclass="@load(vm.campiCssOrdinamento['importoRateizzato'])"/>
+                <listheader label="Interessi" align="right"
+                            sort="auto(importoInteressi)"
+                            onSort="@command('onCambiaOrdinamento', valore='importoInteressi')"
+                            sclass="@load(vm.campiCssOrdinamento['importoInteressi'])"/>
+                <listheader label="Imp.Dovuto" align="right"
+                            sort="auto(importoDovuto)"
+                            onSort="@command('onCambiaOrdinamento', valore='importoDovuto')"
+                            sclass="@load(vm.campiCssOrdinamento['importoDovuto'])"/>
+                <listheader label="Imp.Versato" tooltiptext="Importo Versamenti" align="right"
+                            sort="auto(versamenti)"
+                            onSort="@command('onCambiaOrdinamento', valore='versamenti')"
+                            sclass="@load(vm.campiCssOrdinamento['versamenti'])"/>
+                <listheader label="Imp.Da Versare" align="right"
+                            sort="auto(importoDaVersare)"
+                            onSort="@command('onCambiaOrdinamento', valore='importoDaVersare')"
+                            sclass="@load(vm.campiCssOrdinamento['importoDaVersare'])"/>
+                <listheader label="Tipo Rata" align="right"
+                            sort="auto(tipologiaRate)"
+                            onSort="@command('onCambiaOrdinamento', valore='tipologiaRate')"
+                            sclass="@load(vm.campiCssOrdinamento['tipologiaRate'])"/>
+                <listheader label="Num.Rate" align="right"
+                            sort="auto(numeroRate)"
+                            onSort="@command('onCambiaOrdinamento', valore='numeroRate')"
+                            sclass="@load(vm.campiCssOrdinamento['numeroRate'])"/>
+                <listheader label="Rate Vers." align="right"
+                            sort="auto(rateVersate)"
+                            onSort="@command('onCambiaOrdinamento', valore='rateVersate')"
+                            sclass="@load(vm.campiCssOrdinamento['rateVersate'])"/>
+                <listheader label="Data Pag." align="right"/>
+                <listheader label="Indirizzo"
+                            sort="auto(indirizzoPresso)"
+                            onSort="@command('onCambiaOrdinamento', valore='indirizzo')"
+                            sclass="@load(vm.campiCssOrdinamento['indirizzo'])"/>
+                <listheader label="CAP" align="right"
+                            sort="auto(cap)"
+                            onSort="@command('onCambiaOrdinamento', valore='cap')"
+                            sclass="@load(vm.campiCssOrdinamento['cap'])"/>
+                <listheader label="Comune"
+                            sort="auto(tipoAtto)"
+                            onSort="@command('onCambiaOrdinamento', valore='comuneProvincia')"
+                            sclass="@load(vm.campiCssOrdinamento['comuneProvincia'])"/>
+                <listheader label="Motivo" width="100px"/>
+                <listheader label="Note" width="100px"/>
+            </listhead>
+            <template name="model">
+                <listitem onDoubleClick="@command(vm.praticaOpenable ? 'onModificaPratica' : '')" context="funzioniContext">
+                    <listcell>
+                        <image src="/images/tr4web/22x22/pagopa.png"
+                               visible="@load(each.flagDePag eq 'S')"/>
+                    </listcell>
+                    <listcell label="@load(each.pratica)"/>
+                    <listcell>
+                        <checkbox disabled="true" checked="@load(each.isResidente)"/>
+                    </listcell>
+                    <listcell label="@load(each.contribuente)"/>
+                    <listcell label="@load(each.codFiscale)"/>
+                    <listcell label="@load(each.tipoPratica)" sclass="centro"/>
+                    <listcell label="@load(each.tipoTributoAttuale)" sclass="centro"/>
+                    <listcell label="@load(each.anno)"/>
+                    <listcell label="@load(each.clNumero)"/>
+                    <listcell label="@load(each.stato)"/>
+                    <listcell label="@load(each.data)"/>
+                    <listcell label="@load(each.dataNotifica)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(!empty each.tipoNotifica ? c:cat3(each.tipoNotifica.tipoNotifica, ' - ', each.tipoNotifica.descrizione) : '')"/>
+                    <listcell label="@load(each.dataRateazione)"/>
+                    <listcell label="@load(each.impTot)"/>
+                    <listcell label="@load(each.importoRateizzato)"/>
+                    <listcell label="@load(each.importoInteressi)"/>
+                    <listcell label="@load(each.importoDovuto)"/>
+                    <listcell label="@load(each.versato)"/>
+                    <listcell label="@load(each.importoDaVersare)"/>
+                    <listcell label="@load(each.tipologiaRate)"/>
+                    <listcell label="@load(each.numeroRate)"/>
+                    <listcell label="@load(each.rateVersate)"/>
+                    <listcell label="@load(each.dataPag)"/>
+                    <listcell label="@load(each.indirizzoPresso)"
+                              sclass="@load(!empty each.indirizzoPresso ? 'sinistra' : 'sinistra vuoto')"/>
+                    <listcell label="@load(each.cap)"
+                              sclass="@load(each.capResErr eq 'ERR' ? 'sinistra campi-differenti' : 'sinistra')"/>
+                    <listcell label="@load(each.comuneProvincia)"
+                              sclass="@load(each.comuneResErr eq 'ERR' ? 'sinistra campi-differenti' : 'sinistra')"/>
+                    <listcell>
+                        <note value="#{each.motivo}"/>
+                    </listcell>
+                    <listcell>
+                        <note value="#{each.note}"/>
+                    </listcell>
+                </listitem>
+            </template>
+            <listfoot>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter align="right">
+                    <label style="font-weight: bold;" value="Totali:"/>
+                </listfooter>
+                <listfooter align="right" label="@load(vm.listaViolazioni.record[0].totImpTot)"/>
+                <listfooter align="right" label="@load(vm.listaViolazioni.record[0].totImportoRateizzato)"/>
+                <listfooter align="right" label="@load(vm.listaViolazioni.record[0].totImportoInteressi)"/>
+                <listfooter align="right" label="@load(vm.listaViolazioni.record[0].totImportoDovuto)"/>
+                <listfooter align="right" label="@load(vm.listaViolazioni.record[0].totVersato)"/>
+                <listfooter align="right" label="@load(vm.listaViolazioni.record[0].totImportoDaVersare)"/>
+            </listfoot>
+        </listbox>
+    
+	        	</vlayout>
+            </center>
+
+            <south size="5px" border="0"/>
+		</borderlayout>
+	
+        <menupopup id="stampe">
+            <menuitem label="Accoglimento Istanza" onClick="@command('onStampaAccoglimentoRateazione')"/>
+            <menuitem label="Modelli F24" onClick="@command('onStampaF24Rate')"
+                      disabled="@load(vm.tipoTributo eq 'CUNI')"/>
+            <menuitem label="Avviso AgID" onClick="@command('onGeneraAvvisoAgidPratiche')"
+                      disabled="@bind(empty vm.violazioneSelezionata or empty vm.violazioneSelezionata.flagDePag or vm.violazioneSelezionata.flagDePag eq 'N')"/>
+            <menuitem label="Piano di Rimborso" onClick="@command('onStampaPianoRimborso')"/>
+        </menupopup>
+
+        <menupopup id="funzioniPratiche">
+            <menuitem label="Passaggio a PagoPa" onClick="@command('onPassaggioAPagoPa')"
+                      disabled="@bind((vm.lettura ne false) or empty vm.violazioneSelezionata or empty vm.violazioneSelezionata.clNumero or vm.violazioneSelezionata.impTotNum eq 0)"
+                      visible="@bind(vm.dePagAbilitato and ((vm.tipoPratica eq 'A' and (vm.tipoTributo eq 'ICI' or vm.tipoTributo eq 'TASI' or vm.tipoTributo eq 'TARSU'))
+                                      or vm.tipoPratica eq 'L'
+                                      or vm.tipoPratica eq '*'))"/>
+            <menuitem label="Annulla Dovuto PagoPA" onClick="@command('onAnnullaDovuto')"
+                      disabled="@bind(vm.lettura or empty vm.violazioneSelezionata or !vm.abilitaAnnullaDovutoPagoPa)"
+                      visible="@bind(vm.dePagAbilitato and ((vm.tipoPratica eq 'A' and (vm.tipoTributo eq 'ICI' or vm.tipoTributo eq 'TASI' or vm.tipoTributo eq 'TARSU'))
+                                      or vm.tipoPratica eq 'L'
+                                      or vm.tipoPratica eq '*'))"/>
+            <menuitem label="Invia AppIO" onClick="@command('onInviaAppIO')"
+                      disabled="@load(vm.lettura or empty vm.violazioneSelezionata)"/>
+        </menupopup>
+        <!-- Context Menu -->
+        <menupopup id="funzioniContext">
+            <menuitem label="Passaggio a PagoPa" onClick="@command('onPassaggioAPagoPa')"
+                      disabled="@bind((vm.lettura ne false) or empty vm.violazioneSelezionata or empty vm.violazioneSelezionata.clNumero or vm.violazioneSelezionata.impTotNum eq 0)"
+                      visible="@bind(vm.dePagAbilitato and ((vm.tipoPratica eq 'A' and (vm.tipoTributo eq 'ICI' or vm.tipoTributo eq 'TASI' or vm.tipoTributo eq 'TARSU'))
+                                      or vm.tipoPratica eq 'L'
+                                      or vm.tipoPratica eq '*'))"/>
+        </menupopup>
+    </window>
+</zk>
+

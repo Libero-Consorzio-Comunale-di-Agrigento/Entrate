@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox hflex="1" class="z-groupbox-hr-bottom">
+		<caption label="@bind(c:cat3('Versamenti (', vm.listaVersamentiOggetto.size(), ')'))"/>
+
+		<listbox id="lbOggettiCatasto" span="true" sizedByContent="true" rows="5"
+				 model="@load(vm.listaVersamentiOggetto)" emptyMessage="Nessun versamento presente"
+				 onSelect="@command('onSelectVersamentoOggetto')"
+				 selectedItem="@bind(vm.versamentoOggettoSelected)">
+			<auxhead>
+				<auxheader label="" colspan="1"/>
+				<auxheader label="" colspan="6"/>
+				<auxheader label="di cui" colspan="3"/>
+				<auxheader label="" colspan="5"/>
+			</auxhead>
+            <listhead sizable="true">
+				<listheader label="" width="40px"/>
+				<listheader label="Anno" width="70px"/>
+				<listheader label="Rata" width="90px"/>
+				<listheader label="Imp. Versato" tooltiptext="Importo Versato" width="100px"/>
+				<listheader label="Ruolo" width="120px"/>
+				<listheader label="N° Bollettino" tooltiptext="N° Bollettino" width="100px"/>
+				<listheader label="Data Pag." tooltiptext="Data Pagamento" width="100px"/>
+                
+                <listheader label="Imposta" width="100px"/>
+                <listheader label="Sanzioni" width="100px"/>
+                <listheader label="Interessi" width="100px"/>
+
+            <!-- 
+				maggiorazioneTares
+				addizionalePro
+				sanzioniAddPro
+				interessiAddPro
+			-->
+                
+                <listheader label="Data Reg." tooltiptext="Data Registrazione" width="100px"/>
+                <listheader label="Spese Sped." tooltiptext="Spese Spedizione" width="90px"/>
+                <listheader label="Spese Mora" width="90px"/>
+                
+				<listheader label="Fonte" width="40px"/>
+				<listheader label="Comp." tooltiptext="Compensazione" width="40px"/>
+				
+				<listheader sclass="centro" label="" width="60px"
+					visible="@load((vm.modifica ne false) and (vm.modificaSuOggetti ne false) and (! empty vm.oggettoVersamentoSelezionato))">
+					<image src="/images/afc/16x16/add.png" style="cursor: pointer;"
+		                       onClick="@command('onNuovoVersamentoOggetto')"
+		                       tooltiptext="Aggiungi Versamento"/>
+				</listheader>
+            </listhead>
+            <template name="model" var="vo">
+                <listitem value="@load(v)"
+	                   onClick="@command('onClickVersamentoOggetto',versamento=vo)">
+                    <listcell label="@load(vo.id)" sclass="destra"/>
+					<listcell sclass="destra">
+						<intbox disabled="true" mold="rounded" hflex="1" maxlength="4"
+								value="@bind(vo.anno)" style="text-align: right;" />
+					</listcell>
+					<listcell sclass="destra">
+					    <combobox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1" readonly="true"
+				                  model="@load(vm.listRata)"
+				                  selectedItem="@bind(vo.rataCombo)"
+							 	  onChange="@command('onChangeVO', vers=vo)">
+				            <template name="model" var="opz">
+				                <comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+				            </template>
+				        </combobox>
+					</listcell>
+					<listcell sclass="destra">
+		                <decimalbox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1" maxlength="15"
+		                            onChange="@command('onChangeVersatoVO', vers=vo)"
+		                            style="text-align: right"
+		                            constraint="no empty: Campo obbligatorio"
+		                            value="@bind(vo.importoVersato)" format="€ #,##0.00"/>
+					</listcell>
+                    
+					<listcell sclass="sinistra">
+		                <hbox hflex="1">
+		                    <bandbox inplace="true" style="text-align: right;" readonly="true"
+		                             onChange="@command('onCambiaRuoloVO', bd=self, vers=vo)"
+		                             onOpen="@command('onApriRuoloVO', bd=self)"
+		                             value="@load(! empty vo.ruolo ? vo.ruolo.id : null)"
+		                             hflex="1" mold="rounded">
+		                        <bandpopup>
+		                            <listbox height="250px" width="450px" mold="paging"
+		                                     autopaging="true" sizedByContent="true"
+		                                     selectedItem="@bind(vo.ruolo)"
+		                                     onSelect="@command('onSelezionaRuoloVO', lb=self, vers=vo)"
+		                                     model="@load(vm.ruoliVersamentiOggetto)" span="true"
+		                                     emptyMessage="Nessun ruolo presente.">
+		                                <listhead>
+		                                    <listheader label="Ruolo"/>
+		                                    <listheader label="Anno"/>
+		                                    <listheader label="Anno Em."/>
+		                                    <listheader label="Pr."/>
+		                                    <listheader label="Emissione"/>
+		                                    <listheader label="Invio"/>
+		                                    <listheader label="L."/>
+		                                    <listheader label="Ruolo"/>
+		                                    <listheader label="Sp." tooltiptext="Specie Ruolo"/>
+		                                </listhead>
+		                                <template name="model" var="ruo">
+		                                    <listitem>
+		                                        <listcell label="@load((ruo.tipoRuolo eq 1) ? 'P' : ((ruo.tipoRuolo eq 2) ? 'S' : ''))" sclass="centro"/>
+		                                        <listcell label="@load(ruo.annoRuolo)" sclass="centro"/>
+		                                        <listcell label="@load(ruo.annoEmissione)" sclass="centro"/>
+		                                        <listcell label="@load(ruo.progrEmissione)" sclass="centro"/>
+		                                        <listcell
+		                                                label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+		                                                sclass="centro"/>
+		                                        <listcell
+		                                                label="@load(ruo.invioConsorzio ne null ? c:formatDate(ruo.invioConsorzio, 'dd/MM/yyyy') : null)"
+		                                                sclass="centro"/>
+		                                        <listcell>
+		                                            <checkbox checked="@load(ruo.importoLordo)"
+		                                                      w:onCheck="this.setChecked(!this.isChecked())"/>
+		                                        </listcell>
+		                                        <listcell label="@load(ruo.id)" sclass="centro"/>
+		                                        <listcell label="@load(ruo.specieRuolo ? 1 : 0)" sclass="centro"/>
+		                                    </listitem>
+		                                </template>
+		                            </listbox>
+		                        </bandpopup>
+		                    </bandbox>
+		                    <vbox>
+		                        <image width="15px" src="/images/afc/16x16/cancel.png"
+		                               style="cursor: pointer;"
+		                               visible="@bind(empty vo.ruolo)"
+		                               sclass="gray-scale"/>
+		                        <image width="15px" src="/images/afc/16x16/cancel.png"
+		                               style="cursor: pointer;"
+		                               onClick="@command('onEliminaRuoloVO', vers=vo)"
+		                               visible="@bind(!empty vo.ruolo)"/>
+		                    </vbox>
+		                </hbox>
+					</listcell>
+
+					<listcell sclass="sinistra">
+						<intbox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1" maxlength="12"
+								onChange="@command('onChangeVO', vers=vo)"
+								value="@bind(vo.numBollettino)" style="text-align: right;" />
+					</listcell>
+					<listcell sclass="sinistra">
+						<datebox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1"
+								 onChange="@command('onChangeVO', vers=vo)"
+								 constraint="no empty: Campo obbligatorio"
+								 value="@bind(vo.dataPagamento)" format="dd/MM/yyyy"/>
+					</listcell>
+
+					<listcell sclass="sinistra">
+		                <decimalbox disabled="true" mold="rounded" hflex="1" maxlength="15"
+		                			onChange="@command('onChangeImportoVO', vers=vo)"
+		                            style="text-align: right"
+		                            value="@bind(vo.imposta)" format="€ #,##0.00"/>
+					</listcell>
+					<listcell sclass="sinistra">
+		                <decimalbox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1" maxlength="15"
+		                			onChange="@command('onChangeImportoVO', vers=vo)"
+		                            style="text-align: right"
+		                            value="@bind(vo.sanzioni1)" format="€ #,##0.00"/>
+					</listcell>
+					<listcell sclass="sinistra">
+		                <decimalbox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1" maxlength="15"
+		                			onChange="@command('onChangeImportoVO', vers=vo)"
+		                            style="text-align: right"
+		                            value="@bind(vo.interessi)" format="€ #,##0.00"/>
+					</listcell>
+			<!-- 	
+					vo.maggiorazioneTares
+					vo.addizionalePro
+					vo.sanzioniAddPro
+					vo.interessiAddPro
+			-->
+					<listcell sclass="sinistra">
+						<datebox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1"
+								 onChange="@command('onChangeVO', vers=vo)"
+								 value="@bind(vo.dataReg)" format="dd/MM/yyyy"/>
+					</listcell>
+					
+					<listcell sclass="sinistra">
+		                <decimalbox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1" maxlength="15"
+		                			onChange="@command('onChangeImportoVO', vers=vo)"
+		                            style="text-align: right"
+		                            value="@bind(vo.speseSpedizione)" format="€ #,##0.00"/>
+					</listcell>
+					<listcell sclass="sinistra">
+		                <decimalbox disabled="@bind(!vo.modifica)" mold="rounded" hflex="1" maxlength="15"
+		                			onChange="@command('onChangeImportoVO', vers=vo)"
+		                            style="text-align: right"
+		                            value="@bind(vo.speseMora)" format="€ #,##0.00"/>
+					</listcell>
+
+					<listcell sclass="sinistra">
+						<intbox disabled="true" mold="rounded" hflex="1" maxlength="7"
+								onChange="@command('onChangeVO', vers=vo)"
+								value="@bind(vo.fonte)" style="text-align: right;" />
+					</listcell>
+					<listcell sclass="centro">
+						<checkbox checked="@load(vo.chkCompensazione)" w:onCheck="this.setChecked(!this.isChecked())"
+								  onCheck="@command('onChangeVO', vers=vo)"/>
+					</listcell>
+                    
+					<listcell sclass="center" visible="@load(vm.modifica ne false)">
+						<image src="/images/afc/16x16/editcopy.png"
+							   style="cursor: pointer;" onClick="@command('onDuplicaVersamentoOggetto',versamento=vo)"
+							   tooltip="btnDuplica"/>
+						<image src="/images/afc/16x16/delete.png"
+							   style="cursor: pointer;" onClick="@command('onEliminaVersamentoOggetto',versamento=vo)"
+							   tooltip="btnElimina" />
+					</listcell>
+                </listitem>
+            </template>
+			<listfoot>
+				<listfooter label="" />
+				<listfooter label="Totali:" />
+				<listfooter label="" />
+				<listfooter sclass="destra" label="@load(c:formatNumber(vm.totaleVersamentiOggetto, '€ #,##0.00'))" />
+				<listfooter label="" />
+				<listfooter label="" />
+				<listfooter label="" />
+				<listfooter label="" />
+				<listfooter label="" />
+			</listfoot>
+        </listbox>
+    </groupbox>
+</zk>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaLimitiCalcoloViewModel')"
+            height="100%">
+        <script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2" valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onCambioPagina')"
+                            activePage="@bind(vm.pagingList.activePage)" pageSize="@bind(vm.pagingList.pageSize)"
+                            totalSize="@load(vm.pagingList.totalSize)"
+                            visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext="@load((vm.lettura ne false) ? 'Visualizza' : 'Modifica')"
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModificaLimiteCalcolo')"
+                                   disabled="@load(empty vm.limiteCalcoloSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   disabled="@load(vm.lettura ne false)"
+                                   onClick="@command('onNuovoLimiteCalcolo')"/>
+                    <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                   onClick="@command('onDuplicaLimiteCalcolo')"
+                                   visible="@load(vm.lettura eq false)"
+                                   disabled="@load(empty vm.limiteCalcoloSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   onClick="@command('onEliminaLimiteCalcolo')"
+                                   disabled="@load(vm.lettura ne false or empty vm.limiteCalcoloSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS'
+                                   popup="exportXls"/>
+                </hlayout>
+                <hlayout valign="middle" style="text-align: right;" hflex="1">
+                    <div>
+                        <space width="3px"/>
+                        <label value="Anno"/>
+                        <space width="3px"/>
+                        <intbox value="@bind(vm.selectedAnno)"
+                                onChange="@command('onSelectAnno')"
+                                maxlength="4"
+                                constraint="no negative, no zero, no empty, /[0-9]{4}/: Anno non valido"
+                                style="text-align: right;" mold="rounded" width="60px"
+                                disabled="false"/>
+                    </div>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+        <listbox id="listBoxLimitiCalcolo" nonselectableTags="" model="@bind(vm.listaLimitiCalcolo)"
+                 sizedByContent="true"
+                 span="true" vflex="1"
+                 selectedItem="@bind(vm.limiteCalcoloSelezionato)" emptyMessage="Nessun elemento presente.">
+            <listhead sizable="true">
+                <listheader sclass="centro" label="Codice Gruppo Tributo"
+                            visible="@bind(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro" label="Nome Gruppo Tributo"
+                            visible="@bind(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro" label="Tipo Occupazione"
+                            visible="@bind(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro" label="Limite Imposta"/>
+                <listheader sclass="centro" label="Limite Violazione"/>
+                <listheader sclass="centro" label="Limite Rata"/>
+            </listhead>
+            <template name="model" var="lc">
+                <listitem value="@load(v)"
+                          onSelect="@command('onLimiteCalcoloSelected')"
+                          onDoubleClick="@command('onModificaLimiteCalcolo')">
+                    <listcell sclass="sinistra" label="@load(lc.dto.gruppoTributo)"/>
+                    <listcell sclass="sinistra" label="@load(lc.gruppoTributo)"/>
+                    <listcell sclass="sinistra" label="@load(lc.tipoOccupazione)"/>
+                    <listcell sclass="destra"
+                              label="@load(((lc.dto.limiteImposta eq null)) ? '' : c:formatNumber(lc.dto.limiteImposta, '#,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((lc.dto.limiteViolazione eq null)) ? '' : c:formatNumber(lc.dto.limiteViolazione, '#,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(((lc.dto.limiteRata eq null)) ? '' : c:formatNumber(lc.dto.limiteRata, '#,##0.00'))"/>
+                </listitem>
+            </template>
+        </listbox>
+        <menupopup id="exportXls">
+            <menuitem label="Completo"
+                      onClick="@command('onExportXls', modalita='TUTTI')"/>
+            <menuitem label="Corrente"
+                      disabled="@load(empty vm.listaLimitiCalcolo)"
+                      onClick="@command('onExportXls', modalita='PARAMETRI')"/>
+        </menupopup>
+    </window>
+</zk>

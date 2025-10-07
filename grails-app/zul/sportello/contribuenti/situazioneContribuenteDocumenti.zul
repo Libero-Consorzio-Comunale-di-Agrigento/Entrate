@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onOpenFinestraCaricamento', azione='visualizza')"
+                               disabled="@load(empty vm.documentoSelezionato or !empty vm.documentoSelezionato.idDocumentoGdm or !empty vm.documentoSelezionato.idComunicazionePnd)"/>
+                <toolbarbutton image="/images/afc/16x16/note.png"
+                               tooltiptext='Visualizza documento'
+                               disabled="@load(empty vm.documentoSelezionato)"
+                               onClick="@command('onVisualizzaDocumento')"/>
+                <toolbarbutton image="/images/afc/16x16/delete.png"
+                               tooltiptext='Elimina documento'
+                               disabled="@load(empty vm.documentoSelezionato or !empty vm.documentoSelezionato.idDocumentoGdm or !empty vm.documentoSelezionato.idComunicazionePnd)"
+                               onClick="@command('onEliminaDocumento')"/>
+                <toolbarbutton image="/images/afc/16x16/open.png"
+                               tooltiptext='Carica file'
+                               onClick="@command('onOpenFinestraCaricamento')"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               tooltiptext='Esporta in XLS'
+                               disabled="@load(empty vm.listaDocumenti)"
+                               popup="funzioniDocumentiToXls"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniDocumenti"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <groupbox vflex="3" class="z-groupbox-hr-top">
+        <caption label="@bind(c:cat3('Documenti (', vm.listaDocumenti.size(), ')'))"/>
+        <listbox span="true" nonselectableTags="" sizedByContent="true"
+                 selectedItem="@bind(vm.documentoSelezionato)" model="@load(vm.listaDocumenti)"
+                 onSelect="@command('onSelezionaDocumento')"
+                 onDoubleClick="@command(!empty vm.documentoSelezionato.idDocumentoGdm or !empty vm.documentoSelezionato.idComunicazionePnd ? '' : 'onOpenFinestraCaricamento', azione='visualizza')"
+                 emptyMessage="Nessun documento presente." vflex="true">
+            <listhead sizable="true">
+                <listheader label="Seq."/>
+                <listheader label="Titolo"/>
+                <listheader label="Nome File"/>
+                <listheader label="Data Inserimento"/>
+                <listheader label="Inizio Validità"/>
+                <listheader label="Fine Validità"/>
+                <listheader label="Num.S.PND" visible="@load(vm.smartPndAbilitato)"/>
+                <listheader label="Tipo Canale" visible="@load(vm.smartPndAbilitato)"/>
+                <listheader label="Stato S.PND" visible="@load(vm.smartPndAbilitato)"/>
+                <listheader label="Tipo Com.S.PND" visible="@load(vm.smartPndAbilitato)"/>
+                <listheader label="Informazioni" width="150px"/>
+                <listheader label="Note" width="150px"/>
+            </listhead>
+            <template name="model" var="doc">
+                <listitem>
+                    <listcell label="@load(doc.sequenza)" sclass="destra"/>
+                    <listcell label="@load(doc.titolo)"/>
+                    <listcell label="@load(doc.nomeFile)"/>
+                    <listcell
+                            label="@load(doc.dataInserimento ne null ? c:formatDate(doc.dataInserimento, 'dd/MM/yyyy') : null)"
+                            sclass="centro"/>
+                    <listcell
+                            label="@load(doc.validitaDal ne null ? c:formatDate(doc.validitaDal, 'dd/MM/yyyy') : null)"
+                            sclass="centro"/>
+                    <listcell label="@load(doc.validitaAl ne null ? c:formatDate(doc.validitaAl, 'dd/MM/yyyy') : null)"
+                              sclass="centro"/>
+                    <listcell sclass="destra" label="@load(!empty doc.idComunicazionePnd ? doc.idComunicazionePnd : '')"
+                              visible="@load(vm.smartPndAbilitato)"/>
+                    <listcell
+                            label="@load(!empty doc.idComunicazionePnd ? vm.listaComunicazioniPND[doc.idComunicazionePnd].tipoCanaleDescr : '')"
+                            visible="@load(vm.smartPndAbilitato)"/>
+                    <listcell
+                            label="@load(!empty doc.idComunicazionePnd ? vm.listaComunicazioniPND[doc.idComunicazionePnd].smartPndComunicazione.stato : '')"
+                            visible="@load(vm.smartPndAbilitato)"/>
+                    <listcell
+                            label="@load(!empty doc.idComunicazionePnd ? vm.listaComunicazioniPND[doc.idComunicazionePnd].smartPndComunicazione.tipoComunicazioneDescr : '')"
+                            visible="@load(vm.smartPndAbilitato)"/>
+                    <listcell>
+                        <hlayout>
+                            <label value="@load(doc.informazioni)" hflex="2"
+                                   sclass="auto-trunc"/>
+                            <image src="/images/afc/16x16/document.png" width="16px" tooltiptext="Note"
+                                   visible="@load(doc.informazioni ne null)"
+                                   style="cursor: pointer;" popup="popupInformazioniDocumento"/>
+                        </hlayout>
+                    </listcell>
+                    <listcell>
+                        <hlayout>
+                            <label value="@load(doc.note)" hflex="2" sclass="auto-trunc"/>
+                            <image src="/images/afc/16x16/document.png" tooltiptext="Modifica note"
+                                   width="16px" style="cursor: pointer"
+                                   onClick="@command('onApriPopupNote')"
+                                   popup="@load(c:cat('popupNote_',doc.sequenza))"/>
+                            <popup id="@load(c:cat('popupNote_',doc.sequenza))" width="600px"
+                                   onOpen="@command('onApriPopupNote', popup=self)">
+                                <h:div sclass="barraTitoloPagina">
+                                    <label class="titoloPagina" value="Note"/>
+                                </h:div>
+                                <hlayout>
+                                    <textbox rows="10" width="600px" value="@bind(vm.noteDocumentoContribuente)"/>
+                                </hlayout>
+                                <h:div sclass="barraPulsanti">
+                                    <h:div>
+                                        <button label="Chiudi" onClick="@command('onChiudiPopupNote',doc=doc)"
+                                                mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+                                    </h:div>
+                                </h:div>
+                            </popup>
+                        </hlayout>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+    <groupbox vflex="1" class="z-groupbox-hr-bottom">
+        <caption label="@bind(c:cat3('Allegati (', vm.listaAllegati.size(), ')'))"/>
+        <listbox span="true" nonselectableTags="" sizedByContent="true"
+                 model="@load(vm.listaAllegati)"
+                 emptyMessage="Nessun allegato presente." vflex="true">
+            <listhead sizable="true">
+                <listheader label="Seq."/>
+                <listheader label="Titolo"/>
+                <listheader label="Nome File"/>
+                <listheader label="Data Inserimento"/>
+            </listhead>
+            <template name="model" var="doc">
+                <listitem>
+                    <listcell label="@load(doc.sequenza)" sclass="destra"/>
+                    <listcell label="@load(doc.titolo)"/>
+                    <listcell label="@load(doc.nomeFile)"/>
+                    <listcell
+                            label="@load(doc.dataInserimento ne null ? c:formatDate(doc.dataInserimento, 'dd/MM/yyyy') : null)"
+                            sclass="centro"/>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+    <popup id="popupTestoDocumento" width="600px">
+        <h:div sclass="barraTitoloPagina">
+            <label class="titoloPagina" value="Testo"/>
+        </h:div>
+        <hlayout>
+            <textbox rows="10" width="600px"
+                     value="@load(vm.documentoSelezionato.note)" readonly="true"/>
+        </hlayout>
+    </popup>
+    <popup id="popupInformazioniDocumento" width="600px">
+        <h:div sclass="barraTitoloPagina">
+            <label class="titoloPagina" value="Testo"/>
+        </h:div>
+        <hlayout>
+            <textbox rows="10" width="600px"
+                     value="@load(vm.documentoSelezionato.informazioni)" readonly="true"/>
+        </hlayout>
+    </popup>
+    <menupopup id="funzioniDocumentiToXls">
+        <menuitem label="Documenti" onClick="@command('documentiToXls')"/>
+        <menuseparator/>
+        <menuitem label="Allegati" onClick="@command('allegatiToXls')"
+                  disabled="@load(empty vm.listaAllegati)"/>
+    </menupopup>
+</zk>

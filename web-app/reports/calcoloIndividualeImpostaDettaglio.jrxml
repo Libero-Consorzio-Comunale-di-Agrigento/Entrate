@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2020-12-29T11:48:17 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="calcoloIndividualeImpostaDettaglio" language="groovy" pageWidth="540" pageHeight="800" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="71526f46-c35c-4e75-b9e1-709657c16d91">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="tipoDescrizione" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoDescrizione]]></fieldDescription>
+	</field>
+	<field name="codiceTributoComune" class="java.lang.String">
+		<fieldDescription><![CDATA[codiceTributoComune]]></fieldDescription>
+	</field>
+	<field name="codiceTributoStato" class="java.lang.String">
+		<fieldDescription><![CDATA[codiceTributoStato]]></fieldDescription>
+	</field>
+	<field name="acconto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[acconto]]></fieldDescription>
+	</field>
+	<field name="accontoErario" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[accontoErario]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[saldo]]></fieldDescription>
+	</field>
+	<field name="saldoErario" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[saldoErario]]></fieldDescription>
+	</field>
+	<title>
+		<band height="1" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="585" height="1" uuid="99f65e44-f36e-4b44-9caa-74c33900d142"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="45">
+			<staticText>
+				<reportElement x="100" y="4" width="75" height="19" uuid="6b7ada59-f219-4168-9593-3ef5bdb8d593"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Acconto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="4" width="75" height="19" uuid="697796f4-275e-466a-a7cb-cea45e70b268"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="30" width="42" height="12" uuid="f7a8a3ad-3aab-4e0c-b97b-654e98812cdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Imposta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="223" y="30" width="42" height="12" uuid="8f024a80-3d3e-4e8c-90f6-273ca7b5ebc5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Da Pag.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="270" y="30" width="1" height="15" uuid="da905ada-c336-4436-a628-f1001ba33b6f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="440" y="32" width="42" height="12" uuid="7931d861-b642-4750-8b52-b789393aa2bf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Imposta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="32" width="42" height="12" uuid="320c7966-5c26-47ff-afb9-93b17dc0d798"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Da Pag.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Prevent">
+			<printWhenExpression><![CDATA[$F{codiceTributoStato} != '']]></printWhenExpression>
+			<line>
+				<reportElement x="270" y="0" width="1" height="24" uuid="d2c67ecc-75cf-449d-acf6-a3887f566b1b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="90" height="12" uuid="d28db449-1319-4671-9e47-19c23e55b0a6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="0" width="75" height="12" uuid="73bf1259-5401-4e8c-a11d-63779b4827fb">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[Math.round($F{acconto} - $F{accontoErario}) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributoComune}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="12" width="75" height="12" uuid="8b9d274e-c117-4c20-ba2d-07f4b6e9b431">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$F{accontoErario} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributoStato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="165" y="12" width="42" height="12" uuid="09a0878c-5c4c-4b4e-9b5e-169f856ccbda">
+					<printWhenExpression><![CDATA[$F{accontoErario} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accontoErario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="223" y="0" width="42" height="12" uuid="14ee21cc-2ccc-4b92-be55-9c049bd0b89e">
+					<printWhenExpression><![CDATA[Math.round($F{acconto} - $F{accontoErario}) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{acconto} - $F{accontoErario})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="223" y="12" width="42" height="12" uuid="38db8551-52e1-4b3c-bbc6-ea0047f2be26">
+					<printWhenExpression><![CDATA[$F{accontoErario} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{accontoErario})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="165" y="0" width="42" height="12" uuid="084842bf-e837-48a2-8214-d57a255c80f4">
+					<printWhenExpression><![CDATA[($F{acconto} - $F{accontoErario}) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acconto} - $F{accontoErario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="275" y="0" width="88" height="12" uuid="abccab0d-1980-4059-9c1b-8c9393b7412a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="0" width="75" height="12" uuid="898bc470-f61d-4850-b381-55d5e1833bfe">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[Math.round($F{saldo} - $F{saldoErario}) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributoComune}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="440" y="0" width="42" height="12" uuid="036a3d79-7afa-4625-bfe0-9ed3bdd9f065">
+					<printWhenExpression><![CDATA[($F{saldo} - $F{saldoErario}) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo} - $F{saldoErario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="498" y="0" width="42" height="12" uuid="c7f528c1-f02b-4081-b16d-66fd0bb6f5b9">
+					<printWhenExpression><![CDATA[Math.round($F{saldo} - $F{saldoErario}) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{saldo} - $F{saldoErario})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="12" width="75" height="12" uuid="3a9fb993-e46b-43cf-8d01-c6770a657fe5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$F{saldoErario} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributoStato}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="440" y="12" width="42" height="12" uuid="c613764a-9d17-41e1-9ec8-feecabc08dff">
+					<printWhenExpression><![CDATA[$F{saldoErario} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldoErario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="498" y="12" width="42" height="12" uuid="f5789f99-e5b3-4cd7-963a-a1a2185e0ca6">
+					<printWhenExpression><![CDATA[$F{saldoErario} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{saldoErario})]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="12" splitType="Prevent">
+			<printWhenExpression><![CDATA[$F{codiceTributoStato} == '' && $F{tipoDescrizione} != 'TOTALE']]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="0" width="90" height="12" uuid="3f3b277f-b670-47d8-8734-9e6ec0d8e7f9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="270" y="0" width="1" height="12" uuid="c3528f51-7e73-4bc2-a12c-e68393e00a9e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="90" y="0" width="75" height="12" uuid="f789e545-3994-44df-9dcc-9e262455cb09">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$F{acconto} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributoComune}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="165" y="0" width="42" height="12" uuid="b76be24a-2c24-4c48-b024-1fcd4772d2c5">
+					<printWhenExpression><![CDATA[$F{acconto} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acconto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="223" y="0" width="42" height="12" uuid="37a6d8e3-c6a7-4e67-990a-acc0a1d81ded">
+					<printWhenExpression><![CDATA[$F{acconto} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{acconto})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="275" y="0" width="88" height="12" uuid="2fd85a2a-fd47-464f-8f52-76ed669adb0b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="0" width="75" height="12" uuid="2948608b-8c72-4105-b9e2-f30e734154ac">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$F{saldo} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codiceTributoComune}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="440" y="0" width="42" height="12" uuid="6477039c-d02d-4214-9a2a-7418e69667ff">
+					<printWhenExpression><![CDATA[$F{saldo} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="498" y="0" width="42" height="12" uuid="030f75b7-df3b-4283-89b3-063ab7c0156f">
+					<printWhenExpression><![CDATA[$F{saldo} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{saldo})]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="12">
+			<printWhenExpression><![CDATA[$F{tipoDescrizione} == 'TOTALE']]></printWhenExpression>
+			<line>
+				<reportElement x="270" y="0" width="1" height="12" uuid="065cc40f-cf19-4f1d-8b10-0ab37ebc7bf4">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="90" height="12" uuid="a172bd51-7246-4ed3-a75b-a4f927d4796b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="165" y="0" width="42" height="12" uuid="79bbc664-58c3-4cb3-a97b-b06dedf4c389">
+					<printWhenExpression><![CDATA[$F{acconto} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acconto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="223" y="0" width="42" height="12" uuid="4efda4de-2bcd-4eba-8e16-47c0209fb9c8">
+					<printWhenExpression><![CDATA[$F{acconto} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{acconto})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="275" y="0" width="88" height="12" uuid="2cd553d0-dcce-45b2-883d-ac40b45abe51"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="440" y="0" width="42" height="12" uuid="f1b0b713-a7d1-455b-bcec-7185d1949d8b">
+					<printWhenExpression><![CDATA[$F{saldo} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="498" y="0" width="42" height="12" uuid="d8525b69-abc6-47c0-99d2-448a8b005e65">
+					<printWhenExpression><![CDATA[$F{saldo} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.round($F{saldo})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

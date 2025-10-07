@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<!--<?page automaticTimeout="false"?>-->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('caricaModelloViewModel')" border="normal"
+            width="450px">
+		<script src="/js/decimalbox.js"/>
+        <h:div sclass="barraTitoloPagina">
+            <label class="titoloPagina" value="Nuova versione modello"/>
+        </h:div>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" hflex="min">
+                        <label value="Descrizione Modello"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.modello.descrizione)"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <space width="3px"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" width="10%">
+                        <label value="File"/>
+                    </cell>
+                    <cell>
+                        <textbox hflex="1" value="@bind(vm.filePath)" readonly="true"/>
+                    </cell>
+                    <cell align="right" width="10%">
+                        <button image="/images/afc/22x22/open.png" onUpload="@command('onLoadFile')"
+                                upload="true, maxsize=-1, native"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        Note
+                    </cell>
+                    <cell colspan="2">
+                        <textbox multiline="true" value="@bind(vm.note)" rows="5" maxlength="2000" hflex="1"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/open.png" label="Carica"
+                        onClick="@command('onCaricaDocumento')"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png" label="Annulla"
+                        onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

@@ -1,0 +1,1113 @@
+{
+  "anno": 2023,
+  "A": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'A'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Filler",
+        "posizione": 2,
+        "lunghezza": 14,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Codice fornitura",
+        "posizione": 16,
+        "lunghezza": 5,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'IMUENC'."
+      },
+      {
+        "campo": 4,
+        "descrizione": "Data creazione fornitura",
+        "posizione": 21,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Ora creazione fornitura",
+        "posizione": 29,
+        "lunghezza": 6,
+        "formato": "NU",
+        "controlli": "Impostare nel formato 'HHMMSS'."
+      },
+      {
+        "campo": 6,
+        "descrizione": "Progressivo fornitura",
+        "posizione": 35,
+        "lunghezza": 8,
+        "formato": "NU"
+      },
+      {
+        "campo": 7,
+        "descrizione": "Codice fiscale del fornitore",
+        "posizione": 43,
+        "lunghezza": 11,
+        "formato": "AN"
+      },
+      {
+        "campo": 8,
+        "descrizione": "Filler",
+        "posizione": 54,
+        "lunghezza": 1844,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "B": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'B'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Partita IVA",
+        "posizione": 18,
+        "lunghezza": 11,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Codice carica del dichiarante",
+        "posizione": 29,
+        "lunghezza": 1,
+        "formato": "NU",
+        "controlli": "Valori ammessi: da 1 a 6."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Codice fiscale del dichiarante",
+        "posizione": 30,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Estremi del verbale di constatazione",
+        "posizione": 46,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se la dichiarazione è presentata per la prima volta e redatta a seguito di verbale di constatazione."
+      },
+      {
+        "campo": 7,
+        "descrizione": "Dichiarazione integrativa",
+        "posizione": 47,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se la dichiarazione sostituisce una dichiarazione già presentata."
+      },
+      {
+        "campo": 8,
+        "descrizione": "Dichiarazione integrativa per errore",
+        "posizione": 48,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se la dichiarazione integrativa è presentata per correggere errori diversi da quelli che hanno determinato la nullità della dichiarazione."
+      },
+      {
+        "campo": 9,
+        "descrizione": "Dichiarazione integrativa a favore",
+        "posizione": 49,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se la dichiarazione integrativa è presentata per correggere errori od omissioni che hanno determinato un maggior debito d’imposta o un minor credito d’imposta."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Dichiarazione integrativa per il c.d. ravvedimento operoso",
+        "posizione": 50,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se la dichiarazione integrativa è presentata in applicazione dell'art. 13 del D.Lgs. 472/1997."
+      },
+      {
+        "campo": 11,
+        "descrizione": "Dichiarazione per immobili a destinazione particolare",
+        "posizione": 51,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se la dichiarazione è presentata per immobili di cui all'art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 12,
+        "descrizione": "Immobili esenti IMU (art. 1, c. 759, L. 160/2019)",
+        "posizione": 52,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se la dichiarazione riguarda immobili esenti IMU ai sensi dell'art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 13,
+        "descrizione": "Data di inizio del periodo di validità della dichiarazione",
+        "posizione": 53,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 14,
+        "descrizione": "Data di fine del periodo di validità della dichiarazione",
+        "posizione": 61,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 15,
+        "descrizione": "Numero immobili dichiarati",
+        "posizione": 69,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 16,
+        "descrizione": "Data di presentazione",
+        "posizione": 72,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 17,
+        "descrizione": "Data di registrazione del protocollo",
+        "posizione": 80,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 18,
+        "descrizione": "Numero di protocollo",
+        "posizione": 88,
+        "lunghezza": 17,
+        "formato": "AN"
+      },
+      {
+        "campo": 19,
+        "descrizione": "Importo IMU complessivamente versato risultante dalla presente dichiarazione",
+        "posizione": 105,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 20,
+        "descrizione": "Credito IMU di cui si chiede il rimborso",
+        "posizione": 117,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 20 e 21 non deve eccedere il campo 19."
+      },
+      {
+        "campo": 21,
+        "descrizione": "Credito IMU da utilizzare in compensazione",
+        "posizione": 129,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 20 e 21 non deve eccedere il campo 19."
+      },
+      {
+        "campo": 22,
+        "descrizione": "Data di inizio del periodo di validità del credito",
+        "posizione": 141,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 23,
+        "descrizione": "Data di fine del periodo di validità del credito",
+        "posizione": 149,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 24,
+        "descrizione": "Filler",
+        "posizione": 157,
+        "lunghezza": 1741,
+        "formato": "AN"
+      },
+      {
+        "campo": 25,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 26,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "C": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'C'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Progressivo immobile",
+        "posizione": 18,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Codice Catasto/Belfiore",
+        "posizione": 21,
+        "lunghezza": 4,
+        "formato": "AN"
+      },
+      {
+        "campo": 5,
+        "descrizione": "Identificativo immobile",
+        "posizione": 25,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'U' se l’unità immobiliare è urbana, 'T' se si tratta di terreno."
+      },
+      {
+        "campo": 6,
+        "descrizione": "Sezione urbana/Comune Catastale",
+        "posizione": 26,
+        "lunghezza": 3,
+        "formato": "AN"
+      },
+      {
+        "campo": 7,
+        "descrizione": "Foglio",
+        "posizione": 29,
+        "lunghezza": 5,
+        "formato": "AN"
+      },
+      {
+        "campo": 8,
+        "descrizione": "Particella",
+        "posizione": 34,
+        "lunghezza": 9,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Denominatore",
+        "posizione": 43,
+        "lunghezza": 4,
+        "formato": "AN"
+      },
+      {
+        "campo": 10,
+        "descrizione": "Subalterno",
+        "posizione": 47,
+        "lunghezza": 4,
+        "formato": "AN"
+      },
+      {
+        "campo": 11,
+        "descrizione": "Categoria catastale",
+        "posizione": 51,
+        "lunghezza": 4,
+        "formato": "AN"
+      },
+      {
+        "campo": 12,
+        "descrizione": "Rendita catastale",
+        "posizione": 55,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 13,
+        "descrizione": "Data di inizio possesso",
+        "posizione": 67,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 14,
+        "descrizione": "Data di fine possesso",
+        "posizione": 75,
+        "lunghezza": 8,
+        "formato": "DT",
+        "controlli": "Impostare nel formato 'AAAAMMGG'."
+      },
+      {
+        "campo": 15,
+        "descrizione": "Percentuale di possesso",
+        "posizione": 83,
+        "lunghezza": 5,
+        "formato": "NU",
+        "controlli": "Da 000.00 a 100.00. La somma delle percentuali di possesso per lo stesso immobile non deve superare il 100%."
+      },
+      {
+        "campo": 16,
+        "descrizione": "Codice utilizzo immobile",
+        "posizione": 88,
+        "lunghezza": 2,
+        "formato": "AN"
+      },
+      {
+        "campo": 17,
+        "descrizione": "Esente IMU art. 1, c. 759, L. 160/2019",
+        "posizione": 90,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l’immobile è esente IMU ai sensi dell’art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 18,
+        "descrizione": "Area fabbricabile",
+        "posizione": 91,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se si tratta di area fabbricabile."
+      },
+      {
+        "campo": 19,
+        "descrizione": "Terreno agricolo esente IMU",
+        "posizione": 92,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se si tratta di terreno agricolo esente IMU."
+      },
+      {
+        "campo": 20,
+        "descrizione": "Immobile storico o artistico",
+        "posizione": 93,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se si tratta di immobile di interesse storico o artistico."
+      },
+      {
+        "campo": 21,
+        "descrizione": "Immobile inagibile o inabitabile",
+        "posizione": 94,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se si tratta di immobile inagibile o inabitabile."
+      },
+      {
+        "campo": 22,
+        "descrizione": "Comune montano",
+        "posizione": 95,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se il Comune è montano."
+      },
+      {
+        "campo": 23,
+        "descrizione": "Anno di riferimento",
+        "posizione": 96,
+        "lunghezza": 4,
+        "formato": "NU"
+      },
+      {
+        "campo": 24,
+        "descrizione": "Numero di giorni di possesso",
+        "posizione": 100,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 25,
+        "descrizione": "Abitazione principale assimilata per legge",
+        "posizione": 103,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se si tratta di abitazione principale assimilata per legge."
+      },
+      {
+        "campo": 26,
+        "descrizione": "Non residente",
+        "posizione": 104,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se il contribuente non è residente nel comune."
+      },
+      {
+        "campo": 27,
+        "descrizione": "Immobile non locato",
+        "posizione": 105,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l'immobile non è locato."
+      },
+      {
+        "campo": 28,
+        "descrizione": "Immobile a disposizione",
+        "posizione": 106,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l'immobile è a disposizione."
+      },
+      {
+        "campo": 29,
+        "descrizione": "Immobile con destinazione residenziale",
+        "posizione": 107,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l'immobile ha destinazione residenziale."
+      },
+      {
+        "campo": 30,
+        "descrizione": "Numero fabbricati gruppo D",
+        "posizione": 108,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 31,
+        "descrizione": "Filler",
+        "posizione": 111,
+        "lunghezza": 1787,
+        "formato": "AN"
+      },
+      {
+        "campo": 32,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 33,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "D": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'D'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Progressivo immobile",
+        "posizione": 18,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Immobile esente art. 1, c. 759, L. 160/2019",
+        "posizione": 21,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l’immobile è esente IMU ai sensi dell’art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Importo IMU versato complessivamente per l'immobile",
+        "posizione": 22,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Credito IMU di cui si chiede il rimborso",
+        "posizione": 34,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 7,
+        "descrizione": "Credito IMU da utilizzare in compensazione",
+        "posizione": 46,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 8,
+        "descrizione": "Filler",
+        "posizione": 58,
+        "lunghezza": 1840,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "E": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'E'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Progressivo immobile",
+        "posizione": 18,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Esente IMU art. 1, c. 759, L. 160/2019",
+        "posizione": 21,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l’immobile è esente IMU ai sensi dell’art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Importo IMU versato complessivamente per l'immobile",
+        "posizione": 22,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Credito IMU di cui si chiede il rimborso",
+        "posizione": 34,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 7,
+        "descrizione": "Credito IMU da utilizzare in compensazione",
+        "posizione": 46,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 8,
+        "descrizione": "Filler",
+        "posizione": 58,
+        "lunghezza": 1840,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "F": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'F'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Progressivo immobile",
+        "posizione": 18,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Esente IMU art. 1, c. 759, L. 160/2019",
+        "posizione": 21,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l’immobile è esente IMU ai sensi dell’art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Importo IMU versato complessivamente per l'immobile",
+        "posizione": 22,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Credito IMU di cui si chiede il rimborso",
+        "posizione": 34,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 7,
+        "descrizione": "Credito IMU da utilizzare in compensazione",
+        "posizione": 46,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 8,
+        "descrizione": "Filler",
+        "posizione": 58,
+        "lunghezza": 1840,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "G": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'G'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Progressivo immobile",
+        "posizione": 18,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Esente IMU art. 1, c. 759, L. 160/2019",
+        "posizione": 21,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l’immobile è esente IMU ai sensi dell’art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Importo IMU versato complessivamente per l'immobile",
+        "posizione": 22,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Credito IMU di cui si chiede il rimborso",
+        "posizione": 34,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 7,
+        "descrizione": "Credito IMU da utilizzare in compensazione",
+        "posizione": 46,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 8,
+        "descrizione": "Filler",
+        "posizione": 58,
+        "lunghezza": 1840,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "H": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'H'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Progressivo immobile",
+        "posizione": 18,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Esente IMU art. 1, c. 759, L. 160/2019",
+        "posizione": 21,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l’immobile è esente IMU ai sensi dell’art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Importo IMU versato complessivamente per l'immobile",
+        "posizione": 22,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Credito IMU di cui si chiede il rimborso",
+        "posizione": 34,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 7,
+        "descrizione": "Credito IMU da utilizzare in compensazione",
+        "posizione": 46,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 8,
+        "descrizione": "Filler",
+        "posizione": 58,
+        "lunghezza": 1840,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "S": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'S'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Codice fiscale del contribuente",
+        "posizione": 2,
+        "lunghezza": 16,
+        "formato": "AN"
+      },
+      {
+        "campo": 3,
+        "descrizione": "Progressivo immobile",
+        "posizione": 18,
+        "lunghezza": 3,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Esente IMU art. 1, c. 759, L. 160/2019",
+        "posizione": 21,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Campo da valorizzare con 'S' se l’immobile è esente IMU ai sensi dell’art. 1, comma 759, della Legge 160/2019."
+      },
+      {
+        "campo": 5,
+        "descrizione": "Importo IMU complessivamente versato risultante dalla presente dichiarazione",
+        "posizione": 22,
+        "lunghezza": 12,
+        "formato": "NU"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Credito IMU di cui si chiede il rimborso",
+        "posizione": 34,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 7,
+        "descrizione": "Credito IMU da utilizzare in compensazione",
+        "posizione": 46,
+        "lunghezza": 12,
+        "formato": "NU",
+        "controlli": "La somma dei campi 6 e 7 non deve eccedere il campo 5."
+      },
+      {
+        "campo": 8,
+        "descrizione": "Filler",
+        "posizione": 58,
+        "lunghezza": 1840,
+        "formato": "AN"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  },
+  "Z": {
+    "fields": [
+      {
+        "campo": 1,
+        "descrizione": "Tipo record",
+        "posizione": 1,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare a 'Z'."
+      },
+      {
+        "campo": 2,
+        "descrizione": "Numero record di tipo 'B'",
+        "posizione": 2,
+        "lunghezza": 9,
+        "formato": "NU",
+        "controlli": "Impostare a 1."
+      },
+      {
+        "campo": 3,
+        "descrizione": "Numero record di tipo 'C'",
+        "posizione": 11,
+        "lunghezza": 9,
+        "formato": "NU"
+      },
+      {
+        "campo": 4,
+        "descrizione": "Numero record di tipo 'D'",
+        "posizione": 20,
+        "lunghezza": 9,
+        "formato": "NU"
+      },
+      {
+        "campo": 5,
+        "descrizione": "Numero record di tipo 'E'",
+        "posizione": 29,
+        "lunghezza": 9,
+        "formato": "NU"
+      },
+      {
+        "campo": 6,
+        "descrizione": "Numero record di tipo 'F'",
+        "posizione": 38,
+        "lunghezza": 9,
+        "formato": "NU"
+      },
+      {
+        "campo": 7,
+        "descrizione": "Numero record di tipo 'G'",
+        "posizione": 47,
+        "lunghezza": 9,
+        "formato": "NU"
+      },
+      {
+        "campo": 8,
+        "descrizione": "Numero record di tipo 'H'",
+        "posizione": 56,
+        "lunghezza": 9,
+        "formato": "NU"
+      },
+      {
+        "campo": 9,
+        "descrizione": "Numero record di tipo 'S'",
+        "posizione": 65,
+        "lunghezza": 9,
+        "formato": "NU"
+      },
+      {
+        "campo": 10,
+        "descrizione": "Filler",
+        "posizione": 74,
+        "lunghezza": 1824,
+        "formato": "AN"
+      },
+      {
+        "campo": 11,
+        "descrizione": "Filler",
+        "posizione": 1898,
+        "lunghezza": 1,
+        "formato": "AN",
+        "controlli": "Impostare al valore 'A'."
+      },
+      {
+        "campo": 12,
+        "descrizione": "Filler",
+        "posizione": 1899,
+        "lunghezza": 2,
+        "formato": "AN",
+        "controlli": "Impostare i valori esadecimali '0D' e '0A' (caratteri ASCII 'CR' ed 'LF')."
+      }
+    ]
+  }
+}

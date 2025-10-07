@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<grid id="listBoxVersamentiCumulativi" span="true" sizedByContent="true" hflex="1" height="500px"
+		  model="@bind(vm.listaVersamentiCumulativi)" emptyMessage="Nessun versamento presente."
+		  onSelect="@command('onSelectVersamentoCumulativo')">
+		<auxhead>
+			<auxheader align="center" label="" colspan="1"/>
+			<auxheader align="center" label="" colspan="6"/>
+      <auxheader align="center" label="di cui" colspan="@load((vm.tipoTributo eq 'TARSU') ? '6' : '3')"/>
+      <auxheader align="center" label="" colspan="@load((vm.tipoTributo eq 'CUNI') ? '6' : '5')"/>
+      <auxheader align="center" label="" colspan="4"/>
+			<auxheader align="center" label="" colspan="4"/>
+			<auxheader align="center" label="" colspan="1"/>
+		</auxhead>
+		<columns sizable="true">
+			<column align="center" label="" width="40px"/>
+			<column align="center" label="Anno" width="70px"/>
+			<column align="center" label="Rata" width="90px"/>
+			<column align="center" label="Imp. Versato" tooltiptext="Importo Versato"/>
+			<column align="center" label="Ruolo" width="120px"/>
+			<column align="center" label="N° Bollettino" tooltiptext="N° Bollettino"/>
+			<column align="center" label="Data Pag." tooltiptext="Data Pagamento" width="110px"/>
+
+			<column align="center" label="@load((vm.tipoTributo eq 'TARSU') ? vm.tipoTributoDescr : 'Imposta')"
+					width="100px"/>
+			<column align="center" label="Tributo TEFA" width="100px" visible="@load(vm.tipoTributo eq 'TARSU')"/>
+			<column align="center"
+					label="@load((vm.tipoTributo eq 'TARSU') ? c:cat('Sanz. ', vm.tipoTributoDescr) : 'Sanzioni')"
+					width="100px"/>
+			<column align="center"
+					label="@load((vm.tipoTributo eq 'TARSU') ? c:cat('Int. ', vm.tipoTributoDescr) : 'Interessi')"
+					width="100px"/>
+			<column align="center" label="Sanz. Tributo TEFA" width="100px" visible="@load(vm.tipoTributo eq 'TARSU')"/>
+			<column align="center" label="Int. Tributo TEFA" width="100px" visible="@load(vm.tipoTributo eq 'TARSU')"/>
+
+			<column align="center" label="Data Reg." tooltiptext="Data Registrazione" width="110px"/>
+			<column align="center" label="Spese Spediz." tooltiptext="Spese Spedizione"/>
+			<column align="center" label="Spese Mora"/>
+
+			<column align="center" label="Fonte" width="240px"/>
+			<column align="center" label="Comp." tooltiptext="Compensazione" width="50px"/>
+
+      <column align="center" label="Gruppo Tributo" width="160px" visible="@load(vm.tipoTributo eq 'CUNI')"/>
+      
+      <column align="center" label="Descrizione" width="160px"/>
+			<column align="center" label="Provvedimento" width="100px"/>
+			<column align="center" label="Ufficio PT" width="100px"/>
+			<column align="center" label="Causale" width="120px"/>
+			<column align="center" label="Note" width="140px"/>
+			<column align="center" label="Fattura" width="120px"/>
+
+			<column align="center" label="Utente" width="80px"/>
+			<column align="center" label="Data Var." width="110px"/>
+
+			<column align="center" sclass="centro" label="" width="60px"
+					visible="@load((vm.modifica ne false) and (vm.modificaCumulativi ne false) and (! empty vm.annoVC))">
+				<image src="/images/afc/16x16/add.png" style="cursor: pointer;"
+					   onClick="@command('onNuovoVersamentoCumulativo')"
+					   tooltiptext="Aggiungi Versamento"/>
+			</column>
+		</columns>
+		<rows>
+			<template name="model" var="vc">
+				<row value="@load(v)">
+					<cell sclass="destra">
+						<label value="@load(vc.id)"/>
+					</cell>
+					<cell sclass="destra">
+						<intbox disabled="@load(!vc.modifica)" mold="rounded" hflex="1" maxlength="4"
+								value="@bind(vc.anno)" style="text-align: right;"
+								onChange="@command('onCambioAnnoVersamentoCumulativo', vers=vc)"/>
+					</cell>
+					<cell sclass="destra">
+						<combobox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" readonly="true"
+								  model="@load(vm.listRata)"
+								  selectedItem="@bind(vc.rataCombo)"
+								  onChange="@command('onChangeVC', vers=vc)">
+							<template name="model" var="opz">
+								<comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+							</template>
+						</combobox>
+					</cell>
+					<cell sclass="destra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeVersatoVC', vers=vc)"
+									style="text-align: right"
+									constraint="no empty: Campo obbligatorio"
+									value="@bind(vc.importoVersato)" format="€ #,##0.00"/>
+					</cell>
+
+					<cell sclass="sinistra">
+						<hbox hflex="1">
+							<bandbox inplace="true" style="text-align: right;" readonly="true"
+									 onChange="@command('onCambiaRuoloVC', bd=self, vers=vc)"
+									 onOpen="@command('onApriRuoloVC', bd=self, vers=vc)"
+									 value="@load(! empty vc.ruolo ? vc.ruolo.id : null)"
+									 hflex="1" mold="rounded">
+								<bandpopup>
+									<listbox height="250px" width="450px" mold="paging"
+											 autopaging="true" sizedByContent="true"
+											 selectedItem="@bind(vc.ruolo)"
+											 onSelect="@command('onSelezionaRuoloVC', lb=self, vers=vc)"
+											 model="@load(vm.ruoliVersamentoCumulativo)" span="true"
+											 emptyMessage="Nessun ruolo presente.">
+										<listhead>
+											<listheader label="Ruolo"/>
+											<listheader label="Anno"/>
+											<listheader label="Anno Em."/>
+											<listheader label="Pr."/>
+											<listheader label="Emissione"/>
+											<listheader label="Invio"/>
+											<listheader label="L."/>
+											<listheader label="Ruolo"/>
+											<listheader label="Sp." tooltiptext="Specie Ruolo"/>
+										</listhead>
+										<template name="model" var="ruo">
+											<listitem>
+												<listcell
+														label="@load((ruo.tipoRuolo eq 1) ? 'P' : ((ruo.tipoRuolo eq 2) ? 'S' : ''))"
+														sclass="centro"/>
+												<listcell label="@load(ruo.annoRuolo)" sclass="centro"/>
+												<listcell label="@load(ruo.annoEmissione)" sclass="centro"/>
+												<listcell label="@load(ruo.progrEmissione)" sclass="centro"/>
+												<listcell
+														label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+														sclass="centro"/>
+												<listcell
+														label="@load(ruo.invioConsorzio ne null ? c:formatDate(ruo.invioConsorzio, 'dd/MM/yyyy') : null)"
+														sclass="centro"/>
+												<listcell>
+													<checkbox checked="@load(ruo.importoLordo)"
+															  w:onCheck="this.setChecked(!this.isChecked())"/>
+												</listcell>
+												<listcell label="@load(ruo.id)" sclass="centro"/>
+												<listcell label="@load(ruo.specieRuolo ? 1 : 0)" sclass="centro"/>
+											</listitem>
+										</template>
+									</listbox>
+								</bandpopup>
+							</bandbox>
+							<vbox>
+								<image width="15px" src="/images/afc/16x16/cancel.png"
+									   style="cursor: pointer;"
+									   visible="@bind(empty vc.ruolo)"
+									   sclass="gray-scale"/>
+								<image width="15px" src="/images/afc/16x16/cancel.png"
+									   style="cursor: pointer;"
+									   onClick="@command('onEliminaRuoloVC', vers=vc)"
+									   visible="@bind(!empty vc.ruolo)"/>
+							</vbox>
+						</hbox>
+					</cell>
+					<cell sclass="sinistra">
+						<intbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="12"
+								onChange="@command('onChangeVC', vers=vc)"
+								value="@bind(vc.numBollettino)" style="text-align: right;"/>
+					</cell>
+					<cell sclass="sinistra">
+						<datebox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1"
+								 onChange="@command('onChangeVC', vers=vc)"
+								 constraint="no empty: Campo obbligatorio"
+								 value="@bind(vc.dataPagamento)" format="dd/MM/yyyy"/>
+					</cell>
+
+					<cell sclass="sinistra">
+						<decimalbox disabled="true" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.imposta)" format="€ #,##0.00"/>
+					</cell>
+					<cell sclass="sinistra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.addizionalePro)" format="€ #,##0.00"/>
+					</cell>
+					<cell sclass="sinistra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.sanzioni1)" format="€ #,##0.00"/>
+					</cell>
+					<cell sclass="sinistra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.interessi)" format="€ #,##0.00"/>
+					</cell>
+					<cell sclass="sinistra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.sanzioniAddPro)" format="€ #,##0.00"/>
+					</cell>
+					<cell sclass="sinistra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.interessiAddPro)" format="€ #,##0.00"/>
+					</cell>
+
+					<cell sclass="sinistra">
+						<datebox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1"
+								 onChange="@command('onChangeVC', vers=vc)"
+								 value="@bind(vc.dataReg)" format="dd/MM/yyyy"/>
+					</cell>
+					<cell sclass="sinistra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.speseSpedizione)" format="€ #,##0.00"/>
+					</cell>
+					<cell sclass="sinistra">
+						<decimalbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="15"
+									onChange="@command('onChangeImportoVC', vers=vc)"
+									style="text-align: right"
+									value="@bind(vc.speseMora)" format="€ #,##0.00"/>
+					</cell>
+
+					<cell sclass="sinistra">
+						<combobox model="@load(vm.listaFonti)" mold="rounded"
+								  selectedItem="@bind(vc.fonteDTO) @converter('it.finmatica.zkutils.PropertyConverter', property='fonte')"
+								  hflex="1" width="90%"
+								  onChange="@command('onChangeVC', vers=vc)"
+								  disabled="@bind(!vc.modifica)">
+							<template name="model" var="fo">
+								<comboitem label="@load(c:cat3(fo.fonte, ' - ', fo.descrizione))" value="@load(fo)"
+										   onChange="@command('onChangeVC', vers=vc)"/>
+							</template>
+						</combobox>
+					</cell>
+					<cell sclass="centro">
+						<checkbox checked="@load(vc.chkCompensazione)" w:onCheck="this.setChecked(!this.isChecked())"
+								  onCheck="@command('onChangeVC', vers=vc)"/>
+					</cell>
+
+					<cell sclass="destra">
+						<combobox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" readonly="true"
+								  model="@load(vm.listServizi)"
+								  onChange="@command('onChangeVC', vers=vc)" 
+								  selectedItem="@bind(vc.servizioCombo)">
+							<template name="model" var="opz">
+								<comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+							</template>
+						</combobox>
+					</cell>
+				
+					<cell sclass="sinistra">
+						<textbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="60"
+								 onChange="@command('onChangeVC', vers=vc)"
+								 value="@bind(vc.descrizione)"/>
+					</cell>
+					<cell sclass="sinistra">
+						<intbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="7"
+								onChange="@command('onChangeVC', vers=vc)"
+								value="@bind(vc.provvedimento)" style="text-align: right;"/>
+					</cell>
+					<cell sclass="sinistra">
+						<textbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="30"
+								 onChange="@command('onChangeVC', vers=vc)"
+								 value="@bind(vc.ufficioPt)"/>
+					</cell>
+					<cell sclass="sinistra">
+						<textbox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" maxlength="60"
+								 onChange="@command('onChangeVC', vers=vc)"
+								 value="@bind(vc.causale)"/>
+					</cell>
+					<cell sclass="sinistra">
+						<hlayout>
+							<label value="@bind(vc.note)" sclass="auto-trunc" tooltiptext="@bind(vc.note)" hflex="3"/>
+							<image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note" width="16px"
+								   visible="@load((vc.note ne null) and (vm.modifica eq false))"
+								   style="cursor: pointer" onClick="@command('onApriNote', arg=vc.note)"/>
+							<image src="/images/afc/16x16/edit.png" tooltiptext="Modifica note" width="16px"
+								   visible="@load(vm.modifica)"
+								   style="cursor: pointer"
+								   onClick="@command('onApriPopupNote')"
+								   popup="@load(c:cat('popupNote_', vc.id))"/>
+							<popup id="@load(c:cat('popupNote_', vc.id))" width="600px"
+								   onOpen="@command('onApriPopupNote', popup=self)">
+								<h:div sclass="barraTitoloPagina">
+									<label class="titoloPagina" value="Note"/>
+								</h:div>
+								<hlayout>
+									<textbox rows="10" width="600px" value="@bind(vc.note)"
+											 onChange="@command('onChangeVC', vers=vc)"/>
+								</hlayout>
+								<h:div sclass="barraPulsanti">
+									<h:div>
+										<button label="Chiudi" onClick="@command('onChiudiPopupNote')"
+												mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+									</h:div>
+								</h:div>
+							</popup>
+						</hlayout>
+					</cell>
+					<cell sclass="sinistra">
+						<combobox disabled="@bind(!vc.modifica)" mold="rounded" hflex="1" readonly="true"
+								  model="@load(vm.elencoFatture)"
+								  selectedItem="@bind(vc.fatturaCombo)"
+								  onChange="@command('onChangeVC', vers=vc)">
+							<template name="model" var="opz">
+								<comboitem label="@load(opz.descrizione)" value="@load(opz.fattura)"/>
+							</template>
+						</combobox>
+					</cell>
+
+					<cell sclass="sinistra">
+						<textbox disabled="true" mold="rounded" hflex="1" maxlength="20"
+								 onChange="@command('onChangeVC', vers=vc)"
+								 value="@bind(vc.utente)"/>
+					</cell>
+					<cell sclass="sinistra">
+						<datebox disabled="true" mold="rounded" hflex="1"
+								 value="@bind(vc.dataVariazione)" format="dd/MM/yyyy"/>
+					</cell>
+
+					<cell sclass="center" visible="@load(vm.modifica ne false)">
+						<image src="/images/afc/16x16/editcopy.png"
+							   style="cursor: pointer;"
+							   onClick="@command('onDuplicaVersamentoCumulativo',versamento=vc)"
+							   tooltip="btnDuplica"/>
+						<image src="/images/afc/16x16/delete.png"
+							   style="cursor: pointer;"
+							   onClick="@command('onEliminaVersamentoCumulativo',versamento=vc)"
+							   tooltip="btnElimina"/>
+					</cell>
+				</row>
+			</template>
+		</rows>
+        <foot>
+			<footer/>
+			<footer>
+				<label value="Totali:"/>
+			</footer>
+			<footer/>
+			<footer sclass="destra">
+				<label value="@load(c:formatNumber(vm.totaleVersamentiCumulativi, '€ #,##0.00'))" sclass="destra"/>
+			</footer>
+			<footer/>
+			<footer>
+				<label value="Da Versare:"/>
+			</footer>
+			<footer sclass="destra">
+				<label value="@load(c:formatNumber(vm.dovutoVersamentiCumulativi, '€ #,##0.00'))" sclass="destra"/>
+			</footer>
+			<footer/>
+			<footer/>
+			<footer/>
+			<footer/>
+			<footer/>
+			<footer/>
+			<footer/>
+        </foot>
+	</grid>
+    <popup id="btnModifica" width="150px">
+        <vlayout>
+            Modifica dati
+        </vlayout>
+	</popup>
+    <popup id="btnAnnulla" width="150px">
+        <vlayout>
+            Annula le modifiche
+        </vlayout>
+	</popup>
+    <popup id="btnApplica" width="150px">
+        <vlayout>
+            Applica le modifiche
+        </vlayout>
+	</popup>
+    <popup id="btnElimina" width="150px">
+        <vlayout>
+            Elimina Versamento
+        </vlayout>
+	</popup>
+    <popup id="btnDuplica" width="150px">
+        <vlayout>
+            Duplica il Versamento
+        </vlayout>
+	</popup>
+</zk>

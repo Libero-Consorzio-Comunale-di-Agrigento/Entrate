@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+	<custom-attributes oggettoSelezionato="#{arg.oggettoSelezionato}" /> 
+	
+	<popup id="dettaglioOggetto" width="400px">
+		<grid hflex="1">
+			<columns>
+				<column hflex="1" />
+				<column hflex="2" />
+			</columns>
+			<rows>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Oggetto" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.oggetto)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Tipo Oggetto" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.tipoOggetto)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Categoria Catasto" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.categoriaCatasto)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Classe Catasto" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.classeCatasto)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Sezione" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.sezione)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Foglio" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.foglio)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Sub." />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.subalterno)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Zona" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.zona)" />
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label sclass="intestazioneGrid" value="Partita" />
+					</cell>
+					<cell>
+						<label value="@load(oggettoSelezionato.partita)" />
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</popup>
+
+</zk>

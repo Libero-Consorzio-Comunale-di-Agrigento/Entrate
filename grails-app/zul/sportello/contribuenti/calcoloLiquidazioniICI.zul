@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window sizable="true" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('calcoloLiquidazioniICIViewModel')" border="normal" width="850px">
+		<script src="/js/decimalbox.js"/>
+
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina"
+                       value="@load(c:cat('Calcolo Liquidazione ', vm.tributo == 'ICI' ? 'IMU' : vm.tributo))"/>
+            </hlayout>
+        </h:div>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+            <hlayout sclass="afc-control-bar" valign="middle" >
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               width="20px"
+                               disabled="@load(vm.contribuentiNonLiquidati.isEmpty() or vm.tabSelezionato eq 0)"
+                               tooltiptext='Esporta in XLS' onClick="@command('contribuentiNonLiquidatiToXls')"/>
+            </hlayout>
+        </hlayout>
+
+        <tabbox selectedIndex="@load(vm.tabSelezionato)">
+            <tabs>
+                <tab label="Calcolo Liquidazione" onSelect="@command('selezionaTab', id=0)"/>
+                <tab label="Contribuenti non Liquidati" disabled="@load(vm.contribuentiNonLiquidati.isEmpty())" onSelect="@command('selezionaTab', id=1)"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                      <grid sclass="form">
+                        <rows>
+                            <!-- RIGA 1 -->
+                            <row>
+                                <cell sclass="destra">
+                                    <label value="Da Anno" />
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.parametriCalcolo.daAnno)" sclass="destra" mold="rounded" hflex="1"/>
+                                </cell>
+                                <cell sclass="destra" >
+                                    <label value="Ad Anno"/>
+                                </cell>
+                                <cell>
+                                    <intbox value="@bind(vm.parametriCalcolo.adAnno)" sclass="destra" mold="rounded" hflex="1"/>
+                                </cell>
+                            </row>
+                            <!-- RIGA 2 -->
+                            <row>
+                                <cell sclass="destra">
+                                    <label value="Cognome e Nome"/>
+                                </cell>
+                                <cell colspan="6">
+                                    <textbox readonly="@load(vm.modificaCognomeNomeCodFiscale)" mold="rounded"
+                                             style="text-transform: uppercase"
+                                             value="@bind(vm.parametriCalcolo.cognomeNome)" hflex="1"/>
+                                </cell>
+                            </row>
+                            <!-- RIGA 2 -->
+                            <row>
+                                <cell sclass="destra">
+                                    <label value="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+                                </cell>
+                                <cell colspan="3">
+                                    <textbox readonly="@load(vm.modificaCognomeNomeCodFiscale)" mold="rounded"
+                                             style="text-transform: uppercase"
+                                             value="@bind(vm.parametriCalcolo.codFiscale)" hflex="1"/>
+                                </cell>
+                                <cell sclass="destra" colspan="3">
+                                    <label value="Interessi a Rimborso su Assegnazione di Rendita"/>
+                                    <checkbox checked="@bind(vm.parametriCalcolo.flagRimborso)"/>
+                                </cell>
+                            </row>
+                            <!-- RIGA 4 -->
+                            <row>
+                                <cell sclass="destra">
+                                    <label value="Limite Inferiore"/>
+                                </cell>
+                                <cell colspan="2">
+                                    <decimalbox hflex="1" value="@bind(vm.parametriCalcolo.limiteInf)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                sclass="destra"/>
+                                </cell>
+                                <cell sclass="destra" colspan="3">
+                                    <label value="Limite Superiore"/>
+                                </cell>
+                                <cell>
+                                    <decimalbox hflex="1" value="@bind(vm.parametriCalcolo.limiteSup)" mold="rounded"
+                                                format="€ #,##0.00"
+                                                sclass="destra"/>
+                                </cell>
+                            </row>
+                            <!-- RIGA 5 -->
+                            <row>
+                                <cell sclass="destra">
+                                    <label value="Data Liquidazione"/>
+                                </cell>
+                                <cell colspan="2">
+                                    <datebox hflex="1" style="text-align: right;" mold="rounded"
+                                             value="@bind(vm.parametriCalcolo.dataLiquidazione)" format="dd/MM/yyyy"/>
+                                </cell>
+                                <cell sclass="destra" colspan="3">
+                                    <label value="Data Riferimento per Interessi"/>
+                                </cell>
+                                <cell>
+                                    <datebox hflex="1" style="text-align: right;" mold="rounded"
+                                             value="@bind(vm.parametriCalcolo.dataRifInteressi)" format="dd/MM/yyyy"/>
+                                </cell>
+                            </row>
+                            <!-- RIGA 6 -->
+                            <row>
+                                <cell colspan="4">
+                                    <checkbox checked="@bind(vm.parametriCalcolo.flagRicalcoloDovuto)"/>
+                                    <label value="Ricalcolo del dovuto"/>
+                                </cell>
+                                <cell sclass="destra" colspan="3">
+                                    <label value="Ricalcolo delle Liquidazioni già Numerate"/>
+                                    <checkbox checked="@bind(vm.parametriCalcolo.flagRicalcolo)"/>
+                                </cell>
+                            </row>
+                            <!-- RIGA 7 -->
+                            <row>
+                                <cell colspan="6">
+                                    <checkbox checked="@bind(vm.parametriCalcolo.flagRavvedimento)"/>
+                                    <label value="Esclude i Contribuenti con Ravvedimenti Operosi"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+
+                    <space height="3px"/>
+
+                    <groupbox mold="3d" open="false">
+                        <caption>
+                            Riferimenti Oggetto
+                            <space hflex="1"/>
+                            <image src="/images/afc/16x16/down_blu.png"/>
+                        </caption>
+
+                        <grid sclass="form">
+                            <rows>
+                                <!-- RIGA 8 -->
+                                <row>
+                                    <cell colspan="2">
+                                        <checkbox checked="@bind(vm.parametriCalcolo.flagRiOg)"
+                                                  onCheck="@command('onCheckRiOg')"/>
+                                        <label value="Riferimenti"/>
+                                    </cell>
+                                    <cell sclass="destra" colspan="2">
+                                        <label value="Da Data"/>
+                                    </cell>
+                                    <cell>
+                                        <datebox hflex="1" style="text-align: right;" mold="rounded"
+                                                 disabled="@bind(!vm.parametriCalcolo.flagRiOg)"
+                                                 value="@bind(vm.parametriCalcolo.daDataRiOg)" format="dd/MM/yyyy"/>
+                                    </cell>
+                                    <cell sclass="destra">
+                                        <label value="A Data"/>
+                                    </cell>
+                                    <cell>
+                                        <datebox hflex="1" style="text-align: right;" mold="rounded"
+                                                 disabled="@bind(!vm.parametriCalcolo.flagRiOg)"
+                                                 value="@bind(vm.parametriCalcolo.aDataRiOg)" format="dd/MM/yyyy"/>
+                                    </cell>
+                                </row>
+                                <!-- RIGA 9 -->
+                                <row>
+                                    <cell colspan="2">
+                                        <checkbox checked="@bind(vm.parametriCalcolo.flagVersamenti)"
+                                                  disabled="@bind(!vm.parametriCalcolo.flagRiOg)"/>
+                                        <label value="Controllo Versamenti"/>
+                                    </cell>
+                                    <cell sclass="destra" colspan="2">
+                                        <label value="Perc. di Scostamento da"/>
+                                    </cell>
+                                    <cell>
+                                        <decimalbox hflex="1" value="@bind(vm.parametriCalcolo.daPercDiff)"
+                                                    disabled="@bind(!vm.parametriCalcolo.flagRiOg)"
+                                                    format="#,##0.00"
+                                                    sclass="destra"/>
+                                    </cell>
+                                    <cell sclass="destra">
+                                        <label value="A"/>
+                                    </cell>
+                                    <cell>
+                                        <decimalbox hflex="1" value="@bind(vm.parametriCalcolo.aPercDiff)"
+                                                    disabled="@bind(!vm.parametriCalcolo.flagRiOg)"
+                                                    format="#,##0.00"
+                                                    sclass="destra"/>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </groupbox>
+                </tabpanel>
+                <tabpanel>
+                    <listbox span="true" sizedByContent="true"
+                             model="@load(vm.contribuentiNonLiquidati)" emptyMessage="Nessun contribuente presente."
+                             vflex="true">
+                        <listhead sizable="true">
+                            <listheader sclass="destra" label="Codice Fiscale"/>
+                            <listheader sclass="sinistra" label="Nome"/>
+                            <listheader sclass="sinistra" label="Anno"/>
+                            <listheader sclass="centro" label="Data"/>
+                            <listheader sclass="centro" label="Note"/>
+                        </listhead>
+                        <template name="model" var="noLiq">
+                            <listitem>
+                                <listcell label="@load(noLiq.COD_FIS)"/>
+                                <listcell label="@load(noLiq.NOME)"/>
+                                <listcell label="@load(noLiq.ANNO)" sclass="centro"/>
+                                <listcell sclass="centro"
+                                          label="@load(noLiq.DATA)"/>
+                                <listcell label="@load(noLiq.NOTE_CALCOLO)" sclass="centro"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Ok" onClick="@command('onCalcolaLiquidazioni')" mold="trendy"
+                        image="/images/afc/16x16/ok.png"/>
+                <button label="Chiudi" onClick="@command('onChiudi')" mold="trendy"
+                        image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+    </window>
+
+</zk>

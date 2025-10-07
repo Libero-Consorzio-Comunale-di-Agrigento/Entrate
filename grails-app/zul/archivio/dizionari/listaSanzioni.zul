@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaSanzioniViewModel')" width="100%"
+            height="100%">
+
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout sclass="afc-control-bar">
+                <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                               tooltiptext="@load((vm.lettura ne false) ? 'Visualizza' : 'Modifica')"
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaSanzione')"
+                               disabled="@load(empty vm.sanzioneSelezionata)"/>
+                <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                               tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                               onClick="@command('onAggiungiSanzione')"
+                               disabled="@load(vm.lettura)"/>
+                <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                               tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                               onClick="@command('onDuplicaSanzione')"
+                               disabled="@load(vm.lettura or empty vm.sanzioneSelezionata or vm.sanzioneSelezionata.codSanzione gt 8999)"/>
+                <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                               tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                               visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                               onClick="@command('onEliminaSanzione')"
+                               disabled="@load(vm.lettura or empty vm.sanzioneSelezionata or vm.sanzioneSelezionata.codSanzione lt 1000 or vm.sanzioneSelezionata.codSanzione gt 8999)"/>
+                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                               tooltiptext='Esporta in XLS'
+                               popup="exportXls"
+                               disabled="@load(empty vm.listaSanzioni)"/>
+                <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioni"/>
+            </hlayout>
+            <hlayout valign="middle" hflex="3" if="@load(vm.selezioneTipoTributoVisibile)">
+                <space width="3px"/>
+                <label value="Tipo Tributo"/>
+                <space width="3px"/>
+                <combobox model="@load(vm.listaTipiTributo)" readonly="true"
+                          selectedItem="@bind(vm.tipoTributoSelezionato)" mold="rounded" hflex="1"
+                          onChange="@command('onCambioTributo')">
+                    <template name="model" var="item">
+                        <comboitem
+                                label="@load(c:cat3(item.tipoTributoAttuale, ' - ', item.descrizione))"
+                                value="@load(item.tipoTributo)"/>
+                    </template>
+                </combobox>
+            </hlayout>
+            <hlayout valign="middle" hflex="1"/>
+            <hlayout valign="middle" style="text-align: right;" hflex="1">
+                <div>
+                    <space width="3px"/>
+                    <label value="Anno"/>
+                    <space width="3px"/>
+                    <intbox value="@bind(vm.selectedAnno)"
+                            onChange="@command('onSelectAnno')"
+                            maxlength="4"
+                            constraint="no negative, no zero, no empty, /[0-9]{4}/: Anno non valido"
+                            style="text-align: right;" mold="rounded" width="60px"
+                            disabled="false"/>
+                </div>
+                <toolbarbutton width="26px"
+                               image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                               onClick="@command('openCloseFiltri')"/>
+            </hlayout>
+        </hlayout>
+        <listbox id="listBoxSanzioni"
+                 selectedItem="@bind(vm.sanzioneSelezionata)"
+                 model="@load(vm.listaSanzioni)"
+                 emptyMessage="Nessuna sanzione" sizedByContent="true" span="true"
+                 vflex="true">
+            <listhead sizable="true">
+                <listheader label="Codice"/>
+                <listheader label="Seq."/>
+                <listheader label="Descrizione"/>
+                <listheader label="Data Inizio"/>
+                <listheader label="Data Fine"/>
+                <listheader label="Percentuale"/>
+                <listheader label="Sanzione"/>
+                <listheader label="Sanzione minima"/>
+                <listheader label="Riduzione"/>
+                <listheader label="Riduzione 2"/>
+                <listheader label="Imposta"/>
+                <listheader label="Interessi"/>
+                <listheader label="Pena Pecuniaria"/>
+                <listheader label="Calcolo Interessi"/>
+                <listheader label="Codice Tributo"/>
+                <listheader label="Codice F24"/>
+                <listheader label="Tipo Causale"/>
+                <listheader label="Rata"/>
+                <listheader label="Tipo Versamento"/>
+                <listheader visible="false"
+                            label="Gruppo Sanzione"/>
+                <listheader label="Utente"/>
+                <listheader label="Data Var."/>
+            </listhead>
+
+            <template name="model" var="sanz">
+                <listitem onDoubleClick="@command('onModificaSanzione')">
+                    <listcell sclass="destra"
+                              label="@load(sanz.codSanzione)"/>
+                    <listcell sclass="destra"
+                              label="@load(sanz.sequenza)"/>
+                    <listcell label="@load(sanz.descrizione)"/>
+                    <listcell sclass="centro"
+                              label="@load(sanz.dataInizio eq null ? '' : c:formatDate(sanz.dataInizio, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="centro"
+                              label="@load(sanz.dataFine eq null ? '' : c:formatDate(sanz.dataFine, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="destra"
+                              label="@load(sanz.percentuale eq null ? '' : c:formatNumber(sanz.percentuale, '#0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(sanz.sanzione eq null ? '' : c:formatNumber(sanz.sanzione, '#,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(sanz.sanzioneMinima eq null ? '' : c:formatNumber(sanz.sanzioneMinima, '#,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(sanz.riduzione eq null ? '' : c:formatNumber(sanz.riduzione, '#,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load(sanz.riduzione2 eq null ? '' : c:formatNumber(sanz.riduzione2, '#,##0.00'))"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(sanz.flagImposta eq 'S'?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(sanz.flagInteressi eq 'S'?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(sanz.flagPenaPecuniaria eq 'S'?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(sanz.flagCalcoloInteressi eq 'S'?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="destra"
+                              label="@load(sanz.tributo)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(sanz.codTributoF24)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(sanz.tipoCausale)"/>
+                    <listcell sclass="destra"
+                              label="@load(sanz.rata)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(sanz.tipoVersamento)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(sanz.gruppoSanzione)"/>
+                    <listcell label="@load(sanz.utente)" />
+                    <listcell sclass="centro" label="@load(sanz.dataVariazione)"/>
+                </listitem>
+            </template>
+        </listbox>
+        <menupopup id="exportXls">
+            <menuitem label="Completo"
+                      onClick="@command('onExportXls', modalita='TUTTI')"/>
+            <menuitem label="Corrente"
+                      disabled="@load(empty vm.listaSanzioni)"
+                      onClick="@command('onExportXls', modalita='PARAMETRI')"/>
+        </menupopup>
+        <menupopup id="funzioni">
+            <menuitem label="Archivia e Duplica"
+                      onClick="@command('onArchiviaEDuplica')"/>
+            <menuitem label="Ripristina periodo precedente"
+                      onClick="@command('onRipristinaPeriodoPrecedente')"/>
+        </menupopup>
+    </window>
+</zk>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('versamentiViewModel')"
+            contentStyle="overflow-y: scroll; overflow-x: auto" hflex="1" vflex="1">
+		<script src="/js/decimalbox.js"/>
+        <borderlayout>
+            <north size="50%" splittable="true">
+                <vlayout spacing="2" vflex="1" id="anomalieLayout">
+                    <label value="Bonifica dati - Versamenti" sclass="documentoTitolo"/>
+                    <space height="3px"/>
+
+                    <grid>
+                        <rows>
+                            <row>
+                                <!-- INCASSO -->
+                                <cell align="right" hflex="min">
+                                    <label value="Incasso"/>
+                                </cell>
+                                <cell hflex="min">
+                                    <combobox readonly="true" model="@load(vm.incassi)" hflex="auto"
+                                              onChange="@command('onCambiaTipoIncasso')"
+                                              selectedItem="@bind(vm.incassoSelezionato)" mold="rounded">
+                                        <template name="model" var="item">
+                                            <comboitem label="@load(item)" value="@load(item)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+
+                                <!-- TIPO ANOMALIA -->
+                                <cell align="right" hflex="min">
+                                    <label value="Anomalie"/>
+                                </cell>
+                                <cell width="30%">
+                                    <!-- TIPI ANOMALIE ANCI -->
+                                    <combobox visible="@bind(vm.anci)" readonly="true" model="@load(vm.tipiAnomalie)"
+                                              width="100%"
+                                              selectedItem="@bind(vm.tipoAnomaliaSelezionata) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoAnomalia')"
+                                              mold="rounded">
+                                        <template name="model" var="item">
+                                            <comboitem label="@load(c:cat3(item.tipoAnomalia, ' - ', item.descrizione))"
+                                                       value="@load(item)"/>
+                                        </template>
+                                    </combobox>
+
+                                    <!-- CAUSALI -->
+                                    <bandbox visible="@bind(!vm.anci)" readonly="true"
+                                             value="@load(vm.causaliSelezionateSel)"
+                                             width="100%"
+                                             mold="rounded" constraint="no empty">
+                                        <bandpopup width="600px">
+                                            <listbox multiple="true" checkmark="true" hflex="1"
+                                                     onSelect="@command('onSelectTipoCausale')"
+                                                     model="@load(vm.causali)"
+                                                     selectedItems="@bind(vm.causaliSelezionate)">
+                                                <listhead>
+                                                    <listheader width="8%"/>
+                                                    <listheader label="Descrizione"/>
+                                                    <listheader width="15%"
+                                                                visible="@bind(vm.tipoTributoSelezionato.key eq 'tutti')"
+                                                                label="Tributo"/>
+                                                </listhead>
+                                                <template name="model">
+                                                    <listitem>
+                                                        <listcell sclass="centro"/>
+                                                        <listcell
+                                                                label="@load(c:cat3(each.causale, ' - ', each.descrizione))"/>
+                                                        <listcell
+                                                                visible="@bind(vm.tipoTributoSelezionato.key eq 'tutti')"
+                                                                label="@load(each.tipoTributo.tipoTributoAttuale)"/>
+                                                    </listitem>
+                                                </template>
+                                            </listbox>
+                                        </bandpopup>
+                                    </bandbox>
+                                </cell>
+
+                                <!-- ANNO -->
+                                <cell align="right" hflex="min">
+                                    <label value="Anno"/>
+                                </cell>
+                                <cell>
+                                    <combobox hflex="1" readonly="true" model="@load(vm.listaAnni)"
+                                              selectedItem="@bind(vm.annoSelezionato)" mold="rounded">
+                                        <template name="model" var="item">
+                                            <comboitem label="@load(item)" value="@load(item)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+
+                                <!-- TIPO TRIBUTO -->
+                                <cell align="right" hflex="min">
+                                    <label value="Tributo"/>
+                                </cell>
+                                <cell hflex="auto">
+                                    <combobox hflex="1" model="@load(vm.tipiTributo)" readonly="true"
+                                              disabled="@bind(vm.anci)"
+                                              selectedItem="@bind(vm.tipoTributoSelezionato)"
+                                              onSelect="@command('onSelezionaTipoTributo')"
+                                              mold="rounded">
+                                        <template name="model" var="item">
+                                            <comboitem label="@load(item.value))"
+                                                       value="@load(item)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+
+                                <!-- ID DOC.-->
+                                <cell align="right" hflex="min">
+                                    <label style="white-space:nowrap;" value="ID Doc."/>
+                                </cell>
+                                <cell hflex="auto">
+                                    <combobox hflex="1" model="@load(vm.idDocumenti)" readonly="true"
+                                              disabled="@bind(vm.anci)"
+                                              selectedItem="@bind(vm.idDocumentoSelezionato)"
+                                              onSelect="@command('onSelezionaIdDocumento')"
+                                              mold="rounded">
+                                        <template name="model" var="item">
+                                            <comboitem label="@load(item))"
+                                                       value="@load(item)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                                <cell sclass="sinistra" hflex="auto">
+                                    <checkbox label="Vis. Selezionati"
+                                              style="white-space:nowrap;"
+                                              tooltiptext="Visualizza Selezionati"
+                                              checked="@load(!vm.visualizzaAnomalieNonSelezionate)"
+                                              onClick="@command('toggleVisualizzazioneAnomalie')"
+                                              visible="@load(!vm.anci)"/>
+                                </cell>
+                                <cell sclass="destra" hflex="min">
+                                    <toolbarbutton image="/images/afc/22x22/search.png"
+                                                   onClick="@command('onRicercaAnomalie')"
+                                                   tooltiptext="Ricerca anomalie"/>
+                                    <toolbarbutton image="/images/afc/22x22/doc_forward.png"
+                                                   disabled="@bind(empty vm.listaAnomalie)"
+                                                   onClick="@command('onApriCaricaArchivi')"
+                                                   tooltiptext="Carica archivi"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                    <space height="3px"/>
+
+                    <!-- LISTA DELLE ANOMALIE -->
+                    <listbox id="anomalieListBox" model="@load(vm.listaAnomalie)"
+                             emptyMessage="Non sono presenti anomalie"
+                             selectedItem="@bind(vm.anomaliaSelezionata)"
+                             onSelect="@command('onSelezionaAnomalia')"
+                             span="true"
+                             vflex="1"
+                             rows="@bind(vm.numeroRigheAnomalie)">
+                        <listhead>
+                            <listheader width="@bind(vm.anci ? '0px' : '5%')">
+                                <checkbox checked="@bind(vm.selezionaTutteAnomalie)"
+                                          onCheck="@command('onSelezionaTutteAnomalie')"/>
+                            </listheader>
+                            <listheader label="Anno" width="5%"/>
+                            <listheader label="Tributo" visible="@bind(!vm.anci)" width="8%"/>
+                            <listheader label="Anomalia" width="100%"/>
+                            <listheader label="Num. Vers." width="10%"/>
+                            <listheader label="Totale Versato" width="15%"/>
+                            <listheader label="Versamento Massimo" width="20%"/>
+                        </listhead>
+                        <template name="model" var="anom">
+                            <listitem>
+                                <listcell sclass="centro" visible="@load(anom.visible)">
+                                    <checkbox checked="@load(anom.selected)"
+                                              onCheck="@command('onCheckAnomalia', anom=anom)"/>
+                                </listcell>
+                                <listcell label="@load(anom.anno)" sclass="destra" visible="@load(anom.visible)"/>
+                                <listcell label="@load(anom.tributoAttuale)" visible="@load(anom.visible)"/>
+                                <listcell label="@load(anom.anomaliaDesc)" visible="@load(anom.visible)"/>
+                                <listcell label="@load(anom.numVersamenti)" sclass="destra"
+                                          visible="@load(anom.visible)"/>
+                                <listcell label="@load(c:formatNumber(anom.totaleVersato, '€ #,##0.00'))"
+                                          sclass="destra"
+                                          visible="@load(anom.visible)"/>
+                                <listcell label="@load(c:formatNumber(anom.maxVersamento, '€ #,##0.00'))"
+                                          sclass="destra"
+                                          visible="@load(anom.visible)"/>
+                            </listitem>
+                        </template>
+                        <listfoot>
+                            <listfooter sclass="centro" span="@bind(vm.anci ? '5' : '7')">
+                                <hlayout>
+                                    <hbox hflex="1"/>
+                                    <hbox hflex="1" pack="end">
+                                        <label value="Totale:" style="text-align: right; font-weight: bold;"/>
+                                        <label value="@load(c:formatNumber(vm.totaleVersamenti, '€ #,##0.00'))"
+                                               style="text-align: right; font-weight: bold;" width="450px"/>
+                                    </hbox>
+                                </hlayout>
+                            </listfooter>
+                        </listfoot>
+                    </listbox>
+                </vlayout>
+            </north>
+            <center>
+                <!-- LISTA DETTAGLIO ANOMALIE -->
+                <groupbox visible="@bind(!empty vm.anomaliaSelezionata)" vflex="1">
+                    <caption label="Dettaglio anomalia"/>
+
+                    <!-- TOOLBAR NAVIGAZIONE -->
+                    <hlayout sclass="navigazione" valign="middle">
+                        <!-- PAGINAZIONE -->
+                        <hlayout hflex="2">
+                            <hlayout sclass="afc-control-bar" valign="middle">
+                                <paging sclass="afc-paging" onPaging="@command('onPaging')"
+                                        activePage="@bind(vm.listaDettaglioAnomaliePaginazione.activePage)"
+                                        pageSize="@bind(vm.listaDettaglioAnomaliePaginazione.max)"
+                                        totalSize="@load(vm.listaDettaglioAnomalie.numeroRecord)"/>
+                                <toolbarbutton image="/images/afc/22x22/xls.png" width="26px" visible="@load(!vm.anci)"
+                                               tooltiptext='Esporta in XLS'
+                                               onClick="@command('onDettaglioVersamentiToXls')"/>
+                            </hlayout>
+                        </hlayout>
+
+                        <!-- FILTRI -->
+                        <vbox align="end" pack="center">
+                            <toolbarbutton
+                                    image="@load(vm.filtriDettaglioAttivi? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                    popup="popupFiltriDettagli"/>
+                        </vbox>
+                    </hlayout>
+
+                    <vbox vflex="1">
+                        <include id="versamentiDettaglioAnomalia" vflex="1"
+                                 parentZul="bon"
+                                 src="/ufficiotributi/bonificaDati/versamenti/versamentiDettaglioAnomalia.zul"
+                                 mode="instant"/>
+                    </vbox>
+
+                </groupbox>
+
+            </center>
+        </borderlayout>
+
+        <!-- POPUP FILTRI DETTAGLI ANOMALIE -->
+        <popup id="popupFiltriDettagli" width="500px">
+            <grid>
+                <rows>
+
+                    <row>
+                        <!-- SOLO SOGGETTI -->
+                        <cell colspan="3" align="right">
+                            <checkbox label="Solo Soggetti" checked="@bind(vm.filtriDettaglio.soloSoggetti)"
+                                      style="padding-right: 5px;"/>
+                        </cell>
+                        <!-- CODICE FISCALE -->
+                        <cell align="right" colspan="2">
+                            <label value="Codice Fiscale"/>
+                        </cell>
+                        <cell colspan="4">
+                            <textbox width="98%" value="@bind(vm.filtriDettaglio.codiceFiscale)" mold="rounded"
+                                     style="text-transform: uppercase"/>
+                        </cell>
+                    </row>
+                    <!-- IMPORTO VERSATO -->
+                    <row>
+                        <cell align="right" colspan="3">
+                            <label value="Importo Versato"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Da"/>
+                        </cell>
+                        <cell colspan="2">
+                            <decimalbox width="98%" value="@bind(vm.filtriDettaglio.importoVersatoDa)"
+                                        mold="rounded"
+                                        format="€ #,##0.00"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="A"/>
+                        </cell>
+                        <cell colspan="2">
+                            <decimalbox width="98%" value="@bind(vm.filtriDettaglio.importoVersatoA)"
+                                        mold="rounded"
+                                        format="€ #,##0.00"/>
+                        </cell>
+                    </row>
+                    <!-- DATA PAGAMENTO -->
+                    <row>
+                        <cell align="right" colspan="3">
+                            <label value="Data Pagamento"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Da"/>
+                        </cell>
+                        <cell colspan="2">
+                            <datebox width="98%" value="@bind(vm.filtriDettaglio.dataPagamentoDa)"
+                                     format="dd/MM/yyyy"
+                                     mold="rounded"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="A"/>
+                        </cell>
+                        <cell colspan="2">
+                            <datebox width="98%" value="@bind(vm.filtriDettaglio.dataPagamentoA)"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button mold="trendy" label="Cancella Filtri" onClick="@command('onPulisciFiltri')"
+                            image="/images/afc/16x16/filter_box.png"/>
+                    <button mold="trendy" label="Cerca" image="/images/afc/16x16/search.png"
+                            onClick="@command('onApplicaFilti') "/>
+                    <button mold="trendy" label="Chiudi" image="/images/afc/16x16/close.png"
+                            onClick="@command('onCloseFiltri')"/>
+                </h:div>
+            </h:div>
+        </popup>
+    </window>
+</zk>

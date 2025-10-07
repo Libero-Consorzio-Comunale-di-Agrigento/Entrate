@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid width="100%">
+        <rows>
+            <!-- RIGA 01 -->
+            <row>
+                <cell align="right">
+                    <label value="Doc"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout>
+                        <label value="@load(vm.docCaMu.nomeDocumento2)"/>
+                        <label value="("/>
+                        <label value="@load(vm.docfa.documentoId)"/>
+                        <label value="- "/>
+                        <label value="@load(vm.docfa.documentoMultiId)"/>
+                        <label value=")"/>
+                        <image src="/images/afc/16x16/document.png" width="16px" style="cursor: pointer;"
+                               onClick="@command('onScaricaDocumento')"/>
+                    </hlayout>
+                </cell>
+                <cell/>
+
+                <cell align="right">
+                    <label value="Data Realizzazione"/>
+                </cell>
+                <cell>
+                    <datebox hflex="1" value="@bind(vm.docfa.dataRealizzazione)" format="dd/MM/yyyy"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 02 -->
+            <row>
+                <cell align="right">
+                    <label value="Unità a Dest.Ordinaria"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.docfa.unitaDestOrd)"/>
+                </cell>
+
+                <cell align="right">
+                    <label value="Speciale e Particolare"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.docfa.unitaDestSpec)"/>
+                </cell>
+
+                <cell align="right">
+                    <label value="Beni comuni non cens."/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.docfa.unitaNonCensite)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 03 -->
+            <row>
+                <cell align="right">
+                    <label value="Unità in soppressione"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.docfa.unitaSoppresse)"/>
+                </cell>
+
+                <cell align="right">
+                    <label value="in variazione"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.docfa.unitaVariate)"/>
+                </cell>
+                <cell align="right">
+                    <label value="in sostituzione"/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.docfa.unitaCostituite)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 04 -->
+            <row>
+                <cell align="right">
+                    <label value="Causale"/>
+                </cell>
+                <cell colspan="2">
+                    <label value="@load(vm.docfa.causale.descrizione)"/>
+                </cell>
+
+                <cell align="right">
+                    <label value="Note1"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout>
+                        <label width="10%" value="@load(vm.docfa.note1)" maxlength="35" pre="true"/>
+                        <div hflex="1"/>
+                        <image src="/images/afc/16x16/document.png" width="16px" style="cursor: pointer;"
+                               onClick="@command('onMostraNota', nota=vm.docfa.note1, titolo='Note1')"/>
+                    </hlayout>
+                </cell>
+            </row>
+
+            <!-- RIGA 05 -->
+            <row>
+                <cell align="right">
+                    <label value="Note2"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout>
+                        <label width="10%" value="@load(vm.docfa.note2)" maxlength="35" pre="true"/>
+                        <div hflex="1"/>
+                        <image src="/images/afc/16x16/document.png" width="16px" style="cursor: pointer;"
+                               onClick="@command('onMostraNota', nota=vm.docfa.note2, titolo='Note2')"/>
+                    </hlayout>
+                </cell>
+
+                <cell align="right">
+                    <label value="Note3"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout>
+                        <label width="10%" value="@load(vm.docfa.note3)" maxlength="35" pre="true"/>
+                        <div hflex="1"/>
+                        <image src="/images/afc/16x16/document.png" width="16px"
+                               onClick="@command('onMostraNota', nota=vm.docfa.note3, titolo='Note3')"/>
+                    </hlayout>
+                </cell>
+            </row>
+
+            <!-- RIGA 06 -->
+            <row>
+                <cell align="right">
+                    <label value="Note4"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout>
+                        <label width="10%" value="@load(vm.docfa.note4)" maxlength="35" pre="true"/>
+                        <div hflex="1"/>
+                        <image src="/images/afc/16x16/document.png" width="16px" style="cursor: pointer;"
+                               onClick="@command('onMostraNota', nota=vm.docfa.note4, titolo='Note4')"/>
+                    </hlayout>
+                </cell>
+
+                <cell align="right">
+                    <label value="Note5"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout>
+                        <label width="10%" value="@load(vm.docfa.note5)" maxlength="35"/>
+                        <div hflex="1"/>
+                        <image src="/images/afc/16x16/document.png" width="16px" style="cursor: pointer;"
+                               onClick="@command('onMostraNota', nota=vm.docfa.note5, titolo='Note5')"/>
+                    </hlayout>
+                </cell>
+            </row>
+
+            <!-- RIGA 07 -->
+            <row>
+                <cell align="right">
+                    <label value="Dichiarante"/>
+                </cell>
+                <cell colspan="2">
+                    <label value="@load(vm.docfa.cognomeDic)"/>
+                </cell>
+
+                <cell colspan="3">
+                    <label value="@load(vm.docfa.nomeDic)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 08 -->
+            <row>
+                <cell align="right">
+                    <label value="Residente in"/>
+                </cell>
+                <cell colspan="4">
+                    <label value="@load(vm.docfa.indirizzoDic)"/>
+                </cell>
+
+                <cell colspan="1">
+                    <label value="@load(vm.docfa.civicoDic)"/>
+                </cell>
+            </row>
+            <!-- RIGA 09 -->
+            <row>
+                <cell/>
+                <cell colspan="1">
+                    <label value="@load(vm.docfa.capDic)"/>
+                </cell>
+                <cell colspan="3">
+                    <label value="@load(vm.docfa.comuneDic)"/>
+                </cell>
+                <cell colspan="1">
+                    <label value="@load(vm.docfa.provinciaDic)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 10 -->
+            <row>
+                <cell align="right">
+                    <label value="Tecnico"/>
+                </cell>
+                <cell colspan="2">
+                    <label value="@load(vm.docfa.cognomeTec)"/>
+                </cell>
+
+                <cell colspan="3">
+                    <label value="@load(vm.docfa.nomeTec)"/>
+                </cell>
+            </row>
+
+            <!-- RIGA 11 -->
+            <row>
+                <cell align="right">
+                    <label value="Albo dei"/>
+                </cell>
+                <cell>
+                    <hlayout>
+                        <label value="@load(vm.albi[vm.docfa.alboTec])"/>
+                        <div hflex="1"/>
+                        <label value="@load(vm.docfa.provIscrizioneTec)"/>
+                    </hlayout>
+                </cell>
+
+                <cell align="right">
+                    <label value="Iscr.Num."/>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.docfa.numIscrizioneTec)"/>
+                </cell>
+
+                <cell align="right">
+                    <label value="Cod.Fiscale"/>
+                </cell>
+                <cell>
+                    <label value="@load(vm.docfa.codFiscaleTec)"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</zk>

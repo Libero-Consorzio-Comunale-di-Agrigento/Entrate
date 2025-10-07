@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window title="#{arg.title}"
+            sclass="z-messagebox-window"
+            border="normal"
+            width="270pt"
+            closable="true">
+        <hbox>
+            <div sclass="#{arg.icon}"/>
+            <separator spacing="13px"/>
+            <div sclass="z-messagebox">
+                <label value="#{arg.message}" multiline="true"/>
+            </div>
+        </hbox>
+        <separator spacing="15px"/>
+        <hlayout valign="middle">
+            <checkbox id="checkbox" checked="true"/>
+            <label value="#{arg.checkboxMessage}"/>
+        </hlayout>
+        <separator spacing="15px"/>
+        <hbox id="buttons" style="margin-left:auto; margin-right:auto">
+            <button id="okBtn" label="OK" sclass="z-messagebox-btn"/>
+            <button id="cancelBtn" label="Cancel" sclass="z-messagebox-btn"/>
+        </hbox>
+    </window>
+</zk>

@@ -1,0 +1,86 @@
+--liquibase formatted sql 
+--changeset abrandolini:20250326_152401_web_oggetti_pratica stripComments:false runOnChange:true 
+ 
+CREATE OR REPLACE FORCE VIEW WEB_OGGETTI_PRATICA AS
+SELECT  ogpr.oggetto_pratica as oggetto_pratica_rendita,
+ ogpr.A_CHILOMETRO,
+ ogpr.ANNO,
+ ogpr.ASSENZA_ESTREMI_CATASTO,
+ ogpr.CATEGORIA,
+ ogpr.CATEGORIA_CATASTO,
+ ogpr.CLASSE_CATASTO,
+ ogpr.CLASSE_SUP,
+ ogpr.COD_COM_OCC,
+ ogpr.COD_PRO_OCC,
+ ogpr.TRIBUTO,
+ ogpr.CONSISTENZA,
+ ogpr.CONSISTENZA_REALE,
+ ogpr.COPERTA,
+ ogpr.DA_CHILOMETRO,
+ ogpr.DATA_ANAGRAFE_TRIBUTARIA,
+ ogpr.DATA_CONCESSIONE,
+ ogpr.DATA_VARIAZIONE,
+ ogpr.DESTINAZIONE_USO,
+ ogpr.ESTREMI_TITOLO,
+ ogpr.FINE_CONCESSIONE,
+ ogpr.FLAG_CONTENZIOSO,
+ ogpr.FLAG_DOMICILIO_FISCALE,
+ ogpr.FLAG_FIRMA,
+ ogpr.FLAG_PROVVISORIO,
+ ogpr.FLAG_UIP_PRINCIPALE,
+ ogpr.FLAG_VALORE_RIVALUTATO,
+ ogpr.FONTE,
+ ogpr.IMM_STORICO,
+ ogpr.IMPOSTA_BASE,
+ ogpr.IMPOSTA_DOVUTA,
+ ogpr.INDIRIZZO_OCC,
+ ogpr.INIZIO_CONCESSIONE,
+ ogpr.LARGHEZZA,
+ ogpr.LATO,
+ ogpr.LOCALE,
+ ogpr.MODELLO,
+ ogpr.NATURA_OCCUPAZIONE,
+ ogpr.NOTE,
+ ogpr.NUM_CONCESSIONE,
+ ogpr.NUMERO_FAMILIARI,
+ ogpr.NUM_ORDINE,
+ ogpr.OGGETTO,
+ ogpr.OGGETTO_PRATICA,
+ ogpr.OGGETTO_PRATICA_RIF,
+ ogpr.OGGETTO_PRATICA_RIF_AP,
+ ogpr.OGGETTO_PRATICA_RIF_V,
+ ogpr.PRATICA,
+ ogpr.PROFONDITA,
+ ogpr.QUALITA,
+ ogpr.QUANTITA,
+ ogpr.REDDITO,
+ ogpr.SCOPERTA,
+ ogpr.SETTORE,
+ ogpr.TIPO_OCCUPAZIONE,
+ ogpr.TIPO_OGGETTO,
+ ogpr.TIPO_QUALITA,
+ ogpr.TIPO_TARIFFA,
+ ogpr.TITOLO,
+ ogpr.TITOLO_OCCUPAZIONE,
+ ogpr.UTENTE,
+ ogpr.VALORE,
+  ogpr.flag_dati_metrici,
+  ogpr.perc_riduzione_sup,
+ ogpr.flag_nulla_osta,
+ DECODE (
+ ogpr.tributo,
+ NULL, NULL,
+ LPAD (ogpr.tributo, 4, '0') || LPAD (ogpr.CATEGORIA, 4, '0'))
+ ID_CATEGORIA,
+ DECODE (
+ ogpr.tributo,
+ NULL, TO_NUMBER (NULL),
+ TO_NUMBER (
+    LPAD (ogpr.anno, 4, '0')
+ || LPAD (ogpr.tributo, 4, '0')
+ || LPAD (ogpr.CATEGORIA, 4, '0')
+ || LPAD (ogpr.TIPO_TARIFFA, 2, '0')))
+ ID_TARIFFA
+  FROM oggetti_pratica ogpr;
+comment on table WEB_OGGETTI_PRATICA is 'WEB_OGGETTI_PRATICA';
+

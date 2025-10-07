@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<groupbox vflex="1">
+		<caption label="@bind(c:cat3('Pratiche a ruolo (', vm.listaPraticheRuolo.size(), ')'))"/>
+		<listbox selectedItem="@bind(vm.praticaSelezionata)" span="true"
+			model="@load(vm.listaPraticheRuolo)" emptyMessage="Nessuna Pratica"
+			vflex="1" sizedByContent="true">
+			<listhead sizable="true">
+				<listheader label="@load(c:l('sportello.label.tipoTributo'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.tipoTributo'))"/>
+				<listheader label="@load(c:l('sportello.label.anno'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.anno'))"/>
+				<listheader label="@load(c:l('sportello.label.tipoPratica'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.tipoPratica'))"/>
+				<listheader label="@load(c:l('sportello.label.tipoEvento'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.tipoEvento'))"/>
+				<listheader label="@load(c:l('sportello.label.data'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.data'))"/>
+				<listheader label="@load(c:l('sportello.label.estesa.numero'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+				<listheader label="@load(c:l('sportello.label.stato'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.stato'))"/>
+				<listheader label="@load(c:l('sportello.label.dataNotifica'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.dataNotifica'))"/>
+				<listheader label="@load(c:l('sportello.label.tipoNotifica'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.tipoNotifica'))"/>
+				<listheader label="@load(c:l('sportello.label.tipoRapporto'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.tipoRapporto'))"/>
+				<listheader label="@load(c:l('sportello.label.sgravio'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.sgravio'))"/>
+				<listheader label="@load(c:l('sportello.label.pratica'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.pratica'))"/>
+				<listheader label="@load(c:l('sportello.label.praticaSuccessiva'))"
+							tooltiptext="@load(c:l('sportello.label.estesa.praticaSuccessiva'))"/>
+			</listhead>
+			<template name="model" var="pr">
+				<listitem context="funzioniRuoliPratiche" onDoubleClick="@command('onModificaPratica')">
+					<listcell label="@load(pr.descrizioneTributo)"/>
+					<listcell label="@load(pr.anno)" sclass="destra"/>
+					<listcell label="@load(pr.tipoPratica)"
+							  style="@load(pr.importoTotale lt 0 ? 'color: red ! important' : '')"
+							  sclass="centro"/>
+					<listcell
+							label="@load(!empty pr.tipoViolazione ? c:cat3(pr.tipoEventoViolazione, ' ', pr.flagAnnullamento) : c:cat3(pr.tipoEvento, ' ', pr.flagAnnullamento))"
+							sclass="centro"
+							tooltiptext="@load(pr.tipoEventoViolazioneTooltip)"/>
+					<listcell sclass="centro"
+							  label="@load(pr.data ne null ? c:formatDate(pr.data, 'dd/MM/yyyy') : '')"/>
+					<listcell label="@load(pr.numero)" sclass="destra"/>
+					<listcell label="@load(pr.stato)"/>
+					<listcell
+							label="@load(pr.dataNotifica ne null ? c:formatDate(pr.dataNotifica, 'dd/MM/yyyy') : '')"
+							sclass="centro"/>
+					<listcell
+							label="@load(!empty pr.tipoNotifica ? c:cat3(pr.tipoNotifica.tipoNotifica, ' - ', pr.tipoNotifica.descrizione) : '')"
+							sclass="sinistra"/>
+					<listcell label="@load(pr.tipoRapporto)" sclass="centro"/>
+					<listcell
+							label="@load(pr.importoSgravio ne null ? c:formatNumber(pr.importoSgravio, '€ #,##0.00'): '')"
+							sclass="destra"/>
+					<listcell label="@load(pr.id)" sclass="destra"/>
+					<listcell label="@load(pr.praticaSuccessiva)"/>
+				</listitem>
+			</template>
+		</listbox>
+	</groupbox>
+</zk>

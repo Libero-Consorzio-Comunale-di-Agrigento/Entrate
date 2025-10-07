@@ -1,0 +1,4 @@
+include:
+  - project: 'devops/ci/scaffold-ci'
+    ref: main
+    file: "pipelines/grails-openjdk8/ci.yml"

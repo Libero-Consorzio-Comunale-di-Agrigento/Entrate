@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('insolventiRicercaViewModel')"
+            border="normal" sizable="false" width="600px" title=" " onOK="@command('onCerca')">
+		<script src="/js/decimalbox.js"/>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell align="left" valign="center">
+                        <label value="@load(c:cat3('Ricerca Insolventi', ' ', vm.tipoTributo.getTipoTributoAttuale()))"
+                               class="documentoTitolo"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <groupbox closable="false">
+            <grid sclass="form">
+                <rows>
+                    <row visible="@load(vm.insolventiGenerale eq false)">
+                        <cell sclass="destra" colspan="2">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@load(vm.anno)" disabled="true"
+                                    hflex="1" maxlength="4" mold="rounded"/>
+                        </cell>
+                        <cell colspan="3"/>
+                        <cell sclass="destra" colspan="1">
+                            <label value="C.Trib."/>
+                        </cell>
+                        <cell sclass="destra">
+                            <textbox style="text-align: left;" mold="rounded"
+                                     value="@load(vm.tributo)" hflex="1" disabled="true"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra" colspan="2">
+                            <label value="Cognome"/>
+                        </cell>
+                        <cell colspan="6">
+                            <textbox style="text-align: left; text-transform: uppercase" mold="rounded"
+                                     value="@bind(vm.filtri.cognome)" hflex="1"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra" colspan="2">
+                            <label value="Nome"/>
+                        </cell>
+                        <cell colspan="6">
+                            <textbox style="text-align: left; text-transform: uppercase" mold="rounded"
+                                     value="@bind(vm.filtri.nome)" hflex="1"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra" colspan="2">
+                            <label value="Codice Fiscale"/>
+                        </cell>
+                        <cell colspan="6">
+                            <textbox style="text-align: left; text-transform: uppercase" mold="rounded"
+                                     value="@bind(vm.filtri.codFiscale)" hflex="1"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra" colspan="2">
+                            <label value="Codice Contribuente"/>
+                        </cell>
+                        <cell colspan="6">
+                            <intbox hflex="1" value="@bind(vm.filtri.codContribuente)" maxlength="8" mold="rounded"/>
+                        </cell>
+                    </row>
+                    <row visible="@load(vm.insolventiGenerale ne false)">
+                        <cell sclass="destra" colspan="2">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle">
+                                <label value=" Da "/>
+                                <intbox hflex="1" value="@bind(vm.filtri.annoDa)" maxlength="4" mold="rounded"
+                                        style="text-align: right"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle">
+                                <label value=" A "/>
+                                <intbox hflex="1" value="@bind(vm.filtri.annoA)" maxlength="4" mold="rounded"
+                                        style="text-align: right"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row visible="@load(vm.insolventiGenerale ne false)">
+                        <cell sclass="destra" colspan="2">
+                            <label value="Data Notifica"/>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle">
+                                <label value=" Dal "/>
+                                <datebox value="@bind(vm.filtri.notificaDal)" format="dd/MM/yyyy" mold="rounded"
+                                         hflex="1"
+                                         style="text-align: right"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle">
+                                <label value=" Al "/>
+                                <datebox value="@bind(vm.filtri.notificaAl)" format="dd/MM/yyyy" mold="rounded"
+                                         hflex="1"
+                                         style="text-align: right"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra" colspan="2">
+                            <label value="Diff. d'Imposta Versata"/>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle">
+                                <label value=" Da "/>
+                                <decimalbox hflex="1" value="@bind(vm.filtri.impDa)" format="€ #,##0.00" mold="rounded"
+                                            style="text-align: right"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle">
+                                <label value=" A "/>
+                                <decimalbox hflex="1" value="@bind(vm.filtri.impA)" format="€ #,##0.00" mold="rounded"
+                                            style="text-align: right"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row visible="@load(vm.insolventiGenerale eq false)">
+                        <cell sclass="destra" colspan="2">
+                            <hlayout valign="middle">
+                                <label value="A Ruolo"/>
+                                <checkbox checked="@bind(vm.filtri.aRuolo)"
+                                          onCheck="@command('onCheckARuolo')"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="6" visible="@load(!vm.filtri.aRuolo)"/>
+                        <cell colspan="2" visible="@load(vm.filtri.aRuolo)">
+                            <hlayout valign="middle" hflex="1">
+                                <label value="Ruolo"/>
+                                <bandbox style="text-align: right;" readonly="true" hflex="1"
+                                         onOpen="@command('onApriRuolo', bd=self)"
+                                         value="@bind(!empty vm.filtri.ruolo ? vm.filtri.ruolo.id : '')"
+                                         mold="rounded">
+                                    <bandpopup>
+                                        <listbox height="250px" width="450px"
+                                                 sizedByContent="true"
+                                                 selectedItem="@bind(vm.filtri.ruolo)"
+                                                 model="@load(vm.listaRuoli)" span="true"
+                                                 onSelect="@command('onSelezionaRuolo')"
+                                                 emptyMessage="Nessun ruolo presente.">
+                                            <listhead>
+                                                <listheader label="T.Ruolo"/>
+                                                <listheader label="Anno"/>
+                                                <listheader label="Anno Em."/>
+                                                <listheader label="Pr."/>
+                                                <listheader label="Emissione"/>
+                                                <listheader label="L."/>
+                                                <listheader label="Ruolo"/>
+                                                <listheader label="Sp."/>
+                                                <listheader label="Descrizione"/>
+                                            </listhead>
+                                            <template name="model" var="ruo">
+                                                <listitem>
+                                                    <listcell
+                                                            label="@load((ruo.tipoRuolo eq 1) ? 'P - Principale' : ((ruo.tipoRuolo eq 2) ? 'S - Suppletivo' : ''))"/>
+                                                    <listcell label="@load(ruo.annoRuolo)" sclass="destra"/>
+                                                    <listcell label="@load(ruo.annoEmissione)" sclass="destra"/>
+                                                    <listcell label="@load(ruo.progrEmissione)" sclass="destra"/>
+                                                    <listcell
+                                                            label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+                                                            sclass="centro"/>
+                                                    <listcell>
+                                                        <checkbox checked="@load(ruo.importoLordo)" sclass="centro"
+                                                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                                                    </listcell>
+                                                    <listcell label="@load(ruo.id)" sclass="destra"/>
+                                                    <listcell
+                                                            label="@load(ruo.specieRuolo ? 'Coattivo' : 'Ordinario')"/>
+                                                    <listcell label="@load(ruo.descrizione)"/>
+                                                </listitem>
+                                            </template>
+                                        </listbox>
+                                    </bandpopup>
+                                </bandbox>
+                            </hlayout>
+                        </cell>
+                        <cell sclass="centro" colspan="2" visible="@load(vm.filtri.aRuolo)">
+                            <hlayout valign="middle" visible="@load(vm.insolventiGenerale eq false)">
+                                <label value="Insolventi"/>
+                                <checkbox checked="@bind(vm.filtri.insolventi)"/>
+                            </hlayout>
+                        </cell>
+                        <cell sclass="centro" colspan="2" visible="@load(vm.filtri.aRuolo)">
+                            <hlayout valign="middle" visible="@load(vm.insolventiGenerale eq false)">
+                                <label value="Rimborsi"/>
+                                <checkbox checked="@bind(vm.filtri.rimborsi)"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row visible="@load(vm.insolventiGenerale eq true)">
+                        <cell sclass="destra" colspan="2">
+                            <hlayout valign="middle">
+                                <label value="A Ruolo"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle" hflex="1">
+                                <radiogroup selectedItem="@bind(vm.filtri.filtroRuolo)">
+                                    <radio value="Tutti" label=" Tutti "/>
+                                    <space width="4px"/>
+                                    <radio value="Con" label=" Si "/>
+                                    <radio value="Senza" label=" No "/>
+                                </radiogroup>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="3" visible="@load(vm.filtri.filtroRuolo ne 'Con')"/>
+                        <cell colspan="3" visible="@load(vm.filtri.filtroRuolo eq 'Con')">
+                            <hlayout valign="middle" hflex="1">
+                                <label value="Ruolo"/>
+                                <bandbox style="text-align: right;" readonly="true" hflex="1"
+                                         onOpen="@command('onApriRuolo', bd=self)"
+                                         value="@bind(!empty vm.filtri.ruolo ? vm.filtri.ruolo.id : '')"
+                                         mold="rounded">
+                                    <bandpopup>
+                                        <listbox height="250px" width="450px"
+                                                 sizedByContent="true"
+                                                 selectedItem="@bind(vm.filtri.ruolo)"
+                                                 model="@load(vm.listaRuoli)" span="true"
+                                                 onSelect="@command('onSelezionaRuolo')"
+                                                 emptyMessage="Nessun ruolo presente.">
+                                            <listhead>
+                                                <listheader label="T.Ruolo"/>
+                                                <listheader label="Anno"/>
+                                                <listheader label="Anno Em."/>
+                                                <listheader label="Pr."/>
+                                                <listheader label="Emissione"/>
+                                                <listheader label="L."/>
+                                                <listheader label="Ruolo"/>
+                                                <listheader label="Sp."/>
+                                                <listheader label="Descrizione"/>
+                                            </listhead>
+                                            <template name="model" var="ruo">
+                                                <listitem>
+                                                    <listcell
+                                                            label="@load((ruo.tipoRuolo eq 1) ? 'P - Principale' : ((ruo.tipoRuolo eq 2) ? 'S - Suppletivo' : ''))"/>
+                                                    <listcell label="@load(ruo.annoRuolo)" sclass="destra"/>
+                                                    <listcell label="@load(ruo.annoEmissione)" sclass="destra"/>
+                                                    <listcell label="@load(ruo.progrEmissione)" sclass="destra"/>
+                                                    <listcell
+                                                            label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+                                                            sclass="centro"/>
+                                                    <listcell>
+                                                        <checkbox checked="@load(ruo.importoLordo)" sclass="centro"
+                                                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                                                    </listcell>
+                                                    <listcell label="@load(ruo.id)" sclass="destra"/>
+                                                    <listcell
+                                                            label="@load(ruo.specieRuolo ? 'Coattivo' : 'Ordinario')"/>
+                                                    <listcell label="@load(ruo.descrizione)"/>
+                                                </listitem>
+                                            </template>
+                                        </listbox>
+                                    </bandpopup>
+                                </bandbox>
+                                <image src="/images/afc/16x16/cross.png"
+                                       style="cursor: pointer;"
+                                       width="16px"
+                                       height="16px"
+                                       visible="@load(!empty vm.filtri.ruolo)"
+                                       tooltiptext="Pulisci Ruolo"
+                                       onClick="@command('onPulisciRuolo')"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row visible="@load(vm.insolventiGenerale eq true)">
+                        <cell sclass="destra" colspan="2">
+                            <hlayout valign="middle">
+                                <label value="Pratiche Rateizzate"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle" hflex="1">
+                                <radiogroup selectedItem="@bind(vm.filtri.praticheRateizzate)">
+                                    <radio value="Tutti" label=" Tutte "/>
+                                    <radio value="Si" label=" Si "/>
+                                    <radio value="No" label=" No "/>
+                                </radiogroup>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row visible="@load(vm.insolventiGenerale eq false)">
+                        <cell sclass="destra" colspan="2">
+                            <hlayout valign="middle">
+                                <label value="Pagamenti Corretti"/>
+                                <checkbox checked="@bind(vm.filtri.pagCorretti)"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row visible="@load(vm.insolventiGenerale eq true)">
+                        <cell sclass="destra" colspan="2">
+                            <label value="Tipo"/>
+                        </cell>
+                        <cell colspan="3">
+                            <combobox mold="rounded" hflex="1" readonly="true"
+                                      model="@load(vm.listaTipi)" selectedItem="@bind(vm.filtri.tipo)"
+                                      onChange="@command('onChangeTipo')">
+                                <template name="model" var="tipo">
+                                    <comboitem label="@load(tipo)"
+                                               value="@load(tipo)"/>
+                                </template>
+                            </combobox>
+
+                        </cell>
+                        <cell colspan="3"/>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+        <space height="5px"/>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/filter_box.png"
+                        label="Cancella Filtri" onClick="@command('onSvuotaFiltri')"/>
+                <button mold="trendy" image="/images/afc/16x16/search.png"
+                        label="Cerca" onClick="@command('onCerca')"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png"
+                        label="Chiudi" onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

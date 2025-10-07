@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer" viewModel="@id('vm') @init('fornitureAEViewModel')"
+    																					width="100%" height="100%">
+		<script src="/js/decimalbox.js"/>
+    
+        <tabbox width="100%" vflex="1" selectedIndex="@bind(vm.selectedTab)">
+            <tabs id="tabs">
+                <tab id="T1" label="@load(vm.flagProvincia ? 'D' : 'G1')" tooltiptext="Versamenti"
+                	   onSelect="@command('onSelectTabs')" />
+                <tab id="T2" label="G5" tooltiptext="Identificativi Accredito"
+                     visible="@load(vm.flagProvincia eq false)"
+                     onSelect="@command('onSelectTabs')" />
+                <tab id="T3" label="M" tooltiptext="Metadati TEFA" 
+                     visible="@load(vm.flagProvincia ne false)" 
+                     onSelect="@command('onSelectTabs')" />
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <include id="fornitureAEG1" fulfill="T1.onSelect"
+                             src="/ufficiotributi/datiesterni/includeFornitureAEG1.zul"/>
+                </tabpanel>
+                <tabpanel>
+                    <include id="fornitureAEG5" fulfill="T2.onSelect"
+                             src="/ufficiotributi/datiesterni/includeFornitureAEG5.zul"/>
+                </tabpanel>
+                <tabpanel>
+                    <include id="fornitureAEM" fulfill="T3.onSelect"
+                             src="/ufficiotributi/datiesterni/includeFornitureAEM.zul"/>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+	</window>
+</zk>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<bandpopup>
+		<listbox multiple="false" width="600px" height="250px">
+			<listhead>
+				<listheader label="Num." tooltiptext="Numero di Accertamento" width="60px"/>
+				<listheader label="Descrizione" width="540px"/>
+			</listhead>
+			<template name="model">
+				<listitem>
+					<listcell sclass="destra"
+										label="#{((each.numeroAcc > 0) ? each.numeroAcc : '')}" />
+					<listcell sclass="sinistra"
+										label="#{empty each.descrizioneAcc ? ((each.numeroAcc > 0) ? each.numeroAcc : '') : each.descrizioneAcc}" />
+				</listitem>
+			</template>
+		</listbox>
+		<paging/>
+	</bandpopup>	
+</zk>

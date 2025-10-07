@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="riferimentiEPratiche" language="groovy" pageWidth="820" pageHeight="595" orientation="Landscape" columnWidth="820" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7a214807-9fcc-47d4-af39-43bffcf1e5ca">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="riferimentiOggetto" class="java.util.Collection" isForPrompting="false"/>
+	<parameter name="oggettiContribuente" class="java.util.Collection" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numPagina" class="java.lang.Integer" isForPrompting="false"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="27">
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="820" height="26" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#EDEFF5" uuid="8911b4e4-3c40-42bf-b633-260e437516a9">
+					<printWhenExpression><![CDATA[new Boolean($P{numPagina}.intValue() % 2 == 0) && !$P{riferimentiOggetto}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="446" y="0" width="374" height="26" isRemoveLineWhenBlank="true" uuid="385571bd-a883-44dd-ad78-519e5bc83431"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{riferimentiOggetto})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "riferimentiOggetto.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="28">
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="820" height="28" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#EDEFF5" uuid="2bef9c6d-72c9-47df-84be-ec6f4177001c">
+					<printWhenExpression><![CDATA[new Boolean($P{numPagina}.intValue() % 2 == 0) && !$P{oggettiContribuente}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+			</frame>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="820" height="27" isRemoveLineWhenBlank="true" uuid="7bbb711e-80e1-4505-a2b3-bb8b5cd32694"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{oggettiContribuente})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "praticheOggetto.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

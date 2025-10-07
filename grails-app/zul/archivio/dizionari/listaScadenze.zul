@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaScadenzeViewModel')"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2" valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext="@load((vm.lettura ne false) ? 'Visualizza' : 'Modifica')"
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModificaScadenza')"
+                                   disabled="@load(empty vm.scadenzaSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   disabled="@load(vm.lettura ne false)"
+                                   onClick="@command('onNuovaScadenza')"/>
+                    <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                   onClick="@command('onDuplicaScadenza')"
+                                   visible="@load(vm.lettura eq false)"
+                                   disabled="@load(empty vm.scadenzaSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   onClick="@command('onEliminaScadenza')"
+                                   disabled="@load(vm.lettura ne false or empty vm.scadenzaSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS'
+                                   popup="exportXls"/>
+                    <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                   popup="funzioni"/>
+                </hlayout>
+                <hlayout valign="middle" hflex="3">
+                    <div if="@load(vm.selezioneTipoTributoVisibile)">
+                        <space width="3px"/>
+                        <label value="Tipo Tributo"/>
+                        <space width="3px"/>
+                        <combobox model="@load(vm.listaTipiTributo)" readonly="true"
+                                  selectedItem="@bind(vm.tipoTributoSelezionato)" mold="rounded" hflex="1"
+                                  onChange="@command('onCambioTributo')">
+                            <template name="model" var="item">
+                                <comboitem
+                                        label="@load(c:cat3(item.tipoTributoAttuale, ' - ', item.descrizione))"
+                                        value="@load(item.tipoTributo)"/>
+                            </template>
+                        </combobox>
+                    </div>
+                </hlayout>
+                <hlayout valign="middle" style="text-align: right;" hflex="1">
+                    <div>
+                        <space width="3px"/>
+                        <label value="Anno"/>
+                        <space width="3px"/>
+                        <intbox value="@bind(vm.selectedAnno)"
+                                onChange="@command('onSelectAnno')"
+                                maxlength="4"
+                                constraint="no negative, no zero, no empty, /[0-9]{4}/: Anno non valido"
+                                style="text-align: right;" mold="rounded" width="60px"
+                                disabled="false"/>
+                    </div>
+                    <toolbarbutton width="26px"
+                                   image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                   onClick="@command('openCloseFiltri')"/>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+        <listbox id="listBoxScadenze" nonselectableTags="" model="@bind(vm.listaScadenze)" sizedByContent="true"
+                 span="true" vflex="1"
+                 selectedItem="@bind(vm.scadenzaSelezionata)" emptyMessage="Nessuna scadenza">
+            <listhead sizable="true">
+                <listheader sclass="centro" label="Tipo Scadenza"/>
+                <listheader sclass="centro" label="Codice Gruppo Tributo"
+                			visible="@bind(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro" label="Nome Gruppo Tributo"
+                			visible="@bind(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro" label="Tipo Occupazione"
+                			visible="@bind(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro" label="Rata"/>
+                <listheader sclass="centro" label="Versamento"/>
+                <listheader sclass="centro" label="Scadenza"/>
+            </listhead>
+            <template name="model" var="sc">
+                <listitem value="@load(v)"
+                          onSelect="@command('onScadenzaSelected')" onDoubleClick="@command('onModificaScadenza')">
+                    <listcell sclass="sinistra" label="@load(sc.tipoScadenza)"/>
+                    <listcell sclass="destra" label="@load(sc.dto.gruppoTributo)"/>
+                    <listcell sclass="sinistra" label="@load(sc.gruppoTributo)"/>
+                    <listcell sclass="sinistra" label="@load(sc.tipoOccupazione)"/>
+                    <listcell sclass="sinistra" label="@load(sc.rata)"/>
+                    <listcell sclass="sinistra" label="@load(sc.tipoVersamento)"/>
+                    <listcell sclass="centro"
+                              label="@load(sc.dataScadenza ne null ? c:formatDate(sc.dataScadenza,'dd/MM/yyyy') : '')"/>
+                </listitem>
+            </template>
+        </listbox>
+        <menupopup id="funzioni">
+            <menuitem disabled="@load(!vm.copiaAnnoEnabled)"
+                      label="Duplica da Anno"
+                      onClick="@command('onDuplicaDaAnno')"/>
+        </menupopup>
+        <menupopup id="exportXls">
+            <menuitem label="Completo"
+                      onClick="@command('onExportXls', modalita='TUTTI')"/>
+            <menuitem label="Corrente"
+                      disabled="@load(empty vm.listaScadenze)"
+                      onClick="@command('onExportXls', modalita='PARAMETRI')"/>
+        </menupopup>
+    </window>
+</zk>

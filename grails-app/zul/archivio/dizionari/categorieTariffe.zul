@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('categorieTariffeViewModel')" width="100%" height="100%">
+		<script src="/js/decimalbox.js"/>
+        <vlayout vflex="1">
+            <hlayout hflex="3" valign="middle">
+                <div if="@load(vm.selezioneTipoTributoVisibile)">
+                    <space width="3px"/>
+                    <label value="Tipo Tributo"/>
+                    <space width="3px"/>
+                    <combobox model="@load(vm.listaTipiTributo)" readonly="true"
+                              selectedItem="@bind(vm.tipoTributoSelezionato)" mold="rounded" hflex="1"
+                              onChange="@command('onCambiaTipoTributo')">
+                        <template name="model" var="item">
+                            <comboitem
+                                    label="@load(c:cat3(item.tipoTributoAttuale, ' - ', item.descrizione))"
+                                    value="@load(item.tipoTributo)"/>
+                        </template>
+                    </combobox>
+                </div>
+
+                <label value="Codice Tributo"/>
+                <space width="3px"/>
+                <combobox model="@load(vm.listaCodiciTributo)" readonly="true"
+                          selectedItem="@bind(vm.codiceTributoSelezionato)" mold="rounded" hflex="1" width="20%"
+                          onChange="@command('onCambioCodiceTributo')">
+                    <template name="model" var="item">
+                        <comboitem
+                                label="@load((item.id lt 0) ? item.descrizione : c:cat3(item.id, ' - ', item.descrizione))"
+                                value="@load(item.tipoTributo)"/>
+                    </template>
+                </combobox>
+            </hlayout>
+            <groupbox vflex="1">
+                <caption label="Categorie"/>
+                <hlayout style="padding: 5px;">
+                    <hlayout hflex="2">
+                        <hlayout sclass="afc-control-bar" valign="middle">
+                            <paging sclass="afc-paging" onPaging="@command('onCambioPaginaCategorie')"
+                                    activePage="@bind(vm.pagingCategorie.activePage)"
+                                    pageSize="@bind(vm.pagingCategorie.pageSize)"
+                                    totalSize="@load(vm.pagingCategorie.totalSize)"
+                                    visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                           disabled="@load(empty vm.listaCategorie)"
+                                           onClick="@command('onRicaricaListaCategorie')"/>
+                            <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                           tooltiptext="@load((vm.lettura ne false) ? 'Visualizza' : 'Modifica')"
+                                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                           onClick="@command('onModificaCategoria')"
+                                           disabled="@load(empty vm.categoriaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                           tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                           onClick="@command('onNuovaCategoria')"
+                                           disabled="@load(vm.lettura ne false)"/>
+                            <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                           tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                           onClick="@command('onDuplicaCategoria')"
+                                           disabled="@load((vm.lettura ne false) or (empty vm.categoriaSelezionata))"/>
+                            <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                           tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                           visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                           onClick="@command('onEliminaCategoria')"
+                                           disabled="@load((vm.lettura ne false) or (empty vm.categoriaSelezionata))"/>
+                            <toolbarbutton image="/images/afc/22x22/xls.png"
+                                           tooltiptext='Esporta in XLS' onClick="@command('onCategorieToXls')"
+                                           disabled="@load(empty vm.listaCategorie)"/>
+                            <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                                           tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                           popup="funzioniCategorie"
+                                           visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        </hlayout>
+                        <hlayout valign="middle" style="text-align: right;" hflex="1">
+                            <toolbarbutton width="26px"
+                                           image="@load(vm.filtroCategorieAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                           onClick="@command('openCloseFiltriCategorie')"/>
+                        </hlayout>
+                    </hlayout>
+                </hlayout>
+                <listbox id="listBoxCategorie" nonselectableTags="" model="@bind(vm.listaCategorie)"
+                         sizedByContent="true"
+                         span="true" vflex="1"
+                         selectedItem="@bind(vm.categoriaSelezionata)" emptyMessage="Nessuna categoria presente."
+                         onSelect="@command('onCategoriaSelected')">
+                    <listhead sizable="true">
+                        <listheader sclass="centro" label="Tributo"/>
+                        <listheader sclass="centro" label="Categoria"/>
+                        <listheader sclass="centro" label="Descrizione"/>
+                        <listheader sclass="centro" label="D" tooltiptext="Domestica"/>
+                        <listheader sclass="centro" label="Descrizione Precedente"/>
+                        <listheader sclass="centro" label="G" tooltiptext="Giornaliera"/>
+						<listheader sclass="centro" label="No DePag" tooltiptext="Non inviare a DePag"
+									visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                    </listhead>
+                    <template name="model" var="ct">
+                        <listitem onDoubleClick="@command('onModificaCategoria')">
+                            <listcell sclass="sinistra" label="@load((vm.tipoTributoSelezionato.tipoTributo eq 'CUNI') ? ct.codiceTributoDes : ct.codiceTributo)"/>
+                            <listcell sclass="destra" label="@load(ct.categoria)"/>
+                            <listcell sclass="sinistra" label="@load(ct.descrizione)"/>
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(ct.flagDomestica ne false)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                            <listcell sclass="sinistra" label="@load(ct.descrizionePrec)"/>
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(ct.flagGiorni ne false)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+							<listcell sclass="centro">
+								<checkbox checked="@load(ct.flagNoDepag ne false)"
+										  w:onCheck="this.setChecked(!this.isChecked())"/>
+							</listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </groupbox>
+            <groupbox vflex="2">
+                <caption label="Tariffe"/>
+                <hlayout style="padding: 5px;">
+                    <hlayout hflex="2">
+                        <hlayout sclass="afc-control-bar" valign="middle">
+                            <paging sclass="afc-paging" onPaging="@command('onCambioPaginaTariffe')"
+                                    activePage="@bind(vm.pagingTariffe.activePage)"
+                                    pageSize="@bind(vm.pagingTariffe.pageSize)"
+                                    totalSize="@load(vm.pagingTariffe.totalSize)"
+                                    visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                           onClick="@command('onRicaricaListaTariffe')"/>
+                            <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                           tooltiptext="@load((vm.lettura ne false) ? 'Visualizza' : 'Modifica')"
+                                           visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                           onClick="@command('onModificaTariffa')"
+                                           disabled="@load(empty vm.tariffaSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                           tooltiptext='Aggiungi'
+                                           onClick="@command('onNuovaTariffa')"
+                                           disabled="@load((vm.lettura ne false) or (empty vm.categoriaSelezionata))"/>
+                            <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                           tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                           onClick="@command('onDuplicaTariffa')"
+                                           disabled="@load((vm.lettura ne false) or (empty vm.tariffaSelezionata))"/>
+                            <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                           tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                           visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                           onClick="@command('onEliminaTariffa')"
+                                           disabled="@load((vm.lettura ne false) or (empty vm.tariffaSelezionata))"/>
+                            <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                           tooltiptext='Esporta in XLS'
+                                           popup="exportXlsTariffe"/>
+                            <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                                           tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                           popup="funzioniTariffe"/>
+                        </hlayout>
+                        <hlayout valign="middle" style="text-align: right;" hflex="1">
+                            <div>
+                                <space width="3px"/>
+                                <label value="Anno"/>
+                                <space width="3px"/>
+                                <intbox value="@bind(vm.selectedAnno)"
+                                        onChange="@command('onSelectAnno')"
+                                        maxlength="4"
+                                        constraint="no negative, no zero, no empty, /[0-9]{4}/: Anno non valido"
+                                        style="text-align: right;" mold="rounded" width="60px"
+                                        disabled="false"/>
+                            </div>
+                            <toolbarbutton width="26px"
+                                           image="@load(vm.filtroTariffeAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                           onClick="@command('openCloseFiltriTariffe')"
+                                           disabled="@load(vm.filtroTariffeDisabilitato eq true)"/>
+                        </hlayout>
+                    </hlayout>
+                </hlayout>
+                <listbox id="listBoxTariffe" nonselectableTags="" model="@bind(vm.listaTariffe)" sizedByContent="true"
+                         span="true"
+                         vflex="1"
+                         selectedItem="@bind(vm.tariffaSelezionata)" emptyMessage="Nessuna tariffa presente.">
+                    <auxhead>
+                        <auxheader label="Tariffa" colspan="3"
+                                   visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <auxheader label="Valori" colspan="10"
+                                   visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                      
+                        <auxheader label="Tariffa" colspan="5"
+                                   visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <auxheader label="Valori e Coefficienti" colspan="6"
+                                   visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <auxheader label="" colspan="3"
+                                   visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                    </auxhead>
+                    <listhead sizable="true">
+                        <listheader sclass="centro" label="Tip.Tar." tooltiptext="Tipologia tariffa"/>
+                        <listheader sclass="centro" label="Descrizione"/>
+                      
+                        <listheader sclass="centro" label="B" tooltiptext="Tariffa Base"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="Tariffa"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="%Rid.QF"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="%Rid.QV"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="Tar.Quota Fissa"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="%Rid.M.T."
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="Limite" tooltiptext="Limite"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="Tar.Sup." tooltiptext="Tariffa Superiore"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="Tar.Prec." tooltiptext="Tariffa Precedente"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="Lim.Prec." tooltiptext="Limite Precedente"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                        <listheader sclass="centro" label="Tar.Sup.Prec." tooltiptext="Tariffa Superiore Precedente"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                      
+                        <listheader sclass="centro" label="T.Canone" tooltiptext="Tipologia di Canone"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Zona"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Trib.Sec." tooltiptext="Tributo secondario"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Base" tooltiptext="Importo Base"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="% Riduz. o Magg" tooltiptext="Riduzione (se &gt; 0) o Maggiorazione (se &lt; 0)"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Coeff." tooltiptext="Coefficiente applicato"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Limite" tooltiptext="Limite di applicazione del Coefficiente"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Modalità" tooltiptext="Modalita' applicazione del Limite"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Coeff.Sup." tooltiptext="Coefficiente applicato oltre il Limite"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Importo" tooltiptext="Importo finale della tariffa"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="No DePag" tooltiptext="Non inviare a DePag"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                        <listheader sclass="centro" label="Sospesa"
+                                    tooltiptext="Il calcolo imposta per questa tariffa e' sospeso a livello di Codice Tributo"
+                                    visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                    </listhead>
+                    <template name="model" var="ta">
+                        <listitem value="@load(v)"
+                                  onSelect="@command('onTariffaSelected')"
+                                  onDoubleClick="@command('onModificaTariffa')">
+                            <listcell sclass="destra" label="@load(ta.tipoTariffa)"/>
+                            <listcell sclass="sinistra" label="@load(ta.descrizione)"/>
+                          
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(ta.flagTariffaBase ne false)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                            <listcell sclass="destra"
+                                      label="@load((ta.tariffa eq null) ? '' : c:formatNumber(ta.tariffa, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load(((ta.riduzioneQuotaFissa eq null) || (ta.riduzioneQuotaFissa eq 0)) ? '' : c:formatNumber(ta.riduzioneQuotaFissa, vm.riduzioneFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load(((ta.riduzioneQuotaVariabile eq null) || (ta.riduzioneQuotaVariabile eq 0)) ? '' : c:formatNumber(ta.riduzioneQuotaVariabile, vm.riduzioneFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load(((ta.tariffaQuotaFissa eq null) || (ta.tariffaQuotaFissa eq 0)) ? '' : c:formatNumber(ta.tariffaQuotaFissa, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load((ta.percRiduzione eq null) ? '' : c:formatNumber(ta.percRiduzione, vm.riduzioneFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load(((ta.limite eq null) || (ta.limite eq 0)) ? '' : c:formatNumber(ta.limite, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load((ta.tariffaSuperiore eq null) ? '' : c:formatNumber(ta.tariffaSuperiore, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load((ta.tariffaPrec eq null) ? '' : c:formatNumber(ta.tariffaPrec, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load(((ta.limitePrec eq null) || (ta.limite eq 0)) ? '' : c:formatNumber(ta.limitePrec, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load((ta.tariffaSuperiorePrec eq null) ? '' : c:formatNumber(ta.tariffaSuperiorePrec, vm.tariffaFormat))"/>
+                          
+                            <listcell sclass="centro" label="@load(ta.tipologiaTariffa)"/>
+                            <listcell sclass="sinistra" label="@load(ta.categoriaDescr)"/>
+                            <listcell sclass="sinistra" label="@load(ta.tipologiaSecondaria)"/>
+                            <listcell sclass="destra"
+                                      label="@load(((ta.tariffaQuotaFissa eq null) || (ta.tariffaQuotaFissa eq 0)) ? '' : c:formatNumber(ta.tariffaQuotaFissa, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load((ta.percRiduzione eq null) ? '' : c:formatNumber(ta.percRiduzione, vm.riduzioneFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load((ta.tariffa eq null) ? '' : c:formatNumber(ta.tariffa, vm.tariffaFormat))"/>
+                            <listcell sclass="destra"
+                                      label="@load(((ta.limite eq null) || (ta.limite eq 0)) ? '' : c:formatNumber(ta.limite, vm.tariffaFormat))"/>
+                            <listcell sclass="sinistra" label="@load(ta.tipologiaCalcolo)"/>
+                            <listcell sclass="destra"
+                                      label="@load((ta.tariffaSuperiore eq null) ? '' : c:formatNumber(ta.tariffaSuperiore, vm.tariffaFormat))"/>
+                            <listcell sclass="destra" label="@load(ta.importoTariffa)"/>
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(ta.flagNoDepag ne false)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                            <listcell sclass="centro">
+                                <checkbox checked="@load(ta.flagRuolo ne false)"
+                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+                <menupopup id="funzioniCategorie">
+                    <menuitem label="Duplica per altro Tributo" tooltiptext="Duplica per altro Tributo"
+                              onClick="@command('onCopiaParticolareCategorie')"
+                              disabled="@bind(vm.lettura or (empty vm.categoriaSelezionata))"
+                              visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                </menupopup>
+                <menupopup id="funzioniTariffe">
+                    <menuitem label="Duplica per altro Tributo/Categoria" tooltiptext="Duplica per altro Tributo/Categoria"
+                              onClick="@command('onCopiaParticolareTariffe')"
+                              disabled="@bind(vm.lettura or (empty vm.tariffaSelezionata))"
+                              visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                    <menuitem disabled="@load(!vm.copiaAnnoEnabled)"
+                              label="Duplica da Anno"
+                              onClick="@command('onDuplicaDaAnno')"/>
+                </menupopup>
+                <menupopup id="exportXlsTariffe">
+                    <menuitem label="Completo"
+                              onClick="@command('onTariffeToXls', modalita='TUTTI')"/>
+                    <menuitem label="Corrente"
+                              disabled="@load(empty vm.listaTariffe)"
+                              onClick="@command('onTariffeToXls', modalita='PARAMETRI')"/>
+                </menupopup>
+            </groupbox>
+        </vlayout>
+    </window>
+</zk>

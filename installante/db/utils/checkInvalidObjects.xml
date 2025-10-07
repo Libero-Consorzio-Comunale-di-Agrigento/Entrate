@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet id="dmarotta:20250326_152438_checkInvalidObjects" author="mturra" runOnChange="true" runAlways="true">
+        <preConditions onFailMessage="There are Invalid Objects in the data base!!" onFail="HALT" >
+            <sqlCheck expectedResult="0">
+                <![CDATA[
+                    SELECT count(1)
+                    FROM user_objects
+                    WHERE status = 'INVALID';
+                ]]>
+            </sqlCheck>
+        </preConditions>
+    </changeSet>
+</databaseChangeLog>

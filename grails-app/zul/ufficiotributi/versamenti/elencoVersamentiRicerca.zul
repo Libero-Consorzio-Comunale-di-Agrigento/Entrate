@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window apply="grailsBindComposer"
+			viewModel="@id('vm') @init('elencoVersamentiRicercaViewModel')" vflex="1"
+			width="800px" border="normal" onOK="@command('onCerca')">
+			<script src="/js/decimalbox.js"/>
+		<h:div sclass="barraTitoloPagina">
+			<hlayout>
+				<label class="titoloPagina" value="Ricerca Avanzata Versamenti"/>
+			</hlayout>
+		</h:div>
+		<div>
+			<groupbox width="100%">
+				<caption label="Contribuente"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell colspan="1" align="right" width="15%">
+								<label value="Cognome"/>
+							</cell>
+							<cell colspan="3">
+								<textbox value="@bind(vm.mapParametri.cognome)"
+										 mold="rounded" width="100%"
+										 style="text-transform: uppercase"/>
+							</cell>
+							<cell colspan="1" align="right" width="15%">
+								<label value="Nome"/>
+							</cell>
+							<cell colspan="3">
+								<textbox value="@bind(vm.mapParametri.nome)"
+										 mold="rounded" width="100%"
+										 style="text-transform: uppercase"/>
+							</cell>
+						</row>
+						<row>
+							<cell colspan="1" align="right" width="20%">
+								<label value="Codice Fiscale"/>
+							</cell>
+							<cell colspan="3" width="80%">
+								<textbox value="@bind(vm.mapParametri.cf)"
+										 mold="rounded" width="100%" style="text-transform: uppercase"/>
+							</cell>
+							<cell align="right" colspan="1" width="20%">
+									<label value="Fonte" />
+							</cell>
+							<cell align="right" colspan="3" width="80%">
+								<combobox mold="rounded" hflex="1" readonly="true"
+										  model="@load(vm.listaFonti)"
+										  selectedItem="@bind(vm.mapParametri.fonte)">
+									<template name="model" var="opzione">
+										<comboitem label="@load(opzione.descrizione)" value="@load(opzione)" />
+									</template>
+								</combobox>
+							</cell>
+						</row>
+						<row visible="@bind(vm.tipoTributo eq 'ICP' or vm.tipoTributo eq 'TOSAP')">
+							<cell colspan="1" align="right" width="20%">
+								<label value="Rata"/>
+							</cell>
+							<cell colspan="3" width="80%">
+								<combobox mold="rounded" hflex="1" readonly="true"
+										  model="@load(vm.listaRate)"
+										  selectedItem="@bind(vm.mapParametri.rata)">
+									<template name="model" var="rata">
+										<comboitem label="@load((rata eq -1)? 'Tutti':rata)" value="@load(rata)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="1" align="right" width="20%">
+								<label value="Ruolo"/>
+							</cell>
+							<cell colspan="3" width="80%">
+								<intbox value="@bind(vm.mapParametri.ruolo)" class="noresizable" mold="rounded" style="text-align: right" width="100%"/>
+							</cell>
+						</row>
+						<row visible="@bind(vm.tipoTributo eq 'TARSU')">
+							<cell colspan="1" align="right" width="20%">
+								<label value="Stato Pratica"/>
+							</cell>
+							<cell colspan="3" width="80%">
+								<combobox mold="rounded" hflex="1" readonly="true"
+										  model="@load(vm.listaStatiPratica)"
+										  selectedItem="@bind(vm.mapParametri.statoPratica)">
+									<template name="model" var="opz">
+										<comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="1" align="right" width="20%">
+								<label value="Ruolo"/>
+							</cell>
+							<cell colspan="3" width="80%">
+								<intbox value="@bind(vm.mapParametri.ruolo)" class="noresizable" mold="rounded" style="text-align: right" width="100%"/>
+							</cell>
+						</row>
+						<row visible="@bind(vm.tipoTributo ne 'CUNI' and vm.tipoTributo ne 'TARSU' and vm.tipoTributo ne 'ICP' and vm.tipoTributo ne 'TOSAP')">
+							<cell colspan="1" align="right" width="20%">
+									<label value="Tipo Versamento"/>
+								</cell>
+								<cell colspan="3" width="80%">
+									<combobox mold="rounded" hflex="1" readonly="true"
+											  model="@load(vm.listTipiVersamento)"
+											  selectedItem="@bind(vm.mapParametri.tipoVersamento)">
+										<template name="model" var="opz">
+											<comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+										</template>
+									</combobox>
+								</cell>
+							<cell colspan="1" align="right" width="20%">
+								<label value="Ruolo"/>
+							</cell>
+							<cell colspan="3" width="80%">
+								<intbox value="@bind(vm.mapParametri.ruolo)" class="noresizable" mold="rounded" style="text-align: right" width="100%"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right" colspan="1" width="20%">
+								<label value="Tipo Pratica"/>
+							</cell>
+							<cell align="right" colspan="3" width="80%">
+								<combobox mold="rounded" hflex="1" readonly="true"
+										  model="@load(vm.listTipiPratica)"
+										  selectedItem="@bind(vm.mapParametri.tipoPratica)">
+									<template name="model" var="opz">
+										<comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right" colspan="1" width="20%">
+								<label value="Progr. Documento"/>
+							</cell>
+							<cell align="right" colspan="3" width="80%">
+								<combobox mold="rounded" hflex="1" readonly="true"
+										  model="@load(vm.listProgrDocVersamento)"
+										  selectedItem="@bind(vm.mapParametri.progrDocVersamento)">
+									<template name="model" var="opz">
+										<comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox width="100%">
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="15%">
+								<label value="Anno"/>
+							</cell>
+							<cell align="left" width="30%">
+								<label value="Dal "/>
+								<intbox style="text-align: right;" value="@bind(vm.mapParametri.daAnno)" maxlength="4" mold="rounded" width="40%"/>
+								<label value=" Al "/>
+								<intbox style="text-align: right;" value="@bind(vm.mapParametri.aAnno)" maxlength="4" mold="rounded" width="40%"/>
+							</cell>
+							<cell align="right" width="15%">
+								<label value="Data Pagamento "/>
+							</cell>
+							<cell colspan="3" align="left">
+								<hbox>
+									<label value="Dal "/>
+									<datebox style="text-align: right;" value="@bind(vm.mapParametri.daDataPagamento)"
+											 mold="rounded" format="dd/MM/yyyy" width="90%"/>
+									<label value=" Al "/>
+									<datebox style="text-align: right;" value="@bind(vm.mapParametri.aDataPagamento)"
+											 mold="rounded" format="dd/MM/yyyy" width="90%"/>
+								</hbox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right" width="15%">
+								<label value="Data Provvedimento"/>
+							</cell>
+							<cell align="left">
+								<hbox>
+									<label value="Dal "/>
+									<datebox style="text-align: right;" disabled="@bind(vm.tipoTributo eq 'TARSU' or vm.tipoTributo eq 'ICP' or vm.tipoTributo eq 'TOSAP' or vm.tipoTributo eq 'CUNI')" value="@bind(vm.mapParametri.daDataProvvedimento)" mold="rounded" format="dd/MM/yyyy" width="80%"/>
+									<label value=" Al "/>
+									<datebox style="text-align: right;" disabled="@bind(vm.tipoTributo eq 'TARSU' or vm.tipoTributo eq 'ICP' or vm.tipoTributo eq 'TOSAP' or vm.tipoTributo eq 'CUNI')" value="@bind(vm.mapParametri.aDataProvvedimento)" mold="rounded" format="dd/MM/yyyy"  width="80%"/>
+								</hbox>
+							</cell>
+							<cell align="right">
+								<label value="Data Registrazione"/>
+							</cell>
+							<cell colspan="3" align="left">
+								<hbox>
+									<label value="Dal " visible="@load(vm.tipoPratica ne 'V')"/>
+									<datebox style="text-align: right;" value="@bind(vm.mapParametri.daDataRegistrazione)"
+											 mold="rounded" format="dd/MM/yyyy"  width="90%"/>
+									<label value=" Al " visible="@load(vm.tipoPratica ne 'V')"/>
+									<datebox style="text-align: right;" value="@bind(vm.mapParametri.aDataRegistrazione)"
+											 mold="rounded" format="dd/MM/yyyy" width="90%"/>
+								</hbox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right" width="15%">
+								<label value="Importo"/>
+							</cell>
+							<cell align="left" width="30%">
+								<label value="Da "/>
+								<decimalbox style="text-align: right;" value="@bind(vm.mapParametri.daImporto)" format="€ #,##0.00" width="42%"
+											mold="rounded"/>
+								<label value=" A  "/>
+								<decimalbox style="text-align: right;" value="@bind(vm.mapParametri.aImporto)" format="€ #,##0.00" width="42%"
+											mold="rounded"/>
+							</cell>
+							<cell colspan="4"></cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<h:div sclass="barraPulsanti">
+				<h:div>
+					<button mold="trendy" image="/images/afc/16x16/filter_box.png"
+						label="Cancella Filtri" onClick="@command('svuotaFiltri')" />
+					<button mold="trendy" image="/images/afc/16x16/search.png"
+						label="Cerca" onClick="@command('onCerca')" />
+					<button mold="trendy" image="/images/afc/16x16/close.png"
+						label="Chiudi" onClick="@command('onChiudi')" />
+				</h:div>
+			</h:div>
+		</div>
+	</window>
+</zk>

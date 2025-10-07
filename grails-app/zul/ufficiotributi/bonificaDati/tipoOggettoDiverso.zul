@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxOggettiPratica" extends="bandbox" class="it.finmatica.zkutils.BandboxOggettiPratica"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:d="http://www.zkoss.org/2005/zk/client/attribute"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('tipoOggettoDiversoViewModel')" border="normal"
+            sizable="true" width="900px"
+            title=" " onCancel="@command('onChiudiPopup')">
+		<script src="/js/decimalbox.js"/>
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell width="50px">
+                    </cell>
+                    <cell class="documentoTitolo" align="center">
+                        <label
+                                value="@load(c:cat3(c:cat4('Denuncia ', vm.tipoTributo, ' ', vm.oggettoContribuente.oggettoPratica.pratica.id), ' ', c:cat3('(',vm.oggettoContribuente.oggettoPratica.pratica.anno,')')))"/>
+                    </cell>
+                </row>
+                <row visible="@load(vm.oggettoContribuente.tipoRapporto eq 'C')">
+                    <cell width="50px">
+                    </cell>
+                    <cell class="documentoTitolo" align="center">
+                        <label value="CONTITOLARE"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell width="50px">
+                        <image src="/images/tr4web/48x48/home.png"/>
+                    </cell>
+                    <cell class="documentoTitolo" align="center">
+                        <label value="@load(c:cat3(vm.oggettoContribuente.contribuente.soggetto.cognomeNome, ' - ', vm.oggettoContribuente.contribuente.codFiscale)))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell width="50px">
+                    </cell>
+                    <cell class="documentoSottoTitolo" align="center">
+                        <label value="@load(c:cat(' ', vm.oggettoContribuente.oggettoPratica.oggetto.indirizzo))"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <space height="3px"/>
+
+        <grid sclass="form" droppable="true" onDrop="@command('onDropTipoOggetto')">
+            <rows>
+                <row>
+                    <cell align="right" width="150px">
+                        <label value="Num ord"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.oggettoContribuente.oggettoPratica.numOrdine)"/>
+                    </cell>
+                    <cell align="right" width="150px">
+                        <label value="Oggetto"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.id)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right" width="150px">
+                        <label value="Tipo"/>
+                    </cell>
+                    <cell width="150px">
+                        <label value="@load(c:cat3(vm.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto, ' - ', vm.oggettoContribuente.oggettoPratica.tipoOggetto.descrizione))"/>
+                    </cell>
+                    <cell align="right" width="150px">
+                        <label value="Fonte"/>
+                    </cell>
+                    <cell width="150px">
+                        <label value="@load(c:cat3(vm.oggettoContribuente.oggettoPratica.fonte.fonte, ' - ', vm.oggettoContribuente.oggettoPratica.fonte.descrizione))"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="Indirizzo"/>
+                    </cell>
+                    <cell>
+                        <label width="100%"
+                               value="@load(empty vm.oggettoContribuente.oggettoPratica.oggetto.archivioVie ? vm.oggettoContribuente.oggettoPratica.oggetto.indirizzoLocalita : vm.oggettoContribuente.oggettoPratica.oggetto.archivioVie.denomUff)"></label>
+                    </cell>
+                    <cell align="right">
+                        <label value="Civico"/>
+                    </cell>
+                    <cell>
+                        <label tooltiptext="Numero" style="text-align: right;"
+                               value="@bind(vm.oggettoContribuente.oggettoPratica.oggetto.numCiv)"></label>
+                        <label visible="@load(not empty vm.oggettoContribuente.oggettoPratica.oggetto.suffisso)"
+                               value=" / "/>
+                        <label tooltiptext="suffisso" style="text-align: right;"
+                               value="@bind(vm.oggettoContribuente.oggettoPratica.oggetto.suffisso)"></label>
+                        <label visible="@load(not empty vm.oggettoContribuente.oggettoPratica.oggetto.interno)"
+                               value=" Interno: "/>
+                        <label tooltiptext="Interno" style="text-align: right;"
+                               value="@bind(vm.oggettoContribuente.oggettoPratica.oggetto.interno)"></label>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <space height="3px"/>
+        <groupbox closable="false">
+            <caption label="Dati catastali"/>
+            <grid sclass="form" droppable="true" onDrop="@command('onDropTipoOggetto')">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="Partita"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.partita)"></label>
+                        </cell>
+                        <cell align="right">
+                            <label value="Sezione"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.sezione)"></label>
+                        </cell>
+                        <cell align="right">
+                            <label value="Foglio"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.foglio)"></label>
+                        </cell>
+                        <cell align="right">
+                            <label value="Numero"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.numero)"></label>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Subalterno"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.subalterno)"></label>
+                        </cell>
+                        <cell align="right">
+                            <label value="Zona"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.zona)"></label>
+                        </cell>
+                        <cell align="right">
+                            <label value="Protocollo"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.protocolloCatasto)"></label>
+                        </cell>
+                        <cell align="right">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.annoCatasto)"></label>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+        <space height="3px"/>
+        <grid sclass="form" droppable="true" onDrop="@command('onDropTipoOggetto')">
+            <rows>
+                <row>
+                    <cell width="40px">
+                        <checkbox disabled="true" checked="@bind(vm.oggettoContribuente.oggettoPratica.immStorico)"
+                                  label="I.S."/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Ren."/>
+                    </cell>
+                    <cell width="70px" align="right">
+                        <label value="@load((vm.oggettoContribuente.oggettoPratica.oggettoPraticaRendita.rendita eq null) ? '' : c:formatNumber(vm.oggettoContribuente.oggettoPratica.oggettoPraticaRendita.rendita , '€ #,##0.00'))"></label>
+                    </cell>
+                    <cell align="right">
+                        <label value="Val."/>
+                    </cell>
+                    <cell width="80px" align="right">
+                        <label value="@load((vm.oggettoContribuente.oggettoPratica.valore eq null) ? '' : c:formatNumber(vm.oggettoContribuente.oggettoPratica.valore , '€ #,##0.00'))"></label>
+                    </cell>
+                    <cell width="60px">
+                        <checkbox disabled="true" checked="@bind(vm.oggettoContribuente.oggettoPratica.flagProvvisorio)"
+                                  label="Provv."/>
+                    </cell>
+                    <cell width="30px" align="right">
+                        <label value="Cat."/>
+                    </cell>
+                    <cell width="250px">
+                        <label value="@load(c:cat3(vm.oggettoContribuente.oggettoPratica.categoriaCatasto.categoriaCatasto, ' - ', vm.oggettoContribuente.oggettoPratica.categoriaCatasto.descrizione))"/>
+                    </cell>
+                    <cell width="30px" align="right">
+                        <label value="Cl."/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.oggettoContribuente.oggettoPratica.classeCatasto)"/>
+                    </cell>
+                    <cell width="50px" align="right">
+                        <label value="% Poss."/>
+                    </cell>
+                    <cell align="right" width="40px">
+                        <label value="@load((vm.oggettoContribuente.percPossesso eq null) ? '' : c:formatNumber(vm.oggettoContribuente.percPossesso , '#,##0.00'))"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <space height="3px"/>
+        <tabbox>
+            <tabs>
+                <tab label="Pratiche in cui l'oggetto è stato dichiarato con tipologia diversa"></tab>
+                <tab label="Ricerca oggetti in catasto"></tab>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <listbox hflex="1" span="true" sizedByContent="true"
+                             model="@load(vm.ogcoHelp)" selectedItem="@bind(vm.ogcoHelpSelezionato)"
+                             onAfterRender="@command('setDragMessage')"
+                             emptyMessage="Nessun oggetto presente.">
+                        <listhead>
+                            <listheader label="Anno" align="right"/>
+                            <listheader label="Pratica" align="right"/>
+                            <listheader label="Contribuente"/>
+                            <listheader label="Cod.Fiscale"/>
+                            <listheader label="Tipo Oggetto" align="left"/>
+                            <listheader label="Indirizzo" align="left"/>
+                            <listheader label="Valore" align="right"/>
+                            <listheader label="Provv." align="center"/>
+                        </listhead>
+                        <template name="model" var="ogco">
+                            <listitem draggable="true" value="@load(ogco)">
+                                <listcell label="@load(ogco.oggettoPratica.pratica.anno)"/>
+                                <listcell label="@load(ogco.oggettoPratica.pratica.id)"/>
+                                <listcell label="@load(ogco.contribuente.soggetto.cognomeNome)"/>
+                                <listcell label="@load(ogco.contribuente.codFiscale)"/>
+                                <listcell
+                                        label="@load(c:cat3(ogco.oggettoPratica.tipoOggetto.tipoOggetto, ' - ', ogco.oggettoPratica.tipoOggetto.descrizione))"/>
+                                <listcell label="@load(ogco.oggettoPratica.oggetto.indirizzo)"/>
+                                <listcell
+                                        label="@load((ogco.oggettoPratica.valore eq null) ? '' : c:formatNumber(ogco.oggettoPratica.valore , '€ #,##0.00'))"/>
+                                <listcell>
+                                    <checkbox checked="@load(ogco.oggettoPratica.flagProvvisorio)" disabled="true"/>
+                                </listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+
+                <tabpanel>
+                    <vlayout style="text-align: right;">
+                        <button mold="trendy" tooltiptext="Ricerca oggetti in catasto"
+                                image="/images/afc/16x16/search.png" onClick="@command('onCercaCatasto')"/>
+                        <listbox span="true" width="100%"
+                                 sizedByContent="true" model="@load(vm.oggettiDaCatasto)"
+                                 emptyMessage="Non sono presenti oggetti nel catasto" hflex="1"
+                                 selectedItem="@bind(vm.immobileCatastoSelezionato)">
+                            <listhead sizable="true">
+                                <listheader label="Fabbricato" sort="auto(idFabbricato)"/>
+                                <listheader label="Indirizzo" sort="auto(indirizzo,civicoSort)"/>
+                                <listheader label="Ctg."/>
+                                <listheader label="Sez." sort="auto(estremiCatastoSort)"/>
+                                <listheader label="Fgl."/>
+                                <listheader label="Num."/>
+                                <listheader label="Sub."/>
+                                <listheader label="Partita"/>
+                                <listheader label="Zona"/>
+                                <listheader label="Rendita"/>
+                            </listhead>
+                            <template name="model" var="oggCat">
+                                <listitem draggable="true">
+                                    <custom-attributes catasto="#{oggCat}"/>
+                                    <listcell sclass="centro" label="@load(oggCat.IDFABBRICATO)"/>
+                                    <listcell sclass="sinistra" label="@load(oggCat.INDIRIZZOCOMPLETO)"/>
+                                    <listcell sclass="centro" label="@load(oggCat.CATEGORIACATASTO)"/>
+                                    <listcell sclass="centro" label="@load(oggCat.SEZIONE)"/>
+                                    <listcell sclass="centro" label="@load(oggCat.FOGLIO)"/>
+                                    <listcell sclass="centro" label="@load(oggCat.NUMERO)"/>
+                                    <listcell sclass="centro" label="@load(oggCat.SUBALTERNO)"/>
+                                    <listcell sclass="centro" label="@load(oggCat.PARTITA)"/>
+                                    <listcell sclass="centro" label="@load(oggCat.ZONA)"/>
+                                    <listcell sclass="centro"
+                                              label="@load(oggCat.RENDITA eq null or oggCat.RENDITA eq 0? null :c:formatNumber(oggCat.RENDITA, '€ #,##0.00'))"/>
+                                </listitem>
+                            </template>
+                        </listbox>
+                    </vlayout>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        <h:div sclass="barraPulsanti">
+            <h:div style="float: right;">
+                <button label="Copia tipo oggetto" onClick="@command('onRiporta')" mold="trendy"
+                        disabled="@load((vm.lettura) or (empty vm.ogcoHelpSelezionato))"
+                        image="/images/afc/16x16/arrow_up.png"/>
+                <button label="Salva e aggiorna stato" onClick="@command('onSalvaOggetto', aggiornaStato=true)"
+                        mold="trendy" image="/images/pulsanti/16x16/filesave.png"
+                        disabled="@bind(vm.lettura)"/>
+                <button label="Salva" onClick="@command('onSalvaOggetto', aggiornaStato=false)"
+                        mold="trendy" image="/images/pulsanti/16x16/filesave.png"
+                        disabled="@bind(vm.lettura)"/>
+                <button label="Chiudi" onClick="@command('onChiudiPopup')" mold="trendy"
+                        image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+
+    </window>
+
+</zk>

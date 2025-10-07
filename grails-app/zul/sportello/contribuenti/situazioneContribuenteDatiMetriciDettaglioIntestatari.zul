@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <vbox vflex="1">
+        <!-- Intestatari -->
+        <groupbox vflex="1">
+
+            <caption label="Intestatari"/>
+
+            <listbox hflex="max" span="true" sizedByContent="true" vflex="1"
+                     model="@load(vm.datiMetriciSelezionato.intestatari)" emptyMessage="Nessun dato presente">
+                <listhead>
+                    <listheader label="Intestatario"
+                                sort="auto(intest.intestatario)"
+                                onSort="@command('onCambiaOrdinamentoDatiMetriciIntestatari', valore='intestatario')"/>
+                    <listheader label="Cod.Fiscale"
+                                sort="auto(intest.codFiscale)"
+                                onSort="@command('onCambiaOrdinamentoDatiMetriciIntestatari', valore='codFiscale')"/>
+                    <listheader label="Sesso" align="center"/>
+                    <listheader label="Data Nas." align="center"/>
+                    <listheader label="Comune"/>
+                </listhead>
+                <template name="model" var="intest">
+                    <listitem>
+                        <listcell label="@load(intest.intestatario)"/>
+                        <listcell>
+                            <hlayout>
+                                <label value="@load(intest.codFiscale)"/>
+                                <space width="2px"/>
+                                <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                                       style="cursor: pointer;"
+                                       width="16px"
+                                       visible="@load(intest.isContribuente)"
+                                       onClick="@command('onVisualizzaContribuente', ni=intest.ni)"/>
+                            </hlayout>
+                        </listcell>
+                        <listcell label="@load(intest.sesso)"/>
+                        <listcell label="@load(intest.dataNascita)"/>
+                        <listcell label="@load(intest.comune)"/>
+                    </listitem>
+                </template>
+            </listbox>
+        </groupbox>
+
+        <!-- Utilizzatori -->
+        <groupbox hflex="1" vflex="1">
+
+            <caption label="Utilizzatori TARI"/>
+
+            <listbox hflex="max" span="true" sizedByContent="true" vflex="1"
+                     model="@load(vm.datiMetriciSelezionato.utilizzatori)" emptyMessage="Nessun dato presente">
+                <listhead>
+                    <listheader label="Contribuente"/>
+                    <listheader label="Cod.Fiscale"
+                                sort="auto(intest.codFiscale)"
+                                onSort="@command('onCambiaOrdinamentoDatiMetriciIntestatari', valore='codFiscale')"/>
+                    <listheader label="Data Nas." align="center"/>
+                    <listheader label="Comune"/>
+                </listhead>
+                <template name="model" var="util">
+                    <listitem>
+                        <listcell label="@load(util.utilizzatore)"/>
+                        <listcell>
+                            <hlayout>
+                                <label value="@load(util.codFiscale)"/>
+                                <space width="2px"/>
+                                <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                                       style="cursor: pointer;"
+                                       width="16px"
+                                       onClick="@command('onVisualizzaContribuente', ni=util.ni)"/>
+                            </hlayout>
+                        </listcell>
+                        <listcell label="@load(util.dataNascita)"/>
+                        <listcell label="@load(util.comune)"/>
+                    </listitem>
+                </template>
+            </listbox>
+        </groupbox>
+    </vbox>
+</zk>

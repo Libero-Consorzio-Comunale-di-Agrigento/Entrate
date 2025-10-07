@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oggetti" language="groovy" pageWidth="840" pageHeight="595" orientation="Landscape" columnWidth="820" leftMargin="10" rightMargin="10" topMargin="5" bottomMargin="5" uuid="216d6370-59a3-44e5-833f-823517651b4e">
+	<property name="ireport.zoom" value="1.4641000000000035"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titolo" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{titolo}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipoTributo" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{tipoTributo}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="sezione" class="java.lang.String">
+		<fieldDescription><![CDATA[sezione]]></fieldDescription>
+	</field>
+	<field name="subalterno" class="java.lang.String">
+		<fieldDescription><![CDATA[subalterno]]></fieldDescription>
+	</field>
+	<field name="indirizzo" class="java.lang.String">
+		<fieldDescription><![CDATA[indirizzo]]></fieldDescription>
+	</field>
+	<field name="foglio" class="java.lang.String">
+		<fieldDescription><![CDATA[foglio]]></fieldDescription>
+	</field>
+	<field name="numero" class="java.lang.String">
+		<fieldDescription><![CDATA[numero]]></fieldDescription>
+	</field>
+	<field name="zona" class="java.lang.String">
+		<fieldDescription><![CDATA[zona]]></fieldDescription>
+	</field>
+	<field name="protocolloCatasto" class="java.lang.String">
+		<fieldDescription><![CDATA[protocolloCatasto]]></fieldDescription>
+	</field>
+	<field name="annoCatasto" class="java.lang.Short">
+		<fieldDescription><![CDATA[annoCatasto]]></fieldDescription>
+	</field>
+	<field name="partita" class="java.lang.String">
+		<fieldDescription><![CDATA[partita]]></fieldDescription>
+	</field>
+	<field name="categoriaCatasto" class="it.finmatica.tr4.dto.CategoriaCatastoDTO">
+		<fieldDescription><![CDATA[categoriaCatasto]]></fieldDescription>
+	</field>
+	<field name="tipoOggetto" class="it.finmatica.tr4.dto.TipoOggettoDTO">
+		<fieldDescription><![CDATA[tipoOggetto]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="riferimentiOggetto" class="java.util.SortedSet">
+		<fieldDescription><![CDATA[riferimentiOggetto]]></fieldDescription>
+	</field>
+	<field name="oggettiPratica" class="java.util.Set">
+		<fieldDescription><![CDATA[oggettiPratica]]></fieldDescription>
+	</field>
+	<field name="classeCatasto" class="java.lang.String">
+		<fieldDescription><![CDATA[classeCatasto]]></fieldDescription>
+	</field>
+	<field name="oggettiContribuente" class="java.util.List">
+		<fieldDescription><![CDATA[oggettiContribuente]]></fieldDescription>
+	</field>
+	<field name="ruoliOggetto" class="java.util.List">
+		<fieldDescription><![CDATA[ruoliOggetto]]></fieldDescription>
+	</field>
+	<variable name="variable1" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{variable1}+1]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
+	</variable>
+	<group name="idOggetto" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<frame>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="14" width="820" height="14" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#EDEFF5" uuid="835629c0-edf5-4e7a-bf68-2debe7203d49">
+						<printWhenExpression><![CDATA[new Boolean(($V{variable1}.intValue() - $V{idOggetto_COUNT}.intValue())% 2 == 0)]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<leftPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineColor="#000000"/>
+					</box>
+				</frame>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="0" width="255" height="13" forecolor="#000000" uuid="1bea85df-1dba-4ab2-90ad-1071203b2a86"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Indirizzo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="260" y="0" width="32" height="13" forecolor="#000000" uuid="3edb69b6-4319-42dc-a15b-7543fe397f65"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sez.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="297" y="0" width="32" height="13" forecolor="#000000" uuid="3e6d75f1-cb85-4149-af71-d7dcda601803"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Foglio]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="334" y="0" width="40" height="13" forecolor="#000000" uuid="4499adb9-66f4-4322-a78e-a13afe9b9fc5"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Numero]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="379" y="0" width="31" height="13" forecolor="#000000" uuid="a377748e-ecc8-42b7-8ba5-7bc2ff6048f3"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sub.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="415" y="0" width="31" height="13" forecolor="#000000" uuid="903e5d79-b5fd-432b-9925-646cedc9e3bd"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Zona]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="451" y="0" width="51" height="13" forecolor="#000000" uuid="7b9544c3-48c1-430a-bc83-843c702c3467"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Protocollo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="507" y="0" width="30" height="13" forecolor="#000000" uuid="a9306187-eaf3-49b7-a9ab-92707da81cf4"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Anno]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="542" y="0" width="51" height="13" forecolor="#000000" uuid="03b5558c-d5ce-4810-9f72-cce369ce2517"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Partita]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="598" y="0" width="38" height="13" forecolor="#000000" uuid="e5d78436-5428-46b0-a164-08d743b7e987"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cat.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="641" y="0" width="37" height="13" forecolor="#000000" uuid="76c7d380-ab5d-4480-bfb1-9e279cd3fc62"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Classe]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="683" y="0" width="44" height="13" forecolor="#000000" uuid="4f77dc9f-33c1-4ebc-a877-d2f3d3c296d0"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Oggetto]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="13" width="820" height="1" uuid="67e604f1-3730-48e1-86fb-653a171e29a9">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<staticText>
+					<reportElement positionType="Float" x="732" y="0" width="38" height="13" forecolor="#000000" uuid="a5a867fe-d72a-4ab8-932b-b4343a86a6b2"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo Oggetto]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="15" width="255" height="13" printWhenGroupChanges="idOggetto" uuid="03889b1d-41a9-4acd-a4dd-d8a08b5560d5"/>
+					<textFieldExpression><![CDATA[$F{indirizzo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="260" y="15" width="32" height="13" printWhenGroupChanges="idOggetto" uuid="583e70c9-7d2a-4470-94f1-f09eed4d42f2"/>
+					<textFieldExpression><![CDATA[$F{sezione}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="297" y="15" width="32" height="13" printWhenGroupChanges="idOggetto" uuid="c9631343-20ad-48ff-ad65-1abaa8743e95"/>
+					<textFieldExpression><![CDATA[$F{foglio}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="334" y="15" width="40" height="13" printWhenGroupChanges="idOggetto" uuid="17291c60-cf18-4cc2-8e7a-d40b303f29cb"/>
+					<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="379" y="15" width="31" height="13" printWhenGroupChanges="idOggetto" uuid="097deb30-213c-458a-8275-157a67946a9b"/>
+					<textFieldExpression><![CDATA[$F{subalterno}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="415" y="15" width="31" height="13" printWhenGroupChanges="idOggetto" uuid="05094e06-ac16-4a69-b7e9-2f4549380235"/>
+					<textFieldExpression><![CDATA[$F{zona}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="451" y="15" width="51" height="13" printWhenGroupChanges="idOggetto" uuid="7a59bf59-7bb7-462b-b58e-b2316966b827"/>
+					<textFieldExpression><![CDATA[$F{protocolloCatasto}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="507" y="15" width="30" height="13" printWhenGroupChanges="idOggetto" uuid="52ebdc59-b6f9-4922-895e-5dca11cbef21"/>
+					<textFieldExpression><![CDATA[$F{annoCatasto}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="542" y="15" width="51" height="13" printWhenGroupChanges="idOggetto" uuid="1e4297bd-270f-4266-85df-e32b2efb9cc0"/>
+					<textFieldExpression><![CDATA[$F{partita}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="598" y="15" width="38" height="13" printWhenGroupChanges="idOggetto" uuid="415b5654-4fed-40de-b790-da45c6787ae9"/>
+					<textFieldExpression><![CDATA[$F{categoriaCatasto}.categoriaCatasto]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="641" y="15" width="37" height="13" printWhenGroupChanges="idOggetto" uuid="e7bda4fc-453d-47aa-a182-5c0024b1db12"/>
+					<textFieldExpression><![CDATA[$F{classeCatasto}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="683" y="15" width="44" height="13" printWhenGroupChanges="idOggetto" uuid="d943ab76-8cf9-47d6-891c-9e3925704fd1"/>
+					<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="732" y="15" width="38" height="13" printWhenGroupChanges="idOggetto" uuid="c3459c09-c8d0-4b4d-8f21-493fbf5088b8"/>
+					<textFieldExpression><![CDATA[$F{tipoOggetto}.tipoOggetto]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="770" y="0" width="19" height="13" uuid="e1b538fc-bb55-477f-95b0-e3930b790541"/>
+					<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="790" y="0" width="19" height="13" uuid="f8af2ecf-a29f-44ad-acb8-934b10f6ad90"/>
+					<textFieldExpression><![CDATA[$V{idOggetto_COUNT}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="25" splitType="Prevent">
+			<textField>
+				<reportElement x="0" y="-1" width="255" height="26" uuid="e512b45b-149a-48b8-bb45-a3d7dca13bc3"/>
+				<textElement>
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titolo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{tipoTributo} == "TARSU"]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="820" height="28" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#EDEFF5" uuid="5bec9cc2-6e75-438f-a48f-dd2b5d4d40a8">
+					<printWhenExpression><![CDATA[new Boolean($V{variable1}.intValue() % 2 == 1) && !$F{oggettiContribuente}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+			</frame>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="820" height="28" isRemoveLineWhenBlank="true" uuid="9f548fa7-2436-4216-ba62-e2facddbfb94"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{oggettiContribuente})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "praticheOggettoTari.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="29" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{tipoTributo} == "TARSU"]]></printWhenExpression>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="820" height="29" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#EDEFF5" uuid="27d14d7b-1bb9-4064-bc2d-2396270bb601">
+					<printWhenExpression><![CDATA[$V{variable1}.intValue() % 2 == 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineColor="#000000"/>
+				</box>
+			</frame>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="285" y="0" width="535" height="29" isRemoveLineWhenBlank="true" uuid="f922a5f6-81a3-4737-8ca9-adad7a4418fc"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{ruoliOggetto})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ruoliOggetto.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

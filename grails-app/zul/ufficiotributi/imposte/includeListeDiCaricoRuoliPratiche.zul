@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <vlayout vflex="1" spacing="2">
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   onClick="@command('onRicaricaListaPratiche')"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                   onClick="@command('onCancellaPratica')"
+                                   disabled="@bind(empty vm.praticaRuoloSelezionata or vm.selected.inviatoAConsorzio)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS'
+                                   disabled="@load(empty vm.listaPraticheRuolo)"
+                                   onClick="@command('onPraticheToXls', totale=1)"/>
+                </hlayout>
+            </hlayout>
+            <hlayout>
+                <div hflex="true"/>
+                <toolbarbutton
+                        image="@load(vm.filtroAttivoPratiche ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                        onClick="@command('openFiltriPratiche')"/>
+            </hlayout>
+        </hlayout>
+        <listbox id="listBoxDetailsPratiche" span="true"
+                 selectedItem="@bind(vm.praticaRuoloSelezionata)"
+                 nonselectableTags="" sizedByContent="true" model="@load(vm.listaPraticheRuolo)"
+                 emptyMessage="Nessuna pratica presente." vflex="true">
+            <listhead sizable="true" children="@load(vm.colonnePraticheConSanzioni)">
+                <template name="children" var="item">
+                    <listheader label="@load(item.label)" tooltiptext="@load(item.tooltiptext)"/>
+                </template>
+            </listhead>
+            <template name="model" var="line">
+                <listitem children="@bind(line)">
+                    <template name="children" var="cell">
+                        <listcell if="#{cell.type eq 'date'}"
+                                  label="@load((cell.label eq null) ? '' : c:formatDate(cell.label, 'dd/MM/yyyy')))"
+                                  sclass="@load(cell.cssClass)" style="white-space:nowrap;"
+                                  tooltiptext="@load(c:replace(cell.tooltipText, '$euro$', '€'))"/>
+                        <listcell if="#{cell.type eq 'currency'}"
+                                  label="@load((cell.label eq null) ? '' : c:formatNumber(cell.label, '€ #,##0.00'))"
+                                  sclass="@load(cell.cssClass)" style="white-space:nowrap;"
+                                  tooltiptext="@load(c:replace(cell.tooltipText, '$euro$', '€'))"/>
+                        <listcell if="#{cell.type eq 'number'}"
+                                  label="@load(cell.label)"
+                                  sclass="@load(cell.cssClass)" style="white-space:nowrap;"
+                                  tooltiptext="@load(c:replace(cell.tooltipText, '$euro$', '€'))"/>
+                        <listcell if="#{cell.type eq 'generic'}"
+                                  label="@load(cell.label)"
+                                  sclass="@load(cell.cssClass)" style="white-space:nowrap;"
+                                  tooltiptext="@load(c:replace(cell.tooltipText, '$euro$', '€'))"/>
+                    </template>
+                </listitem>
+            </template>
+        </listbox>
+    </vlayout>
+
+</zk>

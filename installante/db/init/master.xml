@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <!-- TR4 ed integrazioni standard -->
+    <include file="init_dbchangelog_tr4.sql" relativeToChangelogFile="true"/>
+    <include file="../integration/ad4/tr4sql/init_dbchangelog_ad4.sql" relativeToChangelogFile="true"/>
+    <include file="../integration/so4/tr4sql/init_dbchangelog_so4.sql" relativeToChangelogFile="true"/>
+    <include file="../integration/tr4web/tr4sql/init_dbchangelog_tr4Web.sql" relativeToChangelogFile="true"/>
+
+    <!-- Moduli condizionati -->
+
+    <include file="init_dbchangelog_dage_g2.sql" relativeToChangelogFile="true"/>
+    <include file="init_dbchangelog_dage_t2.sql" relativeToChangelogFile="true"/>
+    <include file="init_dbchangelog_dage_v2.sql" relativeToChangelogFile="true"/>
+    <include file="init_dbchangelog_dage_v4.sql" relativeToChangelogFile="true"/>
+
+    <include file="../integration/cfa/tr4sql/init_dbchangelog_cfa.sql" relativeToChangelogFile="true"/>
+    <include file="../integration/cfa/tr4sql/init_dbchangelog_no_cfa.sql" relativeToChangelogFile="true"/>
+
+    <include file="../integration/depag/tr4sql/init_dbchangelog_depag.sql" relativeToChangelogFile="true"/>
+    <include file="../integration/depag/tr4sql/init_dbchangelog_no_depag.sql" relativeToChangelogFile="true"/>
+
+    <include file="../integration/gsd/tr4sql/init_dbchangelog_gsd.sql" relativeToChangelogFile="true"/>
+    <include file="../integration/gsd/tr4sql/init_dbchangelog_no_gsd.sql" relativeToChangelogFile="true"/>
+
+    <include file="../integration/trb/tr4sql/init_dbchangelog_trb.sql" relativeToChangelogFile="true"/>
+    <include file="../integration/trb/tr4sql/init_dbchangelog_no_trb.sql" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

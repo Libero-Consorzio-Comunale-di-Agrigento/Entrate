@@ -1,0 +1,9 @@
+<zk>
+    <div style="display: flex; justify-content: space-between;">
+        <label style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block; width:inherit; white-space: nowrap;"/>
+
+        <image height="16px"
+               width="16px"
+               style="float: right; cursor: pointer; padding-left: 5px"/>
+    </div>
+</zk>

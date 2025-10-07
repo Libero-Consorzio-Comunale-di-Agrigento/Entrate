@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2021-01-08T10:02:18 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="calcoloIndividuale" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="2a594c80-4533-4f7b-bf88-6a8657c7c985">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="4"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ENTE" class="java.lang.String"/>
+	<parameter name="valoreTerreniRidotti" class="java.math.BigDecimal"/>
+	<parameter name="valoreTerreniRidottiFuoriComune" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="contribuente" class="it.finmatica.tr4.dto.ContribuenteDTO">
+		<fieldDescription><![CDATA[contribuente]]></fieldDescription>
+	</field>
+	<field name="tipoTributo" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoTributo]]></fieldDescription>
+	</field>
+	<field name="listaOggetti" class="java.util.List">
+		<fieldDescription><![CDATA[listaOggetti]]></fieldDescription>
+	</field>
+	<field name="anno" class="java.lang.Short">
+		<fieldDescription><![CDATA[anno]]></fieldDescription>
+	</field>
+	<field name="listaImposte" class="java.util.List">
+		<fieldDescription><![CDATA[listaImposte]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="27">
+			<subreport>
+				<reportElement x="0" y="0" width="540" height="20" uuid="de07a9c8-e84a-4a33-aa0b-75b75102f8d5"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="contribuente">
+					<subreportParameterExpression><![CDATA[$F{contribuente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ENTE">
+					<subreportParameterExpression><![CDATA[$P{ENTE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoTributo">
+					<subreportParameterExpression><![CDATA[$F{tipoTributo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "calcoloIndividualeTestata.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="540" height="22" uuid="c5c3e62b-e496-439a-9bfb-55f6b985a294"/>
+				<subreportParameter name="anno">
+					<subreportParameterExpression><![CDATA[$F{anno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoTributo">
+					<subreportParameterExpression><![CDATA[$F{tipoTributo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{listaOggetti})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "calcoloIndividualeOggetti.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="34" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="2" width="200" height="30" uuid="31c352d7-e69a-4d5c-b97e-d7bc90f2b23e"/>
+				<subreportParameter name="anno">
+					<subreportParameterExpression><![CDATA[$F{anno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="valoreTerreniRidotti">
+					<subreportParameterExpression><![CDATA[$P{valoreTerreniRidotti}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="valoreTerreniRidottiFuoriComune">
+					<subreportParameterExpression><![CDATA[$P{valoreTerreniRidottiFuoriComune}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new it.finmatica.utility.MapDataSource($F{listaImposte})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "calcoloIndividualeImposta.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="1" width="100" height="1" uuid="584124ad-b9fe-4080-affe-55eb90b66ecb">
+					<printWhenExpression><![CDATA[($F{listaOggetti}.size() >= 2 && $F{listaOggetti}.size() <= 10) || ($F{listaOggetti}.size() % 10 > 1)]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="30" uuid="4188e10d-ce70-43c2-b188-dc1931aec596"/>
+				<subreportParameter name="valoreTerreniRidotti">
+					<subreportParameterExpression><![CDATA[$P{valoreTerreniRidotti}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new it.finmatica.utility.MapDataSource($F{listaImposte})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "calcoloIndividualeImpostaDettaglio.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="229" y="0" width="80" height="20" uuid="2826b2f9-ed68-4e50-87eb-08b68288e2f5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER} +" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="309" y="0" width="40" height="20" uuid="5ab0b5cc-6935-4844-936b-25e495079ece"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy HH:mm">
+				<reportElement x="319" y="0" width="220" height="20" uuid="db956ff1-5d1d-4dcb-9b25-f1c013f6c572"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

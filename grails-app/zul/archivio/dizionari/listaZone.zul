@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaZoneViewModel')" width="100%"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+
+        <hlayout>
+            <hlayout hflex="2">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onCambioPagina')"
+                            activePage="@bind(vm.pagingList.activePage)"
+                            pageSize="@bind(vm.pagingList.pageSize)"
+                            totalSize="@load(vm.pagingList.totalSize)"
+                            visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModificaZona')"
+                                   disabled="@load(empty vm.zonaSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onNuovaZona')"/>
+                    <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                   onClick="@command('onDuplicaZona')"
+                                   disabled="@load(empty vm.zonaSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                   onClick="@command('onEliminaZona')"
+                                   disabled="@load(empty vm.zonaSelezionata)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS'
+                                   onClick="@command('onExportXlsZone')"
+                                   disabled="@load(empty vm.elencoZone)"/>
+
+                </hlayout>
+                <hlayout valign="middle" style="text-align: right;" hflex="1">
+                    <toolbarbutton width="26px"
+                                   image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                   onClick="@command('openCloseFiltri')"/>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+        <listbox id="listBoxZone" nonselectableTags="" model="@bind(vm.listaZone)"
+                 sizedByContent="true"
+                 span="true" vflex="true"
+                 selectedItem="@bind(vm.zonaSelezionata)" emptyMessage="Nessuna zona presente.">
+            <auxhead>
+                <auxheader label="Zona" colspan="3"/>
+                <auxheader label="Storico" colspan="2"/>
+            </auxhead>
+            <listhead sizable="true">
+                <listheader sclass="centro" label="Codice"/>
+                <listheader sclass="centro" label="Sequenza"/>
+                <listheader sclass="centro" label="Denominazione"/>
+                <listheader sclass="centro" label="Da anno"/>
+                <listheader sclass="centro" label="A anno"/>
+            </listhead>
+            <template name="model" var="zo">
+                <listitem value="@load(v)"
+                          onSelect="@command('onZonaSelected')" onDoubleClick="@command('onModificaZona')">
+                    <listcell sclass="destra" label="@load(zo.codZona)"/>
+                    <listcell sclass="destra" label="@load(zo.sequenza)"/>
+                    <listcell sclass="sinistra" label="@load(zo.denominazione)"/>
+                    <listcell sclass="destra" label="@load((zo.daAnno eq null) ? '' : zo.daAnno)"/>
+                    <listcell sclass="destra" label="@load((zo.aAnno eq null) ? '' : zo.aAnno)"/>
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

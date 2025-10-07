@@ -1,0 +1,62 @@
+<zk xmlns:h="http://www.w3.org/1999/xhtml">
+
+    <style>
+        .z-column-sort-none .z-column-sort-img,
+        .z-column-sort-dsc .z-column-sort-img,
+        .z-listheader-sort-asc .z-listheader-sort-img,
+        .z-listheader-sort-dsc .z-listheader-sort-img {
+        background-image: url("");
+        }
+
+        .z-column-sort-asc_ .z-column-sort-img,
+        .z-column-sort-dsc_ .z-column-sort-img,
+        .z-listheader-sort-asc_ .z-listheader-sort-img,
+        .z-listheader-sort-dsc_ .z-listheader-sort-img {
+        background-image: url("/TributiWeb/images/css/arrows.png") !important;
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        }
+
+        .z-column-sort-asc_ .z-column-sort-img,
+        .z-listheader-sort-asc_ .z-listheader-sort-img{
+        background-position: 0 0;
+        }
+        .z-column-sort-dsc_ .z-column-sort-img,
+        .z-listheader-sort-dsc_ .z-listheader-sort-img {
+        background-position: 0 -5px;
+        }
+
+    </style>
+
+    <toolbarbutton image="/images/pulsanti/16x16/set_down.png" popup="sortingPopup" width="20px" height="20px"/>
+    <popup id="sortingPopup" width="350px">
+        <listbox id="campiOrdinamentoListbox" emptyMessage="Nessun criterio di ordinamento">
+            <listhead>
+                <listheader hflex="min"/>
+                <listheader hflex="1"/>
+                <listheader hflex="min"/>
+            </listhead>
+            <template name="model">
+                <listitem draggable="true"
+                          droppable="true"
+                          forward="onDrop=campiOrdinamentoListbox.onDrop">
+                    <listcell sclass="centro">
+                        <checkbox checked="#{each.attivo}" forward="campiOrdinamentoListbox.onAttivaClick(#{each})"/>
+                    </listcell>
+                    <listcell sclass="sinistra" label="#{each.label}"/>
+                    <listcell sclass="centro">
+                        <image forward="campiOrdinamentoListbox.onCambiaDirezioneOrdinamentoClick(#{each})"
+                               width="20px"
+                               src="#{each.verso eq 'ASC' ? '/images/afc/16x16/arrow_up.png' : '/images/afc/16x16/arrow_down.png'}"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button id="reset" mold="trendy" label="Ripristina" image="/images/afc/16x16/close.png"/>
+            </h:div>
+        </h:div>
+    </popup>
+</zk>

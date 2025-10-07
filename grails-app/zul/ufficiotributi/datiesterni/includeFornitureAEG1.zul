@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+	    <hlayout hflex="2" valign="middle">
+	        <hlayout sclass="afc-control-bar" valign="middle">
+	            <paging sclass="afc-paging" onPaging="@command('onCambioPagina')"
+	                    activePage="@bind(vm.pagingListG1.activePage)" pageSize="@bind(vm.pagingListG1.pageSize)"
+	                    totalSize="@load(vm.pagingListG1.totalSize)"
+	                    visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+	            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+	                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+	                           disabled="@load(empty vm.listaFornitureG1))" onClick="@command('onRicaricaListaG1')"/>
+		 		<toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                               tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaFornitura')"
+							   disabled="@load(empty vm.fornituraG1Selezionata)"/>
+		 		<toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                               tooltiptext='Duplica'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onDuplicaFornitura')"
+							   disabled="@load(empty vm.fornituraG1Selezionata)"/>
+				<toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+							   tooltiptext='Esporta in XLS' onClick="@command('onFornitureToXls')"
+							   disabled="@load(empty vm.listaFornitureG1)"/>
+                <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                               tooltiptext='Funzioni'
+                               popup="funzioniFornitureAEG1"/>
+	        </hlayout>
+	        <hlayout valign="middle" hflex="1">
+				<space width="3px"/>
+				<label value="Documento"/>
+				<space width="3px"/>
+				<combobox mold="rounded" hflex="1" readonly="true" onSelect="@command('onCambioDocumentoId')"
+				          model="@load(vm.listProgrDoc)" selectedItem="@bind(vm.progrDocSelezionato)"
+                  disabled="@load(vm.filtroEstesoListG1)"
+                  tooltiptext="@load(vm.filtroEstesoListG1 ? 'Non disponibile: specificato filtro data Fornitura, Ripartizione o Bonifico' : 
+																																																									'Selezione Documento')">
+				    <template name="model" var="opz">
+				        <comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+				    </template>
+				</combobox>
+				<space width="3px"/>
+				<label value="Ripartizione"/>
+				<space width="3px"/>
+				<combobox mold="rounded" hflex="1" readonly="true" onSelect="@command('onCambioPorzione')"
+				          model="@load(vm.listPorzioni)" selectedItem="@bind(vm.porzioneSelezionata)"
+                  disabled="@load(vm.filtroEstesoListG1)"
+								  tooltiptext="@load(vm.filtroEstesoListG1 ? 'Non disponibile: specificato filtro data Fornitura, Ripartizione o Bonifico' : 
+																																																									'Selezione Ripartizione')">
+				    <template name="model" var="opz">
+				        <comboitem label="@load(opz.descrizione)" value="@load(opz)"/>
+				    </template>
+				</combobox>
+	        </hlayout>
+	    </hlayout>
+           <hlayout style="text-align: right;" valign="middle" width="60px">
+               <toolbarbutton
+                       image="@load(vm.filtroAttivoListG1 ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                       onClick="@command('onOpenFiltriListaG1')"/>
+           </hlayout>
+	</hlayout>
+	<listbox id="listBoxFornitureG1" nonselectableTags="" model="@bind(vm.listaFornitureG1)" sizedByContent="true" span="true" vflex="1"
+	          selectedItem="@bind(vm.fornituraG1Selezionata)" emptyMessage="Nessun dato presente.">
+	     <auxhead>
+	         <auxheader label="" colspan="@load(vm.filtroEstesoListG1 ? '2' : '2')"/>
+	         <auxheader label="Fornitura" colspan="2"/>
+	         <auxheader label="Ripartizione" colspan="2"/>
+	         <auxheader label="Bonifico" colspan="1"/>
+	         <auxheader label="Dettagli" colspan="@load((vm.flagProvincia) ? 11 : 13)"/>
+	         <auxheader label="Acc. Contabile" colspan="2" tooltiptext="Accertamento Contabile"/>
+	         <auxheader label="Provvisorio" colspan="2"/>
+	         <auxheader label="Importi" colspan="1"/>
+	     </auxhead>
+	     <listhead sizable="true">
+			<listheader label=""
+                  visible="@load(vm.filtroEstesoListG1 eq false)">
+				<checkbox onCheck="@command('onCheckAllForniture')"
+				          checked="@load(vm.selectedAnyFornitura)"
+				          disabled="@bind(empty vm.listaFornitureG1)"/>
+			</listheader>
+			<listheader sclass="centro" label="Documento"
+                  visible="@load(vm.filtroEstesoListG1)"/>
+			<listheader sclass="centro" label="Prog."/>
+			
+			<listheader sclass="centro" label="Data" tooltiptext="Data Fornitura"/>
+			<listheader sclass="centro" label="Prog." tooltiptext="Progressivo Fornitura"/>
+			
+			<listheader sclass="centro" label="Data" tooltiptext="Data Ripartizione"/>
+			<listheader sclass="centro" label="Prog." tooltiptext="Progressivo Ripartizione"/>
+			
+			<listheader sclass="centro" label="Data" tooltiptext="Data Bonifico"/>
+			
+			<listheader sclass="centro" label="Cod.Fiscale" tooltiptext="Codice Fiscale"
+								  visible="@load(vm.flagProvincia eq false)"/>
+			<listheader sclass="centro" label="Err.C.F." tooltiptext="Errore di Codice Fiscale"
+                  visible="@load(vm.flagProvincia eq false)"/>
+			<listheader sclass="centro" label="Data Risc." tooltiptext="Data Riscossione"
+                  visible="@load(vm.flagProvincia eq false)"/>
+			
+			<listheader sclass="centro" label="Ente" tooltiptext="Ente Comunale"
+								  visible="@load(vm.flagProvincia)"/>
+         
+			<listheader sclass="centro" label="Cod.Tributo" tooltiptext="Codice Tributo"/>
+			<listheader sclass="centro" label="Err.C.T." tooltiptext="Errore di Codice Tributo"/>
+			<listheader sclass="centro" label="Rateaz." tooltiptext="Rateazione"/>
+			<listheader sclass="centro" label="Anno Rif." tooltiptext="Anno Riferimento"/>
+			<listheader sclass="centro" label="Err.A.R." tooltiptext="Errore di Anno Riferimento"/>
+
+			<listheader sclass="centro" label="Imp.Debito" tooltiptext="Importo a Debito"/>
+			<listheader sclass="centro" label="Imp.Credito" tooltiptext="Importo a Credito"/>
+			<listheader sclass="centro" label="Ravv." tooltiptext="Ravvedimento"/>
+			
+			<listheader sclass="centro" label="Tributo"/>
+			
+			<listheader sclass="centro" label="ID Operazione" tooltiptext="ID Operazione"/>
+			
+			<listheader sclass="centro" label="Anno"/>
+			<listheader sclass="centro" label="Numero"/>
+			
+			<listheader sclass="centro" label="Numero"/>
+			<listheader sclass="centro" label="Data"/>
+			
+			<listheader sclass="centro" label="Lordo"/>
+		</listhead>
+		<template name="model" var="fr">
+			<listitem value="@load(v)"
+	                   onDoubleClick="@command('onModificaFornitura')" onSelect="@command('onFornituraSelected')">
+				<listcell sclass="centro">
+					<checkbox checked="@bind(vm.selectedForniture[fr.dto.progressivo])"
+					          onCheck="@command('onCheckFornitura', detail=fr)"/>
+				</listcell>
+				<listcell sclass="destra" label="@load(fr.dto.documentoCaricato.id)"/>
+        <listcell sclass="destra" label="@load(fr.dto.progressivo)"/>
+
+        <listcell sclass="sinistra"
+                             label="@load(fr.dto.dataFornitura ne null ? c:formatDate(fr.dto.dataFornitura,'dd/MM/yyyy') : '')"/>
+				<listcell sclass="destra" label="@load(fr.dto.progrFornitura)"/>
+				
+				<listcell sclass="sinistra"
+                             label="@load(fr.dto.dataRipartizione ne null ? c:formatDate(fr.dto.dataRipartizione,'dd/MM/yyyy') : '')"/>
+				<listcell sclass="destra" label="@load(fr.dto.progrRipartizione)"/>
+				
+				<listcell sclass="sinistra"
+                             label="@load(fr.dto.dataBonifico ne null ? c:formatDate(fr.dto.dataBonifico,'dd/MM/yyyy') : '')"/>
+				
+				<listcell sclass="sinistra" label="@load(fr.dto.codFiscale)"/>
+				<listcell sclass="centro">
+					<checkbox checked="@load(fr.dto.flagErrCodFiscale eq 1)" w:onCheck="this.setChecked(!this.isChecked())"/>
+				</listcell>					
+				<listcell sclass="sinistra"
+                             label="@load(fr.dto.dataRiscossione ne null ? c:formatDate(fr.dto.dataRiscossione,'dd/MM/yyyy') : '')"/>
+
+				<listcell sclass="sinistra" label="@load(fr.enteComunale)"/>
+
+				<listcell sclass="sinistra" label="@load(fr.dto.codTributo)"/>
+				<listcell sclass="centro">
+					<checkbox checked="@load(fr.dto.flagErrCodTributo eq 1)" w:onCheck="this.setChecked(!this.isChecked())"/>
+				</listcell>					
+				<listcell sclass="sinistra" label="@load(fr.rateazione)"/>
+				<listcell sclass="destra" label="@load(fr.dto.annoRif)"/>
+				<listcell sclass="centro">
+					<checkbox checked="@load(fr.dto.flagErrAnno eq 1)" w:onCheck="this.setChecked(!this.isChecked())"/>
+				</listcell>					
+
+				<listcell sclass="destra"
+						  label="@load(((fr.dto.importoDebito eq null) || (fr.dto.importoDebito eq 0)) ? '' : fr.importoDebito)"/>
+				<listcell sclass="destra"
+						  label="@load(((fr.dto.importoCredito eq null) || (fr.dto.importoCredito eq 0)) ? '' : fr.importoCredito)"/>
+				<listcell sclass="centro">
+					<checkbox checked="@load(fr.dto.ravvedimento eq 1)" w:onCheck="this.setChecked(!this.isChecked())"/>
+				</listcell>
+				
+				<listcell sclass="sinistra" label="@load(fr.descrTributo)"/>
+				<listcell sclass="sinistra" label="@load(fr.dto.idOperazione)"/>
+				
+				<listcell sclass="destra" label="@load(fr.dto.annoAcc)"/>
+				<listcell sclass="destra" label="@load(fr.dto.numeroAcc)"/>
+				
+				<listcell sclass="sinistra" label="@load(fr.dto.numeroProvvisorio)"/>
+				<listcell sclass="sinistra"
+                             label="@load(fr.dto.dataProvvisorio ne null ? c:formatDate(fr.dto.dataProvvisorio,'dd/MM/yyyy') : '')"/>
+                             
+				<listcell sclass="destra"
+						  label="@load(((fr.dto.importoLordo eq null) || (fr.dto.importoLordo eq 0)) ? '' : c:formatNumber(fr.dto.importoLordo, '€ #,##0.00'))"/>
+	         </listitem>
+	     </template>
+	</listbox>
+	<menupopup id="funzioniFornitureAEG1">
+	    <menuitem label="Associa Accertamento o Provvisorio in contabilità"
+	              onClick="@command('onAssociaSosspesoContabilita')"
+	              disabled="@load(vm.selectedAnyFornitura eq false)"/>
+	    <menuitem label="Quadratura Versamenti della Ripartizione"
+	              onClick="@command('onVisualizzaQuadraturaVersamenti')"
+	              disabled="@load(empty vm.porzioneSelezionata)"/>
+	</menupopup>
+</zk>

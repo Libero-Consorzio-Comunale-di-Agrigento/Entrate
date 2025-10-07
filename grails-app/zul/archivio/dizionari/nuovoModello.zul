@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<!--<?page automaticTimeout="false"?>-->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('nuovoModelloViewModel')" border="normal"
+            width="600px">
+		<script src="/js/decimalbox.js"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" colspan="3">
+                        <label value="Descrizione"/>
+                    </cell>
+                    <cell colspan="9">
+                        <textbox hflex="1" value="@bind(vm.nuovoModello.descrizione)"
+                                 mold="rounded"/>
+                    </cell>
+                </row>
+                <row visible="@load(vm.sottomodello)">
+                    <cell align="right" colspan="3">
+                        <label value="Codice Sottomodello"/>
+                    </cell>
+                    <cell colspan="9">
+                        <textbox hflex="1" value="@bind(vm.nuovoModello.codiceSottomodello)"
+                                 mold="rounded" style="text-transform: uppercase" constraint="/^[a-zA-Z0-9_]*$/: Caratteri ammessi: lettere, numeri e _"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right" colspan="3">
+                        Tributo
+                    </cell>
+                    <cell hflex="1" colspan="3">
+                        <combobox hflex="1" model="@load(vm.listaTipiTributo)"
+                                  selectedItem="@bind(vm.tipoTributoSelezionato) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoTributo')"
+                                  mold="rounded"
+                                  readonly="true">
+                            <template name="model" var="t">
+                                <comboitem label="@load(c:cat3(t.tipoTributoAttuale, ' - ', t.descrizione))"
+                                           value="@load(t)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right" colspan="2">
+                        Tipologia
+                    </cell>
+                    <cell hflex="1" colspan="4">
+                        <combobox model="@load(vm.listaTipiModello)"
+                                  selectedItem="@bind(vm.tipoModelloSelezionato) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoModello')"
+                                  hflex="1"
+                                  mold="rounded"
+                                  readonly="true">
+                            <template name="model" var="m">
+                                <comboitem label="@load(m.descrizione)" value="@load(m)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+
+                <button mold="trendy" image="/images/afc/16x16/save.png" label="Salva"
+                        onClick="@command('onSalvaDocumento')"/>
+
+                <button mold="trendy" image="/images/afc/16x16/close.png" label="Chiudi"
+                        onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

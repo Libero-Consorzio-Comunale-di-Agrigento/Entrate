@@ -1,0 +1,90 @@
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul https://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer"
+            onOK="@command('onCerca')"
+            viewModel="@id('vm') @init('listaCodiciF24RicercaViewModel')"
+            vflex="1" border="normal" sizable="false" width="500px" title=" ">
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina"
+                       value="@load('Ricerca Codici F24')"/>
+            </hlayout>
+        </h:div>
+        <div>
+            <groupbox width="100%">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell sclass="destra" hflex="1">
+                                <label value="Tributo"/>
+                            </cell>
+                            <cell hflex="3">
+                                <textbox mold="rounded" hflex="1" value="@bind(vm.filtro.tributo)"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell sclass="destra" hflex="1">
+                                <label value="Descrizione"/>
+                            </cell>
+                            <cell hflex="3">
+                                <textbox mold="rounded" hflex="1" value="@bind(vm.filtro.descrizione)"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell sclass="destra" hflex="1">
+                                <label value="Rateazione"/>
+                            </cell>
+                            <cell hflex="3">
+                                <combobox hflex="1" readonly="true" model="@load(vm.tipiRateazione)"
+                                          selectedItem="@bind(vm.filtro.tipoRateazione)  @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                          mold="rounded">
+                                    <template name="model" var="item">
+                                        <comboitem label="@load(item.value)" value="@load(item.key)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell sclass="destra" hflex="1">
+                                <label value="Tipo Codice"/>
+                            </cell>
+                            <cell hflex="3">
+                                <combobox hflex="1" readonly="true" model="@load(vm.tipiCodice)"
+                                          selectedItem="@bind(vm.filtro.tipoCodice)  @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                          mold="rounded">
+                                    <template name="model" var="item">
+                                        <comboitem label="@load(item.value)" value="@load(item.key)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell sclass="destra" hflex="1">
+                                <label value="Stampa Rateazione"/>
+                            </cell>
+                            <cell hflex="3">
+                                <radiogroup selectedItem="@bind(vm.filtro.stampaRateazione)">
+                                    <radio value="E" label="Entrambi" selected="true"/>
+                                    <radio value="S" label="Si"/>
+                                    <radio value="N" label="No"/>
+                                </radiogroup>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button mold="trendy" image="/images/afc/16x16/filter_box.png"
+                            label="Cancella Filtri" onClick="@command('svuotaFiltri')"/>
+                    <button mold="trendy" image="/images/afc/16x16/search.png"
+                            label="Cerca" onClick="@command('onCerca')"/>
+                    <button mold="trendy" image="/images/afc/16x16/close.png"
+                            label="Chiudi" onClick="@command('onChiudi')"/>
+                </h:div>
+            </h:div>
+        </div>
+    </window>
+</zk>

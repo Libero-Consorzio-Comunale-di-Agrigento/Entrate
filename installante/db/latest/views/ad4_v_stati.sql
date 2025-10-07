@@ -1,0 +1,20 @@
+--liquibase formatted sql 
+--changeset abrandolini:20250326_152401_ad4_v_stati stripComments:false runOnChange:true 
+ 
+CREATE OR REPLACE FORCE VIEW AD4_V_STATI AS
+SELECT STATO_TERRITORIO,
+        DENOMINAZIONE,
+        DENOMINAZIONE_AL1,
+        DENOMINAZIONE_AL2,
+        SIGLA,
+        DESC_CITTADINANZA,
+        DESC_CITTADINANZA_AL1,
+        DESC_CITTADINANZA_AL2,
+        RAGGRUPPAMENTO,
+        STATO_APPARTENENZA,
+        UTENTE_AGGIORNAMENTO,
+        DATA_AGGIORNAMENTO,
+        SIGLA_ISO3166_ALPHA2
+    FROM AD4_STATI_TERRITORI;
+comment on table AD4_V_STATI is 'ad4 v stati';
+

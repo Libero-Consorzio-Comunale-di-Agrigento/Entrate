@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2024-03-07T11:22:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="totaleVersamentiPrimaPaginaTasi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="5" bottomMargin="5" uuid="216d6370-59a3-44e5-833f-823517651b4e">
+	<property name="ireport.zoom" value="1.2100000000000024"/>
+	<property name="ireport.x" value="338"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titolo" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="terreniAgricoli" class="java.math.BigDecimal"/>
+	<field name="areeFabbricabili" class="java.math.BigDecimal"/>
+	<field name="rurali" class="java.math.BigDecimal"/>
+	<field name="altriFabbricati" class="java.math.BigDecimal"/>
+	<field name="fabbricatiD" class="java.math.BigDecimal"/>
+	<field name="fabbricatiMerce" class="java.math.BigDecimal"/>
+	<field name="detrazioni" class="java.math.BigDecimal"/>
+	<field name="importiVersati" class="java.math.BigDecimal"/>
+	<field name="numVersamenti" class="java.lang.Integer"/>
+	<field name="somma" class="java.math.BigDecimal"/>
+	<field name="abPrincipali" class="java.math.BigDecimal"/>
+	<field name="tipoVersamento" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipoVersamentoDesc" class="java.lang.String"/>
+	<variable name="totTerreniAgricoli" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{terreniAgricoli}]]></variableExpression>
+	</variable>
+	<variable name="totAreeFabbricabili" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{areeFabbricabili}]]></variableExpression>
+	</variable>
+	<variable name="totAbPrincipali" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{abPrincipali}]]></variableExpression>
+	</variable>
+	<variable name="totRurali" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{rurali}]]></variableExpression>
+	</variable>
+	<variable name="totAltriFabbricati" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{altriFabbricati}]]></variableExpression>
+	</variable>
+	<variable name="totFabbricatiD" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{fabbricatiD}]]></variableExpression>
+	</variable>
+	<variable name="totFabbricatiMerce" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{fabbricatiMerce}]]></variableExpression>
+	</variable>
+	<variable name="totSomma" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{somma}]]></variableExpression>
+	</variable>
+	<variable name="totDetrazioni" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{detrazioni}]]></variableExpression>
+	</variable>
+	<variable name="totImportiVersati" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{importiVersati}]]></variableExpression>
+	</variable>
+	<variable name="totNumVersamenti" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{numVersamenti}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="55">
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="30" uuid="233ede63-7fa7-4e3b-add8-5cd48462047a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Versamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="20" width="70" height="30" uuid="da8a97bc-0350-4a8b-9061-4cb684cc8e08"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ab.Principali]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="20" width="80" height="30" uuid="d125dbcb-4928-4ca4-bffd-2b25cc7f9269"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rurali]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="20" width="80" height="30" uuid="d2f343cc-f9ad-4d8e-bdfc-f2b544386b10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Altri Fabbricati]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="20" width="80" height="30" uuid="f34125dc-1b6d-4105-9ecd-7cf207c33152"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Somma Totale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="20" width="70" height="30" uuid="0bcb8f87-9cc0-4ba2-947e-6210078f8c82"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detrazioni]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="570" y="20" width="80" height="30" uuid="a036233e-8fa9-417d-9fc4-24f2fca9e247"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importi Versati]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="650" y="20" width="60" height="30" uuid="87daf285-f5a8-4139-a13c-dd44328e1226"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Num.Vers.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="290" height="14" uuid="e2b166c7-151d-4c0c-87f7-de67894b222f"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titolo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="20" width="90" height="30" uuid="144f7a72-563a-4ede-9271-ae9faeb04703"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aree Fabbricabili]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="10" uuid="f1ee2dbc-5575-4c81-bd4f-68a787a840d8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoVersamentoDesc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="260" y="0" width="80" height="10" uuid="3a30c3f7-821e-4d25-ae54-e47f3ed345cb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rurali}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="420" y="0" width="80" height="10" uuid="a55a1f7f-1df4-4be6-bf19-89a4df379dda"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{somma}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="80" height="10" uuid="c188eeec-b6ac-41d3-8ccb-c8e6552da737"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{altriFabbricati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="570" y="0" width="80" height="10" uuid="177bb09d-587d-488c-9c70-1095fdf8113c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importiVersati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="500" y="0" width="70" height="10" uuid="402e6db7-6a2c-4eba-94c4-2941944287c1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detrazioni}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.##" isBlankWhenNull="true">
+				<reportElement x="650" y="0" width="60" height="10" uuid="4ea716fb-fc59-44c2-acdb-fc62d1e13dc4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numVersamenti}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="190" y="0" width="70" height="10" uuid="e3ed7b03-1131-42a1-b3d6-cfdd7c78eb5c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abPrincipali}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="90" height="10" uuid="3c506f5a-af34-478a-915a-85bda323b542"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{areeFabbricabili}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="25">
+			<staticText>
+				<reportElement x="0" y="10" width="100" height="10" uuid="81f93f3f-a79f-4b2e-b112-48c279033010"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Totale:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="340" y="10" width="80" height="10" uuid="8f91fb9c-df1c-46e4-b361-23be8835bf10"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totAltriFabbricati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="260" y="10" width="80" height="10" uuid="50094ad6-832e-48ea-8c5f-875d6206e45f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totRurali}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="190" y="10" width="70" height="10" uuid="08f7e41b-9b2e-47f9-b505-2c09a9635158"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totAbPrincipali}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="570" y="10" width="80" height="10" uuid="f023dc9e-ca6d-4c23-9640-ed6d086ce0b9"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totImportiVersati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="420" y="10" width="80" height="10" uuid="27d4c211-53ef-4be9-817b-efa60b84682c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totSomma}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="500" y="10" width="70" height="10" uuid="1e799fe1-addc-4213-b09d-6a3fc4a5e1bf"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDetrazioni}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.##" isBlankWhenNull="true">
+				<reportElement x="650" y="10" width="60" height="10" uuid="0356e6a3-4c85-42cf-9632-839fe65d8cbe"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totNumVersamenti}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="100" y="10" width="90" height="10" uuid="c982e3cc-20d3-4f5f-952f-e32f2f7c58ac"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totAreeFabbricabili}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

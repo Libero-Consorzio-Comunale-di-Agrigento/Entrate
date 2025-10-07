@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <import file="liquibase.ant"/>
+    <target name="install:db" depends="-crea-utenti-ruoli-diritti,-liquibase"/>
+
+    <target name="-crea-utenti-ruoli-diritti">
+        <!-- installo progetto / modulo / istanza -->
+        <ad4-crea-progetto codice="${progetto.codice}" descrizione="${progetto.descrizione}"/>
+        <ad4-crea-modulo codice="${modulo.codice}" descrizione="${modulo.descrizione}" progetto="${progetto.codice}"/>
+        <ad4-crea-istanza progetto="${progetto.codice}" codice="${progetto.istanza.codice}"
+                          descrizione="${progetto.istanza.descrizione}" user="${global.db.target.username}"
+                          passwd="${global.db.target.password}"/>
+
+        <ad4-crea-utente codice="TR4" nominativo="TR4" passwd="TR4"/>
+
+        <ad4-crea-ruolo codice="TRI" descrizione="Utente Tributi"/>
+        <ad4-crea-ruolo codice="AMM" descrizione="Utente Amministratore"/>
+        <ad4-assegna-diritto-accesso nominativo="TR4" ruolo="AMM" istanza="${progetto.istanza.codice}"
+                                     modulo="${modulo.codice}"/>
+    </target>
+
+    <!-- Questo Target viene eseguito da AntInstaller solo per installare i file su filesystem. -->
+    <target name="install:fs">
+        <!-- scompatto il contesto nel war -->
+        <!-- Installo il contesto -->
+        <tomcat-installa-contesto war-file="../commons/webapp/tributi-web.war" context-name="TributiWeb"
+                                  context-file="../webapp/context.xml"/>
+    </target>
+
+</project>

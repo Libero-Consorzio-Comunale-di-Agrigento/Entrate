@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaCanoniViewModel')" width="100%"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="2" valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onCambioPagina')"
+                            activePage="@bind(vm.pagingList.activePage)" pageSize="@bind(vm.pagingList.pageSize)"
+                            totalSize="@load(vm.pagingList.totalSize)"
+                            visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   disabled="@load(empty vm.listaCanoni)" onClick="@command('onRicaricaLista')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png"
+                                   tooltiptext="@load((vm.lettura ne false) ? 'Dettagli' : 'Modifica')"
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModificaCanone')"
+                                   disabled="@load(empty vm.canoneSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onCanoniToXls')"
+                                   disabled="@load(empty vm.listaCanoni)"/>
+                </hlayout>
+                <hlayout valign="middle">
+                    <space width="3px"/>
+                    <label value="Anno"/>
+                    <space width="3px"/>
+                    <combobox model="@load(vm.listaAnni)" onSelect="@command('onSelectAnno')"
+                              value="@bind(vm.annoTributo)" selectedItem="@bind(vm.annoTributo)"
+                              readonly="true" mold="rounded" width="80px">
+                        <template name="model" var="item">
+                            <comboitem label="@load(item)" value="@load(item)"/>
+                        </template>
+                    </combobox>
+                </hlayout>
+            </hlayout>
+            <hlayout hflex="1" style="text-align: right;" valign="middle">
+                <toolbarbutton
+                        image="@load(vm.filtroAttivoList ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                        onClick="@command('onOpenFiltriLista')"/>
+            </hlayout>
+        </hlayout>
+        <listbox id="listBoxCanoni" nonselectableTags="" model="@bind(vm.listaCanoni)" sizedByContent="true" span="true"
+                 vflex="1"
+                 selectedItem="@bind(vm.canoneSelezionato)" emptyMessage="Nessuna Canone presente.">
+            <auxhead>
+                <auxheader label="" colspan="1" visible="@load(vm.dePagVisibile)"/>
+                <auxheader label="Contribuente" colspan="2"/>
+                <auxheader label="Oggetto" colspan="15"/>
+                <auxheader label="Concessione" colspan="3"/>
+                <auxheader label="" colspan="2"/>
+                <auxheader label="Tariffa" colspan="5"/>
+                <auxheader label="Occupazione" colspan="5"/>
+                <auxheader label="Pubblicita'" colspan="5"/>
+                <auxheader label="" colspan="1"/>
+            </auxhead>
+            <listhead sizable="true">
+                <listheader label="DePag" align="center" visible="@load(vm.dePagVisibile)"/>
+
+                <listheader label="@load(c:l('sportello.label.cognomeNome'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.cognomeNome'))"/>
+                <listheader label="@load(c:l('sportello.label.codiceFiscale'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.codiceFiscale'))"/>
+
+                <listheader label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+
+                <listheader label="@load(c:l('sportello.label.descrizione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.descrizione'))"/>
+                <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+	              <listheader label="@load(c:l('sportello.label.daKM'))"
+	                          tooltiptext="@load(c:l('sportello.label.estesa.daKM'))"/>
+	              <listheader label="@load(c:l('sportello.label.aKM'))"
+	                          tooltiptext="@load(c:l('sportello.label.estesa.aKM'))"/>
+	              <listheader label="@load(c:l('sportello.label.lato'))"
+	                          tooltiptext="@load(c:l('sportello.label.estesa.lato'))"/>
+                <listheader label="@load(c:l('sportello.label.latitudine'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.latitudine'))"/>
+                <listheader label="@load(c:l('sportello.label.longitudine'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.longitudine'))"/>
+                <listheader sclass="centro" width="30px">
+                    <image src="/images/afc/16x16/world.png" tooltiptext="@load(c:l('sportello.label.estesa.geolocalizzazione'))"
+                                    height="16px" width="16px"/>
+                </listheader>
+	              <listheader label="@load(c:l('sportello.label.comune'))"
+	                          tooltiptext="@load(c:l('sportello.label.estesa.comune'))"/>
+	              <listheader label="@load(c:l('sportello.label.localita'))"
+	                          tooltiptext="@load(c:l('sportello.label.estesa.localita'))"/>
+                <listheader label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader sclass="centro" label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader label="Numero"/>
+	              <listheader label="Data"/>
+            	  <listheader label="N.O." tooltiptext="Nulla Osta"/>
+                <listheader label="Decorrenza"/>
+                <listheader label="Cessazione"/>
+                <listheader label="Codice Tributo"/>
+                <listheader label="@load(vm.annoTributo lt '2021' ? 'Categoria' : 'Zona')"/>
+                <listheader label="Tipologia"/>
+                <listheader label="Occ." tooltiptext="Tipo occupazione"/>
+                <listheader label="Es." tooltiptext="Esenzione"/>
+                <listheader label="Quantita'"/>
+                <listheader label="Larghezza"/>
+                <listheader label="Profondita'"/>
+                <listheader label="Sup. Reale"/>
+                <listheader label="Superficie"/>
+                <listheader label="Quantita'"/>
+                <listheader label="L (m)"/>
+                <listheader label="H (m)"/>
+                <listheader label="Sup. Reale"/>
+                <listheader label="Superficie"/>
+                <listheader label="@load(c:l('sportello.label.pratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.pratica'))"/>
+            </listhead>
+            <template name="model" var="conc">
+                <listitem value="@load(v)"
+                          onSelect="@command('onCanoneSelected')" onDoubleClick="@command('onModificaCanone')">
+                    <listcell>
+                        <hbox align="center">
+                            <image src="/images/tr4web/22x22/pagopa.png" visible="@load(!empty conc.statoDepag)"/>
+                            <image forEach="#{conc.statoDepag}"
+                                   visible="@load(!empty conc.statoDepag)"
+                                   src="#{each.value.immagine}"
+                                   tooltiptext="#{each.value.descrizione}"/>
+                        </hbox>
+                    </listcell>
+                    <listcell
+                            label="@load(conc.cognomeNome)"/>
+                    <listcell>
+                        <hbox>
+                            <label value="@load(conc.contribuente)"/>
+                            <space width="5px"/>
+                            <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                                   style="cursor: pointer;" width="16px"
+                                   onClick="@command('onApriContribuente')"/>
+                        </hbox>
+                    </listcell>
+                    <listcell
+                            sclass="destra"
+                            label="@load(conc.oggettoRef)"/>
+                    <listcell
+                            label="@load(conc.oggetto.descrizione)"/>
+                    <listcell
+                            label="@load(conc.indirizzoOgg)"/>
+	                  <listcell sclass="destra"
+	                            label="@load((conc.oggetto.daKM eq null)?'':c:formatNumber(conc.oggetto.daKM, '#,##0.000'))"/>
+	                  <listcell sclass="destra"
+	                            label="@load((conc.oggetto.aKM eq null)?'':c:formatNumber(conc.oggetto.aKM, '#,##0.000'))"/>
+                    <listcell label="@load(conc.oggetto.lato)"/>
+
+                    <listcell label="@load(conc.oggetto.latSessages)"/>
+                    <listcell label="@load(conc.oggetto.lonSessages)"/>
+                    <listcell sclass="centro">
+                        <hlayout>
+                          <image src="/images/afc/16x16/world.png" tooltiptext="Geolocalizza Oggetto"
+                                height="16px" width="16px" style="float: right; cursor: pointer;"
+                                visible="@load((not empty conc.oggetto.latitudine) and (not empty conc.oggetto.longitudine))"
+                                onClick="@command('onGeolocalizzaOggetto')"/>
+                        </hlayout>
+                    </listcell>
+
+                    <listcell label="@load(c:cat(conc.oggetto.denCom, ((conc.oggetto.denPro ne null) and (conc.oggetto.denPro ne '')) ? 
+																								c:cat3(' (', conc.oggetto.sigPro, ')') : ''))"/>
+                    <listcell label="@load(conc.oggetto.localita)"/>
+                    <listcell
+                            sclass="destra"
+                            label="@load(conc.oggetto.sezione)"/>
+                    <listcell
+                            sclass="destra"
+                            label="@load(conc.oggetto.foglio)"/>
+                    <listcell
+                            sclass="destra"
+                            label="@load(conc.oggetto.numero)"/>
+                    <listcell
+                            sclass="destra"
+                            label="@load(conc.oggetto.subalterno)"/>
+
+                    <listcell label="@load(conc.dettagli.numeroConcessione)" sclass="centro"/>
+	                  <listcell sclass="centro"
+	                          label="@load(conc.dettagli.dataConcessione ne null ? c:formatDate(conc.dettagli.dataConcessione,'dd/MM/yyyy') : '')"/>
+	                  <listcell>
+	                      <checkbox disabled="true" checked="@load(conc.dettagli.flagNullaOsta)"/>
+	                  </listcell>
+	                
+                    <listcell
+                            sclass="centro"
+                            label="@load(conc.dettagli.dataDecorrenza ne null ? c:formatDate(conc.dettagli.dataDecorrenza,'dd/MM/yyyy') : '')"/>
+                    <listcell
+                            sclass="centro"
+                            label="@load(conc.dettagli.dataCessazione ne null ? c:formatDate(conc.dettagli.dataCessazione,'dd/MM/yyyy') : '')"/>
+                
+                    <listcell label="@load(conc.codiceTributo)" sclass="destra"/>
+                    <listcell label="@load(conc.categoriaDescr)" sclass="sinistra"/>
+                    <listcell label="@load(conc.tariffaDescr)" sclass="sinistra"/>
+                    <listcell label="@load(conc.dettagli.tipoOccupazione)" sclass="centro"/>
+                    <listcell label="@load(conc.esenzione eq true ? 'E' : '')" sclass="centro"/>
+                    <listcell label="@load(conc.occupazione.quantita)" sclass="destra"/>
+                    <listcell label="@load(conc.occupazione.larghezza)" sclass="destra"/>
+                    <listcell label="@load(conc.occupazione.profondita)" sclass="destra"/>
+                    <listcell label="@load(conc.occupazione.consistenzaReale)" sclass="destra"/>
+                    <listcell label="@load(conc.occupazione.consistenza)" sclass="destra"/>
+                    <listcell label="@load(conc.pubblicita.quantita)" sclass="destra"/>
+                    <listcell label="@load(conc.pubblicita.larghezza)" sclass="destra"/>
+                    <listcell label="@load(conc.pubblicita.profondita)" sclass="destra"/>
+                    <listcell label="@load(conc.pubblicita.consistenzaReale)" sclass="destra"/>
+                    <listcell label="@load(conc.pubblicita.consistenza)" sclass="destra"/>
+                    <listcell label="@load(conc.praticaBase)" sclass="centro"/>
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

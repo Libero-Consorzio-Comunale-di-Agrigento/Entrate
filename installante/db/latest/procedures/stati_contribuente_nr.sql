@@ -1,0 +1,19 @@
+--liquibase formatted sql 
+--changeset abrandolini:20250326_152423_stati_contribuente_nr stripComments:false runOnChange:true 
+ 
+create or replace procedure STATI_CONTRIBUENTE_NR
+( a_id		IN OUT	number
+)
+is
+begin
+   if a_id is null then
+       begin -- Assegnazione Numero Progressivo
+          select nvl(max(id),0)+1
+            into a_id
+            from STATI_CONTRIBUENTE
+          ; 
+       end;
+    end if;
+end;
+/* End Procedure: STATI_CONTRIBUENTE_NR */
+/

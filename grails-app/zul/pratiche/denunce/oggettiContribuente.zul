@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               tooltiptext='#{empty arg.modifyTooltip?((!vm.modifica)?"Lettura":"Modifica"):arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               onClick="@command('onModificaOggCo')"
+                               disabled="@load(empty vm.oggCoSelezionato || vm.oggettiSelezionati.size() > 1 || vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"/>
+                <toolbarbutton image="/images/afc/16x16/add.png"
+                               tooltiptext='#{empty arg.addTooltip?"Aggiungi oggetto":arg.addTooltip}'
+                               popup="importaOggetto"
+                               style="cursor: pointer;"
+                               disabled="@load(empty vm.denuncia.pratica.id || !vm.modifica || vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"/>
+                <toolbarbutton image="/images/afc/16x16/editcopy.png"
+                               tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                               onClick="@command('onDuplicaOggCo')"
+                               disabled="@load(empty vm.oggCoSelezionato || !vm.modifica || vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"/>
+                <toolbarbutton image="/images/afc/16x16/delete.png" tooltiptext='Cancella'
+                               disabled="@load((empty vm.oggCoSelezionato and vm.oggettiSelezionati.isEmpty()) || !vm.modifica || vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"
+                               onClick="@command('onEliminaOggCo')"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniListaOggetti"
+                               disabled="@load(vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+    <listbox vflex="1" selectedItem="@bind(vm.oggCoSelezionato)" span="true"
+             height="150px"
+             model="@load(vm.listaOggetti)"
+             emptyMessage="Nessun Oggetto" sizedByContent="true"
+             onSelect="@command('onSelectTabs')">
+        <listhead sizable="true">
+            <listheader>
+                <checkbox checked="@load(vm.oggettiSelezionati.size() eq vm.listaOggetti.size())"
+                          onCheck="@command('onSelezionaTuttiImmobili')"/>
+            </listheader>
+            <listheader width="50px" label="Nr. Ord." tooltiptext="Numero"/>
+            <listheader label="T" tooltiptext="Tipo Oggetto"/>
+            <listheader label="Oggetto" tooltiptext="Oggetto"/>
+            <listheader label="Indirizzo" tooltiptext="Indirizzo"/>
+            <listheader label="Sez." sclass="centro" tooltiptext="Sezione"/>
+            <listheader label="Fgl." sclass="centro" tooltiptext="Foglio"/>
+            <listheader label="Num." sclass="centro" tooltiptext="Numero"/>
+            <listheader label="Sub." sclass="centro" tooltiptext="Subalterno"/>
+            <listheader label="Zona" sclass="centro" tooltiptext="Zona"/>
+            <listheader label="Partita" sclass="centro" tooltiptext="Partita"/>
+            <listheader label="Ctg." tooltiptext="Categoria Catasto"/>
+            <listheader label="Cl." tooltiptext="Classe Catasto"/>
+            <listheader label="Rendita" tooltiptext="Rendita"/>
+            <listheader label="Valore" tooltiptext="Valore"/>
+            <listheader label="%Poss." tooltiptext="Percentuale Possesso"/>
+            <listheader label="MP" tooltiptext="Mesi Possesso"/>
+            <listheader label="P" tooltiptext="Flag Possesso"/>
+            <listheader label="E" tooltiptext="Flag Esclusione"/>
+            <listheader label="R" tooltiptext="Flag Riduzione"/>
+            <listheader label="A" tooltiptext="Flag Abitazione Principale"/>
+            <listheader label="Pert." tooltiptext="Pertinenza di"/>
+            <listheader label="Stor." tooltiptext="Immobile Storico"/>
+            <listheader label="Det.Ogg." tooltiptext="Detrazioni Oggetto Contribuente"/>
+            <listheader label="Al.Ogg." tooltiptext="Aliquote Oggetto Contribuente"/>
+        </listhead>
+        <template name="model" var="oggCo">
+            <listitem onDoubleClick="@command(vm.valorePrecedenteAnno ne vm.denuncia.pratica.anno ? '' : 'onModificaOggCo')"
+                      context="funzioniListaOggetti">
+                <listcell sclass="centro">
+                    <checkbox checked="@load(vm.oggettiSelezionati[oggCo])"
+                              onCheck="@command('onSelezionaImmobile', selezione=oggCo)"/>
+                </listcell>
+                <listcell sclass="centro" label="@load(oggCo.oggettoPratica.numOrdine)"/>
+                <listcell sclass="centro" label="@load(oggCo.oggettoPratica.tipoOggetto.tipoOggetto)"/>
+                <listcell sclass="destra" label="@load(oggCo.oggettoPratica.oggetto.id)"/>
+                <listcell label="@load(oggCo.oggettoPratica.oggetto.indirizzo)"/>
+                <listcell sclass="destra" label="@load(oggCo.oggettoPratica.oggetto.sezione)"/>
+                <listcell sclass="destra" label="@load(oggCo.oggettoPratica.oggetto.foglio)"/>
+                <listcell sclass="destra" label="@load(oggCo.oggettoPratica.oggetto.numero)"/>
+                <listcell sclass="destra" label="@load(oggCo.oggettoPratica.oggetto.subalterno)"/>
+                <listcell sclass="destra" label="@load(oggCo.oggettoPratica.oggetto.zona)"/>
+                <listcell sclass="centro" label="@load(oggCo.oggettoPratica.oggetto.partita)"/>
+                <listcell sclass="centro" label="@load(oggCo.oggettoPratica.categoriaCatasto.categoriaCatasto)"/>
+                <listcell sclass="centro" label="@load(oggCo.oggettoPratica.classeCatasto)"/>
+                <listcell sclass="centro"
+                          label="@load(oggCo.oggettoPratica.oggettoPraticaRendita.rendita ne null ? c:formatNumber(oggCo.oggettoPratica.oggettoPraticaRendita.rendita, '€ #,##0.00'): '')"/>
+                <listcell sclass="centro"
+                          label="@load(oggCo.oggettoPratica.valore ne null ? c:formatNumber(oggCo.oggettoPratica.valore, '€ #,##0.00'): '')"/>
+                <listcell sclass="centro"
+                          label="@load(oggCo.percPossesso ne null ? c:formatNumber(oggCo.percPossesso, '#,##0.00'): '')"/>
+                <listcell sclass="centro" label="@load(oggCo.mesiPossesso)"/>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(oggCo.flagPossesso)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(oggCo.flagEsclusione)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(oggCo.flagRiduzione)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(oggCo.flagAbPrincipale)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox checked="@load((!empty oggCo.oggettoPratica.oggettoPraticaRifAp)?true:false)"
+                              w:onCheck="this.setChecked(!this.isChecked())"
+                              tooltiptext="@load((!empty oggCo.oggettoPratica.oggettoPraticaRifAp)?vm.oggettiService.tooltipPertinenzaDi(oggCo.oggettoPratica.oggettoPraticaRifAp.id):'')"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(oggCo.oggettoPratica.immStorico)"
+                              w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox onCreate="@command('checkEsistenzaDetrazioniOgco',cb=self, oggCo=oggCo)"
+                              w:onCheck="this.setChecked(!this.isChecked())"
+                              tooltiptext="Detrazioni Oggetto Contribuente"
+                    />
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox onCreate="@command('checkEsistenzaAliquoteOgco',cb=self, oggCo=oggCo)"
+                              w:onCheck="this.setChecked(!this.isChecked())"
+                              tooltiptext="Aliquote Oggetto Contribuente"
+                    />
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+    <menupopup id="importaOggetto">
+        <menuitem label="@load(c:l('label.oggettoEsistente'))"
+                  onClick="@command('onOggettoEsistente')"/>
+        <menuitem label="@load(c:l('label.anniPrec'))"
+                  onClick="@command('onAnniPrecedenti')"/>
+    </menupopup>
+    <menupopup id="funzioniListaOggetti">
+        <menuitem label="Visualizza nota" onClick="@command('onVisualizzaDocumentoNota')"
+                  disabled="@load(empty vm.oggCoSelezionato or empty vm.documentoNotaId)"/>
+        <menuitem label="Dati Caricamento Notai" onClick="@command('onOggettoDatiNotai')"
+                  disabled="@load((empty vm.oggCoSelezionato) or (empty vm.oggCoSelezionato.attributiOgco))"/>
+        <menuitem label="Dati Successione" onClick="@command('onOggettoDatiSuccessione')"
+                  disabled="@load((empty vm.oggCoSelezionato) or (empty vm.oggCoSelezionato.successione) or (vm.oggCoSelezionato.successione eq 0))"/>
+        <menuitem label="Dati Dichiarazione ENC" onClick="@command('onOggettoDichiarazioneENC')"
+                  disabled="@load((empty vm.oggCoSelezionato) or (vm.datiDichiarazioneENC eq false))"/>
+    </menupopup>
+</zk>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('ruoliAutomaticiViewModel')"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext="@load((vm.lettura ne false) ? 'Visualizza' : 'Modifica')"
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModifica')"
+                                   disabled="@load(empty vm.ruoloAutomaticoSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   onClick="@command('onNuovo')"
+                                   disabled="@load(vm.abilitaNuovo eq false)"/>
+                    <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                   onClick="@command('onDuplica')"
+                                   disabled="@load((vm.lettura ne false) or (empty vm.ruoloAutomaticoSelezionato))"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                   onClick="@command('onCancella')"
+                                   disabled="@load((vm.lettura ne false) or (empty vm.ruoloAutomaticoSelezionato))"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onRuoliAutomaticiToXls')"
+                                   disabled="@load(empty vm.listaRuoliAutomatici)"/>
+                </hlayout>
+            </hlayout>
+            <hlayout valign="middle" style="text-align: right;" hflex="1">
+                <toolbarbutton width="26px"
+                               image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                               onClick="@command('openCloseFiltri')"/>
+            </hlayout>
+        </hlayout>
+        <listbox vflex="1" selectedItem="@bind(vm.ruoloAutomaticoSelezionato)" model="@load(vm.listaRuoliAutomatici)"
+                 emptyMessage="Nessuna ruolo automatico"
+                 onSelect="@command('onSelezioneRuolo')">
+            <listhead sizable="true">
+                <listheader label="Da"/>
+                <listheader label="A"/>
+                <listheader label="T.Ruolo"/>
+                <listheader label="Anno"/>
+                <listheader label="Anno Em."/>
+                <listheader label="Pr."/>
+                <listheader label="Emissione"/>
+                <listheader label="T.Emiss."/>
+                <listheader label="Ruolo"/>
+                <listheader label="Note" width="150px"/>
+            </listhead>
+            <template name="model" var="ra">
+                <listitem onDoubleClick="@command('onModifica')">
+                    <listcell sclass="centro"
+                              label="@load(ra.daData eq null? '' :c:formatDate(ra.daData, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="centro"
+                              label="@load(ra.aData eq null? '' :c:formatDate(ra.aData, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="sinistra"
+                              label="@load(empty vm.tipoRuolo[ra.ruolo.tipoRuolo] ? '' : vm.tipoRuolo[ra.ruolo.tipoRuolo])"/>
+                    <listcell sclass="destra" label="@load(ra.ruolo.annoRuolo)"/>
+                    <listcell sclass="destra" label="@load(ra.ruolo.annoEmissione)"/>
+                    <listcell sclass="destra" label="@load(ra.ruolo.progrEmissione)"/>
+                    <listcell sclass="centro"
+                              label="@load(ra.ruolo.dataEmissione eq null? '' :c:formatDate(ra.ruolo.dataEmissione, 'dd/MM/yyyy'))"/>
+                    <listcell label="@load(vm.tipoEmissione[ra.ruolo.tipoEmissione])"/>
+                    <listcell sclass="destra" label="@load(ra.ruolo.id)"/>
+                    <listcell label="@load(ra.note)"/>
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

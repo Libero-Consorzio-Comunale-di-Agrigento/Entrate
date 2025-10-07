@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid sclass="form" vflex="1">
+        <rows>
+            <row visible="@load(vm.accManImu)">
+                <cell colspan="8">
+                </cell>
+                <cell align="left" colspan="4">
+                    <label style="font-weight: bold;" value="@load(vm.versImpostaSenzaPratica)"/>
+                </cell>
+            </row>
+
+            <row>
+                <cell align="right" colspan="2">
+                    <label value="Anno"/>
+                </cell>
+                <cell colspan="2">
+                    <intbox hflex="1" maxlength="4" mold="rounded" style="text-align: right"
+                            disabled="@load(!empty vm.pratica.id)" value="@bind(vm.pratica.anno)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Pratica"/>
+                </cell>
+                <cell colspan="2">
+                    <intbox hflex="1" maxlength="10" disabled="true" mold="rounded" style="text-align: right"
+                            value="@load(vm.pratica.id)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Numero"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout>
+                        <textbox hflex="2" maxlength="15" mold="rounded" style="text-align: right"
+                        		 disabled="@load((vm.frontespizioLettura) or (!empty vm.pratica.dataNotifica))"
+                                 onChange="@command('onCambiaNumero')"
+                                 value="@bind(vm.pratica.numero)"/>
+                        <toolbarbutton tooltiptext="Numera pratica"
+                                       image="/images/afc/16x16/number.png"
+                                       onClick="@command('onNumeraPratica')"
+                                       visible="@load(empty vm.pratica.numero and not empty vm.pratica.id)"
+                                       disabled="@load(vm.frontespizioLettura)"/>
+                    </hlayout>
+                </cell>
+            </row>
+
+            <row>
+                <cell align="right" colspan="2">
+                    <label value="Data Accertamento"/>
+                </cell>
+                <cell colspan="2">
+                    <datebox hflex="1" mold="rounded" style="text-align: right"
+                             disabled="@load((vm.frontespizioLettura) or !empty vm.pratica.dataNotifica or ((vm.sanzMinimaSuRidGen) and (vm.numSanzioni != 0)))"
+                             value="@bind(vm.pratica.data)" format="dd/MM/yyyy"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Data Notifica"/>
+                </cell>
+                <cell colspan="2">
+                    <hlayout valign="middle">
+                        <datebox hflex="1" mold="rounded" style="text-align: right"
+                                 disabled="@load((vm.frontespizioLettura) or !empty vm.versamenti or empty vm.pratica.numero or vm.disabilitaDataNotificaSuRateazione)"
+                                 onChange="@command('onCambiaDataNotifica')"
+                                 value="@bind(vm.pratica.dataNotifica)" format="dd/MM/yyyy"/>
+                        <combobox model="@load(vm.listaTipiNotifica)" mold="rounded"
+                                  readonly="true"
+                                  selectedItem="@bind(vm.pratica.tipoNotifica)"
+                                  hflex="2" visible="@load(vm.pratica.tipoPratica ne 'V')"
+                                  disabled="@load(vm.frontespizioLettura or !empty vm.versamenti or empty vm.pratica.numero)">
+                            <template name="model" var="tn">
+                                <comboitem
+                                        label="@load(!empty tn ? c:cat3(tn.tipoNotifica, ' - ', tn.descrizione) : '')"
+                                        value="@load(tn)"/>
+                            </template>
+                        </combobox>
+                    </hlayout>
+                </cell>
+
+                <cell align="right" colspan="2">
+                    <label value="Stato"/>
+                </cell>
+                <cell colspan="2">
+                    <combobox model="@bind(vm.listaTipiStato)"
+                              disabled="@load(vm.frontespizioLettura or vm.praticaRateizzata)"
+                              readonly="true"
+                              selectedItem="@bind(vm.pratica.tipoStato) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoStato')"
+                              hflex="1" mold="rounded">
+                        <template name="model" var="ts">
+                            <comboitem label="@load(c:cat3(ts.tipoStato, ' - ', ts.descrizione))"
+                                       value="@bind(ts)"/>
+                        </template>
+                    </combobox>
+                </cell>
+            </row>
+
+            <row>
+                <cell align="right" colspan="2">
+                    <label value="Imposta Calcolata"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox mold="rounded" hflex="1" readonly="true" style="text-align: right"
+                                format="€ #,##0.00" locale="it" value="@load(vm.pratica.impostaTotale)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Versamenti"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox mold="rounded" hflex="1" readonly="true" style="text-align: right"
+                                format="€ #,##0.00" locale="it"
+                                value="@load((vm.totVersamenti ne 0) ? vm.totVersamenti : null)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Tipo Atto"/>
+                </cell>
+                <cell colspan="2">
+                    <combobox model="@bind(vm.listaTipiAtto)"
+                              disabled="@load(vm.frontespizioLettura or vm.praticaRateizzata)"
+                              onChange="@command('onCambiaTipoAtto')"
+                              readonly="true"
+                              selectedItem="@bind(vm.pratica.tipoAtto) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoAtto')"
+                              hflex="1" mold="rounded">
+                        <template name="model" var="ta">
+                            <comboitem
+                                    label="@load(c:cat3(ta.tipoAtto eq -1 ? '' : ta.tipoAtto, ' - ', ta.descrizione))"
+                                    value="@bind(ta)"/>
+                        </template>
+                    </combobox>
+                </cell>
+            </row>
+
+            <row visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'ICI' or vm.pratica.tipoTributo.tipoTributo eq 'TASI')">
+                <cell align="right" colspan="2">
+                    <label value="Importo Calcolato"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded"
+                                style="text-align: right"
+                                value="@bind(vm.totImportoCalcolato)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Importo Ridotto"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                                value="@bind((vm.totImportoTotaleRid ne null and vm.totImportoTotaleRid ne vm.totImportoCalcolato) ? vm.totImportoTotaleRid : null)"/>
+                </cell>
+                <cell align="right" colspan="2">
+					<label value="Denuncia" visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"/>
+					<checkbox checked="@bind(vm.pratica.flagDenuncia)"
+                              disabled="@load(vm.frontespizioLettura)"
+                              visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"
+                              onCheck="@command('onCheckFlagDenuncia')"/>
+					<space width="10px"/>
+					<label value="Adesione"/>
+                    <checkbox checked="@bind(vm.pratica.flagAdesione)"
+                              disabled="@load(vm.frontespizioLettura or vm.pratica.tipoPratica ne 'A' or vm.pratica.tipoEvento ne 'U')"/>
+                </cell>
+                <cell colspan="2">
+                </cell>
+            </row>
+            
+            <row visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TARSU')">
+                <cell align="right" colspan="2">
+                    <label value="Importo Calcolato"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                    			value="@bind(vm.totImportoCalcolato)"
+                                visible="@load(vm.accTotTari or vm.accAutoTari)"/>
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                    			value="@bind(vm.totImportoTotale)"
+                                visible="@load(vm.accManTari)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Importo Ridotto"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                                value="@bind((vm.totImportoLordoRid ne null and vm.totImportoLordoRid ne vm.totImportoCalcolato) ? vm.totImportoLordoRid : null)"
+                                visible="@load(!vm.accManTari)"/>
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                                value="@bind((vm.totImportoLordoRid ne null and vm.totImportoLordoRid ne vm.totImportoTotale) ? vm.totImportoLordoRid : null)"
+                                visible="@load(vm.accManTari)"/>
+                </cell>
+                <cell align="right" colspan="2">
+					<label value="Denuncia" visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"/>
+					<checkbox checked="@bind(vm.pratica.flagDenuncia)"
+							  disabled="@load(vm.lettura)"
+							  visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"/>
+					<space width="10px"/>
+					<label value="Adesione"/>
+					<checkbox checked="@bind(vm.pratica.flagAdesione)"
+							  disabled="@load(vm.lettura or vm.pratica.tipoPratica ne 'A' or vm.pratica.tipoEvento ne 'U')"/>
+                </cell>
+                <cell colspan="2">
+					<label value="Calcolo Normalizzato"
+						   visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"/>
+					<checkbox checked="@bind(vm.calcoloNormalizzato)"
+							  disabled="@load(!vm.modificaOggetti || !empty vm.pratica.dataNotifica)"
+							  onCheck="@command('onCheckTipoCalcolo')"
+							  visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"/>
+					<space width="10px"
+						   visible="@bind(vm.accManTari)"/>
+	                <label value="Tardivo" tooltiptext="Accertamento per Tardivo su Omessa Denuncia"
+	                	   visible="@bind(vm.accManTari)"/>
+                    <checkbox checked="@bind(vm.flagTardivo)"
+                              disabled="@load(!vm.modificaFlagTardivo)"
+                              onCheck="@command('onCheckFlagTardivo')"
+                              visible="@bind(vm.accManTari)"/>
+                </cell>
+            </row>
+            
+            <row visible="@load((vm.pratica.tipoTributo.tipoTributo eq 'TOSAP') or (vm.pratica.tipoTributo.tipoTributo eq 'ICP') or (vm.pratica.tipoTributo.tipoTributo eq 'CUNI'))">
+                <cell align="right" colspan="2">
+                    <label value="Importo Calcolato"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                    			value="@bind(vm.totImportoCalcolato)"
+                                visible="@load(vm.accTotTribMin or vm.accAutoTribMin)"/>
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                    			value="@bind(vm.totImportoTotale)"
+                                visible="@load(vm.accManTribMin)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Importo Ridotto"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                                value="@bind((vm.totImportoLordoRid ne null and vm.totImportoLordoRid ne vm.totImportoCalcolato) ? vm.totImportoLordoRid : null)"
+                                visible="@load((!vm.accManTribMin or vm.accTotTribMin) or vm.accAutoTribMin)"/>
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                                value="@bind((vm.totImportoLordoRid ne null and vm.totImportoLordoRid ne vm.totImportoTotale) ? vm.totImportoLordoRid : null)"
+                                visible="@load((vm.accManTribMin and !vm.accTotTribMin) or (!vm.accAutoTribMin and !vm.accTotTribMin))"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Denuncia"
+                           visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"/>
+                    <checkbox checked="@bind(vm.pratica.flagDenuncia)"
+                              disabled="@load(vm.lettura)"
+                              visible="@load(vm.pratica.tipoPratica eq 'A' and vm.pratica.tipoEvento eq 'U')"/>
+                    <space width="10px"/>
+                    <label value="Adesione"/>
+                    <checkbox checked="@bind(vm.pratica.flagAdesione)"
+                              disabled="@load(vm.lettura or vm.pratica.tipoPratica ne 'A' or vm.pratica.tipoEvento ne 'U')"/>
+                </cell>
+                <cell colspan="2">
+                </cell>
+            </row>
+
+            <row visible="@load((vm.pratica.tipoAtto.tipoAtto eq 90) or
+            						(vm.totImportoLordoRid2 ne null and
+		            				 vm.totImportoLordoRid2 ne vm.totImportoLordoRid and
+		            				 vm.totImportoLordoRid2 ne vm.totImportoCalcolato))">
+                <cell align="right" colspan="2">
+                </cell>
+                <cell colspan="2">
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Importo Ridotto 2"
+                    	   visible="@load(vm.totImportoLordoRid2 ne null and
+                    	   				  vm.totImportoLordoRid2 ne vm.totImportoLordoRid and
+                    	   				  vm.totImportoLordoRid2 ne vm.totImportoCalcolato)"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                                value="@load(vm.totImportoLordoRid2)"
+                                visible="@load(vm.totImportoLordoRid2 ne null and
+                                			   vm.totImportoLordoRid2 ne vm.totImportoLordoRid and
+                                			   vm.totImportoLordoRid2 ne vm.totImportoCalcolato)"/>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Compensazione"
+                    	   visible="@load(vm.pratica.tipoAtto.tipoAtto eq 90)"/>
+                </cell>
+                <cell colspan="2">
+                    <decimalbox hflex="1" readonly="true" format="€ #,##0.00" locale="it" mold="rounded" style="text-align: right"
+                                value="@load(vm.parametriRateazione.interessiMora)"
+                                visible="@load(vm.pratica.tipoAtto.tipoAtto eq 90)"/>
+                </cell>
+            </row>
+            
+            <row>
+                <cell align="right" colspan="2">
+                    <label value="Motivo"/>
+                </cell>
+                <cell colspan="4">
+                    <hlayout>
+                        <textbox hflex="1" rows="2"
+                        		 disabled="@load(vm.frontespizioLettura or !empty vm.pratica.dataNotifica)"
+                                 value="@bind(vm.pratica.motivo)" mold="rounded"/>
+                        <vlayout>
+                            <image tooltiptext="Visualizza motivo"
+                                   src="/images/afc/16x16/document.png"
+                                   style="cursor: pointer;"
+                                   onClick="@command('onApriMotivo', arg=vm.pratica.motivo)"
+                                   visible="@load(!empty vm.pratica.motivo)"/>
+	                        <image popup="popupMotivi"
+	                               src="/images/afc/16x16/legend.png"
+	                               style="cursor: pointer;"
+	                               visible="@load(!vm.frontespizioLettura and empty vm.pratica.dataNotifica)"/>
+                        </vlayout>
+                    </hlayout>
+                    <popup id="popupMotivi">
+                        <listbox height="250px" width="550px" mold="paging"
+                                 autopaging="true"
+                                 selectedItem="@bind(vm.motivoSelezionato)"
+                                 onSelect="@command('onSelezionaMotivo', pu=popupMotivi)"
+                                 model="@load(vm.elencoMotivi)"
+                                 emptyMessage="Nessun motivo presente.">
+                            <listhead>
+                                <listheader label="Tipo Pratica" width="20%"/>
+                                <listheader label="Motivo"/>
+                            </listhead>
+                            <template name="model" var="mot">
+                                <listitem>
+                                    <listcell label="@load(mot.descrizioneMotivo())"/>
+                                    <listcell label="@load(mot.motivo)"/>
+                                </listitem>
+                            </template>
+                        </listbox>
+                    </popup>
+                </cell>
+                <cell align="right" colspan="2">
+                    <label value="Note"/>
+                </cell>
+                <cell colspan="4">
+                    <hlayout>
+						<textbox hflex="1" rows="2" disabled="@load(vm.lettura or vm.frontespizioLettura)"
+                                 value="@bind(vm.pratica.note)" mold="rounded"/>
+						<image tooltiptext="Visualizza note"
+						       src="/images/afc/16x16/document.png"
+						       style="cursor: pointer;"
+						       onClick="@command('onApriNote', arg=vm.pratica.note)"
+						       visible="@load(!empty vm.pratica.note)"/>
+                    </hlayout>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</zk>

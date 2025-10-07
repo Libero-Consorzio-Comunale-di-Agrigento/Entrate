@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2025-09-10T09:28:47 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaContribuentePratiche" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2a594c80-4533-4f7b-bf88-6a8657c7c985">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ENTE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codFiscale" class="java.lang.String">
+		<fieldDescription><![CDATA[codFiscale]]></fieldDescription>
+	</field>
+	<field name="soggetto" class="it.finmatica.tr4.dto.SoggettoDTO">
+		<fieldDescription><![CDATA[soggetto]]></fieldDescription>
+	</field>
+	<field name="versamentiImu" class="java.util.Set">
+		<fieldDescription><![CDATA[versamentiImu]]></fieldDescription>
+	</field>
+	<field name="versamentiTari" class="java.util.Set">
+		<fieldDescription><![CDATA[versamentiTari]]></fieldDescription>
+	</field>
+	<field name="oggettiImu" class="java.util.List">
+		<fieldDescription><![CDATA[oggettiImu]]></fieldDescription>
+	</field>
+	<field name="oggettiTasi" class="java.util.List">
+		<fieldDescription><![CDATA[oggettiTasi]]></fieldDescription>
+	</field>
+	<field name="oggettiTari" class="java.util.List">
+		<fieldDescription><![CDATA[oggettiTari]]></fieldDescription>
+	</field>
+	<field name="versamentiTasi" class="java.util.Set">
+		<fieldDescription><![CDATA[versamentiTasi]]></fieldDescription>
+	</field>
+	<field name="codContribuente" class="java.lang.Integer"/>
+	<field name="oggettiCuni" class="java.util.List">
+		<fieldDescription><![CDATA[oggettiCuni]]></fieldDescription>
+	</field>
+	<field name="versamentiCuni" class="java.util.Set">
+		<fieldDescription><![CDATA[versamentiCuni]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20">
+			<subreport>
+				<reportElement x="-1" y="0" width="799" height="20" uuid="c7014ac6-76e2-453b-bba6-2aaa6afaeeda"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="soggetto">
+					<subreportParameterExpression><![CDATA[$F{soggetto}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codFiscale">
+					<subreportParameterExpression><![CDATA[$F{codFiscale}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoScheda">
+					<subreportParameterExpression><![CDATA["Oggetto"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ENTE">
+					<subreportParameterExpression><![CDATA[$P{ENTE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codContribuente">
+					<subreportParameterExpression><![CDATA[$F{codContribuente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "schedaContribuenteTestata.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="48" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{oggettiImu}.isEmpty()]]></printWhenExpression>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="408" height="45" isRemoveLineWhenBlank="true" uuid="d27d945d-2f18-449d-8ed0-b5fa82491330"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoTributo">
+					<subreportParameterExpression><![CDATA["ICI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Oggetti IMU"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{oggettiImu})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "oggetti.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="47" width="100" height="1" uuid="fd2c14b5-1acb-48ca-aee4-83837921dd91">
+					<printWhenExpression><![CDATA[!$F{versamentiImu}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="48" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{versamentiImu}.isEmpty()]]></printWhenExpression>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="408" height="45" isRemoveLineWhenBlank="true" uuid="ce2eef3c-9250-429d-85c6-82593a022808"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti IMU"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{versamentiImu})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "versamenti.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="47" width="100" height="1" uuid="f6c64c29-f53f-4d1b-9d98-8e41ee358caa">
+					<printWhenExpression><![CDATA[!$F{oggettiTasi}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="48" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{oggettiTasi}.isEmpty()]]></printWhenExpression>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="408" height="45" isRemoveLineWhenBlank="true" uuid="dec63c29-155e-4edb-81f6-02aea9f9ed11"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoTributo">
+					<subreportParameterExpression><![CDATA["TASI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Oggetti TASI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{oggettiTasi})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "oggetti.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="47" width="100" height="1" uuid="68808894-cc3c-4ca7-ab1d-864b3da1fd60">
+					<printWhenExpression><![CDATA[!$F{versamentiTasi}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="48" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{versamentiTasi}.isEmpty()]]></printWhenExpression>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="408" height="45" isRemoveLineWhenBlank="true" uuid="7fcf6c8c-7b4f-47c3-91da-20e5c597ccda"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti TASI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{versamentiTasi})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "versamentiTasi.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="47" width="100" height="1" uuid="885b17a1-04b2-4f42-b1a2-bcc0179ca8bc">
+					<printWhenExpression><![CDATA[!$F{oggettiTari}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="48">
+			<printWhenExpression><![CDATA[!$F{oggettiTari}.isEmpty()]]></printWhenExpression>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="408" height="45" isRemoveLineWhenBlank="true" uuid="92a57f11-c828-4a84-a7c1-7efd31a640d4"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoTributo">
+					<subreportParameterExpression><![CDATA["TARSU"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Oggetti TARI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{oggettiTari})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "oggetti.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="47" width="100" height="1" uuid="0cf4cdd5-737f-483a-ac36-a220546d999b">
+					<printWhenExpression><![CDATA[!$F{versamentiTari}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="48">
+			<printWhenExpression><![CDATA[!$F{versamentiTari}.isEmpty()]]></printWhenExpression>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="3" width="408" height="45" isRemoveLineWhenBlank="true" uuid="f37fae6f-8949-4c36-9b9b-951b970ab747"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti TARI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{versamentiTari})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "versamenti.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="47" width="100" height="1" uuid="8d870692-281e-4deb-8e59-9b41c3eb6b8c">
+					<printWhenExpression><![CDATA[!$F{oggettiCuni}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="48">
+			<printWhenExpression><![CDATA[!$F{oggettiCuni}.isEmpty()]]></printWhenExpression>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="408" height="45" isRemoveLineWhenBlank="true" uuid="f2df1556-f0a1-11ec-8ea0-0242ac120002"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipoTributo">
+					<subreportParameterExpression><![CDATA["CUNI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Oggetti CUNI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{oggettiCuni})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "oggetti.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="47" width="100" height="1" uuid="0e0535b9-a860-47d2-8590-7dde27240f85">
+					<printWhenExpression><![CDATA[!$F{versamentiCuni}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="48">
+			<printWhenExpression><![CDATA[!$F{versamentiCuni}.isEmpty()]]></printWhenExpression>
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="3" width="408" height="45" isRemoveLineWhenBlank="true" uuid="5bec3efc-f0a2-11ec-8ea0-0242ac120002"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titolo">
+					<subreportParameterExpression><![CDATA["Versamenti CUNI"]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{versamentiCuni})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "versamenti.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="371" y="0" width="80" height="20" uuid="2826b2f9-ed68-4e50-87eb-08b68288e2f5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="451" y="0" width="40" height="20" uuid="5ab0b5cc-6935-4844-936b-25e495079ece"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy HH:mm">
+				<reportElement x="580" y="0" width="220" height="20" uuid="7753c473-4e19-4a98-8b43-207b947e84ee"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

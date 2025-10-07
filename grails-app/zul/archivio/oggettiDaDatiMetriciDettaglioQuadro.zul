@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<?component name="bandboxOggettiPratica" extends="bandbox" class="it.finmatica.zkutils.BandboxOggettiPratica"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <div apply="grailsBindComposer" viewModel="@id('vm') @init('oggettiDaDatiMetriciDettaglioQuadroViewModel')"
+        width="85%">
+
+        <grid sclass="form">
+            <rows>
+
+                <row>
+                    <cell align="right">
+                        <label value="Cod. tributo"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox id="cmbTributo"
+                                  readonly="true"
+                                  tooltiptext="@load(vm.codiceTributo.descrizione)"
+                                  hflex="1" model="@load(vm.listaCodicitributo)" mold="rounded"
+                                  onSelect="@command('onRiempiCategoria')"
+                                  selectedItem="@bind(vm.codiceTributo) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                            <template name="model" var="ct">
+                                <comboitem description="@load(ct.descrizione)" label="@load(ct.id eq 0 ? '' :  ct.id)"
+                                           value="@load(ct)" tooltiptext="@load(ct.descrizione)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+
+                    <cell align="right">
+                        <label value="Categoria"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox
+                                id="cmbCategoria"
+                                readonly="true"
+                                tooltiptext="@load(vm.categoria.descrizione)"
+                                mold="rounded" model="@load(vm.listaCategorie)" hflex="1"
+                                onSelect="@command('onRiempiTariffa')"
+                                selectedItem="@bind(vm.categoria) @converter('it.finmatica.zkutils.PropertyConverter', property='categoria')">
+                            <template name="model" var="cat">
+                                <comboitem
+                                        label="@load(c:cat3(cat.categoria, !empty cat.categoria ? '-' : '', cat.descrizione))"
+                                        value="@load(cat)" tooltiptext="@load(cat.descrizione)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+
+                    <cell align="right">
+                        <label value="Tariffa"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox id="cmbTariffa"
+                                  readonly="true"
+                                  tooltiptext="@load(vm.tariffa.descrizione)"
+                                  mold="rounded" model="@load(vm.listaTariffe)" hflex="1"
+                                  selectedItem="@bind(vm.tariffa) @converter('it.finmatica.zkutils.PropertyConverter', property='tariffa')">
+                            <template name="model" var="tar">
+                                <comboitem
+                                        label="@load(c:cat3(tar.tipoTariffa eq 0 ? '' : tar.tipoTariffa, tar.tipoTariffa eq 0 ? '' : '-', tar.descrizione))"
+                                        value="@load(tar)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <label value="Inizio occupazione"/>
+                    </cell>
+                    <cell>
+                        <datebox
+                                id="datInizioOccupazione"
+                                hflex="1" mold="rounded"
+                                onChange="@command('onCambiaInizioOccupazione')"
+                                value="@bind(vm.inizioOccupazione))"
+                                format="dd/MM/yyyy"/>
+                    </cell>
+
+                    <cell align="right">
+                        <label value="Data decorrenza"/>
+                    </cell>
+                    <cell align="right">
+                        <datebox id="datInizioDecorrenza"
+                                 hflex="1" mold="rounded"
+                                 value="@bind(vm.dataDecorrenza))"
+                                 format="dd/MM/yyyy"/>
+                    </cell>
+
+
+                    <cell align="right">
+                        <label value="Superficie"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hbox>
+                            <hbox hflex="1">
+                                <decimalbox id="decSuperficie" style="text-align: right;" hflex="1"
+                                            sclass="destra" mold="rounded"
+                                            disabled="@bind(vm.flagDaDatiMetrici)"
+                                            value="@bind(vm.superficie)"
+                                            format="#,##0.00"/>
+                                <space width="5px"/>
+                                <label value="D.M."/>
+                                <checkbox
+                                        checked="@bind(vm.flagDaDatiMetrici)"
+                                        onCheck="@command('onCheckDatiMetrici')"/>
+                            </hbox>
+                            <space width="5px"/>
+                            <hbox hflex="1" visible="@bind(vm.flagDaDatiMetrici)">
+                                <label value="@load(vm.labelRiduzioneSuperficie)"/>
+                                <checkbox checked="@bind(vm.flagRiduzioneSuperficie)"
+                                          onCheck="@command('onCheckRiduzioneSuperficie')"/>
+                            </hbox>
+                        </hbox>
+                    </cell>
+
+                    <cell align="right">
+                        <label value="%Poss."/>
+                    </cell>
+                    <cell>
+                        <decimalbox id="decPercPoss"
+                                    hflex="1" mold="rounded" style="text-align: right;"
+                                    value="@bind(vm.percPossesso)"
+                                    format="#,##0.00"/>
+                    </cell>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <checkbox label="Annullata"
+                                  checked="@bind(vm.flagContenzioso)"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Familiari"/>
+                    </cell>
+                    <cell>
+                        <intbox id="intNumFam" style="text-align: right;"
+                                sclass="destra" hflex="1" mold="rounded"
+                                value="@bind(vm.numeroFamiliari)"/>
+                    </cell>
+                    <cell align="right">
+                        <checkbox label="Ab. Principale"
+                                  checked="@bind(vm.flagAbPrincipale)"/>
+                    </cell>
+
+                    <cell colspan="5" />
+                </row>
+                <row>
+                    <cell colspan="4">
+                        <button label="Aggiungi"
+                                onClick="@command('onOggettoDaGenerare', aggiungi=true)" mold="trendy"/>
+                        <button label="Rimuovi"
+                                onClick="@command('onOggettoDaGenerare', aggiungi=false)" mold="trendy"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </div>
+</zk>

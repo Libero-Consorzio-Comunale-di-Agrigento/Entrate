@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+	<addon-name>myaddon</addon-name>
+	<language-name>xul/html</language-name>
+	<component>
+		<!-- Questa è la ridefinzione del componente combobox a cui dalla versione 6.5.3 hanno tolto il LOAD 
+			 dell'attributo selectedItem ed Index dopo il Render causando così problemi con i custom converter. 
+			 Questo XML lo rimette. -->
+        <component-name>combobox</component-name>
+        <extends>combobox</extends>               
+        <annotation>
+            <annotation-name>ZKBIND</annotation-name>
+            <property-name>selectedItem</property-name>
+            <attribute>
+                <attribute-name>SAVE_EVENT</attribute-name>
+                <!-- bug #2966241, since 5.0, combobox changes the sequence to fire onChange 
+                then onSelect event when end user select an item from the drop down list(In 3.x,
+                it used to fire onSelect then onChange). This could cause the currently selected 
+                bean to be modified in onChange event if we still trigger binding of the 
+                selectedItem with onSelect event. Thus we change this to be triggered when "onChange" event
+                 -->
+                <attribute-value>onChange</attribute-value>
+            </attribute>
+            <attribute>
+                <attribute-name>LOAD_EVENT</attribute-name>
+                <attribute-value>onAfterRender</attribute-value>
+            </attribute>
+            <attribute>
+                <attribute-name>ACCESS</attribute-name>
+                <attribute-value>both</attribute-value>
+            </attribute>
+            <attribute>
+                <attribute-name>CONVERTER</attribute-name>
+                <attribute-value>org.zkoss.bind.converter.sys.ComboboxSelectedItemConverter</attribute-value>
+            </attribute>
+        </annotation>
+        <annotation>
+            <annotation-name>ZKBIND</annotation-name>
+            <property-name>selectedIndex</property-name>
+            <attribute>
+                <attribute-name>SAVE_EVENT</attribute-name>
+                <attribute-value>onSelect</attribute-value>
+            </attribute>
+            <attribute>
+                <attribute-name>LOAD_EVENT</attribute-name>
+                <attribute-value>onAfterRender</attribute-value>
+            </attribute>
+            <attribute>
+                <attribute-name>ACCESS</attribute-name>
+                <attribute-value>both</attribute-value>
+            </attribute>
+            <attribute>
+                <attribute-name>CONVERTER</attribute-name>
+                <attribute-value>org.zkoss.bind.converter.sys.ComboboxSelectedIndexConverter</attribute-value>
+            </attribute>
+        </annotation>   
+    </component>
+</language-addon>

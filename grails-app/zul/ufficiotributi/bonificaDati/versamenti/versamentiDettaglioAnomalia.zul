@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout vflex="1" hflex="1">
+        <listbox id="dettagliAnomalieListBox" model="@load(vm.listaDettaglioAnomalie.record)"
+                 emptyMessage="Non sono presenti anomalie" vflex="1" hflex="1"
+                 selectedItem="@bind(vm.dettaglioAnomaliaSelezionato)" sizedByContent="true"
+                 span="true">
+            <listhead>
+                <listheader label="Stato"/>
+                <listheader label="Anno" sort="auto(anom.anno)"
+                            onSort="@command('onDettagliAnomaliaSort', property='anno')"/>
+                <listheader label="Tributo" visible="@bind(!vm.anci)" sort="auto(anom.tipoTributo)"
+                            onSort="@command('onDettagliAnomaliaSort', property='tipoTributo')"/>
+                <listheader label="Anomalia " sort="auto(anom.tipoAnomalia)"
+                            onSort="@command('onDettagliAnomaliaSort', property='tipoAnomalia')"/>
+                <listheader label="Descrizione Anomalia"
+                            visible="#{arg.parentZul eq 'sc'}"/>
+                <listheader label="Cod.Fiscale" sort="auto(anom.codFiscale)"
+                            onSort="@command('onDettagliAnomaliaSort', property='codFiscale')"
+                            visible="#{arg.parentZul eq 'bon'}"/>
+                <listheader label="Cognome Nome" sort="auto(anom.cognomeNome)"
+                            onSort="@command('onDettagliAnomaliaSort', property='sogg.cognomeNome')"/>
+                <listheader label="Cod.Fiscale Sogg."
+                            visible="#{arg.parentZul eq 'bon'}"/>
+                <listheader label="Cognome Nome Sogg."
+                            visible="#{arg.parentZul eq 'bon'}"/>
+                <listheader label="Data Pag." sort="auto(anom.dataPagamento)"
+                            onSort="@command('onDettagliAnomaliaSort', property='dataPagamento')"/>
+                <listheader label="Importo Versato" sort="auto(anom.importoVersato)"
+                            onSort="@command('onDettagliAnomaliaSort', property='importoVersato')"/>
+                <listheader label="Cont."/>
+                <listheader label="Ravv."/>
+                <listheader label="Sanz.Ravv."/>
+                <listheader label="Prg."/>
+                <listheader/>
+                <listheader/>
+            </listhead>
+            <template name="model" var="anom">
+                <listitem>
+                    <listcell sclass="centro">
+                        <image onClick="@command('onCambiaStatoAnomalia',anomaliaSelezionata=anom)"
+                               src="@load(anom.flagOk ? '/images/afc/16x16/ok.png': '/images/afc/16x16/vuoto.png')"
+                               style="cursor: pointer;"/>
+                    </listcell>
+                    <listcell label="@load(anom.anno)" sclass="destra"/>
+                    <listcell label="@load(anom.tributoAttuale)" visible="@load(!vm.anci)"/>
+                    <listcell label="@load(anom.tipoAnomalia)" sclass="destra"/>
+                    <listcell label="@load(anom.descrizioneAnomalia)"/>
+                    <listcell label="@load(anom.codFiscale)"/>
+                    <listcell label="@load(anom.cognomeNome)"/>
+                    <listcell label="@load(anom.codFiscaleSogg)"/>
+                    <listcell label="@load(anom.cognomeNomeSogg)"/>
+                    <listcell
+                            label="@load(!empty anom.dataPagamento ? c:formatDate(anom.dataPagamento, 'dd/MM/yyyy') : null)"
+                            sclass="centro"/>
+                    <listcell sclass="destra">
+                        <label value="@load(c:formatNumber(anom.importoVersato, '€ #,##0.00'))"/>
+                        <image visible="@load(!vm.anci and (anom.tipoTributo eq 'ICI' or anom.tipoTributo eq 'TASI'))"
+                               src="/images/pulsanti/16x16/info.png"
+                               style="cursor: pointer;" width="16px" height="16px"
+                               tooltiptext="Dettaglio versato"
+                               onClick="@command('onDettaglioVersato', anomaliaSelezionata=anom)"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox disabled="true" checked="@load(anom.flagCont)"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox disabled="true" checked="@load(anom.flagRavvedimento)"/>
+                    </listcell>
+                    <listcell
+                            label="@load(anom.flagRavvedimento ? vm.tipiRavvedimento[anom.sanzioneRavvedimento] : null)"/>
+                    <listcell sclass="destra" label="@load(anom.progressivo)"/>
+                    <listcell sclass="centro">
+                        <image src="/images/afc/16x16/pen.png" style="cursor: pointer;" width="16px" height="16px"
+                               tooltiptext="Apri il versamento per la modifica"
+                               visible="@load((anom.tipoTributo eq null) or (vm.cbTributiInScrittura[anom.tipoTributo]))"
+                               onClick="@command('onCorreggiAnomalia', anomaliaSelezionata=anom)"/>
+                        <image src="/images/afc/16x16/edit.png" style="cursor: pointer;" width="16px" height="16px"
+                               tooltiptext="Apri il versamento"
+                               visible="@load((anom.tipoTributo ne null) and (!vm.cbTributiInScrittura[anom.tipoTributo]))"
+                               onClick="@command('onCorreggiAnomalia', anomaliaSelezionata=anom)"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <image src="/images/afc/16x16/delete.png" style="cursor: pointer;" width="16px"
+                               height="16px"
+                               tooltiptext="Elimina il versamento"
+                               visible="@load((anom.tipoTributo eq null) or (vm.cbTributiInScrittura[anom.tipoTributo]))"
+                               onClick="@command('onEliminaVersamento', anomaliaSelezionata=anom)"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </hlayout>
+
+</zk>

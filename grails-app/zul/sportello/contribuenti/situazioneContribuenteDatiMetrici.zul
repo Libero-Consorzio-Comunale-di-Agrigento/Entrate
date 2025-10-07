@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox hflex="1" vflex="1">
+
+        <space height="5px" />
+
+        <hlayout>
+            <label value="Tipologia"/>
+            <radiogroup selectedItem="@bind(vm.datiMetriciTipologia)" onCheck="@command('onSelezionaDatiMetriciTipologia')">
+                <radio label="TARES" value="TARES"/>
+                <radio label="TARSU" value="TARSU"/>
+            </radiogroup>
+        </hlayout>
+
+        <space height="5px" />
+
+        <tabbox vflex="1" selectedIndex="@load(vm.datiMetriciTabSelezionata)">
+            <tabs>
+                <tab label="Immobili"/>
+                <tab label="Intestatari" disabled="@load(empty vm.datiMetriciUiuSelezionata)"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <listbox hflex="max" span="true" sizedByContent="true" vflex="1"
+                             selectedItem="@bind(vm.datiMetriciUiuSelezionata)"
+                             onSelect="@command('caricaIntestatariUiu')"
+                             model="@load(vm.listaDatiMetrici)" emptyMessage="Nessun dato presente">
+                        <listhead>
+                            <listheader label="Immobile" align="right"
+                                        sort="auto(dm.immobile)"
+                                        onSort="@command('onCambiaOrdinamentoDatiMetrici', valore='uiu.idUiu')"/>
+                            <listheader label="Data" align="center"
+                                        sort="auto(dm.data)"
+                                        onSort="@command('onCambiaOrdinamentoDatiMetrici', valore='daat.data')"/>
+                            <listheader label="Num." align="right"/>
+                            <listheader label="Raccolta" align="right"/>
+                            <listheader label="Bene Com." align="center"/>
+                            <listheader label="Indirizzo" align="left"/>
+                            <listheader label="Superficie" align="right"/>
+                            <listheader label="Esito Sup." align="left"/>
+                            <listheader label="Sup.Tot." align="right"/>
+                            <listheader label="Sup.Conv." align="right"/>
+                            <listheader label="Inizio Validità" align="center"
+                                        sort="auto(dm.inizioValidita)"
+                                        onSort="@command('onCambiaOrdinamentoDatiMetrici', valore='danu.inizioValidita')"/>
+                            <listheader label="Fine Validità" align="center"
+                                        sort="auto(dm.fineValidita)"
+                                        onSort="@command('onCambiaOrdinamentoDatiMetrici', valore='danu.fineValidita')"/>
+                            <listheader label="Data Cert." align="center"/>
+                            <listheader label="Data Provv." align="center"/>
+                            <listheader label="Protocollo Provv." align="left"/>
+                            <listheader label="Doc.Id." align="right"/>
+                        </listhead>
+                        <template name="model" var="dm">
+                            <listitem>
+                                <listcell label="@load(dm.immobile)"/>
+                                <listcell label="@load(dm.data)"/>
+                                <listcell label="@load(dm.numero)"/>
+                                <listcell label="@load(dm.raccolta)"/>
+                                <listcell>
+                                    <checkbox disabled="true" checked="@load(dm.beneComune)"/>
+                                </listcell>
+                                <listcell>
+                                    <label value="@load(dm.indirizzo)"/>
+                                    <image visible="@load(!empty dm.indirizzi)"
+                                           src="/images/pulsanti/16x16/info.png"
+                                           style="cursor: pointer;" width="16px" height="16px"
+                                           tooltiptext="@load(dm.indirizzi)"/>
+                                </listcell>
+                                <listcell label="@load(dm.superficie)"/>
+                                <listcell label="@load(dm.esitoSuperficie)"/>
+                                <listcell label="@load(dm.superficieTotale)"/>
+                                <listcell label="@load(dm.superficieConvenzionale)"/>
+                                <listcell label="@load(dm.inizioValidita)"/>
+                                <listcell label="@load(dm.fineValidita)"/>
+                                <listcell label="@load(dm.dataCertificazione)"/>
+                                <listcell label="@load(dm.dataProvvedimento)"/>
+                                <listcell label="@load(dm.protocolloProvvedimento)"/>
+                                <listcell label="@load(dm.documentoId)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+                <tabpanel>
+                    <listbox hflex="max" span="true" sizedByContent="true" vflex="1"
+                             model="@load(vm.listaDatiMetriciIntestatari)" emptyMessage="Nessun dato presente">
+                        <listhead>
+                            <listheader label="Intestatario"
+                                        sort="auto(intest.intestatario)"
+                                        onSort="@command('onCambiaOrdinamentoDatiMetriciIntestatari', valore='intestatario')"/>
+                            <listheader label="Cod.Fiscale"
+                                        sort="auto(intest.codFiscale)"
+                                        onSort="@command('onCambiaOrdinamentoDatiMetriciIntestatari', valore='codFiscale')"/>
+                            <listheader label="Sesso" align="center"/>
+                            <listheader label="Data Nas." align="center"/>
+                            <listheader label="Comune"/>
+                        </listhead>
+                        <template name="model" var="intest">
+                            <listitem>
+                                <listcell label="@load(intest.intestatario)"/>
+                                <listcell label="@load(intest.codFiscale)"/>
+                                <listcell label="@load(intest.sesso)"/>
+                                <listcell label="@load(intest.dataNascita)"/>
+                                <listcell label="@load(intest.comune)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+    </groupbox>
+
+</zk>

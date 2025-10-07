@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaCodiciTributoViewModel')" width="100%"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <hlayout hflex="3" valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext="@load((vm.modifica ne false) ? 'Modifica' : 'Visualizza')"
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModificaCodiceTributo')"
+                                   disabled="@load(empty vm.codiceTributoSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onNuovoCodiceTributo')"
+                                   disabled="@load(vm.modifica eq false)"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                   onClick="@command('onEliminaCodiceTributo')"
+                                   disabled="@load(vm.modifica eq false or empty vm.listaCodiciTributo or empty vm.codiceTributoSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onCodiciTributoToXls')"
+                                   disabled="@load(empty vm.listaCodiciTributo)"/>
+                </hlayout>
+                <hlayout valign="middle" if="@load(vm.selezioneTipoTributoVisibile)">
+                    <space width="3px"/>
+                    <label value="Tipo Tributo"/>
+                    <space width="3px"/>
+                    <combobox model="@load(vm.listaTipiTributo)" readonly="true"
+                              selectedItem="@bind(vm.tipoTributoSelezionato)" mold="rounded" width="500px"
+                              onChange="@command('onRicaricaLista')">
+                        <template name="model" var="item">
+                            <comboitem
+                                    label="@load(c:cat3(item.tipoTributoAttuale, ' - ', item.descrizione))"
+                                    value="@load(item.tipoTributo)"/>
+                        </template>
+                    </combobox>
+                </hlayout>
+                <hlayout valign="middle" style="text-align: right;" hflex="1">
+                    <toolbarbutton width="26px"
+                                   image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                   onClick="@command('openCloseFiltri')"/>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+        <listbox nonselectableTags=""
+                 model="@bind(vm.listaCodiciTributo)"
+                 sizedByContent="true" span="true" vflex="1"
+                 selectedItem="@bind(vm.codiceTributoSelezionato)" emptyMessage="Nessun codice tributo presente.">
+            <listhead sizable="true">
+                <listheader sclass="centro"
+                            label="Codice"/>
+                <listheader sclass="centro"
+                            label="Nome"
+                            visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro"
+                            label="Descrizione"/>
+                <listheader sclass="centro"
+                            label="Descrizione Ruolo"
+                            visible="@load(vm.tipoTributoSelezionato.tipoTributo ne 'CUNI')"/>
+                <listheader sclass="centro" label="Tributo Precedente" tooltiptext="Tipo di tributo precedente"
+                            visible="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI')"/>
+                <listheader sclass="centro"
+                            label="@load((vm.tipoTributoSelezionato.tipoTributo eq 'CUNI') ? 'Codice Gruppo Tributo' : 'Numero C/C')"/>
+                <listheader sclass="centro"
+                            label="@load((vm.tipoTributoSelezionato.tipoTributo eq 'CUNI') ? 'Nome Gruppo Tributo' : 'Descrizione C/C')"/>
+                <listheader sclass="centro"
+                            label="Stampa C/C"/>
+                <listheader sclass="centro" label="@load((vm.tipoTributoSelezionato.tipoTributo eq 'CUNI') ? 'Sospeso' : 'A Ruolo')"
+                            width="80px"
+                            tooltiptext="@load((vm.tipoTributoSelezionato.tipoTributo eq 'CUNI') ? 'Il calcolo imposta per questo codice tributo è sospeso' : '')"/>
+                <listheader sclass="centro"
+                            label="Calcolo Interessi"/>
+                <listheader sclass="centro"
+                            label="Codice Entrata"/>
+            </listhead>
+            <template name="model" var="ct">
+                <listitem value="@load(v)"
+                          onSelect="@command('onCodiceTributoSelected')"
+                          onDoubleClick="@command('onModificaCodiceTributo')">
+                    <listcell sclass="destra" label="@load(ct.id)"/>
+                    <listcell sclass="sinistra" label="@load(ct.nome)" style="text-transform: uppercase"/>
+                    <listcell sclass="sinistra" label="@load(ct.descrizione)" style="text-transform: uppercase"/>
+                    <listcell sclass="sinistra" label="@load(ct.nome)" style="text-transform: uppercase"/>
+                    <listcell sclass="sinistra" label="@load(ct.tipoTributo)"/>
+                    <listcell sclass="@load(vm.tipoTributoSelezionato.tipoTributo eq 'CUNI' ? 'sinistra' : 'destra')"
+                              label="@load(ct.contoCorrente)"/>
+                    <listcell sclass="sinistra" label="@load(ct.descrizioneCc)"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ct.flagStampaCc ne false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ct.flagRuolo ne false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ct.flagCalcoloInteressi ne false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="sinistra" label="@load(ct.codEntrata)" style="text-align: left;"/>
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

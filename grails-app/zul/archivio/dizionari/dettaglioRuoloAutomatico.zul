@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('dettaglioRuoloAutomaticoViewModel')"
+            border="normal" sizable="false" width="500px" title=" ">
+        <script src="/js/decimalbox.js"/>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell align="left" valign="center">
+                        <label value="Ruolo Automatico"
+                               class="documentoTitolo"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <vlayout>
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell sclass="destra">
+                            <h:span class="mandatoryLabel">*</h:span>
+                            <label value="Dal"/>
+                        </cell>
+                        <cell>
+                            <datebox sclass="destra"
+                                     value="@bind(vm.ruoloAutomatico.daData)"
+                                     format="dd/MM/yyyy" mold="rounded"
+                                     disabled="@load(vm.lettura ne false)"
+                                     hflex="1"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <h:span class="mandatoryLabel">*</h:span>
+                            <label value="Al"/>
+                        </cell>
+                        <cell>
+                            <datebox sclass="destra"
+                                     value="@bind(vm.ruoloAutomatico.aData)"
+                                     format="dd/MM/yyyy" mold="rounded"
+                                     disabled="@load(vm.lettura ne false)"
+                                     hflex="1"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Tipo Ruolo"/>
+                        </cell>
+                        <cell colspan="3">
+                            <textbox readonly="true" mold="rounded" hflex="1"
+                                     visible="@load(!empty vm.ruoloAutomatico.id)"
+                                     value="@bind(vm.tipoRuolo[vm.ruoloAutomatico.ruolo.tipoRuolo])"/>
+                            <combobox hflex="1" model="@load(vm.tipoRuolo)" visible="@load(empty vm.ruoloAutomatico.id)"
+                                      selectedItem="@bind(vm.selectedTipoRuolo) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                                      readonly="true"
+                                      mold="rounded">
+                                <template name="model" var="item">
+                                    <comboitem label="@load(item.value)"
+                                               value="@load(item.key)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra">
+                            <h:span class="mandatoryLabel">*</h:span>
+                            <label value="Ruolo"/>
+                        </cell>
+                        <cell colspan="3">
+                            <hbox hflex="1">
+                                <bandbox readonly="true" hflex="1"
+                                         disabled="@bind(!empty vm.ruoloAutomatico.id or
+                                     empty vm.ruoloAutomatico.daData or
+                                     (!empty vm.ruoloAutomatico.daData and !empty vm.ruoloAutomatico.aData and vm.ruoloAutomatico.daData gt vm.ruoloAutomatico.aData) or
+                                     empty empty vm.selectedTipoRuolo)"
+                                         onOpen="@command('onApriRuolo', bd=self)"
+                                         value="@bind(!empty vm.ruoloAutomatico.ruolo ? c:cat3(vm.ruoloAutomatico.ruolo.id, ' - ', vm.ruoloAutomatico.ruolo.descrizione) : '')"
+                                         mold="rounded">
+                                    <bandpopup>
+                                        <listbox height="250px" width="640px"
+                                                 sizedByContent="true"
+                                                 selectedItem="@bind(vm.ruoloAutomatico.ruolo)"
+                                                 model="@load(vm.listaRuoli)" span="true"
+                                                 onSelect="@command('onSelezionaRuolo')"
+                                                 emptyMessage="Nessun ruolo presente.">
+                                            <listhead>
+                                                <listheader label="T.Ruolo"/>
+                                                <listheader label="Anno"/>
+                                                <listheader label="Anno Em."/>
+                                                <listheader label="Pr."/>
+                                                <listheader label="Emissione"/>
+                                                <listheader label="L."/>
+                                                <listheader label="Ruolo"/>
+                                                <listheader label="Sp."/>
+                                                <listheader label="Descrizione"/>
+                                            </listhead>
+                                            <template name="model" var="ruo">
+                                                <listitem>
+                                                    <listcell
+                                                            label="@load((ruo.tipoRuolo eq 1) ? 'P - Principale' : ((ruo.tipoRuolo eq 2) ? 'S - Suppletivo' : ''))"/>
+                                                    <listcell label="@load(ruo.annoRuolo)" sclass="destra"/>
+                                                    <listcell label="@load(ruo.annoEmissione)" sclass="destra"/>
+                                                    <listcell label="@load(ruo.progrEmissione)" sclass="destra"/>
+                                                    <listcell
+                                                            label="@load(ruo.dataEmissione ne null ? c:formatDate(ruo.dataEmissione, 'dd/MM/yyyy') : null)"
+                                                            sclass="centro"/>
+                                                    <listcell>
+                                                        <checkbox checked="@load(ruo.importoLordo)" sclass="centro"
+                                                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                                                    </listcell>
+                                                    <listcell label="@load(ruo.id)" sclass="destra"/>
+                                                    <listcell
+                                                            label="@load(ruo.specieRuolo ? 'Coattivo' : 'Ordinario')"/>
+                                                    <listcell label="@load(ruo.descrizione)"/>
+                                                </listitem>
+                                            </template>
+                                        </listbox>
+                                    </bandpopup>
+                                </bandbox>
+                                <button mold="trendy" image="/images/afc/16x16/multi_plus.png" width="22px"
+                                        disabled="@bind((!empty vm.ruoloAutomatico.id) or (empty vm.ruoloAutomatico.daData) or (empty vm.selectedTipoRuolo))"
+                                        popup="funzioniNuovoRuolo"/>
+                                <space width="5px"/>
+                            </hbox>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell>
+                            <intbox readonly="true" hflex="1" style="text-align: right"
+                                    value="@bind(vm.ruoloAutomatico.ruolo.annoRuolo)"
+                                    mold="rounded"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="Anno Emissione"/>
+                        </cell>
+                        <cell>
+                            <intbox readonly="true" sclass="destra" hflex="1" style="text-align: right"
+                                    value="@bind(vm.ruoloAutomatico.ruolo.annoEmissione)"
+                                    mold="rounded"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Progr. Emissione"/>
+                        </cell>
+                        <cell>
+                            <intbox readonly="true" hflex="1" style="text-align: right"
+                                    value="@bind(vm.ruoloAutomatico.ruolo.progrEmissione)"
+                                    mold="rounded"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="Data Emissione"/>
+                        </cell>
+                        <cell>
+                            <datebox readonly="true" sclass="destra" hflex="1"
+                                     value="@bind(vm.ruoloAutomatico.ruolo.dataEmissione)"
+                                     mold="rounded" format="dd/MM/yyyy" disabled="true"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Tipo Emissione"/>
+                        </cell>
+                        <cell colspan="3">
+                            <textbox readonly="true" mold="rounded" hflex="1"
+                                     value="@bind(vm.tipoEmissione[vm.ruoloAutomatico.ruolo.tipoEmissione])"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell sclass="destra" hflex="1">
+                            <label value="Note"/>
+                        </cell>
+                        <cell colspan="3">
+                            <textbox hflex="1" mold="rounded" multiline="true" rows="4"
+                                     value="@bind(vm.ruoloAutomatico.note)" maxlength="2000"
+                                     sclass="noresizable"
+                                     disabled="@load(vm.lettura ne false)"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </vlayout>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Salva" onClick="@command('onSalva')"
+                        mold="trendy" image="/images/afc/16x16/save.png"
+                        disabled="@load(vm.lettura ne false)"/>
+                <button label="Chiudi" onClick="@command('onChiudi')"
+                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+
+        <menupopup id="funzioniNuovoRuolo">
+            <menuitem label="Lista di Carico" onClick="@command('onNuovaListaDiCarico')"/>
+            <menuitem label="Ruolo Coattivo" onClick="@command('onNuovoRuoloCoattivo')"/>
+        </menupopup>
+
+    </window>
+</zk>

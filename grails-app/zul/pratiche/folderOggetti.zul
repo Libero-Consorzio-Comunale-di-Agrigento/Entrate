@@ -1,0 +1,808 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;" 
+    		visible="@load((vm.pratica.tipoPratica eq 'V') or (vm.pratica.tipoPratica eq 'L'))">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               disabled="@load(empty vm.oggettiImu)" onClick="@command('onRefreshOggettiLiqRavv')"/>
+                <toolbarbutton image="/images/afc/16x16/delete.png"
+                               tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                               visible="@load((vm.pratica.tipoPratica eq 'V') or ((vm.pratica.tipoPratica eq 'L')))"
+                               onClick="@command('onEliminaOggLiqRavv')"
+                               disabled="@load(empty vm.oggettoSelezionato || vm.lettura || empty vm.pratica.id  || !empty vm.pratica.dataNotifica)"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               width="20px"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniRavvedimentoOperoso"
+                               visible="@load(vm.pratica.tipoPratica eq 'V')"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <!-- LIQUIDAZIONE IMU/TASI + RAVVEDIMENTO IMU/TASI/TARSU -->
+    <listbox visible="@load(vm.liqImu)" sizedByContent="true" span="true" vflex="1"
+    		 model="@load(vm.oggettiImu)" emptyMessage="Nessun oggetto presente."
+             selectedItem="@bind(vm.oggettoSelezionato)">
+        <listhead sizable="true">
+            <listheader label="Oggetto" sclass="centro" tooltiptext="Oggetto"/>
+            <listheader label="T" sclass="centro" tooltiptext="Tipo Oggetto"/>
+            <listheader label="Indirizzo" sclass="centro"/>
+            <listheader label="Sez." sclass="centro" tooltiptext="Sezione"/>
+            <listheader label="Fgl." sclass="centro" tooltiptext="Foglio"/>
+            <listheader label="Num." sclass="centro" tooltiptext="Numero"/>
+            <listheader label="Sub." sclass="centro" tooltiptext="Subalterno"/>
+            <listheader label="Zona" sclass="centro" tooltiptext="Zona"/>
+            <listheader label="Partita" sclass="centro" tooltiptext="Partita"/>
+            <listheader label="Ctg." sclass="centro" tooltiptext="Categoria"/>
+            <listheader label="Cl." sclass="centro" tooltiptext="Classe"/>
+            <listheader label="Rendita" sclass="destra"/>
+            <listheader label="Valore" sclass="centro"/>
+            <listheader label="Imposta" sclass="centro"/>
+            <listheader label="Rid." sclass="centro" tooltiptext="Flag Riduzione"/>
+            <listheader label="Stor." sclass="centro" tooltiptext="Immobile Storico"/>
+            <listheader label="Pertinenza di" sclass="centro"/>
+            <listheader label="Tipo Rapporto" sclass="centro"
+                        visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TASI')"/>
+            <listheader label="%Poss." sclass="centro" tooltiptext="Percentuale Possesso"/>
+            <listheader label="MP" sclass="centro" tooltiptext="Mesi Possesso"/>
+            <listheader label="MO" sclass="centro" tooltiptext="Mesi Occupazione"/>
+            <listheader label="Detrazioni" sclass="centro"/>
+            <listheader label="Det.Og" sclass="centro" tooltiptext="Detrazioni Oggetto Contribuente"/>
+            <listheader label="Al.Og" sclass="centro" tooltiptext="Aliquote Oggetto Contribuente"/>
+            <listheader label="Note" sclass="centro"/>
+        </listhead>
+        <template name="model" var="ogg">
+            <listitem onDoubleClick="@command('onDetAlOg', ogg=ogg)">
+                <listcell sclass="destra">
+                    <label value="@load(ogg.oggetto.id)"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <label value="@load(ogg.tipoOggetto.tipoOggetto)"/>
+                </listcell>
+                <listcell>
+                    <label value="@load(ogg.oggetto.indirizzo)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.oggetto.sezione)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.oggetto.foglio)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.oggetto.numero)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.oggetto.subalterno)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.oggetto.zona)"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <label value="@load(ogg.oggetto.partita)"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <label value="@load((ogg.categoriaCatasto ne null) ? ogg.categoriaCatasto.categoriaCatasto : ogg.oggetto.categoriaCatasto.categoriaCatasto)"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <label value="@load((ogg.classeCatasto ne null) ? ogg.classeCatasto : ogg.oggetto.classeCatasto)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(vm.rendite[c:cat3(ogg.id, '-', ogg.oggetto.id)] ne null ? c:formatNumber(vm.rendite[c:cat3(ogg.id, '-', ogg.oggetto.id)],'€ #,##0.00'):'')"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.valore ne null ? c:formatNumber(ogg.valore, '€ #,##0.00'): '')"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label
+                            value="@load(ogg.singoloOggettoContribuente.singoloOggettoImposta.imposta ne null ? c:formatNumber(ogg.singoloOggettoContribuente.singoloOggettoImposta.imposta,'€ #,##0.00'):'')"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(ogg.singoloOggettoContribuente.flagRiduzione)"
+                              w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox
+                            checked="@load(ogg.immStorico)"
+                            w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.oggettoPraticaRifAp.id)"/>
+                </listcell>
+                <listcell visible="@load(vm.pratica.tipoTributo.tipoTributo eq 'TASI')">
+                    <label value="@load(vm.tipoRapporto(ogg.singoloOggettoContribuente.singoloOggettoImposta.tipoRapporto))"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.singoloOggettoContribuente.percPossesso ne null ? c:formatNumber(ogg.singoloOggettoContribuente.percPossesso, '#,##0.00'): '')"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.singoloOggettoContribuente.mesiPossesso)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.singoloOggettoContribuente.mesiOccupato)"/>
+                </listcell>
+                <listcell sclass="destra">
+                    <label value="@load(ogg.singoloOggettoContribuente.singoloOggettoImposta.detrazione ne null ? c:formatNumber(ogg.singoloOggettoContribuente.singoloOggettoImposta.detrazione, '€ #,##0.00'): '')"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox
+                            checked="@load(ogg.singoloOggettoContribuente.singoloOggettoImposta.presentiDetrazioni)"
+                            w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro">
+                    <checkbox
+                            checked="@load(ogg.singoloOggettoContribuente.singoloOggettoImposta.presentiAliquote)"
+                            w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell>
+                    <hlayout width="200px">
+                        <label value="@load(ogg.note)" hflex="1"
+                               sclass="auto-trunc"/>
+                        <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note"
+                               visible="@load(ogg.note ne null and vm.oggettiLettura))"
+                               style="cursor: pointer" onClick="@command('onApriNote', arg=ver.note)"
+                               width="16px"/>
+                        <image src="/images/afc/16x16/edit.png" tooltiptext="Modifica note"
+                               visible="@load(!vm.oggettiLettura)"
+                               style="cursor: pointer"
+                               popup="@load(c:cat('popupNote_', ogg.id))"
+                               width="16px"/>
+                        <popup id="@load(c:cat('popupNote_', ogg.id))"
+                               width="600px" onOpen="@command('onApriPopupNote', popup=self)">
+                            <h:div sclass="barraTitoloPagina">
+                                <label class="titoloPagina" value="Note"/>
+                            </h:div>
+                            <hlayout>
+                                <textbox rows="10" width="600px"
+                                         value="@bind(ogg.note)"/>
+                            </hlayout>
+                            <h:div sclass="barraPulsanti">
+                                <h:div>
+                                    <button label="Chiudi" onClick="@command('onChiudiPopupNote')" mold="trendy"
+                                            image="/images/pulsanti/16x16/window_close.png"/>
+                                </h:div>
+                            </h:div>
+                        </popup>
+                    </hlayout>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+
+    <!-- ACCERTAMENTO AUTOMATICO TARI -->
+    <listbox visible="@load(vm.accAutoTari)" hflex="1" vflex="1"
+             span="true" nonselectableTags="" sizedByContent="true"
+             emptyMessage="Nessun oggetto presente" model="@load(vm.oggettiAccAutomatico)"
+             selectedItem="@bind(vm.oggettoSelezionato)">
+        <listhead sizable="true">
+            <listheader label="Oggetto"/>
+            <listheader label="T"/>
+            <listheader label="Indirizzo"/>
+            <listheader label="Sez."/>
+            <listheader label="Fgl."/>
+            <listheader label="Num."/>
+            <listheader label="Sub."/>
+            <listheader label="Ctg."/>
+            <listheader label="Cons."/>
+            <listheader label="Imp.Lorda"/>
+            <listheader label="C.Pereq."/>
+            <listheader label="Decorrenza"/>
+            <listheader label="Cessazione"/>
+            <listheader label="Inizio Occ."/>
+            <listheader label="Fine Occ."/>
+            <listheader label="C.Trib."/>
+            <listheader label="Cat."/>
+            <listheader label="Tar."/>
+            <listheader label="Occ."/>
+            <listheader label="%Poss."/>
+            <listheader label="A"/>
+        </listhead>
+        <template name="model" var="ogg">
+            <listitem popup="dettaglioOggettoImu, position=after_end">
+                <listcell sclass="destra" label="@load(ogg.idOggetto)"/>
+                <listcell sclass="centro"
+                          label="@load(ogg.tipoOggetto.tipoOggetto)"/>
+                <listcell sclass="sinistra" label="@load(ogg.indirizzoCompleto)"/>
+                <listcell sclass="destra" label="@load(ogg.sezione)"/>
+                <listcell sclass="destra" label="@load(ogg.foglio)"/>
+                <listcell sclass="destra" label="@load(ogg.numero)"/>
+                <listcell sclass="destra" label="@load(ogg.subalterno)"/>
+                <listcell sclass="centro"
+                          label="@load(ogg.categoriaCatasto.categoriaCatasto)"/>
+                <listcell sclass="destra" label="@load(ogg.consistenza)"/>
+                <listcell sclass="destra"
+                          label="@load((ogg.impostaLorda eq null)?'':c:formatNumber(ogg.impostaLorda, '€ #,##0.00 '))"/>
+                <listcell sclass="destra"
+                          label="@load(ogg.maggiorazioneTares eq null?'':c:formatNumber(ogg.maggiorazioneTares, '€ #,##0.00 '))"/>
+                <listcell sclass="destra"
+                          label="@load((ogg.dataDecorrenza eq null)?'':c:formatDate(ogg.dataDecorrenza, 'dd/MM/yyyy'))"/>
+                <listcell sclass="destra"
+                          label="@load((ogg.dataCessazione eq null)?'':c:formatDate(ogg.dataCessazione, 'dd/MM/yyyy'))"/>
+                <listcell sclass="centro"
+                          label="@load((ogg.inizioOcc eq null)?'':c:formatDate(ogg.inizioOcc, 'dd/MM/yyyy'))"/>
+                <listcell sclass="centro"
+                          label="@load((ogg.fineOcc eq null)?'':c:formatDate(ogg.fineOcc, 'dd/MM/yyyy'))"/>
+                <listcell sclass="destra" label="@load(ogg.codiceTributo)"/>
+                <listcell label="@load(ogg.categoria)"/>
+                <listcell label="@load(ogg.tipoTariffa)"/>
+                <listcell
+                        label="@load(ogg.occupazione eq null ? '' : (ogg.occupazione eq 'P' ? 'Permanente' : 'Temporanea') )"/>
+                <listcell sclass="destra"
+                          label="@load(ogg.percPossesso eq null ? '' : c:formatNumber(ogg.percPossesso, '#,##0.00 '))"/>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(ogg.flagAbPrincipale)"
+                              w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+
+    <!-- ACCERTAMENTO AUTOMATICO Tributi Minori -->
+    <listbox visible="@load(vm.accAutoTribMin)" hflex="1" vflex="1"
+             span="true" nonselectableTags="" sizedByContent="true"
+             emptyMessage="Nessun oggetto presente" model="@load(vm.oggettiAccAutomatico)"
+             selectedItem="@bind(vm.oggettoSelezionato)">
+        <listhead sizable="true">
+            <listheader label="Oggetto"/>
+            <listheader label="T"/>
+            <listheader label="Indirizzo"/>
+            <listheader label="Sez."/>
+            <listheader label="Fgl."/>
+            <listheader label="Num."/>
+            <listheader label="Sub."/>
+            <listheader label="Zona"/>
+            <listheader label="Prot."/>
+            <listheader label="Anno"/>
+            <listheader label="Partita"/>
+            <listheader label="Ctg."/>
+            <listheader label="Cl."/>
+            <listheader label="Cons."/>
+            <listheader label="Imp.Lorda"/>
+            <listheader label="C.Pereq."/>
+            <listheader label="Decorrenza"/>
+            <listheader label="Cessazione"/>
+            <listheader label="Inizio Occ."/>
+            <listheader label="Fine Occ."/>
+            <listheader label="C.Trib."/>
+            <listheader label="Cat."/>
+            <listheader label="Tar."/>
+            <listheader label="Occ."/>
+            <listheader label="%Poss."/>
+        </listhead>
+        <template name="model" var="ogg">
+            <listitem popup="dettaglioOggettoImu, position=after_end">
+                <listcell sclass="destra" label="@load(ogg.idOggetto)"/>
+                <listcell sclass="centro" label="@load(ogg.tipoOggetto.tipoOggetto)"/>
+                <listcell sclass="sinistra" label="@load(ogg.indirizzoCompleto)"/>
+                <listcell sclass="destra" label="@load(ogg.sezione)"/>
+                <listcell sclass="destra" label="@load(ogg.foglio)"/>
+                <listcell sclass="destra" label="@load(ogg.numero)"/>
+                <listcell sclass="destra" label="@load(ogg.subalterno)"/>
+                <listcell sclass="destra" label="@load(ogg.zona)"/>
+                <listcell sclass="destra" label="@load(ogg.protocolloCat)"/>
+                <listcell sclass="centro" label="@load(ogg.annoCat)"/>
+                <listcell sclass="centro" label="@load(ogg.partita)"/>
+                <listcell sclass="centro" label="@load(ogg.categoriaCatasto.categoriaCatasto)"/>
+                <listcell sclass="centro" label="@load(ogg.categoriaCatasto.classeCatasto)"/>
+                <listcell sclass="destra" label="@load(ogg.consistenza)"/>
+                <listcell sclass="destra"
+                          label="@load((ogg.impostaLorda eq null)?'':c:formatNumber(ogg.impostaLorda, '€ #,##0.00 '))"/>
+                <listcell sclass="destra"
+                          label="@load(ogg.maggiorazioneTares eq null?'':c:formatNumber(ogg.maggiorazioneTares, '€ #,##0.00 '))"/>
+                <listcell sclass="destra"
+                          label="@load((ogg.dataDecorrenza eq null)?'':c:formatDate(ogg.dataDecorrenza, 'dd/MM/yyyy'))"/>
+                <listcell sclass="destra"
+                          label="@load((ogg.dataCessazione eq null)?'':c:formatDate(ogg.dataCessazione, 'dd/MM/yyyy'))"/>
+                <listcell sclass="centro"
+                          label="@load((ogg.inizioOcc eq null)?'':c:formatDate(ogg.inizioOcc, 'dd/MM/yyyy'))"/>
+                <listcell sclass="centro"
+                          label="@load((ogg.fineOcc eq null)?'':c:formatDate(ogg.fineOcc, 'dd/MM/yyyy'))"/>
+                <listcell sclass="destra" label="@load(ogg.codiceTributo)"/>
+                <listcell label="@load(ogg.categoria)"/>
+                <listcell label="@load(ogg.tipoTariffa)"/>
+                <listcell
+                        label="@load(ogg.occupazione eq null ? '' : (ogg.occupazione eq 'P' ? 'Permanente' : 'Temporanea') )"/>
+                <listcell sclass="destra"
+                          label="@load(ogg.percPossesso eq null ? '' : c:formatNumber(ogg.percPossesso, '#,##0.00 '))"/>
+            </listitem>
+        </template>
+    </listbox>
+
+    <vbox>
+
+        <!-- ACCERTAMENTO TOTALE IMU/Tributi Minori e MANUALE TARI (Visualizzazione Unica) -->
+        <listbox visible="@load(vm.accManTot or vm.accManTariUnica)" hflex="1" span="true"
+                 height="99%" nonselectableTags="" sizedByContent="true"
+                 emptyMessage="Nessun oggetto presente" model="@load(vm.oggettiAccManTot)"
+                 selectedItem="@bind(vm.oggettoSelezionato)" onClick="@command('onGetDicLiqAcc')">
+            <listhead sizable="true">
+                <listheader label="Oggetto"/>
+                <listheader label="T"/>
+                <listheader label="Indirizzo"/>
+                <listheader label="Rendita"/>
+                <listheader label="Valore"/>
+                <listheader label="Sez."/>
+                <listheader label="Fgl."/>
+                <listheader label="Num."/>
+                <listheader label="Sub."/>
+                <listheader label="Zona"/>
+                <listheader label="Prot."/>
+                <listheader label="Anno"/>
+                <listheader label="Partita"/>
+                <listheader label="Ctg."/>
+                <listheader label="Cl."/>
+            </listhead>
+            <template name="model" var="ogg">
+                <listitem>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.id)"/>
+                    <listcell sclass="centro" label="@load(ogg.oggetto.tipoOggetto.tipoOggetto)"/>
+                    <listcell sclass="sinistra" label="@load(ogg.oggetto.indirizzo)"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.renditaDaRiferimenti ne null ? c:formatNumber(ogg.renditaDaRiferimenti, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.valoreRivalutato ne null ? c:formatNumber(ogg.valoreRivalutato, '€ #,##0.00'): '')"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.sezione)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.foglio)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.numero)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.subalterno)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.zona)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.protocolloCatasto)"/>
+                    <listcell sclass="centro" label="@load(ogg.oggetto.annoCatasto)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.partita)"/>
+                    <listcell sclass="centro" label="@load(ogg.oggetto.categoriaCatasto.categoriaCatasto)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.classeCatasto)"/>
+                </listitem>
+            </template>
+        </listbox>
+        <space height="5px"/>
+
+        <!-- ACCERTAMENTO TOTALE TARI -->
+        <listbox visible="@load(vm.accTotTari)" hflex="1" span="true"
+                 height="99%" nonselectableTags="" sizedByContent="true"
+                 emptyMessage="Nessun oggetto presente." model="@load(vm.oggettiAccManTotTari)"
+                 selectedItem="@bind(vm.oggettoSelezionato)">
+
+            <listhead sizable="true">
+                <listheader label="@load(c:l('sportello.label.oggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+                <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+                <listheader label="@load(c:l('sportello.label.sezione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+                <listheader label="@load(c:l('sportello.label.foglio'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+                <listheader label="@load(c:l('sportello.label.numero'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+                <listheader label="@load(c:l('sportello.label.subalterno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+                <listheader label="@load(c:l('sportello.label.categoriaCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+                <listheader label="@load(c:l('sportello.label.classeCatasto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.classeCatasto'))"/>
+
+                <listheader label="@load(c:l('sportello.label.codiceTributo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.codiceTributo'))"/>
+                <listheader label="@load(c:l('sportello.label.categoria'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.categoria'))"/>
+                <listheader label="@load(c:l('sportello.label.tipoTariffa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTariffa'))"/>
+                <listheader label="@load(c:l('sportello.label.descrizioneTipoTariffa'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.descrizioneTipoTariffa'))"/>
+                <listheader label="Superf." tooltiptext="Superficie"/>
+                <listheader label="Ab.Princ." tooltiptext="@load(c:l('sportello.label.estesa.flagAbPrincipale'))"/>
+                <listheader label="@load(c:l('sportello.label.decorrenza'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.decorrenza'))"/>
+                <listheader label="@load(c:l('sportello.label.cessazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.cessazione'))"/>
+                <listheader label="@load(c:l('sportello.label.inizioOccupazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.inizioOccupazione'))"/>
+                <listheader label="@load(c:l('sportello.label.fineOccupazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.fineOccupazione'))"/>
+                <listheader label="Imp.Lorda"
+                            tooltiptext="@load(c:l('sportello.label.estesa.impostaLorda'))"/>
+                <listheader label="@load(c:l('sportello.label.componentiPereq'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.componentiPereq'))"/>
+                <listheader label="@load(c:l('sportello.label.pratica'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.pratica'))"/>
+            </listhead>
+            <template name="model" var="ogg">
+	            <listitem>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.id)"/>
+                    <listcell sclass="centro"
+                              label="@load(ogg.oggetto.tipoOggetto)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(ogg.oggetto.indirizzo)"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.oggetto.sezione)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.foglio)"/>
+                    <listcell sclass="destra" label="@load(ogg.oggetto.numero)"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.oggetto.subalterno)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(ogg.categoriaCatasto.categoriaCatasto)"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.oggetto.classeCatasto)"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.codiceTributo)"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.categoria)"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.tipoTariffa)"/>
+                    <listcell sclass="sinistra"
+                              label="@load(ogg.desTipoTariffa)"/>
+                    <listcell sclass="destra"
+                              label="@load((ogg.consistenza eq null) ? '' : c:formatNumber(ogg.consistenza, '#,##0.00'))"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(ogg.flagAbPrincipale)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro"
+                              label="@load(ogg.dataDecorrenza) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(ogg.dataCessazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(ogg.inizioOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(ogg.fineOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="destra"
+                              label="@load((ogg.impostaLorda eq null)?'':c:formatNumber(ogg.impostaLorda, '€ #,##0.00 '))"/>
+                    <listcell sclass="destra"
+                              label="@load(ogg.maggTARES eq null?'':c:formatNumber(ogg.maggTARES, '€ #,##0.00 '))"/>
+                    <listcell sclass="destra" label="@load(ogg.pratica.id)"/>
+                </listitem>
+            </template>
+        </listbox>
+
+        <listbox hflex="1" visible="@load(vm.accManTotImu)">
+            <listhead>
+                <listheader label=" " width="45px"/>
+                <listheader label="T" align="center"/>
+                <listheader label="Valore" align="center"/>
+                <listheader label="Ri." align="center"/>
+                <listheader label="%Poss." align="center"/>
+                <listheader label="MP" align="center"/>
+                <listheader label="1Sem." align="center"/>
+                <listheader label="ME" align="center"/>
+                <listheader label="MR" align="center"/>
+                <listheader label="Detrazione" align="center"/>
+                <listheader label="Ctg." align="center"/>
+                <listheader label="Cl." align="center"/>
+                <listheader label="Imposta" align="center"/>
+                <listheader label="Data" align="center"/>
+            </listhead>
+        </listbox>
+
+        <listbox hflex="1" visible="@load(vm.accManTariUnica)">
+            <listhead>
+                <listheader label="Superficie" align="center"/>
+                <listheader label="Inizio occ." align="center"/>
+                <listheader label="Decorrenza" align="center"/>
+                <listheader label="Fine occ." align="center"/>
+                <listheader label="Cessazione" align="center"/>
+                <listheader label="Imposta" align="right"/>
+                <listheader label="Data" align="center"/>
+                <listheader label="Tributo" align="center"/>
+                <listheader label="Categoria" align="center"/>
+                <listheader label="Tariffa" align="right"/>
+                <listheader label="Perc. possesso" align="center"/>
+                <listheader label="Occupazione" align="center"/>
+                <listheader label="A"/>
+                <listheader label="N. Fam."/>
+            </listhead>
+        </listbox>
+
+        <listbox hflex="1" visible="@load(vm.accManTribMin)">
+            <listhead>
+                <listheader label="Superficie" align="center"/>
+                <listheader label="Inizio occ." align="center"/>
+                <listheader label="Decorrenza" align="center"/>
+                <listheader label="Fine occ." align="center"/>
+                <listheader label="Cessazione" align="center"/>
+                <listheader label="Imposta" align="right"/>
+                <listheader label="Data" align="center"/>
+                <listheader label="Tributo" align="center"/>
+                <listheader label="Categoria" align="center"/>
+                <listheader label="Tariffa" align="right"/>
+                <listheader label="Perc. possesso" align="center"/>
+                <listheader label="Occupazione" align="center"/>
+            </listhead>
+        </listbox>
+
+        <!-- DATI DICHIARATO IMU/TARI/Tributi Minori -->
+        <groupbox visible="@load(vm.accManTotImu and vm.dic)" hflex="1" vflex="1">
+            <caption label="Dichiarato"/>
+            <grid model="@load(vm.dichiaratoAccManTotImu)">
+                <template name="model" var="dic">
+                    <row class="coloreRigaGrid" align="center">
+                        <cell width="30px"/>
+                        <label value="@load(dic.tipoOggetto.tipoOggetto)"/>
+                        <label value="@load(dic.valore ne null ? c:formatNumber(dic.valore, '€ #,##0.00 '): '')"/>
+                        <checkbox checked="@load(dic.flagRivalutato eq 'S'?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                        <label value="@load(dic.percPossesso[0] ne null ? c:formatNumber(dic.percPossesso[0], '#,##0.00 '): '')"/>
+                        <label value="@load(dic.mesiPossesso)"/>
+                        <label value="@load((dic.primoSem eq null)?'':dic.primoSem)"/>
+                        <label value="@load((dic.mesiEsclusione[0] eq null)?'':dic.mesiEsclusione[0])"/>
+                        <label value="@load((dic.mesiRiduzione[0] eq null)?'':dic.mesiRiduzione[0])"/>
+                        <label value="@load(dic.detrazione[0] ne null ? c:formatNumber(dic.detrazione[0], '€ #,##0.00 '): '')"/>
+                        <label value="@load(dic.categoriaCatasto.categoriaCatasto)"/>
+                        <label value="@load(dic.classeCatasto)"/>
+                        <label value="@load(dic.imposta ne null ? c:formatNumber(dic.imposta, '€ #,##0.00 '): '')"/>
+                        <label value="@load(dic.data eq null? '' :c:formatDate(dic.data, 'dd/MM/yyyy'))"/>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+
+        <groupbox visible="@load(vm.accManTariUnica and vm.dic and !vm.accTotTari)" hflex="1" vflex="1">
+            <caption label="Dichiarato"/>
+            <grid model="@load(vm.dichiaratoAccManTari)">
+                <template name="model" var="dic">
+                    <row align="center">
+                        <label value="@load(dic.superficie)"/>
+                        <label value="@load(dic.inizioOcc eq null?'':c:formatDate(dic.inizioOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.decorrenza eq null? '' :c:formatDate(dic.decorrenza, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.fineOcc eq null? '' :c:formatDate(dic.fineOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.cessazione eq null? '' :c:formatDate(dic.cessazione, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.impostaLorda ne null ? c:formatNumber(dic.impostaLorda, '€ #,##0.00 '): '')"/>
+                        <label value="@load(dic.data eq null? '' :c:formatDate(dic.data, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.codTributo)"/>
+                        <label value="@load(dic.categoria)"/>
+                        <label value="@load(dic.tariffa)"/>
+                        <label value="@load(dic.percPossesso ne null ? c:formatNumber(dic.percPossesso, '#,##0.00 '): '')"/>
+                        <label value="@load(dic.occupazione)"/>
+                        <checkbox checked="@load(dic.flagAbPrincipale)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                        <label value=""/>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+
+        <groupbox visible="@load(vm.accManTribMin and vm.dic and !vm.accTotTari)" hflex="1" vflex="1">
+            <caption label="Dichiarato"/>
+            <grid model="@load(vm.dichiaratoAccManTribMin)">
+                <template name="model" var="dic">
+                    <row align="center">
+                        <label value="@load(dic.superficie)"/>
+                        <label value="@load(dic.inizioOcc eq null?'':c:formatDate(dic.inizioOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.decorrenza eq null? '' :c:formatDate(dic.decorrenza, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.fineOcc eq null? '' :c:formatDate(dic.fineOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.cessazione eq null? '' :c:formatDate(dic.cessazione, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.impostaLorda ne null ? c:formatNumber(dic.impostaLorda, '€ #,##0.00 '): '')"/>
+                        <label value="@load(dic.data eq null? '' :c:formatDate(dic.data, 'dd/MM/yyyy'))"/>
+                        <label value="@load(dic.codTributo)"/>
+                        <label value="@load(dic.categoria)"/>
+                        <label value="@load(dic.tariffa)"/>
+                        <label value="@load(dic.percPossesso ne null ? c:formatNumber(dic.percPossesso, '#,##0.00 '): '')"/>
+                        <label value="@load(dic.occupazione)"/>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+
+        <!-- DATI LIQUIDATO (SOLO IMU) -->
+        <groupbox visible="@load(vm.accManTotImu and vm.liq)">
+            <caption label="Liquidato"/>
+            <grid model="@load(vm.liquidatoAccManTotImu)">
+                <template name="model" var="liq">
+                    <row class="coloreRigaGrid" align="center">
+                        <cell width="30px"/>
+                        <label value="@load((liq.tipoOggettoOgpr eq null)?liq.tipoOggettoOgg.tipoOggetto:liq.tipoOggettoOgpr.tipoOggetto)"/>
+                        <label value="@load(liq.valore ne null ? c:formatNumber(liq.valore, '€ #,##0.00 '): '')"/>
+                        <checkbox checked="@load(liq.flagValoreRivalutato)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                        <label value="@load(liq.percPossesso ne null ? c:formatNumber(liq.percPossesso, '#,##0.00 '): '')"/>
+                        <label value="@load(liq.mesiPossesso)"/>
+                        <label value="@load(liq.primoSem)"/>
+                        <label value="@load(liq.mesiEsclusione)"/>
+                        <label value="@load(liq.mesiRiduzione)"/>
+                        <label value="@load(liq.detrazione ne null ? c:formatNumber(liq.detrazione, '€ #,##0.00 '): '')"/>
+                        <label value="@load(liq.categoriaCatasto.categoriaCatasto)"/>
+                        <label value="@load(liq.classeCatasto)"/>
+                        <label value="@load(liq.imposta ne null ? c:formatNumber(liq.imposta, '€ #,##0.00 '): '')"/>
+                        <label value="@load(liq.data eq null? '' :c:formatDate(liq.data, 'dd/MM/yyyy'))"/>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+
+        <!-- DATI ACCERTATO IMU/TARI/Tributi Minori -->
+        <groupbox visible="@load(vm.accManTotImu and vm.acc)">
+            <caption label="Accertato"/>
+            <grid model="@load(vm.accertatoAccManTotImu)">
+                <template name="model" var="acc">
+                    <row>
+                        <cell sclass="destra">
+                            <label value="@load(acc.tipoOggetto.tipoOggetto)"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.valore ne null ? c:formatNumber(acc.valore, '€ #,##0.00 '): '')"/>
+                        </cell>
+                        <cell sclass="centro">
+                            <checkbox checked="@load(acc.flagValoreRivalutato)"
+                                      w:onCheck="this.setChecked(!this.isChecked())"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.percPossesso ne null ? c:formatNumber(acc.percPossesso, '#,##0.00 '): '')"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.mesiPossesso)"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.primoSem)"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.mesiEsclusione)"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.mesiRiduzione)"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.detrazione ne null ? c:formatNumber(acc.detrazione, '€ #,##0.00 '): '')"/>
+                        </cell>
+                        <cell sclass="centro">
+                            <label value="@load(acc.categoriaCatasto.categoriaCatasto)"/>
+                        </cell>
+                        <cell sclass="centro">
+                            <label value="@load(acc.classeCatasto)"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="@load(acc.imposta ne null ? c:formatNumber(acc.imposta, '€ #,##0.00 '): '')"/>
+                        </cell>
+                        <cell sclass="centro">
+                            <label value="@load(acc.data eq null? '' :c:formatDate(acc.data, 'dd/MM/yyyy'))"/>
+                        </cell>
+
+                        <detail open="true">
+                            <grid>
+                                <rows>
+                                    <row class="coloreRigaGrid" align="right">
+                                        <cell width="8%">
+                                            <label value="Tipo Aliquota"/>
+                                        </cell>
+                                        <cell width="5%" align="left">
+                                            <combobox hflex="1" model="@load(vm.listaTipiAliquota)"
+                                                      selectedItem="@load(acc.tipoAliquota) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoAliquota')">
+                                                <template name="model">
+                                                    <comboitem
+                                                            label="@load(c:cat3(each.tipoAliquota, ' - ', each.descrizione))"
+                                                            value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </cell>
+                                        <cell width="5%">
+                                            <label value="Aliquota"/>
+                                        </cell>
+                                        <cell width="5%">
+                                            <decimalbox sclass="destra" hflex="1"
+                                                        value="@load(acc.aliquota)" format="#,##0.00"/>
+                                        </cell>
+                                        <cell width="3%">
+                                            <label value="P"/>
+                                            <checkbox checked="@load(acc.flagPossesso)"/>
+                                        </cell>
+                                        <cell width="3%">
+                                            <label value="E"/>
+                                            <checkbox checked="@load(acc.flagEsclusione)"/>
+                                        </cell>
+                                        <cell width="3%">
+                                            <label value="R"/>
+                                            <checkbox checked="@load(acc.flagRiduzione)"/>
+                                        </cell>
+                                        <cell width="3%">
+                                            <label value="A"/>
+                                            <checkbox checked="@load(acc.flagAbPrincipale)"/>
+                                        </cell>
+                                        <cell width="5%">
+                                            <label value="Versato"/>
+                                        </cell>
+                                        <cell width="7%" align="left">
+                                            <decimalbox sclass="destra" width="50%"
+                                                        value="@load(acc.importoVersato)" format="#,##0.00"/>
+                                        </cell>
+                                    </row>
+                                    <row style="background-color:white;" align="right">
+                                        <cell>
+                                            <label value="Tipo Aliquota Acconto"/>
+                                        </cell>
+                                        <cell align="left">
+                                            <combobox hflex="1" model="@load(vm.listaTipiAliquotaAP)"
+                                                      selectedItem="@load(acc.tipoAliquotaAP) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoAliquota')">
+                                                <template name="model">
+                                                    <comboitem
+                                                            label="@load(c:cat3(each.tipoAliquota, ' - ', each.descrizione))"
+                                                            value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </cell>
+                                        <cell>
+                                            <label value="Aliquota Acconto"/>
+                                        </cell>
+                                        <cell>
+                                            <decimalbox sclass="destra" hflex="1"
+                                                        value="@load(acc.aliquotaAP)" format="#,##0.00"/>
+                                        </cell>
+                                        <cell colspan="2">
+                                            <label sclass="destra" value="Det.Acc."/>
+                                        </cell>
+                                        <cell colspan="2" align="left">
+                                            <decimalbox sclass="destra" width="50%"
+                                                        value="@load(acc.detrazioneAP)" format="#,##0.00"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="Imp.Acc."/>
+                                        </cell>
+                                        <cell align="left">
+                                            <decimalbox sclass="destra" width="50%"
+                                                        value="@load(acc.impostaAcconto)" format="#,##0.00"/>
+                                        </cell>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </detail>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+
+        <groupbox visible="@load(vm.accManTariUnica and vm.acc)">
+            <caption label="Accertato"/>
+            <grid model="@load(vm.accertatoAccManTari)">
+                <template name="model" var="acc">
+                    <row align="center">
+                        <label value="@load(acc.superficie)"/>
+                        <label value="@load(acc.inizioOcc eq null? '' :c:formatDate(acc.inizioOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.decorrenza eq null? '' :c:formatDate(acc.decorrenza, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.fineOcc eq null? '' :c:formatDate(acc.fineOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.cessazione eq null? '' :c:formatDate(acc.cessazione, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.imposta ne null ? c:formatNumber(acc.imposta, '€ #,##0.00 '): '')"/>
+                        <label value="@load(acc.data eq null? '' :c:formatDate(acc.data, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.codTributo)"/>
+                        <label value="@load(acc.categoria)"/>
+                        <label value="@load(acc.tariffa)"/>
+                        <label value="@load(acc.percPossesso ne null ? c:formatNumber(acc.percPossesso, '#,##0.00 '): '')"/>
+                        <label value="@load(acc.occupazione)"/>
+                        <checkbox checked="@load(acc.flagAbprincipale)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                        <label value="@load(acc.numFamiliari)"/>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+
+        <groupbox visible="@load(vm.accManTribMin and vm.acc)">
+            <caption label="Accertato"/>
+            <grid model="@load(vm.accertatoAccManTribMin)">
+                <template name="model" var="acc">
+                    <row align="center">
+                        <label value="@load(acc.superficie)"/>
+                        <label value="@load(acc.inizioOcc eq null? '' :c:formatDate(acc.inizioOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.decorrenza eq null? '' :c:formatDate(acc.decorrenza, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.fineOcc eq null? '' :c:formatDate(acc.fineOcc, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.cessazione eq null? '' :c:formatDate(acc.cessazione, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.imposta ne null ? c:formatNumber(acc.imposta, '€ #,##0.00 '): '')"/>
+                        <label value="@load(acc.data eq null? '' :c:formatDate(acc.data, 'dd/MM/yyyy'))"/>
+                        <label value="@load(acc.codTributo)"/>
+                        <label value="@load(acc.categoria)"/>
+                        <label value="@load(acc.tariffa)"/>
+                        <label value="@load(acc.percPossesso ne null ? c:formatNumber(acc.percPossesso, '#,##0.00 '): '')"/>
+                        <label value="@load(acc.occupazione)"/>
+                    </row>
+                </template>
+            </grid>
+        </groupbox>
+    </vbox>
+
+    <menupopup id="funzioniRavvedimentoOperoso">
+        <menuitem label="Aggiornamento immobili"
+                  onClick="@command('onAggiornamentoImmobili')"
+                  disabled="@load(vm.tipoTributoAttuale eq 'TARSU')"/>
+    </menupopup>
+</zk>

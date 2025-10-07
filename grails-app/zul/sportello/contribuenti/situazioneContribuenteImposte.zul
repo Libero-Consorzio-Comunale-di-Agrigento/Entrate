@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout hflex="1">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                               onClick="@command('onRefresh')"/>
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                               visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                               disabled="true"/>
+                <toolbarbutton image="/images/afc/16x16/xls.png"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniImposteToXls"/>
+                <toolbarbutton image="/images/afc/16x16/print.png"
+                               tooltiptext='#{empty arg.addTooltip?"Stampa":arg.addTooltip}'
+                               popup="funzioniImposteStampa"/>
+                <toolbarbutton image="/images/afc/16x16/arrows.png"
+                               tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                               popup="funzioniImposte"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+    <groupbox vflex="1" class="z-groupbox-hr-top">
+        <caption label="@bind(c:cat3('Imposte (', vm.numImposte, ')'))"/>
+        <listbox span="true" nonselectableTags="" sizedByContent="true"
+                 model="@load(vm.listaImposte)" selectedItem="@bind(vm.impostaSelezionata)"
+                 emptyMessage="Nessun documento presente." vflex="true"
+                 onSelect="@command('onSelezionaImposta')">
+            <listhead sizable="true">
+                <listheader label="@load(c:l('sportello.label.tipoTributo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.tipoTributo'))"/>
+                <listheader label="@load(c:l('sportello.label.anno'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.anno'))"/>
+                <listheader label="@load(c:l('sportello.label.imposta'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.imposta'))"/>
+                <listheader label="@load(c:l('sportello.label.impostaLorda'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.impostaLorda'))"/>
+                <listheader label="@load(c:l('sportello.label.dovuto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.dovuto'))"/>
+                <listheader label="@load(c:l('sportello.label.importoVersato'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.importoVersato'))"/>
+                <listheader label="@load(c:l('sportello.label.residuo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.residuo'))"/>
+                <listheader label="@load(c:l('sportello.label.aRuolo'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.aRuolo'))"/>
+                <listheader label="@load(c:l('sportello.label.impostaAcconto'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.impostaAcconto'))"/>
+                <listheader label="@load(c:l('sportello.label.impostaErariale'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.impostaErariale'))"/>
+                <listheader label="@load(c:l('sportello.label.impostaMiniIMU'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.impostaMiniIMU'))"/>
+                <listheader
+                        label="@load(c:l('sportello.label.addizionaleMaggiorazioneECA'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.addizionaleMaggiorazioneECA'))"/>
+                <listheader label="@load(c:l('sportello.label.addizionaleProvinciale'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.addizionaleProvinciale'))"/>
+                <listheader label="@load(c:l('sportello.label.iva'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.iva'))"/>
+                <listheader label="@load(c:l('sportello.label.componentiPereq'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.componentiPereq'))"/>
+                <listheader label="@load(c:l('sportello.label.accertamentoPresente'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.accertamentoPresente'))"/>
+                <listheader label="@load(c:l('sportello.label.liquidazionePresente'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.liquidazionePresente'))"/>
+                <listheader label="@load(c:l('sportello.label.versamentoPresente'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.versamentoPresente'))"/>
+                <listheader label="@load(c:l('sportello.label.ultimaVariazione'))"
+                            tooltiptext="@load(c:l('sportello.label.estesa.ultimaVariazione'))"/>
+            </listhead>
+            <template name="model" var="tr">
+                <listitem context="funzioniImposte"
+                          visible="@load(vm.cbTributi[tr.tipoTributo] eq true and vm.cbTipiPratica[tr.tipoPratica] eq true)">
+                    <listcell label="@load(tr.descrTipoTributo)"/>
+                    <listcell label="@load(tr.anno)" sclass="destra"/>
+                    <listcell label="@load(c:formatNumber(tr.imposta, '€ #,##0.00'))"
+                              sclass="destra"/>
+                    <listcell
+                            label="@load((tr.maggiorazioneTares + tr.addMaggEca + tr.addPro + tr.iva) eq 0 ? null : c:formatNumber(tr.imposta + tr.maggiorazioneTares + tr.addMaggEca + tr.addPro + tr.iva, '€ #,##0.00'))"
+                            sclass="destra"/>
+                    <!-- dovuto -->
+                    <listcell sclass="destra"
+                              visible="@load(tr.tipoTributo ne 'TARSU')"
+                              label="@load(c:formatNumber((empty tr.imposta ? 0 : tr.imposta), '€ #,##0.00'))"
+                              style="@load((empty tr.imposta ? 0 : tr.imposta) lt 0 ? 'color: red ! important' : '')"
+                    />
+                    <listcell sclass="destra"
+                              visible="@load(tr.tipoTributo eq 'TARSU')"
+                              label="@load(c:formatNumber((empty (tr.maggiorazioneTares + tr.addMaggEca + tr.addPro + tr.iva - tr.csgravio) ? 0 : (tr.imposta + tr.maggiorazioneTares + tr.addMaggEca + tr.addPro + tr.iva - tr.csgravio)), '€ #,##0.00'))"
+                              style="@load((empty (tr.maggiorazioneTares + tr.addMaggEca + tr.addPro + tr.iva - tr.csgravio) ? 0 : (tr.imposta + tr.maggiorazioneTares + tr.addMaggEca + tr.addPro + tr.iva - tr.csgravio)) lt 0 ? 'color: red ! important' : '')"
+                    />
+                    <!-- versato -->
+                    <listcell sclass="destra"
+                              label="@load((tr.versato eq '0') ? '' : c:formatNumber(tr.versato, '€ #,##0.00'))"/>
+                    <!-- Calcolo del Residuo in funzione al tipo tributo TARSU  -->
+                    <!-- residuo NO TARSU -->
+                    <listcell sclass="destra"
+                              label="@load(c:formatNumber((empty tr.residuo ? 0 : tr.residuo), '€ #,##0.00'))"
+                              style="@load((empty tr.residuo ? 0 : tr.residuo) lt 0 ? 'color: red ! important' : '')"
+                    />
+                    <listcell sclass="centro">
+                        <checkbox checked="@load((tr.aRuolo=='S')?true:false)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="destra"
+                              label="@load((tr.impostaAcconto eq '0') ? '' : c:formatNumber(tr.impostaAcconto, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((tr.impostaErariale eq '0') ? '' : c:formatNumber(tr.impostaErariale, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((tr.impostaMini eq '0') ? '' : c:formatNumber(tr.impostaMini, '€ #,##0.00'))"/>
+                    <listcell sclass="destra"
+                              label="@load((tr.addMaggEca gt 0) ? c:formatNumber(tr.addMaggEca, '€ #,##0.00') : '')"/>
+                    <listcell sclass="destra"
+                              label="@load((tr.addPro gt 0) ?  c:formatNumber(tr.addPro, '€ #,##0.00') : '')"/>
+                    <listcell sclass="destra"
+                              label="@load((tr.iva gt 0) ? c:formatNumber(tr.iva, '€ #,##0.00') : '')"/>
+                    <listcell sclass="destra"
+                              label="@load((tr.maggiorazioneTares gt 0) ? c:formatNumber(tr.maggiorazioneTares, '€ #,##0.00') : '')"/>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(tr.accertamentoPresente)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(tr.liquidazionePresente)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell sclass="centro">
+                        <checkbox checked="@load(tr.versamentoPresente)"
+                                  w:onCheck="this.setChecked(!this.isChecked())"/>
+                    </listcell>
+                    <listcell label="@load(c:formatDate(tr.dataVariazione, 'dd/MM/yyyy'))"
+                              sclass="centro"/>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+    <include vflex="1"
+             src="@load(!empty vm.impostaOggettiTable ? vm.impostaOggettiTable:'/sportello/contribuenti/situazioneContribuentiImposteOggetti.zul')"/>
+</zk>
+

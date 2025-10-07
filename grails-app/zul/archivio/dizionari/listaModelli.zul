@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaModelliViewModel')" width="100%"
+            height="100%"
+            onOK="@command('onRicercaModelli')">
+        <script src="/js/decimalbox.js"/>
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+            <!-- FILTRI -->
+            <grid hflex="1">
+                <rows>
+                    <row>
+                        <!-- TIPO -->
+                        <cell hflex="min" align="right">
+                            <label value="Tipo"/>
+                        </cell>
+                        <cell hflex="1">
+                            <combobox hflex="1" model="@load(vm.listaTipologie)"
+                                      selectedItem="@bind(vm.tipologia)"
+                                      onChange="@command('onSelezionaTipologia')"
+                                      mold="rounded"
+                                      readonly="true">
+                                <template name="model" var="t">
+                                    <comboitem
+                                            label="@load(t eq 'T' ? 'Tutti' : (t eq 'S' ? 'Sottomodelli' : 'Modelli'))"
+                                            value="@load(t)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <!-- TIPO -->
+                        <cell hflex="min" align="right">
+                            <label value="Codice Sott."/>
+                        </cell>
+                        <cell hflex="1">
+                            <textbox value="@bind(vm.codiceSottomodello)" disabled="@bind(vm.tipologia ne 'S')"
+                                     hflex="1" mold="rounded"/>
+                        </cell>
+                        <!-- ESTENSIONE -->
+                        <cell hflex="min" align="right">
+                            <label value="Estensione"/>
+                        </cell>
+                        <cell hflex="1">
+                            <combobox hflex="1" model="@load(vm.listaEstensioni)"
+                                      selectedItem="@bind(vm.estensione)"
+                                      mold="rounded"
+                                      readonly="true">
+                                <template name="model" var="e">
+                                    <comboitem label="@load(e)"
+                                               value="@load(e)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <!-- TRIBUTO -->
+                        <cell hflex="min" align="right">
+                            <label value="Tributo"/>
+                        </cell>
+                        <cell hflex="1">
+                            <combobox hflex="1" model="@load(vm.listaTipiTributo)"
+                                      selectedItem="@bind(vm.tipoTributoSelezionato) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoTributo')"
+                                      onChange="@command('onSelezionaTributo')"
+                                      mold="rounded"
+                                      readonly="true">
+                                <template name="model" var="t">
+                                    <comboitem label="@load(c:cat3(t.tipoTributoAttuale, ' - ', t.descrizione))"
+                                               value="@load(t)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <!-- TIPOLOGIA -->
+                        <cell hflex="min" align="right">
+                            <label value="Tipologia"/>
+                        </cell>
+                        <cell hflex="1">
+                            <combobox model="@load(vm.listaTipiModello)" selectedItem="@bind(vm.tipoModelloSelezionato)"
+                                      hflex="1"
+                                      mold="rounded"
+                                      readonly="true">
+                                <template name="model" var="m">
+                                    <comboitem label="@load(m.descrizione)" value="@load(m)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <!-- RICERCA -->
+                        <cell width="30px" align="center">
+                            <toolbarbutton image="/images/afc/22x22/search.png"
+                                           onClick="@command('onRicercaModelli')" tooltiptext="Ricerca modelli"/>
+                        </cell>
+                        <!-- SCARICAT TUTTI I CAMPI UNIONE -->
+                        <cell width="30px" align="center">
+                            <toolbarbutton image="/images/afc/22x22/db_export.png"
+                                           onClick="@command('onScaricaTuttiCampiUnione')"
+                                           tooltiptext="Scarica Campi Unione"/>
+                        </cell>
+                        <!-- SELEZIONA FOLDER CAMPI UNIONE -->
+                        <cell width="30px" align="center">
+                            <toolbarbutton image="/images/afc/22x22/folder_full.png"
+                                           onClick="@command('onSelezionaPathCampiUnione')"
+                                           tooltiptext="Seleziona cartella campi unione"/>
+                        </cell>
+
+                        <!-- SCARICAT TUTTI I MODELLI -->
+                        <cell width="30px" align="center" visible="@load(vm.development())">
+                            <toolbarbutton image="/images/afc/22x22/masks.png"
+                                           onClick="@command('onScaricaModelli')" tooltiptext="Scarica Modelli"/>
+                        </cell>
+                        <cell width="30px" align="center" visible="@load(vm.development())">
+                            <toolbarbutton image="/images/afc/22x22/company.png"
+                                           onClick="@command('onInstallaModelli')" tooltiptext="Installa Modelli"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+        </hlayout>
+        <!-- LISTA MODELLI -->
+        <grid span="true"
+              vflex="1"
+              model="@load(vm.listaModelli)"
+              emptyMessage="Nessuna modello"
+              sizedByContent="true">
+            <columns sizable="true">
+                <column label="" align="center"/>
+                <column label="Tributo"/>
+                <column label="Descrizione"/>
+                <column label="Codice Sottomodello"/>
+                <column label="Tipologia"/>
+                <column label="Sotto.Mod." align="center"/>
+                <column label="Eredi" align="center"/>
+                <column label="" align="center"/>
+                <column label="" align="center"/>
+                <column label="" align="center"/>
+                <column label="" align="center"/>
+                <column label="" align="center"/>
+            </columns>
+            <template name="model" var="m">
+                <row style="padding: 4px 4px 4px 6px !important;"
+                     sclass="@load((vm.modelloSelezionato.id eq m.id) ? 'rigaSelezionata' : '')"
+                     onClick="@command('onModelloClick', modello=m)">
+
+                    <detail fulfill="onOpen">
+
+                        <grid span="true" model="@load(m.versioni)"
+                              emptyMessage="Non sono presenti versioni">
+
+                            <columns>
+                                <column label="Note"/>
+                                <column label="Utente"/>
+                                <column label="Data Variazione" align="center"/>
+                                <column label="Versione" align="center"/>
+                                <column label="" align="center" width="3%"/>
+                                <column label="" align="center" width="3%"/>
+                            </columns>
+                            <template name="model" var="v">
+                                <row>
+                                    <cell>
+                                        <label value="@load(v.note)"/>
+                                    </cell>
+                                    <cell>
+                                        <label value="@load(v.utente)"/>
+                                    </cell>
+                                    <cell>
+                                        <label value="@load(v.dataVariazione)"/>
+                                    </cell>
+                                    <cell>
+                                        <label value="@load(v.versione)"/>
+                                    </cell>
+                                    <cell>
+                                        <image src="/images/afc/16x16/export.png" style="cursor: pointer;" width="16px"
+                                               height="16px"
+                                               onClick="@command('onScaricaModello', modello=m, versione=v)"
+                                               tooltiptext="Scarica il Documento"
+                                        />
+                                    </cell>
+                                    <cell>
+                                        <image src="/images/afc/16x16/delete.png" style="cursor: pointer;" width="16px"
+                                               height="16px"
+                                               onClick="@command('onEliminaVersione', modello=m, versione=v.versione)"
+                                               visible="@load((v.cancellabile) and (vm.lettura eq false))"
+                                               tooltiptext="Elimina versione"
+                                        />
+                                    </cell>
+                                </row>
+                            </template>
+                        </grid>
+                    </detail>
+
+                    <cell>
+                        <label value="@load(m.tipoTributo)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(m.descrizione)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(m.codiceSottomodello)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(m.tipoModello)"/>
+                    </cell>
+                    <cell>
+                        <checkbox checked="@load(m.flagSottomodello)" disabled="true"/>
+                    </cell>
+                    <cell>
+                        <checkbox checked="@bind(m.flagEredi)"
+                                  disabled="@load(m.flagSottomodello or (m.tipoPratica ne 'A' and m.tipoPratica ne 'L'))"
+                                  onCheck="@command('onCheckEredi', modello=m)"/>
+                    </cell>
+                    <cell>
+                        <image src="/images/afc/16x16/import.png" style="cursor: pointer;" width="16px"
+                               height="16px"
+                               visible="@load((m.flagEditabile) and (vm.lettura eq false))"
+                               tooltiptext="Carica nuova versione"
+                               onClick="@command('onCaricaModello', modello=m)"
+                        />
+                    </cell>
+                    <cell>
+                        <image src="/images/afc/16x16/editcopy.png" style="cursor: pointer;" width="16px"
+                               height="16px"
+                               visible="@load(vm.lettura eq false)"
+                               tooltiptext="Duplica il modello"
+                               onClick="@command('onDuplicaModello', modello=m)"
+                        />
+                    </cell>
+                    <cell>
+                        <image src="/images/afc/16x16/db_export.png" style="cursor: pointer;" width="16px"
+                               height="16px"
+                               visible="@load(!empty m.dbFunction)"
+                               tooltiptext="Scarica campi unione"
+                               onClick="@command('onScaricaCampiUnione', modello=m)"
+                        />
+                    </cell>
+                    <cell>
+                        <image src="/images/afc/16x16/delete.png" style="cursor: pointer;" width="16px"
+                               visible="@load((!m.flagStandard) and (vm.lettura eq false))"
+                               height="16px"
+                               tooltiptext="Elimina il modello"
+                               onClick="@command('onEliminaModello', modello=m)"
+                        />
+                    </cell>
+
+                    <cell visible="@load(vm.development())">
+                        <image src="/images/afc/16x16/check.png" style="cursor: pointer;" width="16px"
+                               height="16px"
+                               tooltiptext="Genera Prototipo"
+                               onClick="@command('onGeneraPrototipo', modello=m)"
+                        />
+                    </cell>
+                </row>
+            </template>
+        </grid>
+
+
+        <space height="5px"/>
+
+        <groupbox vflex="1">
+            <caption label="Parametri"/>
+            <!-- LISTA PARAMETRI -->
+            <listbox span="true"
+                     vflex="1"
+                     model="@load(vm.listaParametri)"
+                     sizedByContent="true"
+                     emptyMessage="Nessuna parametro"
+                     selectedItem="@bind(vm.parametroSelezionato)"
+            >
+                <listhead sizable="true">
+                    <listheader label="Pers." align="center"/>
+                    <listheader label="Descrizione Parametro"/>
+                    <listheader label="Testo Predefinito"/>
+                    <listheader label="Testo Personalizzato"/>
+                    <listheader align="center"/>
+                    <listheader align="center"/>
+                </listhead>
+                <template name="model" var="p">
+                    <listitem>
+                        <listcell>
+                            <checkbox checked="@load(!empty p.dettaglio.modello)" disabled="true"/>
+                        </listcell>
+                        <listcell label="@load(p.descrizione)"/>
+                        <listcell>
+                            <label value="@load(p.testoPredefinito)" maxlength="50"
+                                   tooltiptext="@load(p.testoPredefinito)"/>
+                        </listcell>
+                        <listcell>
+                            <label value="@load(p.dettaglio.testo)" hflex="1"
+                                   tooltiptext="@load(p.dettaglio.testo)"
+                                   maxlength="50"/>
+                        </listcell>
+                        <listcell>
+                            <image src="/images/afc/16x16/pen.png" style="cursor: pointer;" width="16px" height="16px"
+                                   tooltiptext="Modifica il parametro"
+                                   onClick="@command('onModificaParametro', parametro=p)"/>
+                        </listcell>
+                        <listcell>
+                            <image src="/images/afc/16x16/delete.png" style="cursor: pointer;" width="16px"
+                                   height="16px"
+                                   visible="@load(!empty p.dettaglio.modello)"
+                                   tooltiptext="Elimina la personalizzazione"
+                                   onClick="@command('onEliminaPersonalizzazione', parametro=p)"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </groupbox>
+    </window>
+</zk>

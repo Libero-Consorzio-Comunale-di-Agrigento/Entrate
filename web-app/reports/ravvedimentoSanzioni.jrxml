@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2022-03-03T12:55:08 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pianoRimborsoRate" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="050a3f4f-d938-485d-9cbf-aa35e3981dbf">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codice" class="java.lang.String"/>
+	<field name="descrizione" class="java.lang.String"/>
+	<field name="giorniSemestri" class="java.lang.String"/>
+	<field name="perc" class="java.lang.String"/>
+	<field name="importo" class="java.math.BigDecimal"/>
+	<field name="riduzione" class="java.math.BigDecimal"/>
+	<field name="abiPri" class="java.math.BigDecimal"/>
+	<field name="rurali" class="java.math.BigDecimal"/>
+	<field name="terreniComune" class="java.math.BigDecimal"/>
+	<field name="terreniErariale" class="java.math.BigDecimal"/>
+	<field name="areeComune" class="java.math.BigDecimal"/>
+	<field name="areeErariale" class="java.math.BigDecimal"/>
+	<field name="altriComune" class="java.math.BigDecimal"/>
+	<field name="altriErariale" class="java.math.BigDecimal"/>
+	<field name="fabbricatiDComune" class="java.math.BigDecimal"/>
+	<field name="fabbricatiDErariale" class="java.math.BigDecimal"/>
+	<field name="tipoTributo" class="java.lang.String"/>
+	<variable name="importoTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{importo} ? $F{importo} : new BigDecimal(0)]]></variableExpression>
+	</variable>
+	<variable name="abiPriTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{abiPri} != null ? $F{abiPri} : 0]]></variableExpression>
+	</variable>
+	<variable name="ruraliTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{rurali} != null ? $F{rurali} : 0]]></variableExpression>
+	</variable>
+	<variable name="terreniComuneTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{terreniComune} != null ? $F{terreniComune} : 0]]></variableExpression>
+	</variable>
+	<variable name="terreniErarialeTot" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{terreniErariale} != null ? $F{terreniErariale} : 0]]></variableExpression>
+	</variable>
+	<variable name="areeComuneTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{areeComune} != null ? $F{areeComune} : 0]]></variableExpression>
+	</variable>
+	<variable name="areeErarialeTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{areeErariale} != null ? $F{areeErariale} : 0]]></variableExpression>
+	</variable>
+	<variable name="altriComuneTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{altriComune} != null ? $F{altriComune} : 0]]></variableExpression>
+	</variable>
+	<variable name="altriErarialeTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{altriErariale} != null ? $F{altriErariale} : 0]]></variableExpression>
+	</variable>
+	<variable name="fabbricatiDComuneTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{fabbricatiDComune} != null ? $F{fabbricatiDComune} : 0]]></variableExpression>
+	</variable>
+	<variable name="fabbricatiDErarialeTot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{fabbricatiDErariale} != null ? $F{fabbricatiDErariale} : 0]]></variableExpression>
+	</variable>
+	<group name="Gruppo1"/>
+	<columnHeader>
+		<band height="32">
+			<textField>
+				<reportElement x="0" y="0" width="70" height="12" uuid="79dba22b-c9d4-4314-b1ab-7062fffcad02"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sanzioni"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="12" width="30" height="15" uuid="bf3b6d2d-804b-4783-8833-d86c15b8d729">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Cod.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="30" y="12" width="210" height="15" uuid="f829875c-5c4c-440e-ab35-6d7f6a7b1be4">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Descrizione]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="240" y="12" width="40" height="15" uuid="6a12363c-759f-4e90-aa7f-d888065070fe">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Sem/GG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="320" y="12" width="40" height="15" uuid="7ee7916d-d4b9-4ffe-ae09-aee978ed74bc">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Importo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="360" y="12" width="40" height="15" uuid="b6fd9731-f669-4a7c-a70f-441826ad7303">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression><![CDATA[$F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Rid.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="400" y="12" width="40" height="15" uuid="ac69ddfc-4a84-4228-b7d7-441e956d4f9e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Ab.Prin.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="440" y="12" width="40" height="15" uuid="54d9629d-1717-4499-8d16-d61837f8b6c4">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Rurali]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="480" y="12" width="40" height="15" uuid="547d84e2-8735-42a4-929e-dc2706e7d356">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Ter.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="520" y="12" width="40" height="15" uuid="f0b19775-b9dd-42ca-bb45-daa6b53ece88">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Ter.E.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="560" y="12" width="40" height="15" uuid="02072aa1-b9b4-4887-bc7d-ecac74fa56cf">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Aree C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="600" y="12" width="40" height="15" uuid="6b9e1ea7-6ca0-4bdc-93ea-b79bb940e523">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Aree E.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="640" y="12" width="40" height="15" uuid="7f987516-9adb-44e4-ab8a-03594f885b09">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Altri C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="680" y="12" width="40" height="15" uuid="868f659f-41f7-4cbe-8c1f-c20eee4ff6e6">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Altri E.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="720" y="12" width="40" height="15" uuid="eb699394-385e-4052-b668-9117ff680d90">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Fab. D C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="760" y="12" width="40" height="15" uuid="806b576f-e251-4d3c-816b-604dc1308400">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Fab. D E.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="280" y="12" width="40" height="15" uuid="d3b5b745-c613-44ff-863a-b58250e18acb">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" isPdfEmbedded="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Perc.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="30" height="15" uuid="f8d4d1f2-8120-4899-b11d-4d89414dac5d">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codice}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="210" height="15" uuid="e792bb10-6bfc-4112-b325-043fa2ae9664">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descrizione}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="40" height="15" uuid="1d2611e8-33cd-4e3a-aee6-9a9b1d82f462">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{giorniSemestri}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="40" height="15" uuid="99d0e636-fb56-4ea3-823b-948a522a29e9">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="360" y="0" width="40" height="15" uuid="bfdd0a2c-1f0a-4f95-aca5-66cf664968d8">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression><![CDATA[$F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{riduzione}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="40" height="15" uuid="980215a4-354b-4a17-8477-c80bc044417c">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abiPri}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="40" height="15" uuid="536ab003-d23a-48c2-9ec2-a668e5444103">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rurali}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="40" height="15" uuid="d1efe50c-dbfc-4481-a9a6-2e2901b09cad">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{terreniComune}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="520" y="0" width="40" height="15" uuid="4a549041-ef09-4d15-829b-fe8e85a105f3">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{terreniErariale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="40" height="15" uuid="3555473c-151a-481a-ae0c-c9675beb9845">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{areeComune}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="600" y="0" width="40" height="15" uuid="31f76aa4-7b23-4ce2-a5ba-6e057852e01c">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{areeErariale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="640" y="0" width="40" height="15" uuid="d1a7c5c8-853d-4534-b856-f2d94fcc4f18">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{altriComune}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="680" y="0" width="40" height="15" uuid="e03ac6b3-701e-4b42-b3df-beda89436b35">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{altriErariale}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="40" height="15" uuid="95c37c30-4f00-4cba-9dc2-c0c55c7c80af">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fabbricatiDComune}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="760" y="0" width="40" height="15" uuid="3d8b9aa5-b146-4612-bc9b-18943e7b2d92">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fabbricatiDErariale}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="0" width="40" height="15" uuid="308b2e3d-593c-430e-84c3-82edc035266d">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{perc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15">
+			<line>
+				<reportElement x="1" y="0" width="801" height="1" uuid="f314a9c7-a0ce-4f57-806c-a573fe873fe5"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="40" height="15" uuid="4ee96a99-af23-4b3c-ae1b-93c7d7593781">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{importoTot} != 0 ? $V{importoTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="40" height="15" uuid="81d5672c-c875-4e06-acaf-1c18bd2a076d">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{abiPriTot} != 0 ? $V{abiPriTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="40" height="15" uuid="f64aaf79-9f2e-4da1-99e1-8de2604130b3">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ruraliTot} != 0 ? $V{ruraliTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="40" height="15" uuid="4198bbb2-0ac6-4f1c-9b8b-7015263f20fd">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{terreniComuneTot} != 0 ? $V{terreniComuneTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="520" y="0" width="40" height="15" uuid="e5b7f382-7c65-41b0-a19a-6ee13046ef1c">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{terreniErarialeTot} != 0 ? $V{terreniErarialeTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="40" height="15" uuid="91694f73-0d4a-493a-b004-44501afa5868">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{areeComuneTot} != 0 ? $V{areeComuneTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="600" y="0" width="40" height="15" uuid="fc2b9631-b7a4-4259-858c-886734c8667a">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{areeErarialeTot} != 0 ? $V{areeErarialeTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="640" y="0" width="40" height="15" uuid="e543a917-a082-4fc2-aeac-e53059a0ad14">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{altriComuneTot} != 0 ? $V{altriComuneTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="680" y="0" width="40" height="15" uuid="242cf643-c468-4eea-b867-4bc37ac7ebb7">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{altriErarialeTot} != 0 ? $V{altriErarialeTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="40" height="15" uuid="df1cc33b-0712-401d-b53a-26d68d854c5f">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{fabbricatiDComuneTot} != 0 ? $V{fabbricatiDComuneTot} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="760" y="0" width="40" height="15" uuid="9aaa0afd-57d5-4ebb-9bc6-d6b8b42fb6a9">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <printWhenExpression>
+                        <![CDATA[$F{tipoTributo} != "TASI" && $F{tipoTributo} != "CUNI"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{areeErarialeTot} != 0 ? $V{fabbricatiDErarialeTot} : null]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

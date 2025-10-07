@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxSoggetti" extends="bandbox" class="it.finmatica.zkutils.BandboxSoggetti"?>
+<?component name="bandboxComuni" extends="bandbox" class="it.finmatica.zkutils.BandboxComuni"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('utenzeTariViewModel')"
+            border="normal" sizable="false" width="900px" title=" ">
+		<script src="/js/decimalbox.js"/>
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="Locali ed Aree"/>
+            </hlayout>
+        </h:div>
+
+        <space height="3px"/>
+
+        <grid sclass="form">
+            <rows>
+                <row visible="@load(vm.tipoEvento eq 'I')">
+                    <cell align="right">
+                        <label value="Contribuente"/>
+                    </cell>
+                    <cell colspan="2">
+                        <textbox readonly="true"
+                                 value="@bind(vm.contribuenteSelezionato.cognomeNome)"
+                                 mold="rounded"
+                                 hflex="1"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hbox hflex="1">
+                            <textbox readonly="true" hflex="1" value="@bind(vm.contribuenteSelezionato.codFiscale)"
+                                     mold="rounded"/>
+                            <space width="3px"/>
+                            <image src="/images/afc/16x16/user.png" tooltiptext="Seleziona Codice Fiscale"
+                                   style="cursor: pointer" onClick="@command('onApriMascheraRicercaSoggetto')"/>
+                        </hbox>
+                    </cell>
+                </row>
+                <row visible="@load(vm.tipoEvento eq 'I')">
+                    <cell align="right">
+                        <label value="Indirizzo"/>
+                    </cell>
+                    <cell colspan="5">
+                        <hbox hflex="1">
+                            <textbox readonly="true" hflex="4" value="@bind(vm.contribuenteSelezionato.indirizzo)"
+                                     mold="rounded"/>
+                            <textbox readonly="true" hflex="2" value="@bind(vm.contribuenteSelezionato.comuneResidenza)"
+                                     mold="rounded"/>
+                        </hbox>
+                    </cell>
+                </row>
+
+                <row visible="@load(vm.idPratica eq -1)">
+                    <cell align="right" colspan="1">Anno</cell>
+                    <cell colspan="1">
+                        <intbox value="@bind(vm.annoChiusura)" style="text-align: right" mold="rounded" hflex="1"
+                                maxlength="4"/>
+                    </cell>
+                    <cell align="right" colspan="1">
+                        <label value="Numero"/>
+                    </cell>
+                    <cell>
+                        <textbox hflex="1" value="@bind(vm.numero)"
+                                 class="noresizable" mold="rounded"/>
+                    </cell>
+                    <cell align="right" colspan="1">
+                        <h:span class="mandatoryLabel">*</h:span>
+                        <label value="Del"/>
+                    </cell>
+                    <cell colspan="1">
+                        <datebox hflex="1" mold="rounded"
+                                 value="@bind(vm.dataDel)" format="dd/MM/yyyy"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right" colspan="1">
+                        <label value="Inizio occupazione"
+                               visible="@load((vm.tipoEvento eq 'I' or vm.tipoEvento eq 'V') or (vm.perAccertamento ne false))"/>
+                        <label value="Fine occupazione"
+                               visible="@load((vm.tipoEvento eq 'C') and (vm.perAccertamento eq false))"/>
+                        <label value="Data decorrenza"
+                               visible="@load((vm.tipoEvento eq 'U') and (vm.perAccertamento eq false))"/>
+                    </cell>
+                    <cell hflex="2">
+                        <datebox mold="rounded" format="dd/MM/yyyy"
+                                 hflex="1"
+                                 onChange="@command('onCambiaData1')"
+                                 value="@load(vm.data1) @save(vm.data1, before={'onSeleziona', 'onCambiaData1'})"/>
+                    </cell>
+
+                    <cell align="right" hflex="1">
+                        <label value="Data decorrenza"
+                               visible="@load((vm.tipoEvento eq 'I' or vm.tipoEvento eq 'V') or (vm.perAccertamento ne false))"/>
+                        <label value="Data cessazione"
+                               visible="@load((vm.tipoEvento eq 'C' or vm.tipoEvento eq 'U') and (vm.perAccertamento eq false))"/>
+                    </cell>
+                    <cell hflex="2">
+                        <datebox mold="rounded" format="dd/MM/yyyy"
+                                 value="@load(vm.data2) @save(vm.data2, before='onSeleziona')"/>
+                    </cell>
+                </row>
+                <row visible="@load(vm.idPratica eq -1)">
+                    <cell align="right" hflex="1">
+                        <label value="Trasferisci a"/>
+                    </cell>
+                    <cell colspan="5">
+                        <hbox>
+                            <textbox readonly="true" width="350px" mold="rounded"
+                                     value="@bind(c:cat3(vm.soggDestinazione.cognome, ' ', vm.soggDestinazione.nome))"/>
+                            <textbox width="150px"
+                                     value="@load(!empty vm.soggDestinazione.contribuente.codFiscale ? vm.soggDestinazione.contribuente.codFiscale : vm.soggDestinazione.codFiscale)"
+                                     readonly="true"
+                                     mold="rounded"
+                                     style="text-transform:uppercase" class="noresizable"/>
+                            <hbox>
+                                <space width="3px"/>
+                                <image src="/images/afc/16x16/search.png"
+                                       tooltiptext="Seleziona Soggetto a cui trasferire"
+                                       style="cursor: pointer"
+                                       onClick="@command('onApriRicercaSoggDest')"
+                                />
+                                <space width="3px"/>
+                                <image src="/images/tr4web/16x16/rubber.png"
+                                       tooltiptext="Pulisci Dati del Soggetto a cui trasferire"
+                                       style="cursor: pointer"
+                                       onClick="@command('onEliminaSoggDest')"
+                                />
+                            </hbox>
+                        </hbox>
+                    </cell>
+                </row>
+                <row visible="@load(vm.idPratica eq -1)">
+                    <cell align="right" colspan="1">
+                        <label value="Inizio occupazione"/>
+                    </cell>
+                    <cell hflex="2">
+                        <datebox mold="rounded" format="dd/MM/yyyy"
+                                 onChange="@command('onCambiaInizioOccupazione')"
+                                 value="@load(vm.inizioOccupazione) @save(vm.inizioOccupazione, before={'onSeleziona', 'onCambiaInizioOccupazione'})"/>
+                    </cell>
+
+                    <cell align="right" hflex="1">
+                        <label value="Data decorrenza"/>
+                    </cell>
+                    <cell hflex="2">
+                        <datebox mold="rounded" format="dd/MM/yyyy"
+                                 value="@load(vm.dataDecorrenza) @save(vm.dataDecorrenza, before='onSeleziona')"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <listbox multiple="true" checkmark="true" span="true"
+                 model="@load(vm.listaUtenze)" emptyMessage="Nessun'utenza"
+                 sizedByContent="true"
+                 selectedItems="@bind(vm.utenzeSelezionate)">
+            <listhead sizable="true">
+                <listheader/>
+                <listheader label="Oggetto"/>
+                <listheader label="T"/>
+                <listheader label="Indirizzo"/>
+                <listheader label="C.Trib."/>
+                <listheader label="Cat."/>
+                <listheader label="Tar."/>
+                <listheader label="Sup."/>
+                <listheader label="Decorrenza" visible="@load(vm.tipoEvento eq 'C' or vm.tipoEvento eq 'V')"/>
+                <listheader label="Inizio Occ."
+                            visible="@load(vm.idPratica ne -1  and (vm.tipoEvento eq 'C' or vm.tipoEvento eq 'V'))"/>
+                <listheader label="A"/>
+                <listheader label="Sez."/>
+                <listheader label="Fgl."/>
+                <listheader label="Num."/>
+                <listheader label="Sub."/>
+                <listheader label="Zona"/>
+                <listheader label="Partita"/>
+                <listheader label="T.P."/>
+                <listheader label="Ev."/>
+                <listheader label="Og.Pr.Rif." visible="@load(vm.idPratica ne -1)"/>
+                <listheader label="Data Cessazione"/>
+                <listheader label="Num.Familiari"/>
+            </listhead>
+            <template name="model" var="ute">
+                <listitem onDoubleClick="@command('onSelectUtenzaCessata')"
+                          value="@load(ute)">
+                    <listcell/>
+                    <listcell sclass="destra" label="@load(ute.oggetto)"/>
+                    <listcell sclass="centro" label="@load(ute.tipoOggetto)"/>
+                    <listcell sclass="sinistra" label="@load(ute.indirizzo)"/>
+                    <listcell sclass="destra" label="@load(ute.tributo)"/>
+                    <listcell sclass="destra" label="@load(ute.categoria)"/>
+                    <listcell sclass="destra" label="@load(ute.tipoTariffa)"/>
+                    <listcell sclass="destra" label="@load(ute.consistenza)"/>
+                    <listcell sclass="centro"
+                              label="@load(ute.dataDecorrenza) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro"
+                              label="@load(ute.inizioOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="centro">
+                        <checkbox disabled="true" checked="@load(ute.flagAbPrincipale eq 'S')"/>
+                    </listcell>
+                    <listcell sclass="sinistra" label="@load(ute.sezione)"/>
+                    <listcell sclass="sinistra" label="@load(ute.foglio)"/>
+                    <listcell sclass="sinistra" label="@load(ute.numero)"/>
+                    <listcell sclass="sinistra" label="@load(ute.subalterno)"/>
+                    <listcell sclass="sinistra" label="@load(ute.zona)"/>
+                    <listcell sclass="destra" label="@load(ute.partita)"/>
+                    <listcell sclass="centro" label="@load(ute.tipoPratica)"/>
+                    <listcell sclass="centro" label="@load(ute.tipoEvento)"/>
+                    <listcell sclass="destra" label="@load(ute.ogprRif)"/>
+                    <listcell sclass="centro"
+                              label="@load(ute.dataCessazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                    <listcell sclass="destra" label="@load(ute.numeroFamiliari)"/>
+                </listitem>
+            </template>
+        </listbox>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Seleziona" onClick="@command('onSeleziona')"
+                        disabled="@bind(empty vm.utenzeSelezionate)"
+                        mold="trendy" image="/images/afc/16x16/ok_light.png"/>
+                <button label="Chiudi" onClick="@command('onClose')"
+                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+
+        </h:div>
+    </window>
+</zk>
+

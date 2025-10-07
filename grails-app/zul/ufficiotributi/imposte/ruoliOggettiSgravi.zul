@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+
+<zk
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zkoss.org/2005/zul"
+        xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('ruoliOggettiSgraviViewModel')"
+            border="normal" sizable="false" width="800px" title=" ">
+        <script src="/js/decimalbox.js"/>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell align="left" valign="center">
+                        <label value="@bind(vm.titolo)"
+                               class="documentoTitolo"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <groupbox closable="false">
+            <caption label="Ruolo"/>
+            <grid sclass="form">
+                <rows>
+
+                    <row>
+                        <cell sclass="destra" width="100px">
+                            <label value="Tipo"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load((vm.ruolo.tipoRuolo) eq 1 ? 'Principale' : 'Suppletivo')" hflex="1"
+                                     mold="rounded" class="noresizable" readonly="true"/>
+                        </cell>
+
+                        <cell sclass="destra" width="100px">
+                            <label value="Specie"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load((vm.ruolo.specieRuolo) eq 1 ? 'Coattivo' : 'Ordinario')" hflex="1"
+                                     mold="rounded" class="noresizable" readonly="true"/>
+                        </cell>
+
+                        <cell sclass="destra" width="100px">
+                            <label value="Ruolo TARI"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load(vm.ruolo.ruolo)" style="text-align: right;" hflex="1"
+                                     mold="rounded" class="noresizable" readonly="true"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load(vm.ruolo.annoRuolo)" hflex="1"
+                                     mold="rounded" class="noresizable" readonly="true"
+                                     style="text-align: right;"/>
+                        </cell>
+
+                        <cell sclass="destra">
+                            <label value="Calcolo" visible="@load(empty vm.praticaRuolo)"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load(vm.tipiCalcolo[vm.ruolo.tipoCalcolo])" hflex="1"
+                                     mold="rounded" class="noresizable" readonly="true"
+                                     visible="@load(empty vm.praticaRuolo)"/>
+                        </cell>
+
+                        <cell/>
+                        <cell/>
+                    </row>
+
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Anno Emissione"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load(vm.ruolo.annoEmissione)" hflex="1"
+                                     mold="rounded" class="noresizable" readonly="true"
+                                     style="text-align: right;"/>
+                        </cell>
+
+                        <cell sclass="destra">
+                            <label value="Tipo Emissione" visible="@load(empty vm.praticaRuolo)"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load(vm.tipiEmissione[vm.ruolo.tipoEmissione])" hflex="1"
+                                     mold="rounded" class="noresizable" readonly="true"
+                                     visible="@load(empty vm.praticaRuolo)"/>
+                        </cell>
+
+                        <cell sclass="destra">
+                            <label value="Importo"/>
+                        </cell>
+                        <cell>
+                            <!--<zk if="#{empty vm.praticaRuolo.importoTotale}">-->
+                                <textbox
+                                        value="@load((empty vm.ruolo.importo)?'':c:formatNumber(vm.ruolo.importo, '€ #,##0.00'))"
+                                        hflex="1"
+                                        mold="rounded" class="noresizable" readonly="true"
+                                        style="text-align: right;"/>
+                            <!--</zk>-->
+                            <!--<zk if="#{not empty vm.praticaRuolo.importoTotale}">
+                                <textbox
+                                        value="@load((empty vm.praticaRuolo.importoTotale) ? '' : c:formatNumber(vm.praticaRuolo.importoTotale, '€ #,##0.00'))"
+                                        hflex="1"
+                                        mold="rounded" class="noresizable" readonly="true"
+                                        style="text-align: right;"/>
+                            </zk>-->
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Progr. Emissione"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.ruolo.progrEmissione)" hflex="1"
+                                    style="text-align: right;" mold="rounded"
+                                    constraint="no empty; no negative; no zero;" maxlength="2"
+                                    readonly="true"/>
+                        </cell>
+                        <cell sclass="destra">
+                            <label value="Emissione"/>
+                        </cell>
+                        <cell>
+                            <textbox
+                                    value="@load(empty vm.ruolo.invioConsorzio ? '' : c:formatDate(vm.ruolo.dataEmissione, 'dd/MM/yyyy'))"
+                                    hflex="1"
+                                    mold="rounded" class="noresizable" readonly="true"/>
+                        </cell>
+
+                        <cell sclass="destra">
+                            <label value="Invio Consorzio"/>
+                        </cell>
+                        <cell>
+                            <textbox
+                                    value="@load(empty vm.ruolo.invioConsorzio ? '' : c:formatDate(vm.ruolo.invioConsorzio, 'dd/MM/yyyy'))"
+                                    hflex="1"
+                                    mold="rounded" class="noresizable" readonly="true"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+        </groupbox>
+
+        <groupbox closable="false">
+            <caption label="Riferimenti"/>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Cartella"/>
+                        </cell>
+                        <cell colspan="2">
+                            <textbox value="@bind(vm.ruolo.numeroCartella)" hflex="1"
+                                     mold="rounded" maxlength="20" style="text-align: right;"/>
+                        </cell>
+
+                        <cell sclass="destra">
+                            <label value="Del"/>
+                        </cell>
+                        <cell colspan="2">
+                            <datebox value="@bind(vm.ruolo.dataCartella)" hflex="1" mold="rounded"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell sclass="destra">
+                            <label value="Concessione"/>
+                        </cell>
+                        <cell colspan="2">
+                            <intbox value="@bind(vm.ruolo.codConcessione)" hflex="1"
+                                    mold="rounded" style="text-align: right;"/>
+                        </cell>
+
+                        <cell sclass="destra">
+                            <label value="Num. Ruolo"/>
+                        </cell>
+                        <cell colspan="2">
+                            <intbox value="@bind(vm.ruolo.numRuolo)" hflex="1"
+                                    mold="rounded" style="text-align: right;"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="5px"/>
+
+        <include src="@load(vm.zulIncluso)"/>
+
+    </window>
+</zk>

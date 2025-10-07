@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window maximizable="true" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('soggettiACatastoViewModel')" border="normal"
+            sizable="true" width="1000px" height="570px">
+		<script src="/js/decimalbox.js"/>
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell>
+                        <label value="@load(c:cat('Contribuente: ',(vm.soggetto.id eq null)? '':vm.soggetto.id))"
+                               class="documentoTitolo"/>
+                    </cell>
+                    <cell class="documentoTitolo" align="right" valign="center">
+                        <image src="/images/afc/16x16/user.png" tooltiptext="Visualizza Soggetto"
+                               style="cursor: pointer;" onClick="@command('onVisualizzaSoggetto')"/>
+                        <space width="5px"/>
+                        <label value="@load((vm.soggetto.id eq null)? '' : c:cat3(vm.soggetto.cognome,' ',vm.soggetto.nome))"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <space height="3px"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" width="150px">
+                        <label value="Cognome Nome"/>
+                    </cell>
+                    <cell>
+                        <textbox width="99%" value="@load(vm.soggetto.cognomeNome)" mold="rounded"
+                                 class="noresizable" readonly="true"/>
+                    </cell>
+                    <cell align="right" width="150px">
+                        <label value="Cod.Fiscale" tooltiptext="Codice Fiscale"/>
+                    </cell>
+                    <cell>
+                        <textbox hflex="1" value="@load(vm.soggetto.contribuente.codFiscale)" mold="rounded"
+                                 class="noresizable" readonly="true"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right" width="150px">
+                        <label value="Indirizzo"/>
+                    </cell>
+                    <cell>
+                        <textbox width="99%" value="@load(vm.soggetto.indirizzo)" mold="rounded"
+                                 class="noresizable" readonly="true"/>
+                    </cell>
+                    <cell align="right" width="150px">
+                        <label value="Comune"/>
+                    </cell>
+                    <cell>
+                        <textbox hflex="1"
+                                 value="@load(vm.soggetto.comuneResidenza.ad4Comune.denominazione)" mold="rounded"
+                                 class="noresizable" readonly="true"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right" width="150px">
+                        <label value="Note"/>
+                    </cell>
+                    <cell>
+                        <textbox multiline="true" width="99%" value="@load(vm.soggetto.note)" mold="rounded"
+                                 class="noresizable" readonly="true"/>
+                    </cell>
+                    <cell align="right" width="150px">
+                        <label value="Cod. Contribuente"/>
+                    </cell>
+                    <cell>
+                        <hlayout>
+                            <textbox value="@load(vm.soggetto.contribuente.codContribuente)" mold="rounded"
+                                     hflex="1" class="noresizable" readonly="true"/>
+                            <textbox value="@load(vm.ultimoStato)" readonly="true" mold="rounded"
+                                     hflex="2" class="noresizable"/>
+                        </hlayout>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <space height="5px"/>
+        <tabbox vflex="1" orient="vertical">
+            <tabs id="tabsSC" width="100px">
+                <tab id="soggetti" label="@load(vm.numSoggetti eq 0 ? 'Soggetti' : '* Soggetti')"
+                     onSelect="@command('caricaTab', folder=self.id)"/>
+            </tabs>
+            <tabpanels id="tabsPanelSC">
+                <tabpanel>
+                    <include id="includeSoggetti"
+                             src="/sportello/contribuenti/situazioneSoggettiACatasto.zul"
+                             mode="instant"/>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Chiudi" onClick="@command('onChiudiPopup')"
+                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

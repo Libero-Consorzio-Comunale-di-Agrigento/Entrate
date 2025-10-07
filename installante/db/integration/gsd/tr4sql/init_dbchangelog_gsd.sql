@@ -1,0 +1,44 @@
+--liquibase formatted sql
+--changeset dmarotta:20250326_152438_init_dbchangelog_gsd stripComments:false context:"TRG2 or TRV2"
+--validCheckSum: 1:any
+--preConditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 select count(1) from USER_OBJECTS where OBJECT_TYPE ='TABLE' and  OBJECT_NAME = 'PRATICHE_TRIBUTO'
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_GSDTr4_g', 'dmarotta', 'integration/gsd/tr4sql/GSDTr4_g.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 916, 'EXECUTED', '8:6b01a279ba85ef25857c02c4c7e48cc7', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '4882027323');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_Tr4GSD_s', 'dmarotta', 'integration/gsd/tr4sql/Tr4GSD_s.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 917, 'EXECUTED', '8:546ef43e6e567335d6087a2b415166b8', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '4882027323');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_Tr4GSDps', 'dmarotta', 'integration/gsd/tr4sql/Tr4GSDps.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 918, 'EXECUTED', '8:9af4dfb5e0b11907526d079830688490', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '4882027323');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_GSDTr4_s', 'dmarotta', 'integration/gsd/gsdsql/GSDTr4_s.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 920, 'EXECUTED', '8:d43ebb6cb53b9c9aff0d5233ff64bef0', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '4882028341');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_GSDTr4_v', 'dmarotta', 'integration/gsd/gsdsql/GSDTr4_v.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 921, 'EXECUTED', '8:57067fb417f990983f0d3a7533b21d29', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '4882028341');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_Tr4GSD_g', 'dmarotta', 'integration/gsd/gsdsql/Tr4GSD_g.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 922, 'EXECUTED', '8:83eff01092477d8f0f3c49c7755d0b56', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '4882028341');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250326_152438_Tr4GSDpg', 'dmarotta', 'integration/gsd/gsdsql/Tr4GSDpg.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 923, 'EXECUTED', '8:cfc36c6b8934ee6577b93e6756e0ade6', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '4882028341');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250514_122300_anaana_tr4_fi_su_GSD', 'abrandolini', 'integration/gsd/gsdsql/anaana_tr4_fi.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 939, 'EXECUTED', '8:a5503bb98079c164d9b8a572d3523b8b', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '7228457398');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250514_123300_anafam_tr4_fi_su_GSD', 'abrandolini', 'integration/gsd/gsdsql/anafam_tr4_fi.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 940, 'EXECUTED', '8:6b7d1c5bfce77e2b79663d5aa7166c24', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '7228457398');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250514_123600_arcvie_tr4_fi_su_GSD', 'abrandolini', 'integration/gsd/gsdsql/arcvie_tr4_fi.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 941, 'EXECUTED', '8:dcc750406fc55f4f7046bee3a96cd0df', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '7228457398');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250514_124000_compile_gsd_su_GSD', 'abrandolini', 'integration/gsd/gsdsql/compile_gsd.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 942, 'EXECUTED', '8:3619bb8d5e5a6a7ad6a05a3b29cbeda7', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '7228457398');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250514_124200_drop_trg_gsd_su_GSD', 'abrandolini', 'integration/gsd/gsdsql/drop_trg_gsd.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 943, 'EXECUTED', '8:fa8b84a859908813a5ae55a419c60dac', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '7228457398');
+
+insert into databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, EXECTYPE, MD5SUM, DESCRIPTION, COMMENTS, TAG, LIQUIBASE, CONTEXTS, LABELS, DEPLOYMENT_ID)
+values ('20250514_124500_Tr4GSD_tr_su_GSD', 'abrandolini', 'integration/gsd/gsdsql/Tr4GSD_tr.sql', TO_TIMESTAMP('2025-05-14 00:00:00.000000', 'YYYY-MM-DD HH24:MI:SS.FF6'), 946, 'EXECUTED', '8:7d5b81a4c9a9102f7846c2ccf7463f22', 'sql', null, null, '3.10.2-fix1106', '(TRG2 or TRV2)', null, '7726583726');

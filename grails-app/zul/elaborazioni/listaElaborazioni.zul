@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+    xmlns:w="http://www.zkoss.org/2005/zk/client">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('elaborazioniViewModel')" width="100%"
+            height="100%">
+        <script src="/js/decimalbox.js"/>
+        <timer id="timerElaborazioni" delay="2000" repeats="true" onTimer="@command('onTimerElaborazioni')"/>
+        <vlayout vflex="1">
+            <groupbox vflex="1">
+                <caption label="Elaborazioni Massive"/>
+
+                <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+                    <hlayout>
+                        <hlayout sclass="afc-control-bar" valign="middle">
+                            <paging sclass="afc-paging" onPaging="@command('onChangePageElaborazioni')"
+                                    activePage="@bind(vm.listaElaborazioniPaginazione.activePage)"
+                                    pageSize="@bind(vm.listaElaborazioniPaginazione.max)"
+                                    totalSize="@load(vm.listaElaborazioni.numeroRecord)"/>
+                            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                           visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                           onClick="@command('onRefreshElaborazioni')"/>
+                            <toolbarbutton image="/images/afc/22x22/arrows.png" width="26px"
+                                           tooltiptext='Funzioni'
+                                           popup="funzioniElaborazioni"/>
+                        </hlayout>
+                    </hlayout>
+                    <hlayout valign="middle" style="text-align: right;" hflex="1">
+                        <hlayout sclass="afc-control-bar" valign="bottom" style="text-align: right;">
+                            <checkbox id="cbTimer" label="Refresh Attività In Corso"
+                                      tooltiptext="Refresh Attività In Corso"
+                                      onCheck="@command('onRefreshTimerElaborazioni')"
+                                      checked="false"/>
+                            <intbox mold="rounded" style="text-align: right;"
+                                    disabled="@bind(vm.abilitaTempoDaSelezionare)"
+                                    value="@bind(vm.tempoSelezionato)"
+                                    onChange="@command('onSetTimerElaborazioni')"
+                                    tooltiptext="Secondi"
+                                    width="30px" maxlength="2"/>
+                            <label value="Sec"/>
+                        </hlayout>
+                        <toolbarbutton
+                                disabled="@bind(empty vm.listaElaborazioni.record and !vm.filtroElaborazioniAttivo)"
+                                image="@load(vm.filtroElaborazioniAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                onClick="@command('openCloseFiltriElaborazioni')"/>
+                    </hlayout>
+                </hlayout>
+                <grid id="gridElaborazioni" span="true" sizedByContent="true"
+                      model="@load(vm.listaElaborazioni.record)"
+                      emptyMessage="Nessuna elaborazione presente."
+                      vflex="1">
+                    <columns hflex="1" sizable="true">
+                        <column sclass="centro" label="" width="27px"/>
+                        <column sclass="centro" label="Elaborazione"/>
+                        <column sclass="centro" label="Nome"/>
+                        <column sclass="centro" label="Tributo"/>
+                        <column sclass="centro" label="Ruolo"/>
+                        <column sclass="centro" label="Anno"/>
+                        <column sclass="centro" label="Documenti"/>
+                        <column sclass="centro" label="Data Inserimento"/>
+                        <column sclass="centro" label="Utente"/>
+                        <column sclass="centro" label="" width="20px"/>
+                    </columns>
+                    <template name="model" var="el">
+                        <row onClick="@command('onSelezionaElaborazione', elaborazione=el)"
+                             sclass="@load((vm.elaborazioneSelezionata.id eq el.id) ?'rigaSelezionata':(elStatus.index % 2 == 0)?'mdodd':'mdeven')"
+                             droppable="true" onDrop="@command('onCambiaElaborazione')">
+                            <detail onOpen="@command('onOpenDetail',elaborazione=el)"
+                                    onClick="@command('onClickDetail',elaborazione=el)"
+                                    open="@load(vm.elaborazioniAperte[el.id])">
+                                <grid span="true" model="@load(el.attivita)"
+                                      emptyMessage="Non sono presenti attività">
+                                    <columns hflex="1">
+                                        <column label="Attività" width="4%"/>
+                                        <column label="Descrizione"/>
+                                        <column label="Data"/>
+                                        <column label="Stato"/>
+                                        <column label="Elaborati" width="8%"/>
+                                        <column label="Modello"/>
+                                        <column label="Tipo Spedizione"/>
+                                        <column visible="@load(vm.smartPndAbilitato)" label="Dett.Com."/>
+                                        <column visible="@load(vm.smartPndAbilitato)" label="Not." width="5%"/>
+                                        <column label="Utente"/>
+                                        <column label="Documento"/>
+                                        <column label="Note"/>
+                                        <column width="2%"/>
+                                        <column width="2%"/>
+                                    </columns>
+
+                                    <template name="model" var="att">
+                                        <row>
+                                            <cell align="right">
+                                                <label value="@load(att.id)"/>
+                                            </cell>
+                                            <cell>
+                                                <label value="@load(vm.smartPndAbilitato and att.tipoAttivita.id eq 3 ? 'INVIO A SMARTPND' : att.tipoAttivita.descrizione)"
+                                                       style="white-space: nowrap;"/>
+                                            </cell>
+                                            <cell align="center">
+                                                <label value="@load(att.dataAttivita ne null ? c:formatDate(att.dataAttivita, 'dd/MM/yyyy HH:mm:ss') : ''))"
+                                                       style="white-space: nowrap;"/>
+                                            </cell>
+                                            <cell>
+                                                <label value="@load(att.statoAttivita.descrizione)"/>
+                                            </cell>
+                                            <cell align="right">
+                                                <label visible="@bind(att.statoAttivita.id eq 1)"
+                                                       value="@bind(c:cat3(att.elaborati,' di ',att.totaleElaborati))"/>
+                                                <label visible="@bind(att.statoAttivita.id ne 1)"
+                                                       value="@load(att.elaborati)"/>
+                                            </cell>
+                                            <cell>
+                                                <label value="@load(att.modello.descrizione)"/>
+                                            </cell>
+                                            <cell>
+                                                <label value="@load(empty att.tipoSpedizione ? '' : att.tipoSpedizione.descrizioneCompleta())"/>
+                                            </cell>
+
+                                            <cell visible="@load(vm.smartPndAbilitato)">
+                                                <label value="@load(att.dettaglioComunicazione.descrizione)"
+                                                       style="white-space: nowrap;"/>
+                                            </cell>
+
+                                            <cell visible="@load(vm.smartPndAbilitato)" sclass="centro">
+                                                <checkbox checked="@load(!empty att.flagNotifica)"
+                                                          w:onCheck="this.setChecked(!this.isChecked())"/>
+                                            </cell>
+
+
+                                            <cell>
+                                                <label value="@load(att.utente)"/>
+                                            </cell>
+                                            <cell align="center">
+                                                <image src="/images/afc/16x16/export.png" style="cursor: pointer;"
+                                                       visible="@load(att.documentoPresente)"
+                                                       width="16px"
+                                                       height="16px"
+                                                       tooltiptext="Scarica il documento"
+                                                       onClick="@command('onScaricaDocumentoAttivita', att=att)"
+                                                />
+                                            </cell>
+                                            <cell align="center">
+                                                <image src="/images/tr4web/16x16/warn.png" style="cursor: pointer;"
+                                                       visible="@load(!empty att.note)"
+                                                       width="16px"
+                                                       height="16px"
+                                                       tooltiptext="@load(att.note)"
+                                                />
+                                            </cell>
+                                            <cell sclass="centro">
+                                                <image src="/images/tr4web/16x16/document.png" style="cursor: pointer;"
+                                                       visible="@load(att.tipoAttivita.id eq 2)"
+                                                       width="16px"
+                                                       height="16px"
+                                                       tooltiptext="Log attività"
+                                                       onClick="@command('onOpenLogAttivita', att=att.id)"
+                                                />
+                                            </cell>
+                                            <cell sclass="centro">
+                                                <image src="/images/tr4web/16x16/trash.png"
+                                                       visible="@bind(att.statoAttivita.id eq 2 and att.tipoAttivita.id ne 3 and att.ultimaAttivitaIsInvioDoc eq false and att.tipoAttivita.id ne 7 and att.tipoAttivita.id ne 8)"
+                                                       tooltiptext="Elimina Attività"
+                                                       style="cursor: pointer;"
+                                                       onClick="@command('onEliminaAttivita', att=att)"/>
+                                            </cell>
+                                        </row>
+                                    </template>
+                                </grid>
+
+                            </detail>
+
+                            <custom-attributes foo="#{el}"/>
+
+                            <cell align="right">
+                                <label value="@load(el.id)"/>
+                            </cell>
+                            <cell>
+                                <label value="@load(el.nomeElaborazione)"/>
+                            </cell>
+                            <cell align="center">
+                                <label value="@load(c:cat(el.tipoTributoDescrizione, (el.gruppoTributoDescrizione ne '') ? c:cat(' / ',el.gruppoTributoDescrizione) : ''))"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(el.ruolo)"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(el.anno)"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(el.documenti)"/>
+                            </cell>
+                            <cell align="center">
+                                <label value="@load(el.dataElaborazione ne null ? c:formatDate(el.dataElaborazione, 'dd/MM/yyyy HH:mm:ss') : '')"/>
+                            </cell>
+                            <cell>
+                                <label value="@load(el.utente)"/>
+                            </cell>
+                            <cell align="center">
+                                <image
+                                        src="/images/afc/16x16/arrows.png" style="cursor: pointer;"
+                                        tooltiptext="Azioni"
+                                        width="16px"
+                                        popup="@load(empty el.funzioniRiga ? '' : 'funzioniRiga, position=start_before')"
+                                        sclass="@load(empty el.funzioniRiga ? 'z-toolbarbutton-disd' : '')"
+                                />
+                            </cell>
+                        </row>
+
+                    </template>
+                </grid>
+            </groupbox>
+
+            <groupbox vflex="1">
+                <caption label="@bind(vm.titoloDettaglio)"/>
+
+                <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+                    <hlayout>
+                        <hlayout sclass="afc-control-bar" valign="middle">
+                            <paging sclass="afc-paging" onPaging="@command('onChangePageDettagli')"
+                                    activePage="@bind(vm.listaDettagliPaginazione.activePage)"
+                                    pageSize="@bind(vm.listaDettagliPaginazione.max)"
+                                    totalSize="@load(vm.listaDettagli.numeroRecord)"/>
+                            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                           visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                           onClick="@command('onRefreshDettagli')"/>
+                            <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                           tooltiptext='#{empty arg.deleteTooltip?"Elimina Dettaglio Selezionato":arg.deleteTooltip}'
+                                           visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                           onClick="@command('onEliminaDettaglio')"
+                                           disabled="@bind(empty vm.dettaglioSelezionato or vm.ultimaAttivitaIsInvioDoc || vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"/>
+                            <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                           tooltiptext='Esporta in XLS' onClick="@command('onExportDettagliXls')"
+                                           disabled="@bind(empty vm.elaborazioneSelezionata)"/>
+                            <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                           tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                           popup="funzioniDettaglio" width="26px"
+                                           disabled="@load(!vm.anyFunzioniDettaglio)"/>
+                        </hlayout>
+                    </hlayout>
+
+                    <hlayout valign="middle" style="text-align: right;" hflex="3">
+                        <label value="@bind(vm.dettagliFiltro)"/>
+                        <space width="5px"/>
+                        <toolbarbutton
+                                disabled="@bind(empty vm.listaDettagli.record and !vm.filtroDettagliAttivo)"
+                                image="@load(vm.filtroDettagliAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                                onClick="@command('openCloseFiltri')"/>
+                    </hlayout>
+                </hlayout>
+                <listbox id="lstbDettagli" hflex="max" vflex="1" span="true" model="@load(vm.listaDettagli.record)"
+                         selectedItem="@bind(vm.dettaglioSelezionato)"
+                         onClick="@command('onSelezionaDettaglio')"
+                         sizedByContent="true" emptyMessage="Nessun dettaglio presente.">
+                    <listhead sizable="true">
+                        <listheader visible="false"/>
+                        <listheader label="">
+                            <checkbox onCheck="@command('onCheckTuttiDettagli')"
+                                      checked="@load(vm.selezioneDettagliPresente)"
+                                      disabled="@bind(empty vm.listaDettagli.record)"/>
+                        </listheader>
+                        <listheader label="Anno" visible="@load(vm.tipoMassivaPratica)"/>
+                        <listheader label="Tributo" visible="@load(vm.tipoMassivaPratica)"/>
+                        <listheader label="T.Pratica" visible="@load(vm.tipoMassivaPratica)"/>
+                        <listheader label="Numero" visible="@load(vm.tipoMassivaPratica)"/>
+                        <listheader label="Contribuente"/>
+                        <listheader label="Codice Fiscale"/>
+                        <listheader label="Erede"/>
+                        <listheader label="Pratica Base" visible="@load(vm.tipoBollettazione)"/>
+                        <listheader label="Nome file" visible="@load(!vm.tipoAnagrafeTributaria)"/>
+                        <listheader label="N.Pagine" visible="@load(!vm.tipoAnagrafeTributaria)"/>
+                        <listheader label="Dimensione" visible="@load(!vm.tipoAnagrafeTributaria)"/>
+                        <listheader label="Documento" visible="@load(!vm.tipoAnagrafeTributaria)"/>
+                        <listheader label="Stampa"
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.generaDocumenti)"/>
+                        <listheader label="Avviso AgID"
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.allegaAvvisoAgid)"/>
+                        <listheader label="Tipografia"
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.elaboraPerTipografia)"/>
+                        <listheader label="@load(vm.destinazioneInvioLabel)"
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.inviaADocumentale)"/>
+                        <listheader label="AppIO"
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.inviaAppIO)"/>
+                        <listheader label="Esp. A.T."
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.esportaAT)"/>
+                        <listheader label="Contr. A.T."
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.controllaAT)"/>
+                        <listheader label="All. A.T."
+                                    visible="@load(vm.elaborazioneSelezionata.funzioniRiga.allineamentoAT)"/>
+                        <listheader label="Note"/>
+                    </listhead>
+                    <template name="model" var="dett">
+                        <listitem draggable="true">
+                            <custom-attributes foo="#{dett}"/>
+                            <listcell label="Cambia elab." visible="false"/>
+                            <listcell sclass="centro">
+                                <checkbox checked="@bind(vm.dettagliSelezionati[dett.id])"
+                                          onCheck="@command('onCheckDettaglio', dettaglio=dett)"/>
+                            </listcell>
+                            <listcell sclass="centro" label="@load(dett.pratica.anno)"/>
+                            <listcell sclass="centro" label="@load(dett.tipoTributoDesc)"/>
+                            <listcell sclass="centro" label="@load(dett.pratica.tipoPratica)"/>
+                            <listcell sclass="centro" label="@load(dett.pratica.numero)"/>
+                            <listcell label="@load(dett.nominativo)"/>
+                            <listcell>
+                                <hlayout>
+                                    <label value="@load(dett.codFiscale)"/>
+                                    <space width="2px"/>
+                                    <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                                           style="cursor: pointer;"
+                                           width="16px"
+                                           visible="@load(dett.contribuente ne null)"
+                                           onClick="@command('onOpenSituazioneContribuente', contribuente=dett.contribuente)"/>
+                                </hlayout>
+                            </listcell>
+                            <listcell sclass="destra" label="@load(dett.eredeSoggetto.soggettoErede.id)"/>
+                            <listcell sclass="destra" label="@load(dett.pratica.id)"/>
+                            <listcell label="@load(dett.nomeFile)"/>
+                            <listcell sclass="destra" label="@load(dett.numPagine)"/>
+                            <listcell sclass="destra" label="@load(vm.dimensioneDettagli[dett.id].dimensioneString)"/>
+                            <listcell sclass="centro">
+                                <image src="/images/afc/16x16/export.png" style="cursor: pointer;"
+                                       visible="@load(dett.documentoPresente)"
+                                       width="16px"
+                                       height="16px"
+                                       tooltiptext="Scarica il documento"
+                                       onClick="@command('onScaricaDocumentoDettaglio')"/>
+                            </listcell>
+                            <listcell sclass="destra" label="@load(dett.stampaId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.generaDocumenti)"/>
+                            <listcell sclass="destra" label="@load(dett.avvisoAgidId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.allegaAvvisoAgid)"/>
+                            <listcell sclass="destra" label="@load(dett.tipografiaId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.elaboraPerTipografia)"/>
+                            <listcell sclass="destra" label="@load(dett.documentaleId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.inviaADocumentale)"/>
+                            <listcell sclass="destra" label="@load(dett.appioId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.inviaAppIO)"/>
+                            <listcell sclass="destra" label="@load(dett.anagrId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.esportaAT)"/>
+                            <listcell sclass="destra" label="@load(dett.controlloAtId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.controllaAT)"/>
+                            <listcell sclass="destra" label="@load(dett.allineamentoAtId)"
+                                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.allineamentoAT)"/>
+                            <listcell sclass="centro">
+                                <image src="/images/tr4web/16x16/warn.png" style="cursor: pointer;"
+                                       visible="@load(!empty dett.note)"
+                                       width="16px"
+                                       height="16px"
+                                       tooltiptext="@load(dett.note)"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </groupbox>
+        </vlayout>
+
+        <!-- Context Menu -->
+        <menupopup id="funzioniRiga" width="180px">
+            <menuitem label="Genera Documenti"
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onGeneraDocumenti')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.generaDocumenti)"/>
+            <menuitem label="Allega avviso AgID"
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onAllegaAvvisoAgid')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.allegaAvvisoAgid)"/>
+            <menuitem label="Elabora per Tipografia"
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onInvioTipografia')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.elaboraPerTipografia)"/>
+            <menuitem label="@load(c:cat('Invia a ', vm.destinazioneInvioLabel))"
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onInviaADocumentale')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.inviaADocumentale)"/>
+            <menuitem label="Invia AppIO"
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onInviaAppIO')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.inviaAppIO)"/>
+            <menuitem label="Esporta Anagrafe Trib."
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onEsportaAnagrTrib')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.esportaAT)"/>
+            <menuitem label="Controllo Anagrafe Trib."
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onControllaAnagrTrib')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.controllaAT)"/>
+            <menuitem label="Allineamento Anagrafe Trib."
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onAllineamentoAnagrTrib')"
+                      visible="@load(vm.elaborazioneSelezionata.allineamentoAT)"/>
+            <menuseparator visible="@load(vm.elaborazioneSelezionata.funzioniRiga.eliminaElab)"/>
+            <menuitem label="Elimina Elaborazione"
+                      disabled="@load(vm.tipoAbilitazioneLetturaTributo[vm.elaborazioneSelezionata.tipoTributo.tipoTributo])"
+                      onClick="@command('onEliminaElaborazione')"
+                      visible="@load(vm.elaborazioneSelezionata.funzioniRiga.eliminaElab)"/>
+        </menupopup>
+
+        <!-- Context Menu -->
+        <menupopup id="funzioniDettaglio">
+            <menuitem label="Controllo Anagrafe Tributaria" onClick="@command('onControlloATDettaglio')"
+                      disabled="@load(empty vm.dettaglioSelezionato or !vm.funzioniDettaglio.controlloATDettaglio)"/>
+        </menupopup>
+
+        <menupopup id="funzioniElaborazioni">
+            <menuitem label="Crea elaborazione Anagrafe Tributaria"
+                      disabled="@bind(empty vm.elaborazioneSelezionata or !vm.elaborazioneSelezionata.funzioniElaborazioni.creaElaborazioneAT)"
+                      onClick="@command('creaElaborazioneAT')"/>
+        </menupopup>
+
+    </window>
+</zk>

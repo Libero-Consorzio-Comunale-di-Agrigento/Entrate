@@ -1,0 +1,897 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxOggettiPratica" extends="bandbox" class="it.finmatica.zkutils.BandboxOggettiPratica"?>
+<?component name="labelWithButton" extends="div" class="it.finmatica.zkutils.LabelWithButton"?>
+
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer"
+            viewModel="@id('vm') @init('oggettoContribuenteTariViewModel')"
+            border="normal" sizable="true" title=" "
+            width="1050px"
+            onCancel="@command('onChiudiPopup')">
+        <script src="/js/decimalbox.js"/>
+
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell class="documentoTitolo" align="left">
+                        <label value="@load(vm.titoloForm)" class="documentoTitolo"/>
+                    </cell>
+                    <cell class="documentoTitolo" align="right" valign="center">
+                        <image visible="@load(vm.contribuente ne null)"
+                               src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                               style="cursor: pointer;" onClick="@command('onOpenSituazioneContribuente')"/>
+                        <space width="5px"/>
+                        <label value="@load(c:cat5(vm.contribuente.soggetto.cognome,' ',vm.contribuente.soggetto.nome, ' - ', vm.contribuente.codFiscale))"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <space height="3px"/>
+
+        <grid sclass="form">
+            <rows>
+
+                <row>
+                    <cell align="right">
+                        <label value="Oggetto"/>
+                    </cell>
+                    <cell align="right">
+                        <textbox style="text-align: right;" hflex="1"
+                                 value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.id)"
+                                 mold="rounded" disabled="true"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Tipo"/>
+                    </cell>
+                    <cell colspan="5">
+                        <combobox disabled="true" constraint="no empty" mold="rounded"
+                                  model="@load(vm.listaTipologiaOggetto)" hflex="1"
+                                  onSelect="@command(onSelectTipoOggetto)"
+                                  selectedItem="@load((empty vm.oggettoContribuente.oggettoPratica.tipoOggetto)?vm.oggettoContribuente.oggettoPratica.oggetto.tipoOggetto:vm.oggettoContribuente.oggettoPratica.tipoOggetto) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoOggetto')">
+                            <template name="model" var="to">
+                                <comboitem description="@load(to.descrizione)"
+                                           label="@load(c:cat3(to.tipoOggetto, ' - ', to.descrizione))"
+                                           value="@load(to)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <label value="Fonte"/>
+                    </cell>
+                    <cell align="right">
+                        <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                 value="@load(vm.oggettoContribuente.oggettoPratica.fonte.fonte)" hflex="1"
+                                 tooltiptext="@load(vm.oggettoContribuente.oggettoPratica.fonte.descrizione)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="Indirizzo"/>
+                    </cell>
+                    <cell align="right" colspan="6">
+                        <textbox width="100%" mold="rounded"
+                                 value="@bind(empty vm.oggettoContribuente.oggettoPratica.oggetto.archivioVie ? vm.oggettoContribuente.oggettoPratica.oggetto.indirizzoLocalita : vm.oggettoContribuente.oggettoPratica.oggetto.archivioVie.denomUff)"
+                                 class="noresizable" disabled="true" hflex="1"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="Civico"/>
+                    </cell>
+                    <cell align="left" colspan="2">
+                        <textbox style="text-align: right;" cols="4" mold="rounded"
+                                 value="@bind(vm.oggettoContribuente.oggettoPratica.oggetto.numCiv)"
+                                 tooltiptext="Numero" class="noresizable" disabled="true"/>
+                        <label value=" / "/>
+                        <textbox style="text-align: right;" cols="4" mold="rounded"
+                                 value="@bind(vm.oggettoContribuente.oggettoPratica.oggetto.suffisso)"
+                                 tooltiptext="Suffisso" class="noresizable" disabled="true"/>
+                        <label value=" - "/>
+                        <textbox style="text-align: right;" cols="4" mold="rounded"
+                                 value="@bind(vm.oggettoContribuente.oggettoPratica.oggetto.interno)"
+                                 tooltiptext="Interno" class="noresizable" disabled="true"/>
+                    </cell>
+                </row>
+
+            </rows>
+        </grid>
+
+        <space height="3px" orient="vertical"/>
+
+        <groupbox closable="false">
+            <caption label="Dati catastali"/>
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="Partita"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.partita)" hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Sezione"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.sezione)" hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Foglio"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.foglio)" hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Numero"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.numero)" hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Subalterno"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.subalterno)" hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Zona"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.zona)" hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Protocollo"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.protocolloCatasto)"
+                                     hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell>
+                            <textbox disabled="true" mold="rounded" style="text-align: right;"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.oggetto.annoCatasto)" hflex="1"
+                                     class="noresizable"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="3px" orient="vertical" visible="@load(! empty vm.oggettoContribuenteRif.id)"/>
+        <groupbox closable="true" visible="@load(! empty vm.oggettoContribuenteRif.id)">
+            <caption label="@load(vm.titoloOggPrRif)"/>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="Cod. tributo"/>
+                        </cell>
+                        <cell align="left" colspan="2">
+                            <textbox
+                                    value="@load(c:cat3(vm.oggettoContribuenteRif.codiceTributo,'-',vm.oggettoContribuenteRif.desCodiceTributo))"
+                                    tooltiptext="@load(vm.oggettoContribuenteRif.desCodiceTributo)" hflex="1"
+                                    mold="rounded" disabled="true"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Categoria"/>
+                        </cell>
+                        <cell align="left" colspan="2">
+                            <textbox
+                                    value="@load(c:cat3(vm.oggettoContribuenteRif.categoria,'-',vm.oggettoContribuenteRif.desCategoria))"
+                                    tooltiptext="@load(vm.oggettoContribuenteRif.desCategoria)" hflex="1" mold="rounded"
+                                    disabled="true"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Tariffa"/>
+                        </cell>
+                        <cell align="left" colspan="2">
+                            <textbox
+                                    value="@load(c:cat3(vm.oggettoContribuenteRif.tipoTariffa,'-',vm.oggettoContribuenteRif.desTipoTariffa))"
+                                    tooltiptext="@load(vm.oggettoContribuenteRif.desTipoTariffa)" hflex="1"
+                                    mold="rounded" disabled="true"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell align="right">
+                            <label value="Inizio occupazione"/>
+                        </cell>
+                        <cell>
+                            <datebox hflex="1" mold="rounded" disabled="true"
+                                     value="@load(vm.oggettoContribuenteRif.inizioOccupazione)"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell/>
+                        <cell align="right">
+                            <label value="Data decorrenza"/>
+                        </cell>
+                        <cell align="right">
+                            <datebox hflex="1" mold="rounded" disabled="true"
+                                     value="@load(vm.oggettoContribuenteRif.dataDecorrenza)"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Superficie"/>
+                        </cell>
+                        <cell>
+                            <decimalbox style="text-align: right;" hflex="1" sclass="destra" mold="rounded"
+                                        disabled="true"
+                                        value="@load(vm.oggettoContribuenteRif.consistenza)" format="#,##0.00"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Data"/>
+                        </cell>
+                        <cell align="right">
+                            <datebox hflex="1" mold="rounded" disabled="true"
+                                     value="@load(vm.oggettoContribuenteRif.dataPratica)"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Fine occupazione"/>
+                        </cell>
+                        <cell>
+                            <datebox hflex="1" mold="rounded" disabled="true"
+                                     value="@load(vm.oggettoContribuenteRif.fineOccupazione)"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell/>
+                        <cell align="right">
+                            <label value="Data cessazione"/>
+                        </cell>
+                        <cell align="right">
+                            <datebox hflex="1" mold="rounded" disabled="true"
+                                     value="@load(vm.oggettoContribuenteRif.dataCessazione)"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="%Poss."/>
+                        </cell>
+                        <cell>
+                            <decimalbox hflex="1" mold="rounded" style="text-align: right;" disabled="true"
+                                        value="@load(vm.oggettoContribuenteRif.percPossesso)"
+                                        format="#,##0.00"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Imposta"/>
+                        </cell>
+                        <cell>
+                            <decimalbox hflex="1" mold="rounded" readonly="true"
+                                        value="@bind(vm.oggettoContribuenteRif.impostaLorda)"
+                                        format="€ #,##0.00" style="text-align: right"/>
+                        </cell>
+                    </row>
+
+                    <row>
+                        <cell align="right">
+                            <checkbox label="Annullata" disabled="true"
+                                      checked="@load(vm.oggettoContribuenteRif.flagContenzioso)"/>
+                        </cell>
+                        <cell align="right" colspan="2">
+                            <checkbox visible="@load(vm.puntoRaccoltaRifVisible)"
+                                      label="Punto di raccolta" disabled="true"
+                                      checked="@load(vm.oggettoContribuenteRif.flagPuntoRaccolta)"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Familiari"/>
+                        </cell>
+                        <cell>
+                            <intbox style="text-align: right;" sclass="destra" hflex="1" mold="rounded" disabled="true"
+                                    value="@load(vm.oggettoContribuenteRif.numeroFamiliari)"/>
+                        </cell>
+                        <cell>
+                            <checkbox label="Ab. Principale" disabled="true"
+                                      checked="@load(vm.oggettoContribuenteRif.flagAbPrincipale)"/>
+                        </cell>
+                        <cell/>
+                        <cell/>
+                        <cell/>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="3px" orient="vertical"/>
+        <groupbox closable="false">
+            <caption label="@load(vm.titoloOggPr)"/>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="Cod. tributo"/>
+                        </cell>
+                        <cell colspan="2">
+                            <combobox id="cmbTributo"
+                                      readonly="true"
+                                      tooltiptext="@load(vm.oggettoContribuente.oggettoPratica.codiceTributo.descrizione)"
+                                      hflex="1" model="@load(vm.listaCodicitributo)" mold="rounded"
+                                      onSelect="@command('onRiempiCategoria')"
+                                      selectedItem="@bind(vm.oggettoContribuente.oggettoPratica.codiceTributo) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                <template name="model" var="ct">
+                                    <comboitem label="@load(ct.id eq 0 ? '' : c:cat3(ct.id,'-',ct.descrizione))"
+                                               value="@load(ct)" tooltiptext="@load(ct.descrizione)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell align="right">
+                            <label value="Categoria"/>
+                        </cell>
+                        <cell colspan="2">
+                            <combobox
+                                    id="cmbCategoria"
+                                    readonly="true"
+                                    tooltiptext="@load(vm.oggettoContribuente.oggettoPratica.categoria.descrizione)"
+                                    mold="rounded" model="@load(vm.listaCategorie)" hflex="1"
+                                    onSelect="@command('onRiempiTariffa')"
+                                    selectedItem="@bind(vm.oggettoContribuente.oggettoPratica.categoria) @converter('it.finmatica.zkutils.PropertyConverter', property='categoria')">
+                                <template name="model" var="cat">
+                                    <comboitem
+                                            label="@load(c:cat3(cat.categoria, !empty cat.categoria ? '-' : '', cat.descrizione))"
+                                            value="@load(cat)" tooltiptext="@load(cat.descrizione)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell align="right">
+                            <label value="Tariffa"/>
+                        </cell>
+                        <cell colspan="2">
+                            <combobox id="cmbTariffa"
+                                      readonly="true"
+                                      tooltiptext="@load(vm.oggettoContribuente.oggettoPratica.tariffa.descrizione)"
+                                      mold="rounded" model="@load(vm.listaTariffe)" hflex="1"
+                                      onSelect="@command('onCambioTariffa')"
+                                      selectedItem="@bind(vm.oggettoContribuente.oggettoPratica.tariffa) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                <template name="model" var="tar">
+                                    <comboitem
+                                            label="@load(c:cat3(tar.tipoTariffa eq 0 ? '' : tar.tipoTariffa, tar.tipoTariffa eq 0 ? '' : '-', tar.descrizione))"
+                                            value="@load(tar)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Inizio occupazione"/>
+                        </cell>
+                        <cell>
+                            <datebox
+                                    id="datInizioOccupazione"
+                                    hflex="1" mold="rounded"
+                                    onChange="@command('onCambiaInizioOccupazione')"
+                                    value="@load(vm.oggettoContribuente.inizioOccupazione) @save(vm.oggettoContribuente.inizioOccupazione, before={'onSalva', 'onCambiaInizioOccupazione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                    format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell/>
+                        <cell align="right">
+                            <label value="Data decorrenza"/>
+                        </cell>
+                        <cell align="right">
+                            <datebox id="datInizioDecorrenza"
+                                     hflex="1" mold="rounded"
+                                     onChange="@command('onCambioParametri')"
+                                     value="@load(vm.oggettoContribuente.dataDecorrenza) @save(vm.oggettoContribuente.dataDecorrenza, before={'onSalva', 'onCambiaInizioOccupazione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Superficie"/>
+                        </cell>
+                        <cell align="right">
+                            <decimalbox id="decSuperficie" style="text-align: right;" hflex="1"
+                                        sclass="destra" mold="rounded"
+                                        onChange="@command('onCambioParametri')"
+                                        value="@load(vm.oggettoContribuente.oggettoPratica.consistenza) @save(vm.oggettoContribuente.oggettoPratica.consistenza, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                        format="#,##0.00"/>
+                        </cell>
+                        <cell align="right">
+                            <hlayout valign="middle" hflex="1">
+                                <checkbox id="flagDaDM"
+                                          checked="@bind(vm.flagDaDatiMetrici) @save(vm.flagDaDatiMetrici, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                          onCheck="@command('onCheckDatiMetrici')"/>
+                                <label value="Da D.M." style="white-space: nowrap; "/>
+                            </hlayout>
+                        </cell>
+                        <cell align="right">
+                            <hlayout valign="middle" hflex="1" visible="@bind(vm.flagDaDatiMetrici)">
+                                <checkbox id="flagRidSup" checked="@bind(vm.flagRiduzioneSuperficie)"
+                                          onCheck="@command('onCheckRiduzioneSuperficie')"/>
+                                <label value="@load(vm.labelRiduzioneSuperficie)"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Fine occupazione"/>
+                        </cell>
+                        <cell>
+                            <datebox id="datFineOccupazione"
+                                     hflex="1" mold="rounded"
+                                     onChange="@command('onCambiaFineOccupazione')"
+                                     value="@load(vm.oggettoContribuente.fineOccupazione) @save(vm.oggettoContribuente.fineOccupazione, before={'onSalva', 'onCambiaFineOccupazione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell/>
+                        <cell align="right">
+                            <label value="Data cessazione"/>
+                        </cell>
+                        <cell align="right">
+                            <datebox id="datCessazione"
+                                     hflex="1" mold="rounded"
+                                     onChange="@command('onCambioParametri')"
+                                     value="@load(vm.oggettoContribuente.dataCessazione) @save(vm.oggettoContribuente.dataCessazione, before={'onSalva', 'onCambiaFineOccupazione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="%Poss."/>
+                        </cell>
+                        <cell>
+                            <decimalbox id="decPercPoss"
+                                        hflex="1" mold="rounded" style="text-align: right;"
+                                        value="@load(vm.oggettoContribuente.percPossesso) @save(vm.oggettoContribuente.percPossesso, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                        onChange="@command('onCambioParametri')"
+                                        format="#,##0.00"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Imposta"/>
+                        </cell>
+                        <cell>
+                            <decimalbox hflex="1" mold="rounded" readonly="true"
+                                        value="@bind(vm.oggettoImposte.impostaLorda)"
+                                        format="€ #,##0.00" style="text-align: right"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <checkbox label="Annullata"
+                                      id="flagAnnullata"
+                                      onCheck="@command('onCambioParametri')"
+                                      checked="@load(vm.oggettoContribuente.oggettoPratica.flagContenzioso) @save(vm.oggettoContribuente.oggettoPratica.flagContenzioso, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"/>
+                        </cell>
+                        <cell align="right" colspan="2">
+                            <checkbox visible="@load(vm.puntoRaccoltaVisible)"
+                                      id="flagPuntoRaccolta"
+                                      label="Punto di raccolta"
+                                      checked="@load(vm.oggettoContribuente.flagPuntoRaccolta) @save(vm.oggettoContribuente.flagPuntoRaccolta, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Familiari"/>
+                        </cell>
+                        <cell>
+                            <intbox id="intNumFam" style="text-align: right;"
+                                    sclass="destra" hflex="1" mold="rounded"
+                                    onChange="@command('onCambioParametri')"
+                                    value="@load(vm.oggettoContribuente.oggettoPratica.numeroFamiliari) @save(vm.oggettoContribuente.oggettoPratica.numeroFamiliari, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"/>
+                        </cell>
+                        <cell align="right">
+                            <checkbox label="Ab. Principale" disabled="@bind(!vm.modificaAbPriARuolo)"
+                                      onCheck="@command('onCambioParametri')"
+                                      checked="@load(vm.oggettoContribuente.flagAbPrincipale) @save(vm.oggettoContribuente.flagAbPrincipale, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Pertinenza di"/>
+                        </cell>
+                        <cell colspan="2">
+                            <hbox hflex="1">
+                                <bandboxOggettiPratica readonly="true"
+                                                       onSelect="@command('onSelectPertinenzaDi')"
+                                                       oggettoPraticaRifAp="@load(vm.parametriBandbox.oggettoPraticaRifAp)"
+                                                       nomeMetodo="@bind(vm.parametriBandbox.nomeMetodo)"
+                                                       oggetto="@bind(vm.parametriBandbox)"
+                                                       listaFetch="@load(vm.listaFetchOggettiPratica)" forward="onOK"
+                                                       style="text-transform: uppercase">
+                                    <custom-attributes proprieta="oggettoId"/>
+                                </bandboxOggettiPratica>
+                                <toolbarbutton image="/images/tr4web/16x16/rubber.png"
+                                               tooltiptext='Cancella pertinenza di'
+                                               onClick="@command('onCancellaPertinenzaDi')"/>
+                            </hbox>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="3px"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" colspan="2">
+                        <label value="Note"/>
+                    </cell>
+                    <cell colspan="10">
+                        <textbox hflex="1" multiline="true" mold="rounded"
+                                 value="@bind(vm.oggettoContribuente.oggettoPratica.note)"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <space height="3px"/>
+        <groupbox closable="false">
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right" colspan="2">
+                            <label value="Titolo"/>
+                        </cell>
+                        <cell colspan="2">
+                            <combobox mold="rounded" hflex="1" readonly="true"
+                                      model="@load(vm.listaTitoliOccupazione)"
+                                      selectedItem="@bind(vm.oggettoContribuente.oggettoPratica.titoloOccupazione) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell align="right" colspan="2">
+                            <label value="Natura"/>
+                        </cell>
+                        <cell colspan="2">
+                            <combobox mold="rounded" hflex="1" readonly="true"
+                                      model="@load(vm.listaNaturaOccupazione)"
+                                      selectedItem="@bind(vm.oggettoContribuente.oggettoPratica.naturaOccupazione) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                <template name="model" var="nocc">
+                                    <comboitem label="@load(nocc.descrizione)" value="@load(nocc)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell align="right" colspan="2">
+                            <label value="Destinazione"/>
+                        </cell>
+                        <cell colspan="2">
+                            <combobox mold="rounded" hflex="1" readonly="true"
+                                      model="@load(vm.listaDestinazioneUso)"
+                                      selectedItem="@bind(vm.oggettoContribuente.oggettoPratica.destinazioneUso) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                <template name="model" var="du">
+                                    <comboitem label="@load(du.descrizione)" value="@load(du)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right" colspan="2">
+                            <label value="Assenza catasto"/>
+                        </cell>
+                        <cell colspan="4">
+                            <combobox mold="rounded" hflex="1" readonly="true"
+                                      model="@load(vm.listaAssenzaCatasto)"
+                                      selectedItem="@bind(vm.oggettoContribuente.oggettoPratica.assenzaEstremiCatasto) @converter('it.finmatica.zkutils.PropertyConverter', property='id')">
+                                <template name="model" var="ac">
+                                    <comboitem label="@load(ac.descrizione)" value="@load(ac)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell align="right" colspan="2">
+                            <label value="Data rif. anagrafe trib."/>
+                        </cell>
+                        <cell colspan="2">
+                            <datebox hflex="1" mold="rounded"
+                                     value="@load(vm.oggettoContribuente.oggettoPratica.dataAnagrafeTributaria) @save(vm.oggettoContribuente.oggettoPratica.dataAnagrafeTributaria, before={'onSalva', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                     format="dd/MM/yyyy"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <space height="3px"/>
+
+        <tabbox height="120px" selectedIndex="@bind(vm.selectedTab)" orient="vertical">
+            <tabs id="tabs" width="15%">
+                <tab id="T1" label="Partizioni"
+                     sclass="@load(vm.listaPartizioni.size() eq 0 ? '' : 'not-empty')"/>
+                <tab id="T2" label="Ruoli"
+                     sclass="@load(vm.listaRuoli.size() eq 0 ? '' : 'not-empty')"/>
+                <tab id="T3" label="RFID" visible="@load(vm.visualizzaFolderRfid)"
+                     sclass="@load(vm.listaCodiciRfid.size() eq 0 ? '' : 'not-empty')"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel style="overflow:auto;">
+                    <listbox hflex="max" model="@load(vm.listaPartizioni)"
+                             emptyMessage="Nessuna partizione presente.">
+                        <listhead sizable="true">
+                            <listheader label="Tipo area"/>
+                            <listheader label="Numero"/>
+                            <listheader label="Superficie reale"/>
+                            <listheader label="Superficie"/>
+                            <listheader label="Esenzione"/>
+                            <listheader label="Note"/>
+                            <listheader label="" width="5%" align="center">
+                                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                                       onClick="@command('onAggiungiPartizione')" visible="@load(!vm.solaLettura)"/>
+                            </listheader>
+                        </listhead>
+                        <template name="model" var="part">
+                            <listitem>
+                                <listcell>
+                                    <combobox inplace="true" model="@load(vm.listaTipiArea)" mold="rounded"
+                                              hflex="1"
+                                              selectedItem="@load(part.tipoArea) @converter('it.finmatica.zkutils.PropertyConverter', property='id') @save(part.tipoArea, before={'onSalva', 'onEliminaPartizione', 'onAggiungiPartizione', 'onDuplicaPartizione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})">
+                                        <template name="model" var="ta">
+                                            <comboitem label="@load(c:cat3(ta.id, ' - ', ta.descrizione))"
+                                                       value="@load(ta)"/>
+                                        </template>
+                                    </combobox>
+                                </listcell>
+                                <listcell>
+                                    <intbox sclass="destra" inplace="true" hflex="1" mold="rounded"
+                                            style="text-align: right;"
+                                            value="@load(part.numero) @save(part.numero, before={'onSalva', 'onEliminaPartizione', 'onAggiungiPartizione', 'onDuplicaPartizione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"/>
+                                </listcell>
+                                <listcell>
+                                    <decimalbox sclass="destra" inplace="true" hflex="1" mold="rounded"
+                                                style="text-align: right;"
+                                                value="@load(part.consistenzaReale) @save(part.consistenzaReale, before={'onSalva', 'onEliminaPartizione', 'onAggiungiPartizione', 'onDuplicaPartizione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                                format="#,##0.00"/>
+                                </listcell>
+                                <listcell>
+                                    <decimalbox sclass="destra" inplace="true" hflex="1" mold="rounded"
+                                                style="text-align: right;"
+                                                value="@load(part.consistenza) @save(part.consistenza, before={'onSalva', 'onEliminaPartizione', 'onAggiungiPartizione', 'onDuplicaPartizione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                                format="#,##0.00"/>
+                                </listcell>
+                                <listcell sclass="centro">
+                                    <checkbox
+                                            checked="@load(part.flagEsenzione) @save(part.flagEsenzione, before={'onSalva', 'onEliminaPartizione', 'onAggiungiPartizione', 'onDuplicaPartizione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'}) @converter('it.finmatica.zkutils.CheckBoxSNullConverter')"/>
+                                </listcell>
+                                <listcell>
+                                    <textbox inplace="true" hflex="1"
+                                             value="@load(part.note) @save(part.note, before={'onSalva', 'onEliminaPartizione', 'onAggiungiPartizione', 'onDuplicaPartizione', 'onImmobilePrimo', 'onImmobilePrecedente', 'onImmobileSuccessivo', 'onImmobileUltimo', 'onChiudiPopup'})"
+                                             mold="rounded"/>
+                                </listcell>
+                                <listcell>
+                                    <hbox>
+                                        <image width="15px" src="/images/afc/16x16/editcopy.png"
+                                               style="cursor: pointer;"
+                                               onClick="@command('onDuplicaPartizione', part=part)"
+                                               visible="@load(!vm.solaLettura)"/>
+                                        <image width="15px" src="/images/tr4web/16x16/trash.png"
+                                               style="cursor: pointer;"
+                                               onClick="@command('onEliminaPartizione', part=part)"
+                                               visible="@load(!vm.solaLettura)"/>
+                                    </hbox>
+                                </listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+                <tabpanel fulfill="T2.onSelect" style="overflow:auto;">
+                    <listbox sizedByContent="true" model="@load(vm.listaRuoli)" span="true"
+                             emptyMessage="Nessun ruolo presente." selectedItem="@bind(vm.ruoloSelezionato)">
+                        <listhead sizable="true">
+                            <listheader label="DePag" visible="@load(vm.dePagAbilitato)"/>
+                            <listheader label="R."/>
+                            <listheader label="Anno"/>
+                            <listheader label="Emiss."/>
+                            <listheader label="Progr."/>
+                            <listheader label="Emissione"/>
+                            <listheader label="Invio"/>
+                            <listheader label="Cod.T."/>
+                            <listheader label="Importo"/>
+                            <listheader label="L."/>
+                            <listheader label="Sgravio"/>
+                            <listheader label="Mesi"/>
+                            <listheader label="Giorni"/>
+                            <listheader label="Ruolo"/>
+                            <listheader label="Sp."/>
+                            <listheader label="T.Emissione"/>
+                        </listhead>
+                        <template name="model" var="ruolo">
+                            <listitem>
+                                <listcell sclass="centro">
+                                    <image src="/images/tr4web/22x22/pagopa.png" visible="@load(ruolo.flagDepag)"/>
+                                </listcell>
+                                <listcell sclass="centro" label="@load(ruolo.tipoRuolo)"/>
+                                <listcell sclass="centro" label="@load(ruolo.annoRuolo)"/>
+                                <listcell sclass="centro" label="@load(ruolo.annoEmissione)"/>
+                                <listcell sclass="destra" label="@load(ruolo.progrEmissione)"/>
+                                <listcell sclass="centro"
+                                          label="@load(ruolo.dataEmissione eq null? '' :c:formatDate(ruolo.dataEmissione, 'dd/MM/yyyy'))"/>
+                                <listcell sclass="destra"
+                                          label="@load(ruolo.invioConsorzio eq null? '' :c:formatDate(ruolo.invioConsorzio, 'dd/MM/yyyy'))"/>
+                                <listcell sclass="destra" label="@load(ruolo.codiceTributo)"/>
+                                <listcell sclass="destra"
+                                          label="@load(ruolo.importoRuoloContribuente eq null? '' :c:formatNumber(ruolo.importoRuoloContribuente, '#,###.00 €'))"/>
+                                <listcell sclass="centro">
+                                    <checkbox disabled="true" checked="@load(ruolo.importoLordo)"/>
+                                </listcell>
+                                <listcell sclass="destra"
+                                          label="@load(ruolo.sgravio eq null? '' :c:formatNumber(ruolo.sgravio, '#,###.00 €'))"/>
+                                <listcell sclass="destra" label="@load(ruolo.mesiRuolo)"/>
+                                <listcell sclass="destra" label="@load(ruolo.giorniRuolo)"/>
+                                <listcell sclass="destra" label="@load(ruolo.id)"/>
+                                <listcell sclass="centro" label="@load(ruolo.specie)"/>
+                                <listcell label="@load(ruolo.tipoEmissione)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+                <tabpanel style="overflow:auto;">
+                    <listbox hflex="max" model="@load(vm.listaCodiciRfid)"
+                             emptyMessage="Nessun codice RFID presente.">
+                        <listhead sizable="true">
+                            <listheader label="Cod.RFID"/>
+                            <listheader label="Cod.Contenitore"/>
+                            <listheader label="Data Consegna"/>
+                            <listheader label="Data Restituzione"/>
+                            <listheader label="Note"/>
+                            <listheader label="" width="5%" align="center">
+                                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                                       visible="@load(!vm.solaLettura)"
+                                       onClick="@command('onAggiungiRfid')"/>
+                            </listheader>
+                        </listhead>
+                        <template name="model" var="item">
+                            <listitem>
+                                <listcell>
+                                    <textbox inplace="true" hflex="1" mold="rounded"
+                                             value="@bind(item.codRfid)"/>
+                                </listcell>
+                                <listcell>
+                                    <combobox mold="rounded" hflex="1"
+                                              inplace="true"
+                                              readonly="true"
+                                              model="@load(vm.listaContenitori)"
+                                              selectedItem="@bind(item.contenitore) @converter('it.finmatica.zkutils.PropertyConverter', property='id')"
+                                              disabled="@load(vm.solaLettura)">
+                                        <template name="model" var="cont">
+                                            <comboitem label="@load(c:cat3(cont.id, ' - ', cont.descrizione))"
+                                                       value="@load(cont)"/>
+                                        </template>
+                                    </combobox>
+                                </listcell>
+                                <listcell>
+                                    <datebox format="dd/MM/yyyy" hflex="1" mold="rounded"
+                                             sclass="centro"
+                                             inplace="true"
+                                             disabled="@load(vm.solaLettura)"
+                                             value="@bind(item.dataConsegna)"/>
+                                </listcell>
+                                <listcell sclass="centro">
+                                    <datebox format="dd/MM/yyyy" hflex="1" mold="rounded"
+                                             sclass="centro"
+                                             inplace="true"
+                                             disabled="@load(vm.solaLettura)"
+                                             value="@bind(item.dataRestituzione)"/>
+                                </listcell>
+                                <listcell>
+                                    <labelWithButton image="/images/afc/16x16/edit.png"
+                                                     value="@load(item.note)"
+                                                     showButtonIfEmpty="true"
+                                                     popup="@load(c:cat('popupNote_',itemStatus.index))"/>
+                                    <popup id="@load(c:cat('popupNote_',itemStatus.index))"
+                                           width="600px"
+                                           onOpen="@command('onApriPopupNote')">
+                                        <h:div sclass="barraTitoloPagina">
+                                            <label class="titoloPagina" value="Note"/>
+                                        </h:div>
+                                        <hlayout>
+                                            <textbox id="@load(c:cat('textboxNote_',itemStatus.index))"
+                                                     disabled="@load(vm.solaLettura)"
+                                                     mold="rounded" rows="10"
+                                                     hflex="1"
+                                                     style="text-transform: uppercase;"/>
+                                        </hlayout>
+                                        <h:div sclass="barraPulsanti">
+                                            <h:div>
+                                                <button label="Chiudi"
+                                                        mold="trendy"
+                                                        image="/images/pulsanti/16x16/window_close.png"
+                                                        onClick="@command('onChiudiPopupNote')"/>
+                                            </h:div>
+                                        </h:div>
+                                    </popup>
+                                </listcell>
+                                <listcell>
+                                    <hbox>
+                                        <image width="15px" src="/images/afc/16x16/editcopy.png"
+                                               style="cursor: pointer;"
+                                               visible="@load(!vm.solaLettura)"
+                                               onClick="@command('onDuplicaRfid', codRfid=item)"/>
+                                        <image width="15px" src="/images/tr4web/16x16/trash.png"
+                                               style="cursor: pointer;"
+                                               visible="@load(!vm.solaLettura)"
+                                               onClick="@command('onEliminaRfid', codRfid=item)"/>
+                                    </hbox>
+                                </listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        <space height="3px" orient="vertical"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" colspan="9">
+                        <label value="Utente ultima variazione"/>
+                    </cell>
+                    <cell colspan="1" align="center">
+                        <label value="@bind(vm.utente)"/>
+                    </cell>
+                    <cell align="right" colspan="2">
+                        <label value="Data ultima variazione"/>
+                    </cell>
+                    <cell colspan="1" align="center">
+                        <label value="@bind(vm.lastUpdated)" hflex="1"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <h:div sclass="barraPulsanti">
+
+            <h:div style="float: left;">
+                <button disabled="@load(0 eq (vm.activeItem))" label=""
+                        onClick="@command('onImmobilePrimo')" mold="trendy"
+                        image="/images/pulsanti/16x16/first.png"/>
+                <button disabled="@load(0 eq (vm.activeItem))" label=""
+                        onClick="@command('onImmobilePrecedente')" mold="trendy"
+                        image="/images/pulsanti/16x16/prev.png"/>
+                <button disabled="@load(vm.listSize eq (vm.activeItem+1))"
+                        label="" onClick="@command('onImmobileSuccessivo')" mold="trendy"
+                        image="/images/pulsanti/16x16/next.png"/>
+                <button disabled="@load(vm.listSize eq (vm.activeItem+1))"
+                        label="" onClick="@command('onImmobileUltimo')" mold="trendy"
+                        image="/images/pulsanti/16x16/last.png"/>
+            </h:div>
+            <h:div style="float: left;">
+                <space width="10px"/>
+                <button label="Funzioni" sclass="button-menu-up" popup="funzioni, position=before_end"
+                        mold="trendy" image="/images/afc/16x16/arrows.png"/>
+            </h:div>
+            <h:div>
+                <button label="Elimina" onClick="@command('onEliminaOgCo')" mold="trendy"
+                        image="/images/afc/16x16/delete.png"
+                        visible="@load(!vm.solaLettura)"/>
+                <space width="10px"/>
+                <button label="Salva" mold="trendy" onClick="@command('onSalva')"
+                        image="/images/pulsanti/16x16/filesave.png"
+                        disabled="@load(vm.solaLettura)"/>
+                <button label="Chiudi" onClick="@command('onChiudiPopup')"
+                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+
+        <menupopup id="funzioni">
+            <menuitem label="Info Tariffe" onClick="@command('onInforTariffe')"/>
+            <menuitem
+                    label="@bind(!vm.modificaAbPriARuolo ? 'Modifica Ab.Princ. a Ruolo' : 'Blocca Modifica Ab.Princ. a Ruolo')"
+                    onClick="@command('onModAbPriRuolo')"
+                    disabled="@load(!vm.ogprInviatoARuolo or vm.solaLettura)"/>
+        </menupopup>
+
+        <window id="datiMetrici" width="90%" height="500px" position="center" sizable="true"
+                border="normal" mode="popup" visible="@load(vm.showDatiMetriciOggetto)" title="Dati Metrici">
+            <script src="/js/decimalbox.js"/>
+            <include id="includedatiMetrici" src="/pratiche/denunce/listaDatiMetrici.zul" mode="instant"/>
+        </window>
+
+    </window>
+
+</zk>

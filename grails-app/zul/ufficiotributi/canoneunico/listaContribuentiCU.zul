@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window apply="grailsBindComposer" viewModel="@id('vm') @init('listaContribuentiCUViewModel')" width="100%" vflex="1">
+			<script src="/js/decimalbox.js"/>
+		<h:div style="width: 100%;"> 
+			<h:div sclass="afc-control-bar" style="display: inline-block;">
+				<hlayout>
+					<paging sclass="afc-paging" onPaging="@command('onRefresh')"
+						activePage="@bind(vm.pagingLista.activePage)" pageSize="@bind(vm.pagingLista.pageSize)"
+						totalSize="@load(vm.pagingLista.totalSize)" visible="#{empty arg.pagingVisible?true:arg.pagingVisible}" />
+					<toolbarbutton image="/images/afc/22x22/refresh.png"
+						tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+						visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+						onClick="@command('onRefresh')" />
+					<toolbarbutton image="/images/afc/22x22/print.png"
+						tooltiptext='Stampa' visible="@load(vm.stampaVisibile)" />
+					<toolbarbutton image="/images/afc/22x22/edit.png"
+						tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+						visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+						onClick="@command('onModifica')" disabled="@load(empty vm.contribuenteSelezionato)" />
+					<toolbarbutton image="/images/afc/22x22/add.png"
+						tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+						visible="@load(vm.creaContribuenteVisible)" 
+						onClick="@command('onNuovo')" />
+		<!--		<toolbarbutton image="/images/afc/22x22/arrows.png"
+						tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+						popup="funzioniContribuenti" /> -->
+				</hlayout>
+			</h:div>
+			<h:div style="display: inline-block; float: right;">
+				<textbox width="120px" mold="rounded-search"
+					value="@bind(vm.filtriContribuente.cognomeNome)"
+					tooltiptext='#{empty arg.filtroTooltip?"Filtro per la ricerca":arg.filtroTooltip}'
+					onOK="@command('onCerca')" style="text-transform: uppercase" />
+				<toolbarbutton image="/images/afc/22x22/search.png"
+					tooltiptext='#{empty arg.searchTooltip?"Ricerca":arg.searchTooltip}'
+					visible="#{empty arg.searchVisible?true:arg.searchVisible}"
+					onClick="@command('onCerca')" />
+				<button mold="trendy" label="Filtri"
+					image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+					onClick="@command('openCloseFiltri')" />
+			</h:div>
+		</h:div>
+		<space height="3px" />
+		
+		<listbox span="true" nonselectableTags="" sizedByContent="true"
+			model="@load(vm.listaContribuenti)" selectedItem="@bind(vm.contribuenteSelezionato)"
+			emptyMessage="Nessun contribuente presente." vflex="1">
+			<listhead sizable="true">
+				<listheader label="Numero individuale" />
+				<listheader label="Cognome e nome" />
+				<listheader label="Codice fiscale" />
+				<listheader label="Partita IVA" />
+				<listheader label="Indirizzo" />
+				<listheader label="Comune" />
+			</listhead>
+			<template name="model" var="contr">
+				<listitem onDoubleClick="@command('onModifica')">
+					<listcell label="@load(contr.id)" />
+					<listcell label="@load(contr.cognomeNome)" />
+					<listcell label="@load(contr.codFiscale)" />
+					<listcell label="@load(contr.partitaIva)" />
+					<listcell label="@load(contr.indirizzo)" />
+					<listcell label="@load(contr.comuneResidenza)" />
+				</listitem>
+			</template>
+		</listbox>
+		
+		<menupopup id="funzioniContribuenti">
+		</menupopup>
+		
+	</window>
+</zk>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout>
+		<hlayout sclass="afc-control-bar" valign="middle">
+			<toolbarbutton
+					image="@load(!vm.modificheAbilitate? '/images/afc/22x22/lock.png':'/images/afc/22x22/unlock.png') "
+					tooltiptext='@load(vm.modificheAbilitate? "Modifiche abilitate" : "Abilita modifiche")'
+					onClick="@command('onUnlock')" disabled="@load(vm.modificheAbilitate)"/>
+			<toolbarbutton image="/images/afc/22x22/add.png"
+						   tooltiptext='#{empty arg.modifyTooltip?"Nuovo":arg.modifyTooltip}'
+						   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}" onClick="@command('onNuovo')"
+						   disabled="@load(empty vm.praticaK or not vm.modificheAbilitate)"/>
+			<toolbarbutton image="/images/afc/22x22/delete.png"
+						   tooltiptext='#{empty arg.deleteTooltip?"Elimina pratica":arg.deleteTooltip}'
+						   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+						   onClick="@command('onEliminaTutti')"
+						   disabled="@load(empty vm.listaOggetti or not vm.modificheAbilitate)"/>
+			<toolbarbutton image="/images/afc/22x22/print.png"
+						   tooltiptext='Stampa' visible="@load(vm.stampaVisibile)"/>
+			<toolbarbutton image="/images/afc/22x22/multi_plus.png"
+						   tooltiptext='Espandi dettagli' visible="@load(!vm.dettagliEspansi)"
+						   onClick="@command('gestisciDettagli')" disabled="@load(empty vm.listaOggetti)"/>
+			<toolbarbutton image="/images/afc/22x22/multi_minus.png"
+						   tooltiptext='Raggruppa dettagli' visible="@load(vm.dettagliEspansi)"
+						   onClick="@command('gestisciDettagli')" disabled="@load(empty vm.listaOggetti)"/>
+		</hlayout>
+        <label value="@load(c:cat('Numero di immobili: ', empty vm.listaOggetti.size() ? '0' : vm.listaOggetti.size()))" />
+	</hlayout>
+	<borderlayout hflex="max" vflex="1" id="bdLayout">
+		<center autoscroll="true">
+			<grid hflex="max" model="@load(vm.listaOggetti)" emptyMessage="Nessun Oggetto">
+				<columns sizable="true">
+					<column width="3%" align="center"/>
+					<column width="4%" label="Oggetto" align="center" />
+					<column width="4%" label="T" align="center" />
+					<column width="4%" label="Ctg." align="center" />
+					<column width="25%" label="Indirizzo" align="center" />
+					<column label="Sez." align="center" />
+					<column label="Fgl." align="center" />
+					<column label="Num." align="center" />
+					<column label="Sub." align="center" />
+					<column label="Zona" align="center" />
+					<column label="Prot." align="center" />
+					<column label="Anno" align="center" />
+					<column label="Partita" align="center" />
+					<column label="Cl." align="center" />
+                    <column width="8%" label="Rendita" align="center" />
+					<column width="8%" label="Valore" align="center" />
+					<column width="3%" align="center" />
+				</columns>
+				<template name="model" var="ogg">
+					<row
+							sclass="@load(ogg.selezionato?'rigaSelezionata':(oggStatus.index % 2 == 0?'mdodd':'mdeven'))">
+						<detail open="@bind(vm.espandiDettagli[oggStatus.index])"
+								onOpen="@command('setSelectedItem',ogg=ogg, index=oggStatus.index)">
+							<grid>
+								<columns sizable="true">
+									<column width="5%"/>
+									<column width="15%" label="T.Aliq." align="center"/>
+									<column width="5%" label="Aliq." align="center"/>
+									<column width="5%" label="%Poss." align="center"/>
+									<column width="3%" label="E" align="center"/>
+									<column width="3%" label="R" align="center"/>
+									<column width="3%" label="A" align="center"/>
+									<column width="3%" label="MP" align="center"/>
+									<column width="3%" label="1Sem." align="center" />
+									<column width="3%" label="ME" align="center" />
+									<column width="5%" label="Rendita" align="center" />
+									<column width="6%" label="Detrazione" align="center" />
+									<column width="7%" label="Detr.Figli" align="center" />
+									<column width="3%" label="IS" align="center" />
+									<column width="5%" label="Aliq.Erar." visible="@load(vm.anno ge 2012)"
+										align="center" />
+									<column width="5%" label="Aliq.Std." align="center" />
+									<column width="7%" label="Detr.Std." align="center" />
+									<column label="Pert.Di" align="center"
+										visible="@load((ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '3' 
+															 or ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '55') 
+			               			            			and (not(empty ogg.oggettoContribuente.oggettoPratica.categoriaCatasto) 
+			               			            			and c:substring(ogg.oggettoContribuente.oggettoPratica.categoriaCatasto,0,1) eq 'C'))" />
+									<column label="AP" align="center"
+										visible="@load((ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '3' 
+															 or ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '55') 
+															and ogg.oggettoContribuente.flagAbPrincipale and not(empty ogg.oggettoContribuente.oggettoPratica.categoriaCatasto) 
+															and c:substring(ogg.oggettoContribuente.oggettoPratica.categoriaCatasto,0,1) eq 'A')" />
+									<column label="Rapporto" visible="@load(vm.rbTributi eq 'TASI')"
+										align="center" />
+									<column width="3%" label="Occ." visible="@load(vm.rbTributi eq 'TASI')"
+										align="center" />
+								</columns>
+								<rows>
+									<row
+										sclass="@load(ogg.selezionato?'rigaSelezionata':(oggStatus.index % 2 == 0?'mdodd':'mdeven'))">
+										<label value="" />
+										<!-- tipo aliquota -->
+										<combobox focus="@load(empty ogg.tipoAliquota)"
+											selectedItem="@bind(ogg.tipoAliquota) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoAliquota')"
+											disabled="@load(not vm.modificheAbilitate)" inplace="true"
+											model="@load(vm.listaTipiAliquota)" hflex="1"
+											onSelect="@command('onSelectTipoAliquota',ogg=ogg)"
+											constraint="no negative,no empty">
+											<template name="model">
+												<comboitem description="@load(each.descrizione)"
+													label="@load(c:cat3(each.tipoAliquota, ' - ', each.descrizione))" value="@load(each)" />
+											</template>
+										</combobox>
+										<!-- aliquota -->
+										<decimalbox value="@bind(ogg.aliquota)"
+											readonly="@load((vm.fasciaSoggetto ne 3 and vm.fasciaSoggetto ne 4) or not vm.modificheAbilitate)"
+											inplace="true" width="90%" format="#,##0.00" style="text-align: right;" />
+										<!-- % possesso -->
+										<decimalbox value="@bind(ogg.oggettoContribuente.percPossesso)"
+											readonly="@load(not vm.modificheAbilitate)" inplace="true"
+											width="90%" format="##0.00" style="text-align: right;" />
+										<!-- flag E -->
+										<checkbox checked="@bind(ogg.oggettoContribuente.flagEsclusione)"
+											disabled="@load(ogg.oggettoContribuente.flagRiduzione or not vm.modificheAbilitate)"
+											onCheck="@command('doCheckedFlagEsclusioneRiduzione',ogg=ogg)" />
+										<!-- flag R -->
+										<checkbox checked="@bind(ogg.oggettoContribuente.flagRiduzione)"
+											disabled="@load(ogg.oggettoContribuente.flagEsclusione or not vm.modificheAbilitate)"
+											onCheck="@command('doCheckedFlagEsclusioneRiduzione',ogg=ogg)" />
+										<!-- flag A -->
+										<checkbox checked="@bind(ogg.oggettoContribuente.flagAbPrincipale)"
+											disabled="@load(not(ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '3' or 
+	                                              ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '4' or 
+	                                              ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '5' or 
+	                                              ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '6') or 
+	                                              not vm.modificheAbilitate)" />
+										<!-- Mesi possesso -->
+										<intbox value="@bind(ogg.oggettoContribuente.mesiPossesso)"
+												readonly="@load(not vm.modificheAbilitate)" inplace="true"
+												onChange="@command('onChangeMesi',ogg=ogg)" width="90%"
+												style="text-align: right;" constraint="no empty, no negative"/>
+										<!-- Mesi possesso 1S -->
+										<intbox value="@bind(ogg.oggettoContribuente.mesiPossesso1sem)"
+											readonly="@load(not vm.modificheAbilitate)" inplace="true"
+											width="90%" style="text-align: right;" constraint="no negative" />
+										<!-- Mesi Esclusione -->
+										<intbox value="@bind(ogg.oggettoContribuente.mesiEsclusione)"
+												readonly="@load(not vm.modificheAbilitate)" inplace="true"
+												onChange="@command('onChangeMesiEsclusione',ogg=ogg)" width="90%"
+												style="text-align: right;" constraint="no negative"/>
+										<!-- Rendita -->
+										<decimalbox
+											value="@bind(ogg.oggettoContribuente.oggettoPratica.valore)"
+											disabled="@load(not vm.modificheAbilitate)" inplace="true"
+											onChange="@command('onChangeRendita',ogg=ogg)" width="90%"
+											format="€ #,##0.00" style="text-align: right;" />
+										<!-- Detrazione -->
+										<decimalbox value="@bind(ogg.detrazione)"
+											readonly="@load(not vm.modificheAbilitate)" inplace="true"
+											onChange="@command('onChangeDetrazione',ogg=ogg)" width="90%"
+											format="€ #,##0.00" style="text-align: right;" />
+										<!-- Detrazione Figli -->
+										<decimalbox value="@bind(ogg.detrazioneFigli)"
+											readonly="true" inplace="true" width="90%" format="€ #,##0.00"
+											style="text-align: right;" />
+										<!-- Imm. Stor -->
+										<checkbox
+											checked="@bind(ogg.oggettoContribuente.oggettoPratica.immStorico)"
+											disabled="@load(not vm.modificheAbilitate)" onCheck="@command('doCheckedImmStorico',ogg=ogg)" />
+										<!-- Aliquota Erariale -->
+										<decimalbox value="@bind(ogg.aliquotaErariale)"
+											readonly="@load(vm.fasciaSoggetto ne 3 and vm.fasciaSoggetto ne 4)"
+											inplace="true" width="90%" format="#,##0.00" style="text-align: right;" />
+										<!-- Aliquota Std -->
+										<decimalbox value="@bind(ogg.aliquotaStd)"
+											readonly="@load(vm.fasciaSoggetto ne 3 and vm.fasciaSoggetto ne 4)"
+											inplace="true" width="90%" format="#,##0.00" style="text-align: right;" />
+										<!-- Detrazione Std -->
+										<decimalbox readonly="@load(not vm.modificheAbilitate)"
+											inplace="true" width="90%" value="@bind(ogg.detrazioneStd)"
+											format="€ #,##0.00" style="text-align: right;" />
+										<!-- Pertinenza di -->
+										<combobox model="@load(vm.listaPertinenze)"
+											selectedItem="@load(ogg.oggettoContribuente.oggettoPratica.oggettoPraticaRifAp) @converter('it.finmatica.zkutils.PropertyConverter', property='id')"
+											inplace="true" hflex="1" onSelect="@command('onSelectPertinenza',ogg=ogg)">
+											<template name="model">
+												<comboitem label="@load(each.id)" value="@load(each)" />
+											</template>
+										</combobox>
+										<!-- ident. abitazione principale -->
+										<label value="@load(ogg.oggettoContribuente.oggettoPratica.id)"
+											width="99%" />
+										<!-- Rapporto -->
+										<combobox disabled="@load(not vm.modificheAbilitate)"
+											inplace="true" model="@load(vm.listaTipiRapporto)"
+											selectedItem="@bind(ogg.oggettoContribuente.tipoRapportoK) @converter('it.finmatica.zkutils.PropertyConverter', property='valore')"
+											hflex="1">
+											<template name="model">
+												<comboitem label="@load(each.descrizione)" value="@load(each.valore)" />
+											</template>
+										</combobox>
+										<!-- Occupato -->
+										<checkbox disabled="@load(not vm.modificheAbilitate)"
+											checked="@bind(ogg.oggettoContribuente.flagAlRidotta)" />
+									</row>
+									<row
+										sclass="@load(ogg.selezionato?'rigaSelezionata':(oggStatus.index % 2 == 0?'mdodd':'mdeven'))">
+										<label style="font-weight: bold;" value="Acc." />
+										<!-- tipo aliquota acconto -->
+                                        <textbox hflex="1"
+                                                value="@load(vm.aliqAcc[ogg.oggettoContribuente.oggettoPratica.id])"
+                                                readonly="true" />
+										<!-- aliquota acconto -->
+										<decimalbox
+											value="@load(ogg.oggettoContribuente.oggettoPratica.indirizzoOcc ne null ? ((c:substring(ogg.oggettoContribuente.oggettoPratica.indirizzoOcc, 2, 8) / 100) eq 0 ? 0.00 : (c:substring(ogg.oggettoContribuente.oggettoPratica.indirizzoOcc, 2, 8) / 100)) : 0.00 )"
+											readonly="true" inplace="true" width="90%" format="#,##0.00"
+											style="text-align: right;" />
+										<!-- cella vuota % possesso -->
+										<label value="" />
+										<!-- cella vuota flag E -->
+										<label value="" />
+										<!-- cella vuota flag R -->
+										<label value="" />
+										<!-- cella vuota flag A -->
+										<label value="" />
+										<!-- cella vuota Mesi possesso -->
+										<label value="" />
+										<!-- cella vuota Mesi possesso 1S -->
+										<label value="" />
+										<!-- cella vuota Rendita -->
+										<label value="" />
+										<!-- detrazione acconto -->
+										<decimalbox value="@bind(ogg.detrazioneAcconto)"
+											readonly="@load(not vm.modificheAbilitate)" inplace="true"
+											onChange="@command('onChangeDetrazioneAcconto',ogg=ogg)"
+											width="90%" format="€ #,##0.00" style="text-align: right;" />
+										<!-- detrazione figli acconto -->
+										<decimalbox value="@bind(ogg.detrazioneFigliAcconto)"
+											readonly="true" inplace="true" width="90%" format="€ #,##0.00"
+											style="text-align: right;" />
+										<!-- cella vuota Imm. Stor -->
+										<label value="" />
+										<!-- Aliquota Erariale acconto -->
+										<decimalbox
+											value="@load(ogg.oggettoContribuente.oggettoPratica.indirizzoOcc ? (ogg.oggettoContribuente.oggettoPratica.indirizzoOcc.length() eq 29 ? c:substring(ogg.oggettoContribuente.oggettoPratica.indirizzoOcc, 24, 29) / 100 : null) : null)"
+											readonly="true"
+											visible="@load(ogg.oggettoContribuente.oggettoPratica.indirizzoOcc)"
+											style="text-align: right;" />
+										<!-- cella vuota Aliquota Std -->
+										<label value="" />
+										<!-- cella vuota Detrazione Std -->
+										<label value="" />
+										<!-- cella vuota Pertinenza di -->
+										<label value="" />
+										<!-- cella vuota ident. abitazione principale -->
+										<label value="" />
+										<!-- cella vuota Rapporto -->
+										<label value="" />
+										<!-- cella vuota Occupato -->
+										<label value="" />
+									</row>
+								</rows>
+							</grid>
+						</detail>
+						<cell align="right">
+							<label value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.id)" />
+						</cell>
+						<!-- tipo oggetto -->
+						<cell align="center">
+							<combobox style="border: 1px; border-color: red;text-align: center;"
+								selectedItem="@load(ogg.oggettoContribuente.oggettoPratica.tipoOggetto) @converter('it.finmatica.zkutils.PropertyConverter', property='tipoOggetto')"
+								model="@load(vm.listaTipiOggetto)" disabled="@load(not vm.modificheAbilitate)"
+								inplace="true" hflex="1" onSelect="@command('onSelectTipoOggetto', ogg=ogg)">
+								<template name="model">
+									<comboitem description="@load(each.descrizione)"
+										label="@load(each.tipoOggetto)" value="@load(each)" />
+								</template>
+							</combobox>
+						</cell>
+						<!-- categoria catasto -->
+						<cell align="center">
+							<combobox style="text-align: center;"
+								selectedItem="@bind(ogg.oggettoContribuente.oggettoPratica.categoriaCatasto) @converter('it.finmatica.zkutils.PropertyConverter', property='categoriaCatasto')"
+								model="@load(vm.listaCategorie)" disabled="@load(not vm.modificheAbilitate)"
+								inplace="true" hflex="1"
+								onSelect="@command('onSelectCategoriaCatasto',ogg=ogg)">
+								<template name="model">
+									<comboitem description="@load(each.descrizione)"
+										label="@load(each.categoriaCatasto)" value="@load(each)" />
+								</template>
+							</combobox>
+						</cell>
+						<cell align="left">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.indirizzo)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.sezione)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.foglio)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.numero)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.subalterno)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.zona)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.protocolloCatasto)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.annoCatasto)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.oggetto.partita)" />
+						</cell>
+						<cell align="right">
+							<label
+								value="@load(ogg.oggettoContribuente.oggettoPratica.classeCatasto)" />
+						</cell>
+                        <cell align="right">
+                            <decimalbox value="@load(ogg.oggettoContribuente.oggettoPratica.valore)"
+                                        readonly="true" inplace="true" width="90%" format="€ #,##0.00"
+                                        style="text-align: right;" />
+                        </cell>
+						<cell align="right">
+							<decimalbox value="@load(ogg.valoreDaRendita)"
+								visible="@load(ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '3' or ogg.oggettoContribuente.oggettoPratica.tipoOggetto.tipoOggetto eq '55')"
+								readonly="true" inplace="true" width="90%" format="€ #,##0.00"
+								style="text-align: right;" />
+						</cell>
+						<cell>
+							<image visible="@load(vm.modificheAbilitate)" src="/images/afc/16x16/arrows.png"
+                                   onClick="@command('setSetItemSelezionato',ogg=ogg)" style="cursor: pointer;" popup="funzioniOggetto, position=before_end" />
+						</cell>
+					</row>
+				</template>
+
+			</grid>
+		</center>
+		<south autoscroll="true"
+			height="@load(c:cat(vm.visualizzaRendite ? (c:length(vm.renditeOggetto) lt 6 ? (c:length(vm.renditeOggetto) gt 0 ? (((c:length(vm.renditeOggetto)) + 2) * 26) : '68') : '182') : '25', 'px'))">
+			<groupbox closable="true" open="@load(vm.visualizzaRendite)"
+				onOpen="@command('onOpenCloseRendite', target=bdLayout)">
+				<caption>
+					<checkbox checked="@bind(vm.visualizzaRendite)" label="Rendite"
+						disabled="@load(empty vm.itemSelezionato)" />
+				</caption>
+				<include src="/sportello/contribuenti/renditeOggetto.zul"
+					mode="instant" />
+			</groupbox>
+		</south>
+	</borderlayout>
+
+    <menupopup id="funzioniOggetto">
+        <menuitem label="Elimina" onClick="@command('onElimina')"/>
+        <menuitem label="Duplica" onClick="@command('onCopia')"/>
+    </menupopup>
+</zk>

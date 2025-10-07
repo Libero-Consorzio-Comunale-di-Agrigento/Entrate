@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout sclass="navigazione" valign="middle">
+        <!-- PAGINAZIONE -->
+        <hlayout hflex="2">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <paging sclass="afc-paging"
+                        onPaging="@command('onCaricaOggetti')"
+                        activePage="@bind(vm.activePageRavv)"
+                        pageSize="@bind(vm.pageSizeRavv)"
+                        totalSize="@load(vm.totalSizeRavv)"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <!-- LISTA SOGGETTI -->
+    <listbox id="ravvListBox" model="@load(vm.listaRavv)"
+             emptyMessage="Non sono presenti ravvedimenti"
+             selectedItem="@bind(vm.ravvSelezionato)" sizedByContent="true"
+             vflex="1"
+             height="250px"
+             span="true">
+        <listhead>
+            <!-- NECESSARIO PER LA VISUALIZZAZIONE NEL DRAG&DROP -->
+            <listheader label="RavvDragDrop" visible="false"/>
+            <!---->
+            <listheader label="Tributo"/>
+            <listheader label="Anno"/>
+            <listheader label="Data"/>
+            <listheader label="Numero"/>
+            <listheader label="Stato"/>
+            <listheader label="Pratica"/>
+            <listheader label=""/>
+        </listhead>
+        <template name="model" var="ravv">
+            <listitem draggable="identificativoOperazione">
+                <!-- NECESSARIO PER LA VISUALIZZAZIONE NEL DRAG&DROP -->
+                <listcell sclass="destra" label="@load(ravv.pratica)"/>
+                <!---->
+                <listcell sclass="centro" label="@load(ravv.tipoTributo.tipoTributoAttuale)"/>
+                <listcell sclass="centro" label="@load(ravv.anno)"/>
+                <listcell label="@load(empty ravv.data ? '' : c:formatDate(ravv.data, 'dd/MM/yyyy'))"
+                          sclass="centro"/>
+                <listcell sclass="destra" label="@load(ravv.numero)"/>
+                <listcell label="@load(!empty ravv.tipoStato ? ravv.tipoStato.descrizione: null)"/>
+                <listcell sclass="destra" label="@load(ravv.pratica)"/>
+                <listcell sclass="centro">
+                    <image src="/images/afc/16x16/check.png" style="cursor: pointer;" width="16px" height="16px"
+                           visible="@bind(empty ravv.numero)"
+                           tooltiptext="Numera il ravvedimento"
+                           onClick="@command('onNumeraRavvedimento', pratica=ravv)"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

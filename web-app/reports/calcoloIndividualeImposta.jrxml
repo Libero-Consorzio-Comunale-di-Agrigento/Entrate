@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2023-11-17T13:21:05 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="calcoloIndividualeImposta" language="groovy" pageWidth="595" pageHeight="800" columnWidth="585" leftMargin="5" rightMargin="5" topMargin="0" bottomMargin="0" uuid="2366fb83-abef-484b-94f5-14e405b6cb28">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="anno" class="java.lang.Short"/>
+	<parameter name="valoreTerreniRidotti" class="java.math.BigDecimal"/>
+	<parameter name="valoreTerreniRidottiFuoriComune" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="tipoDescrizione" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoDescrizione]]></fieldDescription>
+	</field>
+	<field name="numFabbricati" class="java.lang.Integer">
+		<fieldDescription><![CDATA[numFabbricati]]></fieldDescription>
+	</field>
+	<field name="acconto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[acconto]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[saldo]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="30">
+			<textField>
+				<reportElement x="0" y="0" width="585" height="30" uuid="e20f77a1-f784-417d-8efb-caad991f51ce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Imposta da versare per l'anno " + $P{anno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="306" y="10" width="86" height="19" uuid="3f1cb73d-09ef-45c0-b02f-861fb61efc56"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="10" width="86" height="19" uuid="317409a0-ac75-40b6-ac18-30fa02899fce"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fabbr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="10" width="86" height="19" uuid="6676f8f5-da7a-476d-acff-9f805dd66013"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Acconto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="10" width="86" height="19" uuid="25997d02-04db-45c7-965f-b35c34fe04c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totale]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{tipoDescrizione} != 'TOTALE']]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="0" width="110" height="20" uuid="74f817fd-a77c-4173-8914-bc09e5ad55c7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="118" y="0" width="86" height="20" uuid="9f08d4c1-76c8-4e7f-a4fb-c51fad273c60">
+					<printWhenExpression><![CDATA[$F{numFabbricati} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Fixed"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numFabbricati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="212" y="0" width="86" height="20" uuid="85b5af79-2680-49d1-b7ec-ef43ce393e21">
+					<printWhenExpression><![CDATA[$F{acconto} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acconto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="306" y="0" width="86" height="20" uuid="95bbfe91-dc39-456d-8ce3-2d463c5dca23">
+					<printWhenExpression><![CDATA[$F{saldo} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="86" height="20" uuid="d31ef130-441d-409b-a90c-ea78533111ac">
+					<printWhenExpression><![CDATA[($F{saldo} ?: 0) + ($F{acconto} ?: 0) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{saldo} ?: 0) + ($F{acconto} ?: 0)]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[$F{tipoDescrizione} == 'TOTALE']]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="0" width="110" height="20" uuid="50647d86-2f95-4a90-9020-b9f42a6eeb2d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDescrizione}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="86" height="20" uuid="d2a9baaf-d0df-4a47-be6e-af5059d2d4b5">
+					<printWhenExpression><![CDATA[($F{saldo} ?: 0) + ($F{acconto} ?: 0) > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{saldo} ?: 0) + ($F{acconto} ?: 0)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="118" y="0" width="86" height="20" uuid="2c235320-bf4f-467f-ba05-ef6a37ea21ef">
+					<printWhenExpression><![CDATA[$F{numFabbricati} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+					<paragraph lineSpacing="Fixed"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numFabbricati}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="306" y="0" width="86" height="20" uuid="32c17a3c-9e94-428c-9473-4782703a863d">
+					<printWhenExpression><![CDATA[$F{saldo} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="212" y="0" width="86" height="20" uuid="794440c9-5f1e-488b-ad56-54d1af99485d">
+					<printWhenExpression><![CDATA[$F{acconto} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acconto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="50">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0c71375f-b0cc-4874-bf79-7c690715f3ed"/>
+				<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+				</textElement>
+				<text><![CDATA[Terr. Rid. nel Comune:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="118" y="0" width="86" height="20" uuid="28658535-1751-4df1-af1a-b41feeb61a4f">
+					<printWhenExpression><![CDATA[$P{valoreTerreniRidotti} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{valoreTerreniRidotti}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="20" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="93c39933-69b5-4989-bcfe-e19208ce02e3"/>
+				<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+				</textElement>
+				<text><![CDATA[Terr. Rid. fuori Comune:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="118" y="20" width="86" height="20" uuid="73a2758d-2d3a-45de-bee8-1837b0a10fec">
+					<printWhenExpression><![CDATA[$P{valoreTerreniRidottiFuoriComune} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{valoreTerreniRidottiFuoriComune}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

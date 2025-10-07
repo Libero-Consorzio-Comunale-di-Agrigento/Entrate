@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+	    <hlayout hflex="2" valign="middle">
+	        <hlayout sclass="afc-control-bar" valign="middle">
+	            <paging sclass="afc-paging" onPaging="@command('onCambioPaginaG5')"
+	                    activePage="@bind(vm.pagingListG5.activePage)" pageSize="@bind(vm.pagingListG5.pageSize)"
+	                    totalSize="@load(vm.pagingListG5.totalSize)"
+	                    visible="#{empty arg.pagingVisible?true:arg.pagingVisible}"/>
+	            <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+	                           tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+	                           disabled="@load(empty vm.listaFornitureG5))" onClick="@command('onRicaricaListaG5')"/>
+				<toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+							   tooltiptext='Esporta in XLS' onClick="@command('onFornitureG5ToXls')"
+							   disabled="@load(empty vm.listaFornitureG5)"/>
+	        </hlayout>
+	        <hlayout valign="middle" hflex="1">
+	        </hlayout>
+	    </hlayout>
+        <hlayout style="text-align: right;" valign="middle" width="60px">
+            <toolbarbutton
+                    image="@load(vm.filtroAttivoListG5 ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png') "
+                    onClick="@command('onOpenFiltriListaG5')"/>
+        </hlayout>
+	</hlayout>
+	<listbox id="listBoxFornitureG5" nonselectableTags="" model="@bind(vm.listaFornitureG5)" sizedByContent="true" span="true" vflex="1"
+	          selectedItem="@bind(vm.fornituraG5Selezionata)" emptyMessage="Nessun dato presente.">
+	     <auxhead>
+	         <auxheader label="" colspan="2"/>
+	         <auxheader label="Fornitura" colspan="2"/>
+	         <auxheader label="Stato Mandato" colspan="2"/>
+	         <auxheader label="Dettagli" colspan="4"/>
+	         <auxheader label="Ripartizione" colspan="2"/>
+	         <auxheader label="Bonifico" colspan="1"/>
+	         <auxheader label="Tributo" colspan="1"/>
+	         <auxheader label="Movimento" colspan="6"/>
+	         <auxheader label="Elaborazione" tooltiptext="Elaborazione nuova per riemissioni Scarti e Storni" colspan="2"/>
+	     </auxhead>
+	     <listhead sizable="true">
+			<listheader sclass="centro" label="Documento"/>
+			<listheader sclass="centro" label="Prog."/>
+			
+			<listheader sclass="centro" label="Data" tooltiptext="Data Fornitura"/>
+			<listheader sclass="centro" label="Prog." tooltiptext="Progressivo Fornitura"/>
+			
+			<listheader sclass="centro" label="Codice" tooltiptext="Codice Stato Mandato"/>
+			<listheader sclass="centro" label="Descrizione" tooltiptext="Stato Mandato"/>
+				
+			<listheader sclass="centro" label="Ente" tooltiptext="Codice Ente"/>
+			<listheader sclass="centro" label="Importo" tooltiptext="Importo Accredito"/>
+			<listheader sclass="centro" label="CRO" tooltiptext="Codice di riferimento operazione"/>
+			<listheader sclass="centro" label="Data Accr." tooltiptext="Data Accreditamento"/>
+			
+			<listheader sclass="centro" label="Data" tooltiptext="Data Ripartizione Originale"/>
+			<listheader sclass="centro" label="Prog." tooltiptext="Progressivo Ripartizione Originale"/>
+			
+			<listheader sclass="centro" label="Data" tooltiptext="Data Bonifico Originale"/>
+						
+			<listheader sclass="centro" label="Tributo" tooltiptext="Tributo"/>
+				
+			<listheader sclass="centro" label="IBAN" tooltiptext="Codice IBAN"/>
+			<listheader sclass="centro" label="Sezione T.U." tooltiptext="Sezione conto di Tesoreria Unica"/>
+			<listheader sclass="centro" label="Conto T.U." tooltiptext="Numero Conto Tesoreria Unica"/>
+			<listheader sclass="centro" label="Codice" tooltiptext="Codice operazione Banca d’Italia accredito su Tesoreria Unica"/>
+			<listheader sclass="centro" label="Descrizione" tooltiptext="Descrizione Movimento"/>
+			<listheader sclass="centro" label="Data Storno/Scarto" tooltiptext="Data Storno o Data Scarto"/>
+			
+			<listheader sclass="centro" label="Data" tooltiptext="Data elaborazione nuova per riemissioni Scarti e Storni"/>
+			<listheader sclass="centro" label="Progr." tooltiptext="Progressivo elaborazione nuova per riemissioni Scarti e Storni"/>
+		</listhead>
+		<template name="model" var="fr">
+			<listitem value="@load(v)" onSelect="@command('onFornituraG5Selected')">
+				<listcell sclass="destra" label="@load(fr.dto.documentoCaricato.id)"/>
+				<listcell sclass="destra" label="@load(fr.dto.progressivo)"/>
+				
+				<listcell sclass="sinistra"
+                             label="@load(fr.dto.dataFornitura ne null ? c:formatDate(fr.dto.dataFornitura,'dd/MM/yyyy') : '')"/>
+				<listcell sclass="destra" label="@load(fr.dto.progrFornitura)"/>
+				
+				<listcell sclass="destra" label="@load(fr.dto.stato)"/>
+				<listcell sclass="sinistra" label="@load(fr.desStato)"/>
+				<listcell sclass="sinistra" label="@load(fr.dto.codEnteComunale)"/>
+				<listcell sclass="destra"
+						  label="@load(((fr.dto.importoAccredito eq null) || (fr.dto.importoAccredito eq 0)) ? '' : c:formatNumber(fr.dto.importoAccredito, '€ #,##0.00'))"/>
+				<listcell sclass="destra" label="@load(fr.dto.cro)"/>
+				<listcell sclass="sinistra"
+						  label="@load(fr.dto.dataAccreditamento ne null ? c:formatDate(fr.dto.dataAccreditamento,'dd/MM/yyyy') : '')"/>
+				
+				<listcell sclass="sinistra"
+                             label="@load(fr.dto.dataRipartizioneOrig ne null ? c:formatDate(fr.dto.dataRipartizioneOrig,'dd/MM/yyyy') : '')"/>
+				<listcell sclass="destra" label="@load(fr.dto.progrRipartizioneOrig)"/>
+				
+				<listcell sclass="sinistra"
+                             label="@load(fr.dto.dataBonificoOrig ne null ? c:formatDate(fr.dto.dataBonificoOrig,'dd/MM/yyyy') : '')"/>
+                             
+				<listcell sclass="sinistra" label="@load(fr.descrTributo)"/>
+				<listcell sclass="sinistra" label="@load(fr.dto.iban)"/>
+				<listcell sclass="sinistra" label="@load(fr.dto.sezioneContoTu)"/>
+				<listcell sclass="destra" label="@load(fr.dto.numeroContoTu)"/>
+				<listcell sclass="destra" label="@load(fr.dto.codMovimento)"/>
+				<listcell sclass="sinistra" label="@load(fr.dto.desMovimento)"/>
+				<listcell sclass="sinistra"
+							 label="@load(fr.dto.dataStornoScarto ne null ? c:formatDate(fr.dto.dataStornoScarto,'dd/MM/yyyy') : '')"/>
+				<listcell sclass="sinistra"
+							 label="@load(fr.dto.dataElaborazioneNuova ne null ? c:formatDate(fr.dto.dataElaborazioneNuova,'dd/MM/yyyy') : '')"/>
+				<listcell sclass="destra" label="@load(fr.dto.progrElaborazioneNuova)"/>
+	     	</listitem>
+		</template>
+	</listbox>
+</zk>

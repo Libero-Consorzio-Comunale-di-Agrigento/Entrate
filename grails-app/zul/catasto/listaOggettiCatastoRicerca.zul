@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+<!--<?page automaticTimeout="false"?>-->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window width="800px" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('listaOggettiCatastoRicercaViewModel')"
+            border="normal" sizable="true" onOK="@command('onCerca')">
+		<script src="/js/decimalbox.js"/>
+
+
+    <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="Ricerca immobili catasto"/>
+            </hlayout>
+        </h:div>
+        <hlayout>
+            <vlayout>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="15%">
+                                <label value="Tipo"/>
+                            </cell>
+                            <cell colspan="2">
+                                <radiogroup id="tipoOggetto"
+                                            selectedItem="@bind(vm.filtroRicercaOggetto.tipoOggettoCatasto)"
+                                            onCheck="@command('cambioTipoOggetto')">
+                                    <vbox>
+                                        <radio label="Fabbricato" radiogroup="tipoOggetto" value="F"/>
+                                        <radio label="Terreno" radiogroup="tipoOggetto" value="T"/>
+                                        <radio label="Entrambi" radiogroup="tipoOggetto" value="E"
+                                               visible="@load(!vm.singoloTipoOggetto)"/>
+                                    </vbox>
+                                </radiogroup>
+                            </cell>
+                            <cell align="right" colspan="3">
+                                <label value="Data Efficiacia"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Dal"/>
+                            </cell>
+                            <cell colspan="2">
+                                <datebox hflex="1" format="dd/MM/yyyy" mold="rounded"
+                                         onChange="@command('onCambiaDataEfficacia')"
+                                         value="@bind(vm.filtroRicercaOggetto.validitaDal)"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Al"/>
+                            </cell>
+                            <cell colspan="2">
+                                <datebox hflex="1" format="dd/MM/yyyy" mold="rounded"
+                                         onChange="@command('onCambiaDataEfficacia')"
+                                         value="@bind(vm.filtroRicercaOggetto.validitaAl)"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell width="15%">
+                            </cell>
+                            <cell colspan="2">
+                            </cell>
+                            <cell align="right" colspan="3">
+                                <label value="Rendita"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Da"/>
+                            </cell>
+                            <cell colspan="2">
+                                <decimalbox hflex="1" format="€ #,##0.00" mold="rounded"
+                                            value="@bind(vm.filtroRicercaOggetto.renditaDa)"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="A"/>
+                            </cell>
+                            <cell colspan="2">
+                                <decimalbox hflex="1" format="€ #,##0.00" mold="rounded"
+                                            value="@bind(vm.filtroRicercaOggetto.renditaA)"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="Indirizzo"/>
+                            </cell>
+                            <cell colspan="7">
+                                <textbox hflex="1" style="text-transform: uppercase" mold="rounded"
+                                         value="@bind(vm.filtroRicercaOggetto.indirizzo)" tooltiptext="Indirizzo"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Civico"/>
+                            </cell>
+                            <cell align="right" colspan="3">
+                                <hbox>
+                                    <textbox style="text-align: right; text-transform: uppercase" cols="2" mold="rounded" hflex="1"
+                                             value="@bind(vm.filtroRicercaOggetto.numCiv)" tooltiptext="Numero"/>
+                                    <label value=" Sc. "/>
+                                    <textbox style="text-align: right; text-transform: uppercase" cols="2" mold="rounded" hflex="1"
+                                             value="@bind(vm.filtroRicercaOggetto.scala)" tooltiptext="Scala"/>
+                                    <label value=" Int. "/>
+                                    <textbox style="text-align: right; text-transform: uppercase" cols="2" mold="rounded" hflex="1"
+                                             value="@bind(vm.filtroRicercaOggetto.interno)" tooltiptext="Interno"/>
+                                </hbox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+                <space height="3px"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="15%">
+                                <label value="Partita"/>
+                            </cell>
+                            <cell>
+                                <textbox value="@bind(vm.filtroRicercaOggetto.partita)" mold="rounded"
+                                         class="noresizable" width="95%" style="text-transform: uppercase"/>
+                            </cell>
+                            <cell align="right" width="15%">
+                                <label value="Immobile"/>
+                            </cell>
+                            <cell>
+                                <longbox value="@bind(vm.filtroRicercaOggetto.progressivo)" mold="rounded" maxlength="15"
+                                         class="noresizable" width="95%" style="text-transform: uppercase"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="Sezione"/>
+                            </cell>
+                            <cell>
+                                <textbox value="@bind(vm.filtroRicercaOggetto.sezione)" mold="rounded"
+                                         class="noresizable" width="95%" style="text-transform: uppercase"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Foglio"/>
+                            </cell>
+                            <cell>
+                                <textbox value="@bind(vm.filtroRicercaOggetto.foglio)" mold="rounded"
+                                         class="noresizable" width="95%" style="text-transform: uppercase"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Numero"/>
+                            </cell>
+                            <cell>
+                                <textbox value="@bind(vm.filtroRicercaOggetto.numero)" mold="rounded"
+                                         class="noresizable" width="95%" style="text-transform: uppercase"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="Subalterno"/>
+                            </cell>
+                            <cell>
+                                <textbox value="@bind(vm.filtroRicercaOggetto.subalterno)" mold="rounded"
+                                         class="noresizable" width="95%" style="text-transform: uppercase"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Zona"/>
+                            </cell>
+                            <cell>
+                                <textbox value="@bind(vm.filtroRicercaOggetto.zona)" mold="rounded"
+                                         class="noresizable" width="95%" style="text-transform: uppercase"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="Categoria"/>
+                            </cell>
+                            <cell>
+                                <combobox mold="rounded" model="@load(vm.listaCategorieCatasto)"
+                                          selectedItem="@bind(vm.filtroRicercaOggetto.categoriaCatasto) @converter('it.finmatica.zkutils.PropertyConverter', property='categoriaCatasto')"
+                                          hflex="1" disabled="@load(vm.filtroRicercaOggetto.tipoOggettoCatasto eq 'T')">
+                                    <template name="model" var="cc">
+                                        <comboitem description="@load(cc.descrizione)"
+                                                   label="@load(cc.categoriaCatasto)" value="@load(cc)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                        <cell align="right">
+                            <label value="Note"/>
+                        </cell>
+                        <cell colspan="5">
+                            <textbox value="@bind(vm.filtroRicercaOggetto.note)" style="text-transform:uppercase" mold="rounded" hflex="1"/>
+                        </cell>
+                        </row>
+                    </rows>
+                </grid>
+
+                <groupbox visible="@load(vm.ricercaContribuente)">
+                    <caption>Contribuente</caption>
+                    <grid>
+
+                        <rows>
+                            <row>
+                                <cell align="right" width="100px">
+                                    <label value="Cod.Fiscale" tooltiptext="Codice Fiscale" />
+                                </cell>
+                                <cell>
+                                    <textbox hflex="1" style="text-transform: uppercase" mold="rounded"
+                                             value="@bind(vm.filtroRicercaOggetto.filtriSoggetto.codFiscale)"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                </groupbox>
+            </vlayout>
+        </hlayout>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/filter_box.png"
+                        label="Cancella
+					Filtri" onClick="@command('onSvuotaFiltri')"/>
+                <button mold="trendy" image="/images/afc/16x16/search.png"
+                        label="Cerca" onClick="@command('onCerca')"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png"
+                        label="Chiudi" onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

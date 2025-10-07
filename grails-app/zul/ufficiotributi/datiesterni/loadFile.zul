@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="/css/tr4web.css" ?>
+<!--<?page automaticTimeout="false"?>-->
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer" viewModel="@id('vm') @init('loadFileViewModel')" border="normal"
+            width="450px">
+			<script src="/js/decimalbox.js"/>
+
+        <h:div>
+            <space height="5px"/>
+        </h:div>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" colspan="1">
+                        <label value="Tipo documento"/>
+                    </cell>
+                    <cell align="right" colspan="2">
+                        <combobox hflex="1" model="@load(vm.listaDocumenti)"
+                                  mold="rounded"
+                                  selectedItem="@bind(vm.titoloDocumentoSelezionato)"
+                                  onSelect="@command('onAbilitaAllegati')">
+                            <template name="model" var="doc">
+                                <comboitem label="@load(doc.descrizione)" value="@load(doc)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell colspan="1"/>
+                </row>
+                <row>
+                    <cell align="right" colspan="1">
+                        <label value="File"/>
+                    </cell>
+                    <cell align="right" colspan="2">
+                        <textbox hflex="1" value="@bind(vm.filePath)" mold="rounded"/>
+                    </cell>
+                    <cell align="left" colspan="1">
+                        <button image="/images/afc/22x22/open.png" onUpload="@command('onLoadFile')"
+                                upload="true, maxsize=-1, native"/>
+                    </cell>
+
+                </row>
+                <row visible="@bind(vm.allegatiVisible)">
+                    <cell align="right" colspan="1">
+                        <label value="Allegati"/>
+                    </cell>
+                    <cell align="right" colspan="2">
+                        <textbox hflex="1" value="@bind(vm.stringaListaAllegati)" mold="rounded"/>
+                    </cell>
+                    <cell align="left" colspan="1">
+                        <button image="/images/afc/22x22/open.png" onUpload="@command('onLoadAllegati')"
+                                upload="true, maxsize=-1, native, multiple=true"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/open.png" label="Inserisci"
+                        onClick="@command('onInserisciFile')"/>
+                <button mold="trendy" image="/images/afc/16x16/close.png" label="Annulla"
+                        onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

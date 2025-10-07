@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('elencoUtenzeDaControllareViewModel')" border="normal"
+            sizable="true"  width="70%"   height="60%">
+		<script src="/js/decimalbox.js"/>
+
+        <h:div sclass="barraTitoloPagina">
+            <hlayout>
+                <label class="titoloPagina" value="@load(vm.titolo)"/>
+            </hlayout>
+        </h:div>
+
+        <h:div style="width: 100%;">
+            <h:div sclass="afc-control-bar" style="display: inline-block;">
+                <hlayout>
+
+                    <paging id="paging" sclass="afc-paging" onPaging="@command('onCambioPagina')"
+                            pageSize="@bind(vm.pagingList.pageSize)"
+                            totalSize="@load(vm.pagingList.totalSize)"
+                            activePage="@bind(vm.pagingList.activePage)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png"
+                                   tooltiptext='Esporta in XLS' onClick="@command('onUtentiToXls')"
+                                   disabled="false"/>
+                </hlayout>
+            </h:div>
+        </h:div>
+        <space height="3px"/>
+        <listbox span="true" nonselectableTags="" sizedByContent="true"
+                 model="@load(vm.listaUtenti)"
+                 vflex="1">
+            <listhead sizable="true">
+                <listheader label="N.Ind."/>
+                <listheader label="Contribuente"/>
+                <listheader label="Codice Fiscale"/>
+                <listheader label="C.Trib."/>
+                <listheader label="Cat."/>
+                <listheader label="Messaggio"/>
+            </listhead>
+            <template name="model">
+                <listitem>
+                    <listcell label="@load(each.ni)" sclass="destra"/>
+                    <listcell label="@load(each.cognomeNome)" sclass="sinistra"/>
+                    <listcell label="@load(each.codFiscale)" sclass="sinistra"/>
+                    <listcell label="@load(each.tributo)" sclass="destra"/>
+                    <listcell label="@load(each.categoria)" sclass="destra"/>
+                    <listcell label="@load(each.messaggio)"/>
+                </listitem>
+            </template>
+        </listbox>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/close.png"
+                        label="Chiudi" onClick="@command('onChiudi')"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

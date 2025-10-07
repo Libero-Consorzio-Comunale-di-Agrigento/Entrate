@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <groupbox vflex="@load(vm.vflexOggCat)" class="z-groupbox-hr-bottom">
+        <caption label="@bind(c:cat3('Dati Metrici (', vm.listaDatiMetrici.size(), ')'))"/>
+        <listbox id="lbOggettiDatiMetrici" span="true" nonselectableTags="" sizedByContent="true"
+                 onSelect="@command('onSelezionaDatoMetrico')"
+                 model="@bind(vm.listaDatiMetrici)"
+                 selectedItem="@bind(vm.datiMetriciSelezionato)"
+                 emptyMessage="Non sono presenti dati metrici" hflex="1" vflex="1">
+            <listhead sizable="true">
+                <listheader align="right"/>
+                <listheader label="Immobile" align="right"/>
+                <listheader label="Indirizzo" align="left"/>
+                <listheader label="Sez."/>
+                <listheader label="Fgl."/>
+                <listheader label="Num."/>
+                <listheader label="Sub."/>
+                <listheader label="Ctg."/>
+                <listheader label="Superficie" align="right"/>
+                <listheader label="Esito Sup." align="left"/>
+                <listheader label="Sup.Tot." align="right"/>
+                <listheader label="Sup.Conv." align="right"/>
+                <listheader label="Data" align="center"/>
+                <listheader label="Num." align="right"/>
+                <listheader label="Raccolta" align="right"/>
+                <listheader label="Bene Com." align="center"/>
+                <listheader label="Inizio Validità" align="center"/>
+                <listheader label="Fine Validità" align="center"/>
+                <listheader label="Data Cert." align="center"/>
+                <listheader label="Data Provv." align="center"/>
+                <listheader label="Protocollo Provv." align="left"/>
+                <listheader label="Doc.Id." align="right"/>
+                <listheader label="" align="center"/>
+            </listhead>
+            <template name="model" var="dm">
+                <listitem draggable="true">
+
+                    <custom-attributes foo="#{dm}"/>
+
+                    <listcell label="@load(dm.RIGA)"
+                              sclass="destra"/>
+
+                    <listcell label="@load(dm.immobile)"
+                              sclass="@load(vm.immobiliNonAssociatiDatiMetrici[dm.immobile] ? 'destra campi-differenti' : 'destra')"/>
+                    <listcell>
+                        <label value="@load(dm.indirizzo)"/>
+                        <image visible="@load(!empty dm.indirizzi)"
+                               src="/images/pulsanti/16x16/info.png"
+                               style="cursor: pointer;" width="16px" height="16px"
+                               tooltiptext="@load(dm.indirizzi)"/>
+                    </listcell>
+                    <listcell label="@load(dm.sezioneCat)" sclass="destra"/>
+                    <listcell label="@load(dm.foglioCat)" sclass="destra"/>
+                    <listcell label="@load(dm.numeroCat)" sclass="destra"/>
+                    <listcell label="@load(dm.subalternoCat)" sclass="destra"/>
+                    <listcell label="@load(dm.categoriaCat)"/>
+                    <listcell>
+                        <hbox>
+                            <label value="@load(dm.superficie)"/>
+                            <image src="/images/afc/16x16/info.png"
+                                   style="cursor: pointer;" width="16px" height="16px"
+                                   onClick="@command('onShowDatiMetriciDettaglioImmobile')"
+                                   tooltiptext="Visualizza dettagli immobile"
+                                   visible="@load(!empty dm.superficie and dm.superficie ne '0,00')"/>
+                        </hbox>
+                    </listcell>
+                    <listcell label="@load(dm.esitoSuperficie)"/>
+                    <listcell label="@load(dm.superficieTotale)"/>
+                    <listcell label="@load(dm.superficieConvenzionale)"/>
+                    <listcell label="@load(dm.data)"/>
+                    <listcell label="@load(dm.numero)"/>
+                    <listcell label="@load(dm.raccolta)"/>
+                    <listcell>
+                        <checkbox disabled="true" checked="@load(dm.beneComune)"
+                                  visible="@load(!empty dm.intestatari)"/>
+                    </listcell>
+                    <listcell label="@load(dm.inizioValidita)"/>
+                    <listcell label="@load(dm.fineValidita)"/>
+                    <listcell label="@load(dm.dataCertificazione)"/>
+                    <listcell label="@load(dm.dataProvvedimento)"/>
+                    <listcell label="@load(dm.protocolloProvvedimento)"/>
+                    <listcell label="@load(dm.documentoId)"/>
+                    <listcell>
+                        <image width="16px" src="/images/afc/16x16/designate.png"
+                               onClick="@command('onShowDatiMetriciDettaglioIntestatari')"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+    <popup id="popupTesto" width="600px">
+        <h:div sclass="barraTitoloPagina">
+            <label class="titoloPagina" value="Testo"/>
+        </h:div>
+        <hlayout>
+            <textbox rows="10" width="600px"
+                     value="@load(vm.immobileCatastoSelezionato.ANNOTAZIONE)" readonly="true"/>
+        </hlayout>
+    </popup>
+</zk>

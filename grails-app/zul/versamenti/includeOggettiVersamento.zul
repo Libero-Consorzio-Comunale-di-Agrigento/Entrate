@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox hflex="1" class="z-groupbox-hr-top">
+		<caption label="@bind(c:cat3('Oggetti (', vm.listaOggettiVersamento.size(), ')'))"/>
+		<space height="3px"/>
+
+		<hlayout>
+			<grid>
+				<rows>
+					<row>
+						<cell width="50%">
+						</cell>
+						<cell align="right">
+			                <combobox mold="rounded" readonly="true" width="100px"
+			                          onSelect="@command('onSelezionaAnnoOggettiVersamento')"
+			                          model="@load(vm.listaAnniOggettiVersamento)"
+			                          selectedItem="@bind(vm.annoOggettiVersamentoSelezionato)">
+			                    <template name="model" var="opz">
+			                        <comboitem label="@load(opz)" value="@load(opz)"/>
+			                    </template>
+			                </combobox>
+			            </cell>
+			        </row>
+			    </rows>
+			</grid>
+		</hlayout>
+		
+		<hlayout>
+	        <listbox id="gridVersamentoOggetti" span="true" sizedByContent="true" rows="5"
+	                 model="@load(vm.listaOggettiVersamento)" emptyMessage="Nessun oggetto presente"
+	                 onSelect="@command('onSelezionaOggettoVersamento')"
+	                 selectedItem="@bind(vm.oggettoVersamentoSelezionato)">
+	            <listhead sizable="true">
+	                <listheader label="@load(c:l('sportello.label.oggetto'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+	                <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+	                <listheader label="@load(c:l('sportello.label.indirizzo'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+	                <listheader label="@load(c:l('sportello.label.sezione'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+	                <listheader sclass="centro" label="@load(c:l('sportello.label.foglio'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+	                <listheader sclass="centro" label="@load(c:l('sportello.label.numero'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+	                <listheader label="@load(c:l('sportello.label.subalterno'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+	                <listheader label="@load(c:l('sportello.label.zona'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.zona'))"/>
+	                <listheader label="@load(c:l('sportello.label.partita'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.partita'))"/>
+	                <listheader label="@load(c:l('sportello.label.imposta'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.imposta'))"/>
+	                <listheader label="@load(c:l('sportello.label.pratica'))"
+	                            tooltiptext="@load(c:l('sportello.label.estesa.pratica'))"/>
+	            </listhead>
+	            <template name="model" var="ogg">
+	                <listitem onDoubleClick="@command('onModificaOggetto', contesto='OGGETTO')">
+	                    <listcell label="@load(ogg.oggetto)" sclass="destra"/>
+	                    <listcell label="@load(ogg.tipoOggetto)" sclass="destra"/>
+	                    <listcell label="@load(ogg.indirizzo)"/>
+	                    <listcell label="@load(ogg.sezione)" sclass="destra"/>
+	                    <listcell label="@load(ogg.foglio)" sclass="destra"/>
+	                    <listcell label="@load(ogg.numero)" sclass="destra"/>
+	                    <listcell label="@load(ogg.subalterno)" sclass="destra"/>
+	                    <listcell label="@load(ogg.zona)" sclass="sinistra"/>
+	                    <listcell label="@load(ogg.partita)" sclass="destra"/>
+	                    <listcell sclass="destra">
+							<label value="@load(ogg.imposta ne null ? c:formatNumber(ogg.imposta, '€ #,##0.00'): '')"/>
+						</listcell>
+	                    <listcell label="@load(ogg.pratica)" sclass="destra"/>
+	                </listitem>
+	            </template>
+	        </listbox>
+		</hlayout>
+    </groupbox>
+</zk>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <listbox id="listBoxInsolventi" span="true" sizedByContent="true" model="@load(vm.listaInsolventi)"
+             selectedItem="@bind(vm.insolventeSelezionato)" emptyMessage="Nessun insolvente presente."
+             vflex="1">
+        <listhead sizable="true" onColSize="@command('onResizeColumn')">
+            <listheader label="Contribuente" align="right"/>
+            <listheader label="Cod. Fiscale" align="right"/>
+            <listheader label="Importo Dovuto" align="right"/>
+            <listheader label="Importo Versato" align="right"/>
+            <listheader label="Tard." align="right"/>
+            <listheader label="Insolvenza" align="right"/>
+            <listheader label="Indirizzo" align="right"/>
+            <listheader label="Comune" align="right"/>
+        </listhead>
+        <template name="model" var="ins">
+            <listitem>
+                <listcell sclass="sinistra" label="@load(ins.csoggnome)"
+                          style="white-space:nowrap;"/>
+                <listcell sclass="sinistra" style="white-space:nowrap;">
+                    <hlayout>
+                        <label value="@load(ins.codFiscale)"/>
+                        <space width="2px"/>
+                        <image src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                               style="cursor: pointer;" width="16px"
+                               visible="@load(ins.ni ne null)"
+                               onClick="@command('onOpenSituazioneContribuente',  ni=ins.ni)"/>
+                    </hlayout>
+                </listcell>
+                <listcell sclass="destra" style="white-space:nowrap;"
+                          label="@load(ins.dovuto eq null ? '' : c:formatNumber(ins.dovuto,'€ #,##0.00'))"/>
+                <listcell sclass="destra" style="white-space:nowrap;"
+                          label="@load(ins.versato eq null ? '' : c:formatNumber(ins.versato,'€ #,##0.00'))"/>
+                <listcell sclass="destra" style="white-space:nowrap;"
+                          label="@load(ins.tardivo eq null ? '' : c:formatNumber(ins.tardivo,'€ #,##0.00'))"/>
+                <listcell sclass="destra" style="white-space:nowrap;"
+                          label="@load(ins.netto eq null ? '' : c:formatNumber(ins.netto,'€ #,##0.00'))"/>
+                <listcell sclass="sinistra" label="@load(ins.indirizzoDich)" style="white-space:nowrap;"/>
+                <listcell sclass="sinistra" label="@load(ins.residenzaDich)" style="white-space:nowrap;"/>
+            </listitem>
+        </template>
+        <listfoot>
+            <listfooter/>
+            <listfooter align="right">
+                <label style="font-weight: bold;" value="Totali:"/>
+            </listfooter>
+            <listfooter align="right" style="white-space:nowrap;"
+                        label="@load(vm.totali.totDovuto ne null ? c:formatNumber(vm.totali.totDovuto, '€ #,##0.00'): '')"/>
+            <listfooter align="right" style="white-space:nowrap;"
+                        label="@load(vm.totali.totVersato ne null ? c:formatNumber(vm.totali.totVersato, '€ #,##0.00'): '')"/>
+            <listfooter align="right" style="white-space:nowrap;"
+                        label="@load(vm.totali.totTardivo ne null ? c:formatNumber(vm.totali.totTardivo, '€ #,##0.00'): '')"/>
+            <listfooter align="right" style="white-space:nowrap;"
+                        label="@load(vm.totali.totNetto ne null ? c:formatNumber(vm.totali.totNetto, '€ #,##0.00'): '')"/>
+        </listfoot>
+    </listbox>
+</zk>

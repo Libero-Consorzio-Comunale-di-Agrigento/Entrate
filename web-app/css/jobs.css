@@ -1,0 +1,79 @@
+.mandatoryLabel {
+	color: 		#ff2323;
+	font-size: 	20px;
+	position: 	relative;
+	top: 		0.25em;
+	right: 		0.25em;
+}
+
+.barraPulsanti {
+	background-color: #D7E3EC;
+	padding: 	5px;
+/*	margin-left: 5px;
+	margin: 	0px;
+	height: 	25px;  */
+	overflow-y:	auto;
+	position: relative;
+}
+
+.barraPulsanti > div {
+	float: right;
+}
+
+.barraPulsanti > span {
+	float: left;
+}
+
+/* Pulsantiera standard grid*/
+.afc-control-bar {
+	/* bordi arrotondati */
+	-webkit-border-radius: 	10px;
+	-moz-border-radius: 	0px;
+	border-radius: 			10px;
+
+	background-color: #FFFFFF;
+	border-style: 	solid;
+	border-color: 	#B7BABC;
+	border-width: 	1px;
+
+	padding-top: 	3px;	
+	padding-bottom: 3px;
+	padding-right: 	5px;
+	padding-left: 	5px;
+}
+
+/* sezione per oggetto paging */
+.afc-paging .z-paging-btn .z-paging-next {
+	background-position: 0 0;
+	background-image: url('../images/afc/elaborazioni/next.png');
+}
+
+.afc-paging .z-paging-btn .z-paging-last {
+	background-position: 0 0;
+	background-image: url('../images/afc/elaborazioni/last.png');
+}
+
+.afc-paging .z-paging-btn .z-paging-first {
+	background-position: 0 0;
+	background-image: url('../images/afc/elaborazioni/first.png');
+}
+
+.afc-paging .z-paging-btn .z-paging-prev {
+	background-position: 0 0;
+	background-image: url('../images/afc/elaborazioni/prev.png');
+}
+
+.afc-paging {
+	border-color: 	none;
+	border-style: 	none;
+	border-width: 	0 0 0px;
+	display: 	  	block;
+	padding: 	  	3px;
+	position: 		relative;
+	repeat-x: 		scroll 0 center;
+	background: 	repeat-x 0 -1px;
+}
+
+.afc-paging .z-paging-btn {
+	background: none;
+}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+	<system-config>
+		<ui-factory-class>org.zkoss.zk.grails.ui.GrailsComposerFactory
+		</ui-factory-class>
+		<label-location>/WEB-INF/labels/zk-label.properties</label-location>
+		<label-location>/WEB-INF/labels/sportello.properties</label-location>
+		<label-location>/WEB-INF/labels/ufficiotributi.properties</label-location>
+		<label-location>/WEB-INF/labels/dizionario.properties</label-location>
+	</system-config>
+	<listener>
+		<description>ThreadLocal Synchronization Listener</description>
+		<listener-class>org.zkoss.zkplus.util.ThreadLocalListener
+		</listener-class>
+	</listener>
+	<zscript-config>
+		<language-name>GroovyGrails</language-name>
+		<interpreter-class>
+			org.zkoss.zk.grails.scripting.GroovyGrailsInterpreter
+		</interpreter-class>
+	</zscript-config>
+	<preference>
+		<name>ThreadLocal</name>
+		<value>
+			org.springframework.transaction.support.TransactionSynchronizationManager=resources,
+			synchronizations,currentTransactionName,currentTransactionReadOnly,actualTransactionActive;
+			org.springframework.transaction.interceptor.TransactionAspectSupport=transactionInfoHolder;
+			org.springframework.web.context.request.RequestContextHolder=requestAttributesHolder,inheritableRequestAttributesHolder;
+		</value>
+	</preference>
+	<library-property>
+		<name>org.zkoss.zk.ui.metainfo.page.Loader.class</name>
+		<value>org.zkoss.web.util.resource.GrailsContentLoader</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.progressbox.position</name>
+		<value>center</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zk.ui.processMask.enabled</name>
+		<value>true</value>
+	</library-property>
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/system/error.zul</location>
+	</error-page>
+	<language-config>
+		<addon-uri>/WEB-INF/lang-addon.xml</addon-uri>
+	</language-config>
+	<client-config>
+		<processing-prompt-delay>1</processing-prompt-delay>
+	</client-config>
+	<session-config>
+		<device-type>ajax</device-type>
+		<automatic-timeout>true</automatic-timeout>
+		<timeout-message>Sessione scaduta. Ricaricare la pagina?
+		</timeout-message>
+	</session-config>
+</zk>

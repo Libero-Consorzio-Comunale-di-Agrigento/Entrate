@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Grails: installante-apply-db" type="GrailsRunConfigurationType" factoryName="Grails">
+    <setting name="vmparams" value="" />
+    <setting name="cmdLine" value="installante-apply-db  -DskipJasperCompile=true" />
+    <setting name="passParentEnv" value="true" />
+    <setting name="grailsApplicationRoot" value="$PROJECT_DIR$" />
+    <setting name="launchBrowser" value="false" />
+    <setting name="launchBrowserUrl" value="" />
+    <setting name="depsClasspath" value="true" />
+    <method v="2" />
+  </configuration>
+</component>

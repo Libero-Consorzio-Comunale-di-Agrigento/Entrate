@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+        .z-listfooter-cnt {
+        font-weight: bold !important;
+        }
+    </style>
+
+    <groupbox>
+        <caption label="Sgravi"/>
+
+        <hlayout sclass="navigazione" valign="middle">
+            <hlayout>
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbutton image="/images/afc/22x22/refresh.png" width="26px"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                   onClick="@command('onRefresh')"/>
+                    <toolbarbutton image="/images/afc/22x22/edit.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                                   visible="#{empty arg.modifyVisible?true:arg.modifyVisible}"
+                                   onClick="@command('onModificaSgravio')"
+                                   disabled="@load(empty vm.sgravioSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/add.png" width="26px"
+                                   tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                   onClick="@command('onAggiungiSgravio')"/>
+                    <toolbarbutton image="/images/afc/22x22/editcopy.png" width="26px"
+                                   tooltiptext='#{empty arg.modifyTooltip?"Duplica":arg.modifyTooltip}'
+                                   onClick="@command('onDuplicaSgravio')"
+                                   disabled="@load(empty vm.sgravioSelezionato)"
+                                   visible="@load(empty vm.praticaRuolo)"/>
+                    <toolbarbutton image="/images/afc/22x22/delete.png" width="26px"
+                                   tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                   visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                                   onClick="@command('onEliminaSgravio')"
+                                   disabled="@load(empty vm.sgravioSelezionato)"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS'
+                                   disabled="@load(empty vm.listaSgravi)"
+                                   onClick="@command('onExportXls')"/>
+                    <toolbarbutton image="/images/afc/22x22/print.png" width="26px"
+                                   tooltiptext='Stampa'
+                                   disabled="@load(empty vm.listaSgravi)"
+                                   popup="funzioniStampa"/>
+                    <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                   tooltiptext='#{empty arg.addTooltip?"Funzioni":arg.addTooltip}'
+                                   visible="@load(empty vm.praticaRuolo)"
+                                   popup="funzioniSgravi"/>
+                </hlayout>
+            </hlayout>
+        </hlayout>
+
+        <listbox height="250px" selectedItem="@bind(vm.sgravioSelezionato)" span="true" model="@bind(vm.listaSgravi)"
+                 emptyMessage="Nessuno sgravio" sizedByContent="true">
+            <listhead sizable="true">
+                <listheader label="Motivo"/>
+                <listheader label="Tipo"/>
+                <listheader label="Numero"/>
+                <listheader label="Del"/>
+                <listheader label="Importo"/>
+                <listheader label="Note"/>
+            </listhead>
+            <template name="model" var="sgr">
+                <listitem onDoubleClick="@command('onModificaSgravio')">
+                    <listcell label="@load(c:cat3(sgr.motivoSgravio, ' - ', sgr.motivoSgravioDescrizione))"/>
+                    <listcell
+                            label="@load(sgr.tipoSgravio eq 'D' ? 'Discarico' : sgr.tipoSgravio eq 'R' ? 'Rimborso' : sgr.tipoSgravio eq 'S' ? 'Sgravio' : '')"/>
+                    <listcell sclass="destra" label="@load(sgr.numeroElenco)"/>
+                    <listcell sclass="centro"
+                              label="@load(sgr.dataElenco eq null ? '' : c:formatDate(sgr.dataElenco, 'dd/MM/yyyy'))"/>
+                    <listcell sclass="destra"
+                              label="@load(empty sgr.importo ? null : c:formatNumber(sgr.importo, '€ #,##0.00'))"/>
+                    <listcell label="@load(sgr.note)"/>
+                </listitem>
+            </template>
+            <listfoot>
+                <listfooter/>
+                <listfooter/>
+                <listfooter/>
+                <listfooter sclass="destra" label="Totale:"/>
+                <listfooter sclass="destra "
+                            label="@bind(empty vm.importoTotale ? null : c:formatNumber(vm.importoTotale, '€ #,##0.00'))"/>
+                <listfooter/>
+            </listfoot>
+        </listbox>
+    </groupbox>
+    <h:div sclass="barraPulsanti">
+        <h:div>
+            <button label="Salva" onClick="@command('onSalva')"
+                    mold="trendy" image="/images/afc/16x16/save.png"/>
+            <button label="Chiudi" onClick="@command('onAnnulla')"
+                    mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+        </h:div>
+    </h:div>
+
+
+    <menupopup id="funzioniSgravi">
+        <menuitem label="Calcolo Sgravio"
+                  onClick="@command('onCalcoloSgravio')"/>
+    </menupopup>
+    <menupopup id="funzioniStampa">
+        <menuitem disabled="@load(empty vm.sgravioSelezionato)"
+                  label="Lettera Sgravio"
+                  onClick="@command('onStampaLetteraSgravio')"/>
+    </menupopup>
+</zk>

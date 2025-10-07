@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<borderlayout>
+		<north size="5px" splittable="false">
+		</north>
+		<center>
+			<vlayout spacing="2" vflex="1">
+
+    <hlayout sclass="navigazione" valign="middle" style="padding: 2px;">
+        <hlayout>
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/afc/16x16/refresh.png"
+                               tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                               disabled="@load(empty vm.oggettiAccManuale)" onClick="@command('onRefreshOggetti')"/>
+                <toolbarbutton image="/images/afc/16x16/edit.png"
+                               tooltiptext='#{empty arg.modifyTooltip?((!vm.modificaOggetti || !empty vm.pratica.dataNotifica)?"Lettura":"Modifica"):arg.modifyTooltip}'
+                               onClick="@command('onApriArea')"
+                               disabled="@load(empty vm.oggettoSelezionato)"/>
+                <toolbarbutton image="/images/afc/16x16/add.png"
+                               onClick="@command('onAggiungiArea')"
+                               disabled="@bind(!vm.modificaOggetti || !empty vm.pratica.dataNotifica)"
+                               tooltiptext="Aggiungi Locale o Area"/>
+                <toolbarbutton image="/images/afc/16x16/delete.png"
+                               tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                               visible="#{empty arg.deleteVisible?true:arg.deleteVisible}"
+                               disabled="@load((empty vm.oggettoSelezionato) || (!vm.modificaOggetti) || !empty vm.pratica.dataNotifica)"
+                               onClick="@command('onEliminaArea')"/>
+            </hlayout>
+        </hlayout>
+    </hlayout>
+
+    <listbox vflex="1" span="true" model="@load(vm.oggettiAccManuale)"
+             emptyMessage="Nessun Locale o Area" height="100px" sizedByContent="true"
+             onSelect="@command('onSelezionaOggAccMan')"
+             selectedItem="@bind(vm.oggettoSelezionato)">
+		<auxhead visible="@load(vm.dic)">
+	         <auxheader label="Accertato" colspan="21"/>
+		</auxhead>
+        <listhead sizable="true">
+            <listheader label="@load(c:l('sportello.label.oggetto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+            <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+            <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+            <listheader label="@load(c:l('sportello.label.sezione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+            <listheader label="@load(c:l('sportello.label.foglio'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+            <listheader label="@load(c:l('sportello.label.numero'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+            <listheader label="@load(c:l('sportello.label.subalterno'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+            <listheader label="@load(c:l('sportello.label.categoriaCatasto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+			<listheader label="@load(c:l('sportello.label.classeCatasto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.classeCatasto'))"/>
+                        
+            <listheader label="@load(c:l('sportello.label.codiceTributo'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.codiceTributo'))"/>
+            <listheader label="@load(c:l('sportello.label.categoria'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.categoria'))"/>
+            <listheader label="@load(c:l('sportello.label.tipoTariffa'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.tipoTariffa'))"/>
+            <listheader label="@load(c:l('sportello.label.descrizioneTipoTariffa'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.descrizioneTipoTariffa'))"/>
+            <listheader label="Superf." tooltiptext="Superficie"/>
+            <listheader label="Ab.Princ." tooltiptext="@load(c:l('sportello.label.estesa.flagAbPrincipale'))"/>
+            <listheader label="@load(c:l('sportello.label.decorrenza'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.decorrenza'))"/>
+            <listheader label="@load(c:l('sportello.label.cessazione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.cessazione'))"/>
+            <listheader label="@load(c:l('sportello.label.inizioOccupazione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.inizioOccupazione'))"/>
+            <listheader label="@load(c:l('sportello.label.fineOccupazione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.fineOccupazione'))"/>
+      <!--  <listheader label="Occ." tooltiptext="Tipo di Occupazione"/>
+            <listheader label="@load(c:l('sportello.label.percentualePossesso'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.percentualePossesso'))"/>	-->
+            <listheader label="Imp.Lorda"
+                        tooltiptext="@load(c:l('sportello.label.estesa.impostaLorda'))"/>
+            <listheader label="@load(c:l('sportello.label.componentiPereq'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.componentiPereq'))"/>
+        </listhead>
+        <template name="model" var="loc">
+            <listitem onDoubleClick="@command('onApriArea')">
+                <listcell sclass="destra" label="@load(loc.dto.oggettoPratica.oggetto.id)"/>
+                <listcell sclass="centro"
+                          label="@load(loc.dto.oggettoPratica.oggetto.tipoOggetto.tipoOggetto)"/>
+                <listcell sclass="sinistra"
+                          label="@load(loc.dto.oggettoPratica.oggetto.indirizzo)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.dto.oggettoPratica.oggetto.sezione)"/>
+                <listcell sclass="destra" label="@load(loc.dto.oggettoPratica.oggetto.foglio)"/>
+                <listcell sclass="destra" label="@load(loc.dto.oggettoPratica.oggetto.numero)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.dto.oggettoPratica.oggetto.subalterno)"/>
+                <listcell sclass="sinistra"
+                          label="@load(!empty loc.dto.oggettoPratica.oggetto.categoriaCatasto ? loc.dto.oggettoPratica.oggetto.categoriaCatasto.categoriaCatasto : loc.dto.oggettoPratica.categoriaCatasto.categoriaCatasto)"
+                          tooltiptext="@load(!empty loc.dto.oggettoPratica.oggetto.categoriaCatasto ? loc.dto.oggettoPratica.oggetto.categoriaCatasto : loc.dto.oggettoPratica.categoriaCatasto)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.dto.oggettoPratica.oggetto.classeCatasto)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.dto.oggettoPratica.codiceTributo.id)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.dto.oggettoPratica.tariffa.categoria.categoria)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.dto.oggettoPratica.tariffa.tipoTariffa)"/>
+                <listcell sclass="sinistra"
+                          tooltiptext="@load(c:cat3(loc.dto.oggettoPratica.tariffa.categoria.descrizione, ' - ', loc.dto.oggettoPratica.tariffa.descrizione))"
+                          label="@load(c:cat3(loc.dto.oggettoPratica.tariffa.categoria.descrizione, ' - ', loc.dto.oggettoPratica.tariffa.descrizione))"/>
+                <listcell sclass="destra"
+                          label="@load((loc.dto.oggettoPratica.consistenza eq null) ? '' : c:formatNumber(loc.dto.oggettoPratica.consistenza, '#,##0.00'))"/>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(loc.dto.flagAbPrincipale)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro"
+                          label="@load(loc.dto.dataDecorrenza) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                <listcell sclass="centro"
+                          label="@load(loc.dto.dataCessazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                <listcell sclass="centro"
+                          label="@load(loc.dto.inizioOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                <listcell sclass="centro"
+                          label="@load(loc.dto.fineOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+		<!-- 	<listcell sclass="sinistra"
+                          label="@load(loc.dto.oggettoPratica.tipoOccupazione eq null ? '' : (loc.dto.oggettoPratica.tipoOccupazione eq 'P' ? 'Permanente' : 'Temporanea') )"/>
+                <listcell sclass="destra"
+                          label="@load(loc.dto.percPossesso eq null?'':c:formatNumber(loc.dto.percPossesso, '#,##0.00 '))"/> -->
+                <listcell sclass="destra"
+                          label="@load((loc.impostaLorda eq null)?'':c:formatNumber(loc.impostaLorda, '€ #,##0.00 '))"/>
+                <listcell sclass="destra"
+                          label="@load(loc.maggTARES eq null?'':c:formatNumber(loc.maggTARES, '€ #,##0.00 '))"/>
+            </listitem>
+        </template>
+        <listfoot>
+            <listfooter label="Totali:"/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter label=""/>
+            <listfooter sclass="destra"
+            			label="@load(vm.totOggettiAccManuale.impostaLorda eq null?'':c:formatNumber(vm.totOggettiAccManuale.impostaLorda, '€ #,##0.00'))"/>
+            <listfooter sclass="destra"
+            			label="@load(vm.totOggettiAccManuale.maggTARES eq null?'':c:formatNumber(vm.totOggettiAccManuale.maggTARES, '€ #,##0.00'))"/>
+        </listfoot>
+    </listbox>
+    
+			</vlayout>
+		</center>
+		<south size="@load(vm.sizeQuadroDichiarato)" border="0" collapsible="true" splittable="true" open="@load(vm.dic)" visible="@load(vm.dic)"
+				onOpen="@command('onApriDichiarato', event=event)">
+			<vlayout spacing="2" vflex="1">
+
+    <listbox span="true" model="@load(vm.oggettiAccManualeDich)" rows="1"
+             emptyMessage="Nessun dato dichiarato" sizedByContent="true">
+		<auxhead>
+	         <auxheader label="Dichiarato" colspan="21"/>
+		</auxhead>
+        <listhead sizable="true">
+            <listheader label="@load(c:l('sportello.label.oggetto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.oggetto'))"/>
+            <listheader label="@load(c:l('sportello.label.tipoOggetto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.tipoOggetto'))"/>
+            <listheader label="@load(c:l('sportello.label.indirizzo'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.indirizzo'))"/>
+            <listheader label="@load(c:l('sportello.label.sezione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.sezione'))"/>
+            <listheader label="@load(c:l('sportello.label.foglio'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.foglio'))"/>
+            <listheader label="@load(c:l('sportello.label.numero'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.numero'))"/>
+            <listheader label="@load(c:l('sportello.label.subalterno'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.subalterno'))"/>
+            <listheader label="@load(c:l('sportello.label.categoriaCatasto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.categoriaCatasto'))"/>
+			<listheader label="@load(c:l('sportello.label.classeCatasto'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.classeCatasto'))"/>
+                        
+            <listheader label="@load(c:l('sportello.label.codiceTributo'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.codiceTributo'))"/>
+            <listheader label="@load(c:l('sportello.label.categoria'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.categoria'))"/>
+            <listheader label="@load(c:l('sportello.label.tipoTariffa'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.tipoTariffa'))"/>
+            <listheader label="@load(c:l('sportello.label.descrizioneTipoTariffa'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.descrizioneTipoTariffa'))"/>
+            <listheader label="Superf." tooltiptext="Superficie"/>
+            <listheader label="Ab.Princ." tooltiptext="@load(c:l('sportello.label.estesa.flagAbPrincipale'))"/>
+            <listheader label="@load(c:l('sportello.label.decorrenza'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.decorrenza'))"/>
+            <listheader label="@load(c:l('sportello.label.cessazione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.cessazione'))"/>
+            <listheader label="@load(c:l('sportello.label.inizioOccupazione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.inizioOccupazione'))"/>
+            <listheader label="@load(c:l('sportello.label.fineOccupazione'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.fineOccupazione'))"/>
+      <!--  <listheader label="Occ." tooltiptext="Tipo di Occupazione"/>
+            <listheader label="@load(c:l('sportello.label.percentualePossesso'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.percentualePossesso'))"/>	-->
+            <listheader label="Imp.Lorda"
+                        tooltiptext="@load(c:l('sportello.label.estesa.impostaLorda'))"/>
+            <listheader label="@load(c:l('sportello.label.componentiPereq'))"
+                        tooltiptext="@load(c:l('sportello.label.estesa.componentiPereq'))"/>
+        </listhead>
+        <template name="model" var="loc">
+            <listitem>
+                <listcell sclass="destra"
+                		  label="@load(loc.oggettoId)"/>
+                <listcell sclass="centro"
+                          label="@load(loc.tipoOggetto)"/>
+                <listcell sclass="sinistra"
+                          label="@load(loc.indirizzo)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.sezione)"/>
+                <listcell sclass="destra"
+                		  label="@load(loc.foglio)"/>
+                <listcell sclass="destra"
+                		  label="@load(loc.numero)"/>
+                <listcell sclass="destra"
+                		  label="@load(loc.subalterno)"/>
+                <listcell sclass="sinistra"
+                          label="@load(loc.categoriaCatasto)"/>
+                <listcell sclass="destra"
+                		  label="@load(loc.classeCatasto)"/>
+            
+                <listcell sclass="destra"
+                          label="@load(loc.codiceTributo)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.categoria)"/>
+                <listcell sclass="destra"
+                          label="@load(loc.tipoTariffa)"/>
+                <listcell sclass="sinistra"
+                          tooltiptext="@load(c:cat3(loc.desCategoria, ' - ', loc.desTipoTariffa))"
+                          label="@load(c:cat3(loc.desCategoria, ' - ', loc.desTipoTariffa))"/>
+                <listcell sclass="destra"
+                          label="@load((loc.consistenza eq null) ? '' : c:formatNumber(loc.consistenza, '#,##0.00'))"/>
+                <listcell sclass="centro">
+                    <checkbox checked="@load(loc.flagAbPrincipale)" w:onCheck="this.setChecked(!this.isChecked())"/>
+                </listcell>
+                <listcell sclass="centro"
+                          label="@load(loc.dataDecorrenza) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                <listcell sclass="centro"
+                          label="@load(loc.dataCessazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                <listcell sclass="centro"
+                          label="@load(loc.inizioOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                <listcell sclass="centro"
+                          label="@load(loc.fineOccupazione) @converter('formatedDate',format='dd/MM/yyyy')"/>
+		<!-- 	<listcell sclass="sinistra"
+                          label="@load(loc.tipoOccupazione eq null ? '' : (loc.tipoOccupazione eq 'P' ? 'Permanente' : 'Temporanea') )"/>
+                <listcell sclass="destra"
+                          label="@load(loc.percPossesso eq null?'':c:formatNumber(loc.percPossesso, '#,##0.00 '))"/> -->
+                <listcell sclass="destra"
+                          label="@load((loc.impostaLorda eq null)?'':c:formatNumber(loc.impostaLorda, '€ #,##0.00 '))"/>
+                <listcell sclass="destra"
+                          label="@load(loc.maggTARES eq null?'':c:formatNumber(loc.maggTARES, '€ #,##0.00 '))"/>
+            </listitem>
+        </template>
+    </listbox>
+    
+			</vlayout>
+		</south>
+	</borderlayout>
+</zk>

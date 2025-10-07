@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="bandboxVie" extends="bandbox" class="it.finmatica.zkutils.BandboxVie"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="grailsBindComposer"
+            viewModel="@id('vm') @init('oggettoPerTributoViewModel')"
+            border="normal" sizable="true" width="910px" title=" "
+            onCancel="@command('onChiudiPopup')">
+		<script src="/js/decimalbox.js"/>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell class="documentoTitolo" align="left">
+                        <label value="@load(vm.titolo)"/>
+                    </cell>
+
+                </row>
+            </rows>
+        </grid>
+
+        <grid sclass="form">
+            <rows>
+                <!-- INDIRIZZO -->
+                <row>
+                    <cell colspan="2" align="right">
+                        <label value="Indirizzo"/>
+                    </cell>
+                    <cell colspan="5">
+                        <bandboxVie hflex="1"
+                                    onSelect="@command('onSelectIndirizzo')"
+                                    oggetto="@bind(vm.oggetto.archivioVie)">
+                            <custom-attributes proprieta="denomUff"/>
+                        </bandboxVie>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Civico"/>
+                    </cell>
+                    <cell colspan="3" align="left">
+                        <hbox hflex="1">
+                            <intbox mold="rounded" style="text-align: right;" hflex="1" value="@load(vm.oggetto.numCiv)"
+                                    tooltiptext="Numero" maxlength="6"/>
+                            <label value=" / "/>
+                            <textbox mold="rounded" style="text-align: right;" hflex="1"
+                                     value="@load(vm.oggetto.suffisso) @save(vm.oggetto.suffisso, before={'onInserisciOggettoPerTributo'})"
+                                     tooltiptext="Suffisso" maxlength="5"/>
+                        </hbox>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Scala"/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox mold="rounded" style="text-align: right;"
+                                 value="@load(vm.oggetto.scala) @save(vm.oggetto.scala, before={'onInserisciOggettoPerTributo'})"
+                                 tooltiptext="Scala"
+                                 hflex="1" maxlength="5"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Piano"/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <textbox mold="rounded" style="text-align: right;"
+                                 value="@load(vm.oggetto.piano) @save(vm.oggetto.piano, before={'onInserisciOggettoPerTributo'})"
+                                 tooltiptext="Piano"
+                                 hflex="1" maxlength="5"/>
+                    </cell>
+                    <cell colspan="1" align="right">
+                        <label value="Interno"/>
+                    </cell>
+                    <cell colspan="1" align="left">
+                        <intbox mold="rounded" style="text-align: right;"
+                                value="@load(vm.oggetto.interno) @save(vm.oggetto.interno, before={'onInserisciOggettoPerTributo'})"
+                                tooltiptext="Interno"
+                                hflex="1" maxlength="2"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <!-- ESTREMI CATASTO -->
+        <groupbox width="100%">
+            <caption label="Estremi catasto"/>
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="Sezione"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.sezione) @save(vm.oggetto.sezione, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="3"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Foglio"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.foglio) @save(vm.oggetto.foglio, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="5"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Numero"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.numero) @save(vm.oggetto.numero, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="5"/>
+                        </cell>
+                        <cell align="right" width="10%">
+                            <label value="Subalterno"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.subalterno) @save(vm.oggetto.subalterno, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="4"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Partita"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.partita) @save(vm.oggetto.partita, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="8"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Zona"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.zona) @save(vm.oggetto.zona, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="3"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Prot."/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.protocolloCatasto) @save(vm.oggetto.protocolloCatasto, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="6"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Anno"/>
+                        </cell>
+                        <cell>
+                            <intbox mold="rounded" hflex="1"
+                                    value="@load(vm.oggetto.annoCatasto) @save(vm.oggetto.annoCatasto, before={'onInserisciOggettoPerTributo'})"
+                                    class="noresizable"
+                                    maxlength="4"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Progressivo"/>
+                        </cell>
+                        <cell>
+                            <intbox mold="rounded" hflex="1"
+                                    value="@load(vm.oggetto.progrPartita) @save(vm.oggetto.progrPartita, before={'onInserisciOggettoPerTributo'})"
+                                    class="noresizable"
+                                    maxlength="9"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="Classe"/>
+                        </cell>
+                        <cell>
+                            <textbox mold="rounded" hflex="1"
+                                     value="@load(vm.oggetto.classeCatasto) @save(vm.oggetto.classeCatasto, before={'onInserisciOggettoPerTributo'})"
+                                     class="noresizable"
+                                     maxlength="2"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="Categoria"/>
+                        </cell>
+                        <cell colspan="5">
+                            <combobox mold="rounded" model="@load(vm.listaCategorieCatasto)" width="100%"
+                                      selectedItem="@load(vm.oggetto.categoriaCatasto) @save(vm.oggetto.categoriaCatasto, before={'onInserisciOggettoPerTributo'}) @converter('it.finmatica.zkutils.PropertyConverter', property='categoriaCatasto')">
+                                <template name="model" var="cc">
+                                    <comboitem label="@load(c:cat3(cc.categoriaCatasto, ' - ', cc.descrizione))"
+                                               value="@load(cc)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell colspan="4"/>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button mold="trendy" image="/images/afc/16x16/ok.png" label="Ok"
+                        onClick="@command('onInserisciOggettoPerTributo')"/>
+                <button label="Chiudi" onClick="@command('onChiudi')"
+                        mold="trendy" image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+    </window>
+</zk>

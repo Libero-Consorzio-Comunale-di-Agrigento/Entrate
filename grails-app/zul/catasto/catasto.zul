@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('catastoViewModel')" width="100%"
+            height="100%">
+		<script src="/js/decimalbox.js"/>
+
+        <hlayout sclass="navigazione" valign="middle" style="padding: 5px;">
+
+            <hlayout>
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <paging sclass="afc-paging" onPaging="@command('onPaging')"
+                            activePage="@bind(vm.paginazioneTop.activePage)"
+                            pageSize="@bind(vm.paginazioneTop.pageSize)"
+                            totalSize="@load(vm.paginazioneTop.totalSize)"/>
+                    <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                   tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                   visible="#{empty arg.refreshVisible?true:arg.refreshVisible}"
+                                   onClick="@command('onRefresh')"
+                                   width="26px"/>
+                    <toolbarbutton image="/images/afc/22x22/xls.png" width="26px"
+                                   tooltiptext='Esporta in XLS' popup="menuExportXls"/>
+                    <toolbarbutton image="/images/afc/22x22/arrows.png"
+                                   disabled="@bind(vm.topGroupLabel eq vm.groupLabel.immobili)"
+                                   tooltiptext='Funzioni'
+                                   popup="funzioni"
+                                   width="26px"/>
+                </hlayout>
+            </hlayout>
+            <hlayout valign="middle" hflex="1">
+                <groupbox width="190px">
+                    <caption label="Tipo visualizzazione"/>
+                    <radiogroup selectedItem="@bind(vm.tipoVisualizzazione)" onCheck="@command('onSwapGroup')">
+                        <radio value="immobili" label="Immobili"/>
+                        <radio value="proprietari" label="Proprietari"/>
+                    </radiogroup>
+                </groupbox>
+
+                <groupbox width="190px" visible="@bind(vm.topGroupLabel ne vm.groupLabel.immobili)">
+                    <caption label="Ordinamento"/>
+                    <radiogroup selectedItem="@bind(vm.tipoOrdinamentoProprietari)"
+                                onCheck="@command('onOrderTopList')">
+                        <radio value="alfabetico" label="Alfabetico"/>
+                        <radio value="codfiscale" label="Cod.Fiscale"/>
+                    </radiogroup>
+                </groupbox>
+
+                <groupbox width="190px" visible="@bind(vm.topGroupLabel eq vm.groupLabel.immobili)">
+                    <caption label="Ordinamento"/>
+                    <radiogroup selectedItem="@bind(vm.tipoOrdinamentoImmobili)" onCheck="@command('onOrderTopList')">
+                        <radio value="estremi" label="Estremi Catasto"/>
+                        <radio value="indirizzo" label="Indirizzo"/>
+                    </radiogroup>
+                </groupbox>
+            </hlayout>
+            <toolbarbutton
+                    image="@load(vm.filtroAttivo ? '/images/tr4web/22x22/filter_active.png':'/images/tr4web/22x22/filter.png')"
+                    onClick="@command('onRicerca')" width="26px"/>
+        </hlayout>
+
+        <vlayout vflex="1">
+            <include src="/catasto/includeCatastoProprietari.zul" vflex="1"
+                     visible="@bind(vm.topGroupLabel ne vm.groupLabel.immobili)"/>
+            <include src="/catasto/includeCatastoImmobili.zul" vflex="1"/>
+            <include src="/catasto/includeCatastoProprietari.zul" vflex="1"
+                     visible="@bind(vm.topGroupLabel eq vm.groupLabel.immobili)"/>
+        </vlayout>
+        <menupopup id="menuExportXls">
+            <menuitem label="Esporta immobili in XLS"
+                      disabled="@bind(empty vm.listaImmobiliPagina)"
+                      onClick="@command('onExportImmobiliXls')"/>
+            <menuitem label="Esporta proprietari in XLS"
+                      disabled="@bind(empty vm.listaProprietari)"
+                      onClick="@command('onExportProprietariXls')"/>
+        </menupopup>
+
+        <menupopup id="funzioni">
+            <menuitem label="Popolamento Denunce" onClick="@command('onDenunciaDaCatasto')"
+                      disabled="@bind(empty vm.proprietarioSelezionato)"/>
+            <menuitem label="Stampa visura per soggetto" onClick="@command('onStampaVisura')"
+                      disabled="@bind(empty vm.proprietarioSelezionato)"/>
+        </menupopup>
+
+        <popup id="popupTesto" width="600px">
+            <h:div sclass="barraTitoloPagina">
+                <label class="titoloPagina" value="Note"/>
+            </h:div>
+            <hlayout>
+                <textbox rows="10" width="600px"
+                         value="@load(vm.immobileSelezionato.ANNOTAZIONE)" readonly="true"/>
+            </hlayout>
+        </popup>
+    </window>
+</zk>

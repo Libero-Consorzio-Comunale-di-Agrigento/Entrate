@@ -1,0 +1,8 @@
+--liquibase formatted sql 
+--changeset abrandolini:20250326_152401_web_anaana stripComments:false runOnChange:true 
+ 
+CREATE OR REPLACE FORCE VIEW WEB_ANAANA AS
+SELECT MATRICOLA,COGNOME_NOME,FASCIA,STATO,PATERNITA,MATERNITA,COD_FAM,RAPPORTO_PAR,SEQUENZA_PAR,MATRICOLA_PD,MATRICOLA_MD
+  FROM anaana;
+comment on table WEB_ANAANA is 'WEB_ANAANA';
+

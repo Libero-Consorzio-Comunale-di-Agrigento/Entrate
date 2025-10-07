@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid hflex="1" vflex="1" span="true" sizedByContent="true" id="gridVersamenti"
+          emptyMessage="Nessun versamento presente." model="@load(vm.versamenti)">
+
+        <columns sizable="true">
+            <column label="T.Vers." sclass="centro" align="center" tooltiptext="Tipo Versamento" width="100px"/>
+            <column label="Versato" sclass="centro" align="right" width="100px"/>
+            <column label="Data Pag." sclass="centro" align="right" tooltiptext="Data Pagamento" width="100px"/>
+            <column label="Fonte" sclass="centro" width="100px"/>
+            <column label="Data Reg." sclass="centro" align="right" tooltiptext="Data Registrazione" width="100px"/>
+
+            <column label="Fabbr." sclass="centro" align="right" tooltiptext="Fabbricati"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Terreni Agr." sclass="centro" align="right" tooltiptext="Terreni Agricoli"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Aree Fabbr." sclass="centro" align="right" tooltiptext="Aree Fabbricabili"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Ab.Principale" sclass="centro" align="right" tooltiptext="Abitazione Principale"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Altri Fabbr." sclass="centro" align="right" tooltiptext="Altri Fabbricati"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Fabbr.Rurali" sclass="centro" align="right" tooltiptext="Fabbricati Rurali"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Fabbr.Uso Prod." sclass="centro" align="right" tooltiptext="Fabbricati Uso Produttivo"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Fabbr.Merce" sclass="centro" align="right" tooltiptext="Fabbricati Merce"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+
+            <column label="Terreni.Agr.Com." sclass="centro" align="right" tooltiptext="Terreni Agricoli Comune"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Terreni.Agr.Erar." sclass="centro" align="right" tooltiptext="Terreni Agricoli Erario"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Aree Fabbr.Com." sclass="centro" align="right" tooltiptext="Aree Fabbricabili Comune"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Aree Fabbr.Erar." sclass="centro" align="right" tooltiptext="Aree Fabbricabili Erario"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Altri Fabbr.Com." sclass="centro" align="right" tooltiptext="Altri Fabbricati Comune"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Altri Fabbr.Erar." sclass="centro" align="right" tooltiptext="Altri Fabbricati Erario"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Fabbr.Rurali Com." sclass="centro" align="right" tooltiptext="Fabbricati Rurali Comune"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Fabbr.Rurali Erar." sclass="centro" align="right" tooltiptext="Fabbricati Rurali Erario"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Fabbr.Uso Prod.Com." sclass="centro" align="right" tooltiptext="Fabbricati Uso Produttivo Comune"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+            <column label="Fabbr.Uso Prod.Erar." sclass="centro" align="right" tooltiptext="Fabbricati Uso Produttivo Erario"
+            		visible="@load((vm.ravvTribMin eq false) and (vm.ravvTari eq false))"/>
+
+          <column label="Add.Pro." sclass="centro" align="right" tooltiptext="Addizionale Provinciale"
+              visible="@load(vm.ravvTari)"/>
+          <column label="Sanzioni" sclass="centro" align="right" tooltiptext="Sanzioni"
+              visible="@load(vm.ravvTari)"/>
+          <column label="Interessi" sclass="centro" align="right" tooltiptext="Interessi"
+              visible="@load(vm.ravvTari)"/>
+          <column label="Spese Spediz." sclass="centro" align="right" tooltiptext="Spese Spedizione"
+              visible="@load(vm.ravvTari)"/>
+          <column label="Spese Mora" sclass="centro" align="right" tooltiptext="Spese Mora"
+              visible="@load(vm.ravvTari)"/>
+
+          <column label="Note" width="5%"/>
+            <column label="" align="center" visible="@load(!vm.lettura)" width="60px">
+                <image width="15px" src="/images/afc/16x16/add.png" style="cursor: pointer;"
+                       onClick="@command('onAggiungiVersamento')"/>
+            </column>
+        </columns>
+        <template name="model" var="vers">
+            <row>
+                <combobox readonly="true" model="@load(vm.tipiVersamento)" inplace="true" width="90%"
+                          disabled="@load(vm.lettura or empty vers.dataPagamento)"
+                          selectedItem="@bind(vers.tipoVersamento) @converter('it.finmatica.zkutils.PropertyConverter', property='key')"
+                          onChange="@command('onTipoVersamentoModificato', vers=vers)"
+                          mold="rounded">
+                    <template name="model" var="item">
+                        <comboitem label="@load(item.value)" value="@load(item.key)"/>
+                    </template>
+                </combobox>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.importoVersato)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <datebox inplace="true" disabled="@load(vm.lettura)" hflex="1" style="text-align: right;"
+                         value="@bind(vers.dataPagamento)" format="dd/MM/yyyy"/>
+                <combobox inplace="true" disabled="@load(vm.lettura)" model="@bind(vm.listaFonti)" mold="rounded"
+                          selectedItem="@bind(vers.fonte) @converter('it.finmatica.zkutils.PropertyConverter', property='fonte')"
+                          hflex="1" width="90%">
+                    <template name="model" var="fo">
+                        <comboitem label="@load(c:cat3(fo.fonte, ' - ', fo.descrizione))" value="@load(fo)"/>
+                    </template>
+                </combobox>
+                <datebox inplace="true" disabled="@load(vm.lettura)" hflex="1" style="text-align: right;"
+                         value="@bind(vers.dataReg)" format="dd/MM/yyyy"/>
+
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.fabbricati)"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.terreniAgricoli)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.areeFabbricabili)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.abPrincipale)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.altriFabbricati)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.rurali)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.fabbricatiD)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.fabbricatiMerce)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.terreniComune)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.terreniErariale)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.areeComune)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.areeErariale)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.altriComune)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.altriErariale)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.ruraliComune)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.ruraliErariale)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.fabbricatiDComune)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+                <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                            value="@bind(vers.fabbricatiDErariale)" format="€ #,##0.00"
+                            onChange="@command('onVersatoModificato', vers=vers)"
+                            mold="rounded" hflex="1"/>
+
+              <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                          value="@bind(vers.addizionalePro)" format="€ #,##0.00"
+                          onChange="@command('onVersatoModificato', vers=vers)"
+                          mold="rounded" hflex="1"/>
+              <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                          value="@bind(vers.sanzioni1)" format="€ #,##0.00"
+                          onChange="@command('onVersatoModificato', vers=vers)"
+                          mold="rounded" hflex="1"/>
+              <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                          value="@bind(vers.interessi)" format="€ #,##0.00"
+                          onChange="@command('onVersatoModificato', vers=vers)"
+                          mold="rounded" hflex="1"/>
+              <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                          value="@bind(vers.speseSpedizione)" format="€ #,##0.00"
+                          onChange="@command('onVersatoModificato', vers=vers)"
+                          mold="rounded" hflex="1"/>
+              <decimalbox inplace="true" disabled="@load(vm.lettura)" style="text-align: right"
+                          value="@bind(vers.speseMora)" format="€ #,##0.00"
+                          onChange="@command('onVersatoModificato', vers=vers)"
+                          mold="rounded" hflex="1"/>              
+
+              <hlayout width="200px">
+                    <label value="@bind(vers.note)" sclass="auto-trunc" hflex="2"/>
+                    <image src="/images/afc/16x16/info.png" tooltiptext="Visualizza note"
+                           visible="@load(vers.note ne null and vm.lettura)"
+                           style="cursor: pointer" onClick="@command('onApriNote', arg=vers.note)"/>
+                    <image src="/images/afc/16x16/edit.png" tooltiptext="Modifica note"
+                           visible="@load(!vm.lettura)"
+                           style="cursor: pointer"
+                           popup="@load(c:cat('popupNote_', vers.uuid))"/>
+                    <popup id="@load(c:cat('popupNote_', vers.uuid))" width="600px"
+                           onOpen="@command('onApriPopupNote', popup=self)">
+                        <h:div sclass="barraTitoloPagina">
+                            <label class="titoloPagina" value="Note"/>
+                        </h:div>
+                        <hlayout>
+                            <textbox rows="10" width="600px"
+                                     value="@bind(vers.note)"/>
+                        </hlayout>
+                        <h:div sclass="barraPulsanti">
+                            <h:div>
+                                <button label="Chiudi" onClick="@command('onChiudiPopupNote')" mold="trendy"
+                                        image="/images/pulsanti/16x16/window_close.png"/>
+                            </h:div>
+                        </h:div>
+                    </popup>
+                </hlayout>
+                <!-- COMANDI -->
+                <hlayout width="50px" visible="@load(!vm.lettura)">
+                    <image src="/images/afc/16x16/editcopy.png" tooltiptext="Duplica Versamento"
+                           onClick="@command('onDuplicaVersamento', vers=vers)"
+                           style="cursor: pointer"/>
+                    <image src="/images/tr4web/16x16/trash.png" tooltiptext="Elimina Versamento"
+                    	   onClick="@command('onCancellaVersamento', vers=vers)"
+                           style="cursor: pointer"/>
+                </hlayout>
+            </row>
+        </template>
+        <foot visible="@load(!empty vm.versamenti)">
+            <footer align="right">
+                <label value="Totali:"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamenti ne null ? c:formatNumber(vm.totVersamenti, '€ #,##0.00'): '')"/>
+            </footer>
+          
+            <footer/>
+            <footer/>
+            <footer/>
+
+            <!-- ICI/IMU/TASI -->
+            <footer align="right">
+                <label value="@load(vm.totVersamentiFabbricati ne null ? c:formatNumber(vm.totVersamentiFabbricati, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiTerreni ne null ? c:formatNumber(vm.totVersamentiTerreni, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiAreeF ne null ? c:formatNumber(vm.totVersamentiAreeF, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiAP ne null ? c:formatNumber(vm.totVersamentiAP, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiAltriF ne null ? c:formatNumber(vm.totVersamentiAltriF, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiRurali ne null ? c:formatNumber(vm.totVersamentiRurali, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiFabbD ne null ? c:formatNumber(vm.totVersamentiFabbD, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiMerce ne null ? c:formatNumber(vm.totVersamentiMerce, '€ #,##0.00'): '')"/>
+            </footer>
+
+            <!-- ICI/IMU/TASI -->
+            <footer align="right">
+                <label value="@load(vm.totVersamentiTerreniCom ne null ? c:formatNumber(vm.totVersamentiTerreniCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiTerreniErar ne null ? c:formatNumber(vm.totVersamentiTerreniErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiAreeFCom ne null ? c:formatNumber(vm.totVersamentiAreeFCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiAreeFErar ne null ? c:formatNumber(vm.totVersamentiAreeFErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiAltriFCom ne null ? c:formatNumber(vm.totVersamentiAltriFCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiAltriFErar ne null ? c:formatNumber(vm.totVersamentiAltriFErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiRuraliCom ne null ? c:formatNumber(vm.totVersamentiRuraliCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiRuraliErar ne null ? c:formatNumber(vm.totVersamentiRuraliErar, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiFabbDCom ne null ? c:formatNumber(vm.totVersamentiFabbDCom, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+                <label value="@load(vm.totVersamentiFabbDErar ne null ? c:formatNumber(vm.totVersamentiFabbDErar, '€ #,##0.00'): '')"/>
+            </footer>
+
+            <!-- TARSU -->
+            <footer align="right">
+              <label value="@load(vm.totAddPro ne null ? c:formatNumber(vm.totAddPro, '€ #,##0.00'): '')"/>
+            </footer>
+            <footer align="right">
+            </footer>
+            <footer align="right">
+            </footer>
+            <footer align="right">
+            </footer>
+            <footer align="right">
+            </footer>
+
+            <!-- Note e Strumenti -->
+            <footer align="right">
+            </footer>
+            <footer align="right">
+              <label value="Ultimo"/>
+            </footer>
+        </foot>
+    </grid>
+</zk>

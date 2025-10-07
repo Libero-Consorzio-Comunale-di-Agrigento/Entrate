@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.zkoss.org/2005/zul"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window closable="false" apply="grailsBindComposer"
+            viewModel="@id('vm') @init('competenzeViewModel')" width="100%"
+            height="100%">
+        <script src="/js/decimalbox.js"/>
+        <borderlayout width="100%">
+            <center>
+                <tabbox vflex="1">
+                    <tabs width="100px">
+                        <tab label="Utenti"/>
+                        <tab label="Tipi Tributo"/>
+                        <tab label="Funzioni"/>
+                    </tabs>
+                    <tabpanels>
+                        <!-- Utenti -->
+                        <tabpanel>
+                            <vbox vflex="1">
+                                <hlayout valign="middle">
+                                    <hlayout sclass="afc-control-bar" valign="middle">
+                                        <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                                       tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                                       visible="true"
+                                                       disabled="false"
+                                                       onClick="@command('onRefreshPersone')"/>
+                                        <toolbarbutton image="/images/afc/22x22/edit.png"
+                                                       tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                                                       visible="true"
+                                                       disabled="@load(empty vm.tipoTributoSelezionato or !vm.selectedEditable)"
+                                                       onClick="@command('onModificaCompetenzaUtente')"/>
+                                        <toolbarbutton image="/images/afc/22x22/multi_plus.png"
+                                                       tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                                       popup="funzioniAggiuntaUtenti"/>
+                                        <toolbarbutton image="/images/afc/22x22/delete.png"
+                                                       tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                                       visible="true"
+                                                       disabled="@load(empty vm.tipoTributoSelezionato or !vm.selectedEditable)"
+                                                       onClick="@command('onEliminaCompetenzaUtente')"/>
+                                        <toolbarbutton image="/images/afc/22x22/xls.png"
+                                                       tooltiptext='Esporta in XLS'
+                                                       disabled="@load(empty vm.listaTipiTributoPerUtente)"
+                                                       onClick="@command('onExportXlsUtenti')"/>
+                                    </hlayout>
+                                    <combobox model="@load(vm.listaUtentiConCompetenze)" readonly="true"
+                                              selectedItem="@bind(vm.chosenUser)"
+                                              onChange="@command('onCambioUtente')"
+                                              mold="rounded"
+                                              width="450px">
+                                        <template name="model">
+                                            <comboitem
+                                                    label="@load(each.nominativo)"
+                                                    value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </hlayout>
+                                <listbox span="true" sizedByContent="true"
+                                         selectedItem="@bind(vm.tipoTributoSelezionato)"
+                                         onSelect="@command('onSelectUtente')"
+                                         onDoubleClick="@command(vm.selectedEditable ? 'onModificaCompetenzaUtente' : '')"
+                                         model="@load(vm.listaTipiTributoPerUtente)" vflex="true">
+                                    <listhead>
+                                        <listheader label="Oggetto"/>
+                                        <listheader label="Tipologia"/>
+                                        <listheader label="Tipo Oggetto"/>
+                                        <listheader label="Dal"/>
+                                        <listheader label="Al"/>
+                                    </listhead>
+                                    <template name="model">
+                                        <listitem>
+                                            <listcell label="@load(each.descrizioneTributo)"/>
+                                            <listcell
+                                                    label="@load(each.si4Abilitazioni.si4TipiAbilitazione.descrizione)"/>
+                                            <listcell label="@load(each.tipoOggettoDesc)"/>
+                                            <listcell sclass="centro"
+                                                      label="@load(each.dal) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                                            <listcell sclass="centro"
+                                                      label="@load(each.al) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                                        </listitem>
+                                    </template>
+                                </listbox>
+                            </vbox>
+                        </tabpanel>
+
+                        <!-- Tipi Tributo -->
+                        <tabpanel>
+                            <vbox vflex="1">
+                                <hlayout valign="middle">
+                                    <hlayout sclass="afc-control-bar" valign="middle">
+                                        <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                                       tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                                       visible="true"
+                                                       disabled="false"
+                                                       onClick="@command('onRefreshTributi')"/>
+                                        <toolbarbutton image="/images/afc/22x22/edit.png"
+                                                       tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                                                       visible="true"
+                                                       disabled="@load(empty vm.utenteSelezionato)"
+                                                       onClick="@command('onDettaglioUtente')"/>
+                                        <toolbarbutton image="/images/afc/22x22/add.png"
+                                                       tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                                       visible="true"
+                                                       disabled="false"
+                                                       onClick="@command('onInserimentoCompetenzaTributi')"/>
+                                        <toolbarbutton image="/images/afc/22x22/delete.png"
+                                                       tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                                       visible="true"
+                                                       disabled="@load(empty vm.utenteSelezionato)"
+                                                       onClick="@command('onEliminaCompetenzaTributo')"/>
+                                        <toolbarbutton image="/images/afc/22x22/xls.png"
+                                                       tooltiptext='Esporta in XLS'
+                                                       disabled="@load(empty vm.listaUtentiPerOggetto)"
+                                                       onClick="@command('onExportXlsTipiTributo')"/>
+                                    </hlayout>
+                                    <hlayout valign="middle" hflex="3">
+                                        <space width="3px"/>
+                                        <label value="Tipo Tributo"/>
+                                        <space width="3px"/>
+                                        <combobox model="@load(vm.listaTipiTributo)" readonly="true"
+                                                  selectedItem="@bind(vm.tipoTributo)" mold="rounded"
+                                                  onChange="@command('onCambiaTributo')"
+                                                  width="450px">
+                                            <template name="model" var="item">
+                                                <comboitem
+                                                        label="@load(c:cat3(item.tipoTributoAttuale, ' - ', item.descrizione))"
+                                                        value="@load(item)"/>
+                                            </template>
+                                        </combobox>
+                                    </hlayout>
+                                </hlayout>
+
+                                <listbox span="true" sizedByContent="true"
+                                         selectedItem="@bind(vm.utenteSelezionato)"
+                                         model="@load(vm.listaUtentiPerOggetto)" emptyMessage="Nessun utente presente."
+                                         vflex="true">
+                                    <listhead>
+                                        <listheader label="Nominativo"/>
+                                        <listheader label="Tipologia"/>
+                                        <listheader label="Dal"/>
+                                        <listheader label="Al"/>
+                                    </listhead>
+                                    <template name="model" var="comp">
+                                        <listitem onDoubleClick="@command('onDettaglioUtente')">
+                                            <listcell label="@load(comp.utente.nominativo)"/>
+                                            <listcell
+                                                    label="@load(comp.si4Abilitazioni.si4TipiAbilitazione.descrizione)"/>
+                                            <listcell sclass="centro"
+                                                      label="@load(comp.dal) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                                            <listcell sclass="centro"
+                                                      label="@load(comp.al) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                                        </listitem>
+                                    </template>
+                                </listbox>
+                            </vbox>
+                        </tabpanel>
+
+                        <!-- Funzioni -->
+                        <tabpanel>
+                            <vbox vflex="1">
+                                <hlayout valign="middle">
+                                    <hlayout sclass="afc-control-bar" valign="middle">
+                                        <toolbarbutton image="/images/afc/22x22/refresh.png"
+                                                       tooltiptext='#{empty arg.refreshTooltip?"Refresh":arg.refreshTooltip}'
+                                                       visible="true"
+                                                       onClick="@command('onRefreshFunzioni')"/>
+                                        <toolbarbutton image="/images/afc/22x22/edit.png"
+                                                       tooltiptext='#{empty arg.modifyTooltip?"Modifica":arg.modifyTooltip}'
+                                                       visible="true"
+                                                       disabled="@load(empty vm.utenteDiFunzioneSelezionato)"
+                                                       onClick="@command('onDettaglioUtenteDiFunzione')"/>
+                                        <toolbarbutton image="/images/afc/22x22/add.png"
+                                                       tooltiptext='#{empty arg.addTooltip?"Aggiungi":arg.addTooltip}'
+                                                       disabled="@bind(empty vm.funzioneScelta)"
+                                                       onClick="@command('onInserimentoCompetenzaFunzioni')"/>
+                                        <toolbarbutton image="/images/afc/22x22/delete.png"
+                                                       tooltiptext='#{empty arg.deleteTooltip?"Elimina":arg.deleteTooltip}'
+                                                       visible="true"
+                                                       disabled="@load(empty vm.utenteDiFunzioneSelezionato)"
+                                                       onClick="@command('onEliminaCompetenzaFunzione')"/>
+                                        <toolbarbutton image="/images/afc/22x22/xls.png"
+                                                       tooltiptext='Esporta in XLS'
+                                                       disabled="@load(empty vm.listaFunzioni)"
+                                                       onClick="@command('onExportXlsFunzioni')"/>
+                                    </hlayout>
+                                    <combobox model="@load(vm.listaFunzioni)" readonly="true"
+                                              selectedItem="@bind(vm.funzioneScelta)" mold="rounded"
+                                              onChange="@command('onCambiaFunzione')" width="450px">
+                                        <template name="model">
+                                            <comboitem
+                                                    label="@load(c:cat3(each.funzione, ' - ', each.descrizione))"
+                                                    value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </hlayout>
+
+                                <listbox span="true" sizedByContent="true"
+                                         selectedItem="@bind(vm.utenteDiFunzioneSelezionato)"
+                                         model="@load(vm.listaUtentiPerFunzione)" emptyMessage="Nessun utente presente."
+                                         vflex="true">
+                                    <listhead>
+                                        <listheader label="Nominativo"/>
+                                        <listheader label="Tipologia"/>
+                                        <listheader label="Dal"/>
+                                        <listheader label="Al"/>
+                                    </listhead>
+                                    <template name="model" var="comp">
+                                        <listitem onDoubleClick="@command('onDettaglioUtenteDiFunzione')">
+                                            <listcell label="@load(comp.utente.nominativo)"/>
+                                            <listcell
+                                                    label="@load(comp.si4Abilitazioni.si4TipiAbilitazione.descrizione)"/>
+                                            <listcell sclass="centro"
+                                                      label="@load(comp.dal) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                                            <listcell sclass="centro"
+                                                      label="@load(comp.al) @converter('formatedDate',format='dd/MM/yyyy')"/>
+                                        </listitem>
+                                    </template>
+                                </listbox>
+                            </vbox>
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
+            </center>
+        </borderlayout>
+
+        <menupopup id="funzioniAggiuntaUtenti">
+            <menuitem label="Tributo"
+                      onClick="@command('onAggiungiCompetenzaUtente', tipo='tributo')"/>
+            <menuitem label="Funzione"
+                      onClick="@command('onAggiungiCompetenzaUtente', tipo='funzione')"/>
+        </menupopup>
+    </window>
+</zk>

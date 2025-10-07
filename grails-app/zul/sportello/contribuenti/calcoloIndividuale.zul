@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window maximizable="true" maximized="true" sizable="true" apply="grailsBindComposer"
+            onClose="@command('onClose')"
+            viewModel="@id('vm') @init('calcoloIndividualeViewModel')" border="normal">
+		<script src="/js/decimalbox.js"/>
+        <style>
+            .importo-negativo {
+               color: red !important;
+            }
+        </style>
+
+        <grid sclass="documentoBandaTitolo">
+            <rows>
+                <row>
+                    <cell>
+                        <label value="Calcolo Individuale" class="documentoTitolo"/>
+                    </cell>
+                    <cell class="documentoTitolo" align="right" valign="center">
+                        <image visible="@load(vm.soggetto.id ne null)" src="/images/afc/16x16/user.png" tooltiptext="Situazione contribuente"
+                               style="cursor: pointer;" onClick="@command('onOpenSituazioneContribuente')"/>
+                        <space width="5px"/>
+                        <label value="@load((vm.soggetto.id eq null)? '' : c:cat3(vm.soggetto.cognome,' ',vm.soggetto.nome))"/>
+                        <label value="@load((vm.soggetto.id eq null) ? '' : c:cat(' - ',vm.codFiscale))"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <space height="3px"/>
+
+        <grid>
+            <rows>
+                <row>
+                    <cell align="right" width="150px">
+                        <label value="Tipo Tributo"/>
+                    </cell>
+                    <cell>
+                        <radiogroup id="tipoTributo" selectedItem="@bind(vm.rbTributi)">
+                            <radio disabled="@load(vm.letturaICI or vm.modificheDaSalvare)" label="@load(c:l('label.tributoImu'))"
+                                   radiogroup="tipoTributo" onClick="@command('onChangeTipoTributo')" value="ICI"/>
+                            <radio disabled="@load(vm.letturaTASI or vm.modificheDaSalvare or (vm.anno ne null and vm.anno lt 2014))"
+                                   label="@load(c:l('label.tributoTasi'))" radiogroup="tipoTributo"
+                                   onClick="@command('onChangeTipoTributo')" value="TASI"/>
+                        </radiogroup>
+                    </cell>
+                    <cell align="right" width="150px">
+                        <label value="Anno"/>
+                    </cell>
+                    <cell>
+                        <intbox maxlength="4" style="text-align: right;" value="@bind(vm.anno)" mold="rounded"
+                                onChange="@command('onChangeAnno')" constraint="no negative,no empty" cols="4"/>
+                        <space width="5px"/>
+                        <label value="@load(vm.descrizioneTipoCalcolo)"/>
+                    </cell>
+                    <cell>
+                        <checkbox disabled="@load(not vm.visualizzaCarica or not vm.contribuenteEsistente)"
+                                  label="Registra contatto" checked="@bind(vm.creaContatto)"/>
+                    </cell>
+                    <cell>
+                        <button visible="@load(vm.visualizzaCarica)" autodisable="true"
+                                disabled="@load(empty vm.anno or vm.modificheDaSalvare or not vm.modificheAbilitate)"
+                                label="Carica" onClick="@command('onCaricaPraticaK')" mold="trendy"
+                                image="/images/pulsanti/16x16/button_accept.png"/>
+                        <button visible="@load(not vm.visualizzaCarica and vm.contribuenteEsistente)" autodisable="true"
+                                disabled="@load(vm.modificheDaSalvare or not vm.modificheAbilitate)" label="Ripristina"
+                                onClick="@command('onRipristina')" mold="trendy"
+                                image="/images/pulsanti/16x16/refresh.png"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <space height="5px"/>
+        <tabbox selectedIndex="@bind(vm.selectedTab)" vflex="1">
+            <tabs>
+                <tab id="oggetti" label="Oggetti"/>
+                <tab id="imposta" label="Imposta" disabled="@load(empty vm.listaImposte or vm.modificheAbilitate)"/>
+                <tab id="dettagli" label="Dettagli"
+                     disabled="@load(empty vm.listaDettagliImposta or vm.modificheAbilitate)"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <include src="/sportello/contribuenti/calcoloIndividualeOggettiMD.zul" mode="instant"/>
+                </tabpanel>
+                <tabpanel>
+                    <include src="/sportello/contribuenti/calcoloIndividualeImposta.zul" mode="instant"/>
+                </tabpanel>
+                <tabpanel fulfill="dettagli.onSelect">
+                    <include src="/sportello/contribuenti/calcoloIndividualeDettagli.zul" mode="instant"/>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="Calcolo" visible="@load(not vm.miniImuVisible)"
+                        onClick="@command('onCalcoloIndividuale', miniImu=0)"
+                        disabled="@load(empty vm.listaOggetti or not (vm.selectedTab eq 0))" mold="trendy"
+                        image="/images/pulsanti/16x16/calculator.png"/>
+                <button label="Calcolo" visible="@load(vm.miniImuVisible)" popup="tipoCalcolo, position=before_end"
+                        sclass="button-menu-up"
+                        disabled="@load(empty vm.listaOggetti or not (vm.selectedTab eq 0))" mold="trendy"
+                        image="/images/pulsanti/16x16/calculator.png">
+                </button>
+
+
+                <button label="Stampa" onClick="@command('onElencoStampe')"
+                        disabled="@bind(vm.disabilitaF24Unico and (empty vm.listaImposte))"
+                        mold="trendy" image="/images/afc/16x16/print.png"/>
+                <button label="Salva e Chiudi" onClick="@command('onSalvaEChiudi')"
+                        disabled="@load((empty vm.listaOggetti and empty vm.listaOggettiEliminati) or (!vm.isDirty))"
+                        mold="trendy" image="/images/pulsanti/16x16/filesave.png"/>
+                <button label="Salva" onClick="@command('onSalva')"
+                        disabled="@load((empty vm.listaOggetti and empty vm.listaOggettiEliminati) or (!vm.isDirty))"
+                        mold="trendy" image="/images/pulsanti/16x16/filesave.png"/>
+                <button label="Chiudi" onClick="@command('onChiudiPopup')" mold="trendy"
+                        image="/images/pulsanti/16x16/window_close.png"/>
+            </h:div>
+        </h:div>
+
+        <menupopup id="elencoStampe">
+            <menuitem label="Stampa" onClick="@command('onStampa')" disabled="@load(empty vm.listaImposte)"/>
+            <menu label="F24">
+                <menupopup id="tipoF24">
+                    <menuitem label="Acconto" onClick="@command('onGeneraF24', tipoPagamento=0)"
+                              disabled="@load(empty vm.listaImposte)"/>
+                    <menuitem label="Saldo" onClick="@command('onGeneraF24', tipoPagamento=1)"
+                              disabled="@load(empty vm.listaImposte)"/>
+                    <menuitem label="Unico" onClick="@command('onGeneraF24', tipoPagamento=2)"
+                              disabled="@load(empty vm.listaImposte)"/>
+                </menupopup>
+            </menu>
+            <menu label="F24 IMU + TASI">
+                <menupopup id="tipoF24Unico">
+                    <menuitem label="Acconto" onClick="@command('onGeneraF24Unico', tipoPagamento=0)"
+                              disabled="@load(vm.disabilitaF24Unico)"/>
+                    <menuitem label="Saldo" onClick="@command('onGeneraF24Unico', tipoPagamento=1)"
+                              disabled="@load(vm.disabilitaF24Unico)"/>
+                    <menuitem label="Unico" onClick="@command('onGeneraF24Unico', tipoPagamento=2)"
+                              disabled="@load(vm.disabilitaF24Unico)"/>
+                </menupopup>
+            </menu>
+        </menupopup>
+        <menupopup id="tipoCalcolo">
+            <menuitem label="Calcolo" onClick="@command('onCalcoloIndividuale', miniImu=0)"/>
+            <menuitem label="Calcolo Mini Imu" onClick="@command('onCalcoloIndividuale', miniImu=1)"/>
+        </menupopup>
+    </window>
+
+</zk>

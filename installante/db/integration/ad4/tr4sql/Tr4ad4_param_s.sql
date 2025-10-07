@@ -1,0 +1,6 @@
+--liquibase formatted sql
+--changeset dmarotta:20250904_121407_Tr4ad4_param_s stripComments:false runOnChange:true
+
+CREATE OR REPLACE SYNONYM  AD4_REGISTRO FOR ${ad4Username}.REGISTRO;
+CREATE OR REPLACE SYNONYM  AD4_REGISTRO_UTILITY FOR ${ad4Username}.AD4_REGISTRO_UTILITY;
+CREATE OR REPLACE SYNONYM  AD4_KEY_ERROR_LOG_PKG FOR ${ad4Username}.KEY_ERROR_LOG_PKG;
